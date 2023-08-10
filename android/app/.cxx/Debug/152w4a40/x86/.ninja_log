@@ -1,0 +1,19 @@
+# ninja log v5
+0	4	0	clean	a31eedcededa8236
+0	3	0	clean	a31eedcededa8236
+0	4	0	clean	a31eedcededa8236
+0	2	0	clean	a31eedcededa8236
+0	341	1691670117446223342	CMakeFiles/wfow.dir/wfow.cpp.o	1cffc145ef0b85b8
+342	359	1691670117462223466	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/Debug/152w4a40/obj/x86/libwfow.so	66be7b31a8aa8de4
+0	3	0	clean	a31eedcededa8236
+0	3	0	clean	a31eedcededa8236
+0	2	0	clean	a31eedcededa8236
+0	2	0	clean	a31eedcededa8236
+0	3	0	clean	a31eedcededa8236
+0	4	0	clean	a31eedcededa8236
+1	188	1691672389569091944	CMakeFiles/wfow.dir/wfow.cpp.o	1cffc145ef0b85b8
+189	228	1691672389609092022	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/Debug/152w4a40/obj/x86/libwfow.so	66be7b31a8aa8de4
+0	2	0	clean	a31eedcededa8236
+0	2	0	clean	a31eedcededa8236
+1	234	1691672420941101950	CMakeFiles/wfow.dir/wfow.cpp.o	1cffc145ef0b85b8
+234	258	1691672420965101922	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/Debug/152w4a40/obj/x86/libwfow.so	66be7b31a8aa8de4

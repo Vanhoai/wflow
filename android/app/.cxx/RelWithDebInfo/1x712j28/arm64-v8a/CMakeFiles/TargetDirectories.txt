@@ -1,0 +1,3 @@
+/home/aurora/Desktop/wfow/android/app/.cxx/RelWithDebInfo/1x712j28/arm64-v8a/CMakeFiles/wfow.dir
+/home/aurora/Desktop/wfow/android/app/.cxx/RelWithDebInfo/1x712j28/arm64-v8a/CMakeFiles/edit_cache.dir
+/home/aurora/Desktop/wfow/android/app/.cxx/RelWithDebInfo/1x712j28/arm64-v8a/CMakeFiles/rebuild_cache.dir

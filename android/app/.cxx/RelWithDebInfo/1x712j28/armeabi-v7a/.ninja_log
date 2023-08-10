@@ -1,0 +1,15 @@
+# ninja log v5
+0	323	1691669843849121019	CMakeFiles/wfow.dir/wfow.cpp.o	b1c44bfefa6a2f9a
+324	348	1691669843877125823	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/RelWithDebInfo/1x712j28/obj/armeabi-v7a/libwfow.so	b016d8cafcd237f3
+0	3	0	clean	a31eedcededa8236
+1	3	0	clean	a31eedcededa8236
+0	286	1691670285304038025	CMakeFiles/wfow.dir/wfow.cpp.o	b1c44bfefa6a2f9a
+286	302	1691670285320038861	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/RelWithDebInfo/1x712j28/obj/armeabi-v7a/libwfow.so	b016d8cafcd237f3
+0	3	0	clean	a31eedcededa8236
+0	127	1691672316332578186	CMakeFiles/wfow.dir/wfow.cpp.o	b1c44bfefa6a2f9a
+128	149	1691672316356578501	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/RelWithDebInfo/1x712j28/obj/armeabi-v7a/libwfow.so	b016d8cafcd237f3
+0	2	0	clean	a31eedcededa8236
+1	141	1691672340160837698	CMakeFiles/wfow.dir/wfow.cpp.o	b1c44bfefa6a2f9a
+142	159	1691672340176837838	/home/aurora/Desktop/wfow/build/app/intermediates/cxx/RelWithDebInfo/1x712j28/obj/armeabi-v7a/libwfow.so	b016d8cafcd237f3
+0	3	0	clean	a31eedcededa8236
+0	3	0	clean	a31eedcededa8236

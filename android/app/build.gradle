@@ -67,11 +67,6 @@ android {
         targetSdkVersion 34
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
-        externalNativeBuild {
-            cmake {
-                cppFlags ''
-            }
-        }
     }
 
     signingConfigs {
@@ -84,7 +79,6 @@ android {
         }
 
     }
-
 
     buildTypes {
         
@@ -100,12 +94,6 @@ android {
 
     }
     
-    externalNativeBuild {
-        cmake {
-            path file('src/main/cpp/CMakeLists.txt')
-            version '3.22.1'
-        }
-    }
 }
 
 flutter {

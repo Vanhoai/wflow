@@ -17,11 +17,5 @@ class MainActivity: FlutterActivity() {
     override fun onAttachedToWindow() {
         super.onAttachedToWindow()
     }
-
-    companion object {
-          init {
-                System.loadLibrary("wfow")
-          }
-    }
 }
 

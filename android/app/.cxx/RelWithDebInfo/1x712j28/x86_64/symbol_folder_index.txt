@@ -1,1 +1,0 @@
-/home/aurora/Desktop/wfow/build/app/intermediates/cxx/RelWithDebInfo/1x712j28/obj/x86_64

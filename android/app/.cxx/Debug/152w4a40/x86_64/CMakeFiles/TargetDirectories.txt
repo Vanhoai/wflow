@@ -1,3 +1,0 @@
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/x86_64/CMakeFiles/wfow.dir
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/x86_64/CMakeFiles/edit_cache.dir
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/x86_64/CMakeFiles/rebuild_cache.dir

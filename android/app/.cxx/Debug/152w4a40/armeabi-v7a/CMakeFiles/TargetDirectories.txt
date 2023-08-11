@@ -1,3 +1,0 @@
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/armeabi-v7a/CMakeFiles/wfow.dir
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/armeabi-v7a/CMakeFiles/edit_cache.dir
-/home/aurora/Desktop/wfow/android/app/.cxx/Debug/152w4a40/armeabi-v7a/CMakeFiles/rebuild_cache.dir

@@ -3,18 +3,23 @@
 MODE=$1 # dev or release
 FILE=$2 # aab or apk
 
+buildAab="flutter build appbundle --release"
+buildApk="flutter build apk --release"
+buildDebug="flutter build apk --debug"
+cleanAndroid="cd android && ./gradlew clean && cd .."
+
 build_dev () {
-    cd android && ./gradlew clean && cd ..
-    flutter build apk --debug
+    eval $cleanAndroid
+    eval $buildDebug
 }
 
 build_release () {
-    cd android && ./gradlew clean && cd ..
+    eval $cleanAndroid
     
     if [ "$FILE" == "aab" ]; then
-        flutter build appbundle --release
+        eval $buildAab
     elif [ "$FILE" == "apk" ]; then
-        flutter build apk --release
+        eval $buildApk
     else
         echo "Invalid file"
     fi

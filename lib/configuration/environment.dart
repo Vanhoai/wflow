@@ -1,1 +1,8 @@
-class Environment {}
+import 'package:flutter_config_plus/flutter_config_plus.dart';
+
+class EnvironmentConfiguration {
+  static String appName = FlutterConfigPlus.get("APP_NAME");
+  static String appVersion = FlutterConfigPlus.get("APP_VERSION");
+  static String apiBaseUrl = FlutterConfigPlus.get("API_BASE_URL");
+  static String appHeading = FlutterConfigPlus.get("APP_HEADING");
+}

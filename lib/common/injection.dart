@@ -5,7 +5,7 @@ import 'package:wfow/core/agent/agent.dart';
 import 'package:wfow/core/utils/secure_storage.dart';
 import 'package:wfow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wfow/modules/auth/data/auth_service.dart';
-import 'package:wfow/modules/auth/domain/auth_reposotory.dart';
+import 'package:wfow/modules/auth/domain/auth_repository.dart';
 import 'package:wfow/modules/auth/domain/auth_usecase.dart';
 import 'package:wfow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 

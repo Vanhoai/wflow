@@ -1,9 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:wfow/core/http/failure.dart';
 import 'package:wfow/core/http/http.dart';
 import 'package:wfow/modules/auth/data/auth_service.dart';
 import 'package:wfow/modules/auth/domain/auth_entity.dart';
-import 'package:wfow/modules/auth/domain/auth_reposotory.dart';
+import 'package:wfow/modules/auth/domain/auth_repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthService authService;

@@ -15,11 +15,34 @@ class _SignInScreenState extends State<SignInScreen> {
     widget.signInBloc.add(SignInSubmitEvent(email: "tvhoai241223@gmail.com", password: "admin"));
   }
 
+  void changeEmail(String email) {
+    widget.signInBloc.add(ChangeEmailEvent(email: email));
+  }
+
+  void changePassword(String password) {
+    widget.signInBloc.add(ChangePasswordEvent(password: password));
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SizedBox(
-        child: Center(child: ElevatedButton(onPressed: submit, child: const Text("Sign In"))),
+        child: Column(
+          children: [
+            TextField(
+              onChanged: changeEmail,
+              decoration: const InputDecoration(
+                labelText: "Email",
+              ),
+            ),
+            TextField(
+              onChanged: changeEmail,
+              decoration: const InputDecoration(
+                labelText: "Email",
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

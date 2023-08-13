@@ -12,8 +12,10 @@ part 'state.dart';
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthUseCase authUseCase;
 
-  SignInBloc({required this.authUseCase}) : super(SignInState()) {
+  SignInBloc({required this.authUseCase}) : super(const SignInState()) {
     on<SignInSubmitEvent>(onSignInSubmit);
+    on<ChangeEmailEvent>(onChangeEmail);
+    on<SignInSearchingEvent>(onSignInSearching);
   }
 
   FutureOr<void> onSignInSubmit(SignInSubmitEvent event, Emitter<SignInState> emit) async {
@@ -26,5 +28,16 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     } catch (error) {
       print(error);
     }
+  }
+
+  FutureOr<void> onChangeEmail(ChangeEmailEvent event, Emitter<SignInState> emit) async {
+    final SignInState builder = SignInBuilder(state: state).data(email: event.email).build();
+    print(builder);
+    emit(builder);
+  }
+
+  FutureOr<void> onSignInSearching(SignInSearchingEvent event, Emitter<SignInState> emit) async {
+    final SignInState builder = SignInBuilder(state: state).search(event.search).build();
+    emit(builder);
   }
 }

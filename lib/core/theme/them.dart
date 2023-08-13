@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wfow/core/theme/colors.dart';
+import 'package:wflow/core/theme/colors.dart';
 
 final themeData = ThemeData(
   primaryColor: AppColors.primary,

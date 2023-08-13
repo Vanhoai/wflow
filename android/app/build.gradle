@@ -41,7 +41,7 @@ apply from: project(':flutter_config_plus').projectDir.getPath() + "/dotenv.grad
 
 
 android {
-    namespace "com.flow.wfow"
+    namespace "com.flow.wflow"
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
 

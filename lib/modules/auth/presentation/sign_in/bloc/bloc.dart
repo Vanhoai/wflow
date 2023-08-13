@@ -2,9 +2,9 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wfow/core/http/failure.dart';
-import 'package:wfow/modules/auth/domain/auth_entity.dart';
-import 'package:wfow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/core/http/failure.dart';
+import 'package:wflow/modules/auth/domain/auth_entity.dart';
+import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 
 part 'event.dart';
 part 'state.dart';

@@ -1,6 +1,6 @@
-# wfow
+# wflow
 
-A Flutter application for student or freelancer and business connected, in addition the application provide solusion commit two hand when create contract for working
+A new Flutter project.
 
 ## Getting Started
 

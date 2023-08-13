@@ -1,7 +1,7 @@
 import 'dart:convert';
 
-import 'package:wfow/core/agent/agent.dart';
-import 'package:wfow/core/http/http.dart';
+import 'package:wflow/core/agent/agent.dart';
+import 'package:wflow/core/http/http.dart';
 
 abstract class AuthService {
   Future<dynamic> signIn(String email, String password);

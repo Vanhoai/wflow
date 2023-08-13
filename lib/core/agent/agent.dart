@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
-import 'package:wfow/configuration/configuration.dart';
-import 'package:wfow/core/utils/utils.dart';
+import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/utils/utils.dart';
 
 class Agent {
   final Dio dio = Dio();

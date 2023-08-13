@@ -1,13 +1,13 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wfow/common/bloc/app_bloc.dart';
-import 'package:wfow/core/agent/agent.dart';
-import 'package:wfow/core/utils/secure_storage.dart';
-import 'package:wfow/modules/auth/data/auth_repository_impl.dart';
-import 'package:wfow/modules/auth/data/auth_service.dart';
-import 'package:wfow/modules/auth/domain/auth_repository.dart';
-import 'package:wfow/modules/auth/domain/auth_usecase.dart';
-import 'package:wfow/modules/auth/presentation/sign_in/bloc/bloc.dart';
+import 'package:wflow/common/bloc/app_bloc.dart';
+import 'package:wflow/core/agent/agent.dart';
+import 'package:wflow/core/utils/secure_storage.dart';
+import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
+import 'package:wflow/modules/auth/data/auth_service.dart';
+import 'package:wflow/modules/auth/domain/auth_repository.dart';
+import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
 

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wfow/modules/auth/presentation/sign_in/bloc/bloc.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key, required this.signInBloc});

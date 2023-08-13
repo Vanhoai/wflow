@@ -1,7 +1,7 @@
 import 'package:dartz/dartz.dart';
 
-import 'package:wfow/core/http/http.dart';
-import 'package:wfow/modules/auth/domain/auth_entity.dart';
+import 'package:wflow/core/http/http.dart';
+import 'package:wflow/modules/auth/domain/auth_entity.dart';
 
 abstract class AuthRepository {
   Future<Either<AuthEntity, Failure>> signIn(String email, String password);

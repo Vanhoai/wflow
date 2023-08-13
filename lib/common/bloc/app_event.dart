@@ -8,7 +8,7 @@ class AppEvent extends Equatable {
 class AppChangeLanguage extends AppEvent {
   final String languageCode;
 
-  AppChangeLanguage(this.languageCode);
+  AppChangeLanguage({required this.languageCode});
 
   @override
   List<Object?> get props => [languageCode];
@@ -17,7 +17,7 @@ class AppChangeLanguage extends AppEvent {
 class AppChangeTheme extends AppEvent {
   final bool isDarkMode;
 
-  AppChangeTheme(this.isDarkMode);
+  AppChangeTheme({required this.isDarkMode});
 
   @override
   List<Object?> get props => [isDarkMode];
@@ -26,7 +26,7 @@ class AppChangeTheme extends AppEvent {
 class AppChangeLoading extends AppEvent {
   final bool isLoading;
 
-  AppChangeLoading(this.isLoading);
+  AppChangeLoading({required this.isLoading});
 
   @override
   List<Object?> get props => [isLoading];

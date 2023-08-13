@@ -8,7 +8,9 @@ part 'app_event.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
-    on<AppChangeLanguage>((event, emit) => null);
+    on<AppChangeLanguage>(onAppChangeLanguage);
+    on<AppChangeTheme>(onAppChangeTheme);
+    on<AppChangeLoading>(onAppChangeLoading);
   }
 
   FutureOr<void> onAppChangeLanguage(AppChangeLanguage event, Emitter<AppState> emit) async {

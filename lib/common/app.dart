@@ -25,27 +25,28 @@ class _AppState extends State<App> {
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
           return MultiBlocProvider(
-              providers: [
-                BlocProvider(
-                  create: (BuildContext context) => instance.get<AppBloc>(),
-                ),
-              ],
-              child: BlocBuilder<AppBloc, AppState>(
-                buildWhen: (previous, current) => previous != current,
-                bloc: instance.get<AppBloc>(),
-                builder: (context, state) {
-                  return MaterialApp(
-                    debugShowCheckedModeBanner: false,
-                    title: EnvironmentConfiguration.appHeading,
-                    theme: themeData,
-                    darkTheme: themeDataDark,
-                    themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
-                    onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: RouteKeys.signInScreen,
-                    home: SignInScreen(signInBloc: instance.get<SignInBloc>()),
-                  );
-                },
-              ));
+            providers: [
+              BlocProvider(
+                create: (BuildContext context) => instance.get<AppBloc>(),
+              ),
+            ],
+            child: BlocBuilder<AppBloc, AppState>(
+              buildWhen: (previous, current) => previous != current,
+              bloc: instance.get<AppBloc>(),
+              builder: (context, state) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  title: EnvironmentConfiguration.appHeading,
+                  theme: themeData,
+                  darkTheme: themeDataDark,
+                  themeMode: state.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                  onGenerateRoute: AppRoutes.generateRoute,
+                  initialRoute: RouteKeys.signInScreen,
+                  home: SignInScreen(signInBloc: instance.get<SignInBloc>()),
+                );
+              },
+            ),
+          );
         } else {
           return const MaterialApp(
             debugShowCheckedModeBanner: false,

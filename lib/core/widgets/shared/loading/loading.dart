@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 
 class Loading extends StatefulWidget {
-  const Loading({super.key});
+  const Loading({super.key, this.height, this.width});
+
+  final double? height;
+  final double? width;
 
   @override
   State<Loading> createState() => _LoadingState();
@@ -10,6 +15,36 @@ class Loading extends StatefulWidget {
 class _LoadingState extends State<Loading> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    MediaQueryData mediaQuery = MediaQuery.of(context);
+    return Container(
+      height: mediaQuery.size.height,
+      width: mediaQuery.size.width,
+      color: Colors.white.withAlpha(200),
+      child: LottieAnimation(
+        animation: AppConstants.lottieLoading,
+        height: widget.height ?? mediaQuery.size.height,
+        width: widget.width ?? mediaQuery.size.width,
+      ),
+    );
+  }
+}
+
+class GlobalLoading extends StatelessWidget {
+  const GlobalLoading({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: double.infinity,
+      width: double.infinity,
+      color: Colors.white.withAlpha(100),
+      child: const Center(
+        child: LottieAnimation(
+          animation: AppConstants.lottieLoading,
+          height: 40,
+          width: 40,
+        ),
+      ),
+    );
   }
 }

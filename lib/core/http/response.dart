@@ -11,7 +11,7 @@ class HttpResponse<T> {
 
   factory HttpResponse.fromJson(Map<String, dynamic> json) {
     return HttpResponse(
-      statusCode: json['code'],
+      statusCode: json['statusCode'],
       message: json['message'],
       data: json['data'],
     );

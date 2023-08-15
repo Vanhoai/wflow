@@ -8,8 +8,8 @@ class AuthEntity extends Equatable {
 
   factory AuthEntity.fromJson(Map<String, dynamic> json) {
     return AuthEntity(
-      accessToken: json['access_token'],
-      refreshToken: json['refresh_token'],
+      accessToken: json['accessToken'],
+      refreshToken: json['refreshToken'],
     );
   }
 

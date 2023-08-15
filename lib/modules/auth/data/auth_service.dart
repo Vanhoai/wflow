@@ -17,11 +17,14 @@ class AuthServiceImpl implements AuthService {
   Future createAccount(String email, String password) async {}
 
   @override
-  Future signIn(String email, String password) async {
+  Future<dynamic> signIn(String email, String password) async {
     try {
       final response = await agent.dio.post(
-        "/auth/login",
-        data: json.encode({"username": "p3nhox98", "password": "123456", "device_token": "ksjdhfklasdhfjk"}),
+        "/auth/sign-in",
+        data: json.encode({
+          "email": "hoaitv241223@gmail.com",
+          "password": "hoaitv241223",
+        }),
       );
 
       return response.data;

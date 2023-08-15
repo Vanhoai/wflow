@@ -22,12 +22,3 @@ class AppChangeTheme extends AppEvent {
   @override
   List<Object?> get props => [isDarkMode];
 }
-
-class AppChangeLoading extends AppEvent {
-  final bool isLoading;
-
-  AppChangeLoading({required this.isLoading});
-
-  @override
-  List<Object?> get props => [isLoading];
-}

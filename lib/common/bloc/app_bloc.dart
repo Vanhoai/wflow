@@ -10,7 +10,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
   AppBloc() : super(const AppState()) {
     on<AppChangeLanguage>(onAppChangeLanguage);
     on<AppChangeTheme>(onAppChangeTheme);
-    on<AppChangeLoading>(onAppChangeLoading);
   }
 
   FutureOr<void> onAppChangeLanguage(AppChangeLanguage event, Emitter<AppState> emit) async {
@@ -19,9 +18,5 @@ class AppBloc extends Bloc<AppEvent, AppState> {
 
   FutureOr<void> onAppChangeTheme(AppChangeTheme event, Emitter<AppState> emit) {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
-  }
-
-  FutureOr<void> onAppChangeLoading(AppChangeLoading event, Emitter<AppState> emit) async {
-    emit(state.copyWith(isLoading: event.isLoading));
   }
 }

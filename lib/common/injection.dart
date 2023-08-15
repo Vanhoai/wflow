@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:wflow/common/bloc/app_bloc.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/utils/secure_storage.dart';
 import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
@@ -32,7 +33,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
   // bloc
-  instance.registerLazySingleton<SignInBloc>(() => SignInBloc(authUseCase: instance.get<AuthUseCase>()));
+  instance.registerLazySingleton<SignInBloc>(
+      () => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
 
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
+  instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
 }

@@ -5,14 +5,12 @@ class SignInEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class SignInSubmitEvent extends SignInEvent {
+class SignInSubmitted extends SignInEvent {
   final String email;
   final String password;
 
-  SignInSubmitEvent({required this.email, required this.password});
+  SignInSubmitted({required this.email, required this.password});
 
   @override
   List<Object?> get props => [email, password];
 }
-
-class RedirectEvent extends SignInEvent {}

@@ -11,7 +11,7 @@ class Agent {
     dio.options = generateOptions();
 
     InterceptorsWrapper interceptorsWrapper = InterceptorsWrapper(onRequest: (options, handler) async {
-      final accessToken = await secureStorage.read("access_token");
+      final accessToken = await secureStorage.read(AppConstants.accessTokenKey);
       options.headers = {
         ...options.headers,
         "Authorization": "Bearer $accessToken",
@@ -38,8 +38,8 @@ class Agent {
   }
 
   Future<void> refreshToken() async {
-    final refreshToken = await secureStorage.read('refresh_token');
-    final response = await dio.post('/auth/refresh', data: {'refresh_token': refreshToken});
+    final refreshToken = await secureStorage.read(AppConstants.refreshTokenKey);
+    final response = await dio.post('/auth/refresh', data: {'refreshToken': refreshToken});
 
     if (response.statusCode == 201) {
       // successfully got the new access token

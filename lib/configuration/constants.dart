@@ -15,7 +15,7 @@ class AppConstants {
   static const String pathEN = "assets/languages/en.json";
 
   // storage key
-  static const String keySecureStorage = "@app";
+  static const String keySecureStorage = "@com.flow";
   static const String accessTokenKey = "$keySecureStorage@ACCESS_TOKEN";
   static const String refreshTokenKey = "$keySecureStorage@REFRESH_TOKEN";
 }

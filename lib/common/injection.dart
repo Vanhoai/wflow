@@ -33,9 +33,7 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
   // bloc
-  instance.registerLazySingleton<SignInBloc>(
-      () => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
-
+  instance.registerLazySingleton<SignInBloc>(() => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
 }

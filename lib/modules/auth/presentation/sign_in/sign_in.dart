@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/libs/firebase.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
@@ -28,6 +29,11 @@ class _SignInScreenState extends State<SignInScreen> {
         Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
       }
     });
+  }
+
+  Future<dynamic> signInWithGoogle() async {
+    final response = await FirebaseService.signInWithGoogle();
+    print("Google ${response.toString()}");
   }
 
   @override
@@ -65,7 +71,7 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             ElevatedButton(
-              onPressed: signInSubmitted,
+              onPressed: signInWithGoogle,
               child: Text(
                 "Sign In",
                 style: Theme.of(context).textTheme.labelMedium,

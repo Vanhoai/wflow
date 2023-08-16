@@ -18,9 +18,7 @@ class _SwitchAnimationState extends State<SwitchAnimation> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        widget.onChanged(widget.value);
-      },
+      onTap: () => widget.onChanged(widget.value),
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         padding: const EdgeInsets.all(2),

@@ -1,6 +1,10 @@
 class AppConstants {
   // path for icon
-  static const String iconPath = "assets/icons/";
+  static const String bottomIconPath = "assets/icons/bottom/";
+  static const String bottomHome = "${bottomIconPath}ic_home.svg";
+  static const String bottomWork = "${bottomIconPath}ic_work.svg";
+  static const String bottomMessage = "${bottomIconPath}ic_message.svg";
+  static const String bottomExtended = "${bottomIconPath}ic_extended.svg";
 
   // path for lottie animation
   static const String lottiePath = "assets/anim/";

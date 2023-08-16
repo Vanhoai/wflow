@@ -1,4 +1,8 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
@@ -15,37 +19,49 @@ class BottomNavigation extends StatefulWidget {
 class _BottomNavigationState extends State<BottomNavigation> {
   int currentIndex = 0;
 
+  Widget bottomTabBar(String icon, bool isActive) {
+    return SvgPicture.asset(
+      icon,
+      color: isActive ? Colors.blueAccent : Colors.blueGrey,
+      height: 24,
+      width: 24,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex,
-        selectedIconTheme: IconThemeData(color: Theme.of(context).primaryColor),
-        unselectedIconTheme: IconThemeData(color: Colors.grey.shade400),
-        iconSize: 26,
-        selectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-        unselectedLabelStyle: Theme.of(context).textTheme.labelSmall,
-        showSelectedLabels: false,
-        showUnselectedLabels: false,
-        onTap: (value) => setState(() => currentIndex = value),
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Freelance',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Message',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Personal',
-          ),
-        ],
+      bottomNavigationBar: SizedBox(
+        height: 80,
+        child: BottomNavigationBar(
+          currentIndex: currentIndex,
+          showUnselectedLabels: false,
+          showSelectedLabels: false,
+          iconSize: 24,
+          onTap: (value) => setState(() => currentIndex = value),
+          items: [
+            BottomNavigationBarItem(
+              icon: bottomTabBar(AppConstants.bottomHome, false),
+              activeIcon: bottomTabBar(AppConstants.bottomHome, true),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: bottomTabBar(AppConstants.bottomWork, false),
+              activeIcon: bottomTabBar(AppConstants.bottomWork, true),
+              label: 'Freelance',
+            ),
+            BottomNavigationBarItem(
+              icon: bottomTabBar(AppConstants.bottomMessage, false),
+              activeIcon: bottomTabBar(AppConstants.bottomMessage, true),
+              label: 'Message',
+            ),
+            BottomNavigationBarItem(
+              icon: bottomTabBar(AppConstants.bottomExtended, false),
+              activeIcon: bottomTabBar(AppConstants.bottomExtended, true),
+              label: 'Personal',
+            ),
+          ],
+        ),
       ),
       // LazyLoadIndexedStack is a custom widget that I created to solve the problem of rebuilding the widget when switching tabs.
       body: LazyLoadIndexedStack(

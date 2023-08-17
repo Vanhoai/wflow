@@ -44,6 +44,14 @@ class _AppState extends State<App> {
                   alignment: Alignment.center,
                   children: [
                     MaterialApp(
+                      builder: (context, child) {
+                        Widget error = const Text('...rendering error...');
+                        if (widget is Scaffold || widget is Navigator) {
+                          error = Scaffold(body: Center(child: error));
+                        }
+                        ErrorWidget.builder = (errorDetails) => error;
+                        return child!;
+                      },
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,

@@ -4,10 +4,14 @@ MODE=$1
 
 setup_dev () {
     yes | cp -rf configs/dev/.env .env
+    yes | cp -rf configs/dev/google-services.json android/app/google-services.json
+    yes | cp -rf configs/dev/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
 }
 
 setup_prod () {
     yes | cp -rf configs/prod/.env .env
+    yes | cp -rf configs/prod/google-services.json android/app/google-services.json
+    yes | cp -rf configs/prod/GoogleService-Info.plist ios/Runner/GoogleService-Info.plist
 }
 
 setup () {

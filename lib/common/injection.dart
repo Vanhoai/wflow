@@ -8,6 +8,7 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
@@ -33,7 +34,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
   // bloc
-  instance.registerLazySingleton<SignInBloc>(() => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
+  instance.registerLazySingleton<SignInBloc>(
+      () => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
+  instance.registerLazySingleton<CreateAccountBloc>(() => CreateAccountBloc(authUseCase: instance.get<AuthUseCase>()));
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
 }

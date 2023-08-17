@@ -1,6 +1,6 @@
-# wflow
+# WFlow
 
-A new Flutter project.
+The project 
 
 ## Getting Started
 

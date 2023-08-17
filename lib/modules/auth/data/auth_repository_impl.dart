@@ -22,7 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthEntity, Failure>> signUp(String email, String password) async {
+  Future<Either<AuthEntity, Failure>> signUpWithEmail(String email, String password) async {
     try {
       final response = await authService.signIn(email, password);
       HttpResponse httpResponse = HttpResponse.fromJson(response);

@@ -36,6 +36,15 @@ class _SignInScreenState extends State<SignInScreen> {
     print("Google ${response.toString()}");
   }
 
+  Future<dynamic> signInWithEmailLink() async {
+    const String email = "hardy251223@gmail.com";
+    await FirebaseService.signInWithEmailLink(email);
+  }
+
+  Future<void> signInWithPhoneNumber() async {
+    await FirebaseService.signInWithPhoneNumber();
+  }
+
   @override
   void dispose() {
     emailController.dispose();
@@ -71,9 +80,34 @@ class _SignInScreenState extends State<SignInScreen> {
               ),
             ),
             ElevatedButton(
+              onPressed: signInWithEmailLink,
+              child: Text(
+                "Sign In With Email",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            ElevatedButton(
               onPressed: signInWithGoogle,
               child: Text(
-                "Sign In",
+                "Sign In With Google",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => signInWithPhoneNumber(),
+              child: Text(
+                "Sign In With Phone",
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Navigator.of(context).push(createRoute());
+                // convert to push name use animation the same
+                Navigator.of(context).pushNamed(RouteKeys.createAccountScreen, arguments: "Hi");
+              },
+              child: Text(
+                "Redirect To Create Account",
                 style: Theme.of(context).textTheme.labelMedium,
               ),
             )

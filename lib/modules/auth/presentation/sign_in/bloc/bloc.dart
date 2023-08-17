@@ -23,10 +23,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   FutureOr<void> onSignInSubmitted(SignInSubmitted event, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-    final response = await authUseCase.signIn(event.email, event.password);
+    final response = await authUseCase.signIn("hoaitv241223@gmail.com", "hoaitv241223");
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
     response.fold(
       (AuthEntity authEntity) {
+        print("Auth Entity ${authEntity.accessToken}");
         secureStorage.write(AppConstants.accessTokenKey, authEntity.accessToken);
         secureStorage.write(AppConstants.refreshTokenKey, authEntity.refreshToken);
         emit(SignInSuccess());

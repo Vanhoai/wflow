@@ -11,6 +11,22 @@ class SecurityState extends Equatable {
     required this.user,
   });
 
+  factory SecurityState.fromJson(Map<String, dynamic> json) {
+    return SecurityState(
+      touchIDEnabled: json["touchIDEnabled"],
+      faceIDEnabled: json["faceIDEnabled"],
+      user: UserModel.fromJson(json["user"]),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "touchIDEnabled": touchIDEnabled,
+      "faceIDEnabled": faceIDEnabled,
+      "user": user.toJson(),
+    };
+  }
+
   SecurityState copyWith({
     bool? touchIDEnabled,
     bool? faceIDEnabled,

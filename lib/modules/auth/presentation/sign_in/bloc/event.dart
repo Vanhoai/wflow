@@ -14,3 +14,7 @@ class SignInSubmitted extends SignInEvent {
   @override
   List<Object?> get props => [email, password];
 }
+
+class SignInWithBiometrics extends SignInEvent {}
+
+class ResetSignInState extends SignInEvent {}

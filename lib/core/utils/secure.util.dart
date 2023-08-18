@@ -16,4 +16,8 @@ class SecureStorage {
   dynamic read(String key) {
     return flutterSecureStorage.read(key: key);
   }
+
+  void delete(String key) {
+    flutterSecureStorage.delete(key: key);
+  }
 }

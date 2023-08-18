@@ -15,9 +15,8 @@ part 'state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthUseCase authUseCase;
-  final SecureStorage secureStorage;
 
-  SignInBloc({required this.authUseCase, required this.secureStorage}) : super(SignInState()) {
+  SignInBloc({required this.authUseCase}) : super(SignInState()) {
     on<SignInSubmitted>(onSignInSubmitted);
   }
 
@@ -25,11 +24,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     final response = await authUseCase.signIn("hoaitv241223@gmail.com", "hoaitv241223");
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+
     response.fold(
       (AuthEntity authEntity) {
-        print("Auth Entity ${authEntity.accessToken}");
-        secureStorage.write(AppConstants.accessTokenKey, authEntity.accessToken);
-        secureStorage.write(AppConstants.refreshTokenKey, authEntity.refreshToken);
+        instance.get<SecureStorage>().write(AppConstants.accessTokenKey, authEntity.accessToken);
+        instance.get<SecureStorage>().write(AppConstants.refreshTokenKey, authEntity.refreshToken);
         emit(SignInSuccess());
       },
       (Failure failure) {},

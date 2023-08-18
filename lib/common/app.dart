@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:wflow/common/bloc/app_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/environment.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in.dart';
 
 class App extends StatefulWidget {
@@ -33,6 +32,9 @@ class _AppState extends State<App> {
               ),
               BlocProvider(
                 create: (BuildContext context) => instance.get<AppLoadingBloc>(),
+              ),
+              BlocProvider(
+                create: (BuildContext context) => instance.get<SecurityBloc>(),
               )
             ],
             child: BlocBuilder<AppBloc, AppState>(
@@ -59,7 +61,7 @@ class _AppState extends State<App> {
                       themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
                       initialRoute: RouteKeys.signInScreen,
-                      home: SignInScreen(signInBloc: instance.get<SignInBloc>()),
+                      home: const SignInScreen(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

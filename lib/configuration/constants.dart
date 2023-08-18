@@ -8,7 +8,7 @@ class AppConstants {
 
   // path for lottie animation
   static const String lottiePath = "assets/anim/";
-  static const String lottieLoading = "${lottiePath}animation_loading.json";
+  static const String lottieLoading = "${lottiePath}loading.json";
 
   // languages
   static const String pathVN = "assets/languages/vn.json";

@@ -7,7 +7,7 @@ import 'package:wflow/common/libs/libs.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // required by FlutterConfig
   await FlutterConfigPlus.loadEnvVariables(); // initialize FlutterConfig
-  await initAppInjection(); // initialize injection
-  await FirebaseService.initialFirebase(); // initialize firebase
+  await initAppInjection(); // initialize Injection
+  await FirebaseService.initialFirebase(); // initialize Firebase
   runApp(const App());
 }

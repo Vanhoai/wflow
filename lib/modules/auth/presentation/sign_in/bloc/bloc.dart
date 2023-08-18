@@ -5,10 +5,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
-import 'package:wflow/core/http/failure.dart';
-import 'package:wflow/core/utils/secure_storage.dart';
-import 'package:wflow/modules/auth/domain/auth_entity.dart';
-import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/secure.util.dart';
+import 'package:wflow/modules/auth/domain/auth.entity.dart';
+import 'package:wflow/modules/auth/domain/auth.usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -31,7 +31,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         instance.get<SecureStorage>().write(AppConstants.refreshTokenKey, authEntity.refreshToken);
         emit(SignInSuccess());
       },
-      (Failure failure) {},
+      (Failure failure) {
+        emit(SignInFailure(failure: failure));
+      },
     );
   }
 }

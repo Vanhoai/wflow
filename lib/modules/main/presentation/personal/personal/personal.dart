@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -20,11 +21,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
     super.initState();
   }
 
-  void toggleTouchID(bool touchID) {
-    if (touchID == false) {
-      instance.get<SecurityBloc>().add(const ToggleTouchIDEvent(touchIDEnabled: true));
+  void toggleDarkMode(bool darkMode) {
+    if (darkMode == false) {
+      instance.get<AppBloc>().add(AppChangeTheme(isDarkMode: true));
     } else {
-      instance.get<SecurityBloc>().add(const ToggleTouchIDEvent(touchIDEnabled: false));
+      instance.get<AppBloc>().add(AppChangeTheme(isDarkMode: false));
     }
   }
 
@@ -60,20 +61,47 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     builder: ((context, state) {
                       return SwitchAnimation(
                         value: state.touchIDEnabled,
-                        onChanged: toggleTouchID,
+                        onChanged: (value) =>
+                            instance.get<SecurityBloc>().add(ToggleTouchIDEvent(touchIDEnabled: value)),
                       );
                     }),
                   )
                 ],
               ),
-              const SizedBox(height: 20),
-              PrimaryButton(
-                label: "Sign Out",
-                onPressed: () {
-                  final bloc = context.read<PersonalBloc>();
-                  print("bloc: $bloc");
-                },
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Row(
+                  children: [
+                    Text(
+                      "Dark Mode",
+                      style: Theme.of(context).textTheme.displayLarge,
+                    ),
+                    const Spacer(),
+                    BlocBuilder<AppBloc, AppState>(
+                      buildWhen: (prev, state) => prev.isDarkMode != state.isDarkMode,
+                      builder: ((context, state) {
+                        return SwitchAnimation(
+                          value: state.isDarkMode,
+                          onChanged: toggleDarkMode,
+                        );
+                      }),
+                    )
+                  ],
+                ),
               ),
+              const SizedBox(height: 20),
+              BlocConsumer<PersonalBloc, PersonalState>(
+                listener: listener,
+                buildWhen: (prev, cur) => prev != cur,
+                builder: (context, state) {
+                  return PrimaryButton(
+                    label: "Sign Out",
+                    onPressed: () {
+                      context.read<PersonalBloc>().add(const SignOutEvent());
+                    },
+                  );
+                },
+              )
             ],
           ),
         ),

@@ -1,2 +1,2 @@
-export './firebase.dart';
-export './local_auth.dart';
+export 'firebase.dart';
+export 'local.auth.dart';

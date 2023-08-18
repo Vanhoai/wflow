@@ -26,7 +26,7 @@ class _SwitchAnimationState extends State<SwitchAnimation> {
         width: 51,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(31),
-          color: widget.value ? Colors.green.shade400 : Colors.black12,
+          color: widget.value ? Theme.of(context).primaryColor : Colors.grey[400],
         ),
         child: AnimatedAlign(
           alignment: widget.value ? Alignment.centerRight : Alignment.centerLeft,

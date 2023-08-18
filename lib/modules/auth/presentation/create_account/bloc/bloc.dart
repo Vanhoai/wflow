@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/auth/domain/auth.usecase.dart';
 
 part 'event.dart';
 part 'state.dart';

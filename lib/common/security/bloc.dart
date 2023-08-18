@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/core/models/user_model.dart';
+import 'package:wflow/core/models/user.model.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -12,12 +12,20 @@ class SecurityBloc extends Bloc<SecurityEvent, SecurityState> {
     on<ChangeUserEvent>(onChangeUser);
   }
 
-  void onToggleTouchID(ToggleTouchIDEvent event, Emitter<SecurityState> emit) {
-    emit(state.copyWith(touchIDEnabled: event.touchIDEnabled));
+  Future<void> onToggleTouchID(ToggleTouchIDEvent event, Emitter<SecurityState> emit) async {
+    if (event.touchIDEnabled) {
+      emit(state.copyWith(touchIDEnabled: false));
+    } else {
+      emit(state.copyWith(touchIDEnabled: true));
+    }
   }
 
   void onToggleFaceID(ToggleFaceIDEvent event, Emitter<SecurityState> emit) {
-    emit(state.copyWith(faceIDEnabled: event.faceIDEnabled));
+    if (event.faceIDEnabled) {
+      emit(state.copyWith(faceIDEnabled: false));
+    } else {
+      emit(state.copyWith(faceIDEnabled: true));
+    }
   }
 
   void onChangeUser(ChangeUserEvent event, Emitter<SecurityState> emit) {

@@ -6,3 +6,12 @@ class SignInState extends Equatable {
 }
 
 class SignInSuccess extends SignInState {}
+
+class SignInFailure extends SignInState {
+  final Failure failure;
+
+  SignInFailure({required this.failure});
+
+  @override
+  List<Object?> get props => [failure];
+}

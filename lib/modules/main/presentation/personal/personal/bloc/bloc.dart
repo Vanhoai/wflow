@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/utils/secure_storage.dart';
+import 'package:wflow/core/utils/secure.util.dart';
 
 part 'event.dart';
 part 'state.dart';

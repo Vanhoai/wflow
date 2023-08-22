@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:local_auth/local_auth.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/libs/firebase.dart';
+import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -58,39 +56,26 @@ class _SignInScreenState extends State<SignInScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text("Error"),
+            title: Text("Sign In Failure", style: Theme.of(context).textTheme.titleMedium),
             content: Text(state.failure.message),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text("OK"),
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: Text("OK"),
+                    )
+                  ],
+                ),
               ),
             ],
           );
         },
       );
-    }
-  }
-
-  Future<void> signInWithTouchID() async {
-    LocalAuthentication localAuthentication = LocalAuthentication();
-    final availableBiometrics = await localAuthentication.getAvailableBiometrics();
-
-    if (availableBiometrics.contains(BiometricType.strong) || availableBiometrics.contains(BiometricType.face)) {
-      try {
-        final bool didAuthenticate = await localAuthentication.authenticate(
-          localizedReason: 'Please authenticate to show account balance',
-          options: const AuthenticationOptions(
-            stickyAuth: true,
-            biometricOnly: true,
-          ),
-        );
-        print("didAuthenticate: $didAuthenticate");
-      } on PlatformException {
-        print("PlatformException");
-      }
     }
   }
 
@@ -148,16 +133,21 @@ class _SignInScreenState extends State<SignInScreen> {
               PrimaryButton(
                 marginHorizontal: 20,
                 label: "Sign In With Email Link",
-                onPressed: () {
-                  Navigator.of(context).pushNamed(RouteKeys.createAccountScreen, arguments: "Hello");
+                onPressed: signInWithEmailLink,
+              ),
+              BlocConsumer<SignInBloc, SignInState>(
+                listener: (context, state) {},
+                builder: (context, state) {
+                  return PrimaryButton(
+                    marginHorizontal: 20,
+                    marginVertical: 20,
+                    label: "Sign In With Touch ID",
+                    onPressed: () {
+                      context.read<SignInBloc>().add(SignInWithBiometrics());
+                    },
+                  );
                 },
-              ),
-              PrimaryButton(
-                marginHorizontal: 20,
-                marginVertical: 20,
-                label: "Sign In With Touch ID",
-                onPressed: signInWithTouchID,
-              ),
+              )
             ],
           ),
         ),

@@ -11,6 +11,7 @@ late final FirebaseApp firebaseApp;
 late final FirebaseAuth firebaseAuth;
 late final FirebaseMessaging firebaseMessaging;
 
+late final AndroidNotificationChannel channel;
 late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 class FirebaseService {
@@ -18,7 +19,19 @@ class FirebaseService {
     firebaseApp = await Firebase.initializeApp();
     firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
     firebaseMessaging = FirebaseMessaging.instance;
+    channel = const AndroidNotificationChannel("Wflow", "Wflow");
+    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+    await flutterLocalNotificationsPlugin
+        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
+        ?.createNotificationChannel(channel);
     await registerNotification();
+
+    final String deviceToken = await getDeviceToken() ?? "";
+    print("deviceToken: $deviceToken");
+  }
+
+  static void subscribeToTopic(String topic) {
+    firebaseMessaging.subscribeToTopic(topic);
   }
 
   static Future<void> registerNotification() async {
@@ -44,7 +57,17 @@ class FirebaseService {
         // If `onMessage` is triggered with a notification, construct our own
         // local notification to show to users using the created channel.
         if (notification != null && android != null) {
-          // push notification android
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+              ),
+            ),
+          );
         }
       });
     } else {
@@ -73,11 +96,9 @@ class FirebaseService {
     return token;
   }
 
-  static Future<void> subscribeToTopic(String topic) async {
-    await FirebaseMessaging.instance.subscribeToTopic(topic);
-  }
-
   static Future<void> signInWithEmailLink(String email) async {
+    await signOut();
+
     ActionCodeSettings actionCodeSettings = ActionCodeSettings(
       url: 'https://wflow-5100c.firebaseapp.com/finishSignUp?cartId=1234',
       handleCodeInApp: true,

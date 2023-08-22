@@ -23,6 +23,12 @@ class SecureHydrateStorage implements Storage {
 
   @override
   Future<void> write(String key, value) {
-    return instance.get<FlutterSecureStorage>().write(key: key, value: value);
+    if (value is String) {
+      return instance.get<FlutterSecureStorage>().write(key: key, value: value);
+    } else {
+      // value is Map<String, dynamic>
+      final json = value.toString();
+      return instance.get<FlutterSecureStorage>().write(key: key, value: json);
+    }
   }
 }

@@ -101,7 +101,13 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     },
                   );
                 },
-              )
+              ),
+              const SizedBox(height: 20),
+              PrimaryButton(
+                  label: "File",
+                  onPressed: () {
+                    Navigator.of(context).pushNamed(RouteKeys.fileScreen);
+                  })
             ],
           ),
         ),

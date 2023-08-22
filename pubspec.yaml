@@ -50,6 +50,7 @@ dependencies:
   flutter_local_notifications: ^15.1.0+1
   local_auth: ^2.1.6
   hydrated_bloc: ^9.1.2
+  file_picker: ^5.3.3
 
 dev_dependencies:
   flutter_test:

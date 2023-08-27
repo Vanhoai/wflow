@@ -31,9 +31,9 @@ class Agent {
     BaseOptions opts = BaseOptions();
     opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
     opts.contentType = Headers.jsonContentType;
-    opts.connectTimeout = const Duration(seconds: 10);
-    opts.receiveTimeout = const Duration(seconds: 10);
-    opts.sendTimeout = const Duration(seconds: 10);
+    opts.connectTimeout = const Duration(seconds: 4);
+    opts.receiveTimeout = const Duration(seconds: 4);
+    opts.sendTimeout = const Duration(seconds: 4);
     return opts;
   }
 

@@ -1,4 +1,4 @@
-part of 'app_bloc.dart';
+part of 'bloc.app.dart';
 
 class AppEvent extends Equatable {
   @override

@@ -1,10 +1,13 @@
-# wflow
+# WFlow 😃️
 
-A new Flutter project.
+The project for student and business have oppotinity exchange other. For student, they can find job, there for make the money. In terms of business, that is 
+find the employee for my company and help finished project in my business.
 
-## Getting Started
+## Getting Started 🌱️ 
 
 This project is a starting point for a Flutter application.
+
+Some technical in project: Flutter, Firebase.
 
 A few resources to get you started if this is your first Flutter project:
 

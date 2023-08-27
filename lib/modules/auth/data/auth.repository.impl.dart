@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/http.dart';
-import 'package:wflow/modules/auth/data/auth_service.dart';
-import 'package:wflow/modules/auth/domain/auth_entity.dart';
-import 'package:wflow/modules/auth/domain/auth_repository.dart';
+import 'package:wflow/modules/auth/data/auth.service.dart';
+import 'package:wflow/modules/auth/domain/auth.entity.dart';
+import 'package:wflow/modules/auth/domain/auth.repository.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   final AuthService authService;
@@ -22,7 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either<AuthEntity, Failure>> signUp(String email, String password) async {
+  Future<Either<AuthEntity, Failure>> signUpWithEmail(String email, String password) async {
     try {
       final response = await authService.signIn(email, password);
       HttpResponse httpResponse = HttpResponse.fromJson(response);

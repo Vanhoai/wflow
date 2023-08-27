@@ -22,8 +22,8 @@ class AuthServiceImpl implements AuthService {
       final response = await agent.dio.post(
         "/auth/sign-in",
         data: json.encode({
-          "email": "hoaitv241223@gmail.com",
-          "password": "hoaitv241223",
+          "email": email,
+          "password": password,
         }),
       );
 

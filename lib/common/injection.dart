@@ -1,14 +1,14 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:wflow/common/bloc/app_bloc.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
-import 'package:wflow/core/utils/secure_storage.dart';
-import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
-import 'package:wflow/modules/auth/data/auth_service.dart';
-import 'package:wflow/modules/auth/domain/auth_repository.dart';
-import 'package:wflow/modules/auth/domain/auth_usecase.dart';
-import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
+import 'package:wflow/core/utils/secure.util.dart';
+import 'package:wflow/modules/auth/data/auth.repository.impl.dart';
+import 'package:wflow/modules/auth/data/auth.service.dart';
+import 'package:wflow/modules/auth/domain/auth.repository.dart';
+import 'package:wflow/modules/auth/domain/auth.usecase.dart';
 
 final GetIt instance = GetIt.instance;
 
@@ -32,8 +32,8 @@ Future<void> initAppInjection() async {
   // use case
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
-  // bloc
-  instance.registerLazySingleton<SignInBloc>(() => SignInBloc(authUseCase: instance.get<AuthUseCase>(), secureStorage: instance.get<SecureStorage>()));
+  // common bloc
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
+  instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
 }

@@ -8,15 +8,20 @@ abstract class Failure extends Equatable {
   const Failure({this.message = "", this.statusCode = 200, this.data});
 
   @override
-  List<Object> get props => [];
+  List<Object> get props => [message, statusCode, data];
 }
 
 class ServerFailure extends Failure {
-  const ServerFailure({String message = "", int statusCode = 200, dynamic data})
+  const ServerFailure({String message = "Server failure", int statusCode = 200, dynamic data})
       : super(message: message, statusCode: statusCode, data: data);
 }
 
 class CacheFailure extends Failure {
-  const CacheFailure({String message = "", int statusCode = 200, dynamic data})
+  const CacheFailure({String message = "Cache failure", int statusCode = 200, dynamic data})
+      : super(message: message, statusCode: statusCode, data: data);
+}
+
+class CommonFailure extends Failure {
+  const CommonFailure({String message = "", int statusCode = 200, dynamic data})
       : super(message: message, statusCode: statusCode, data: data);
 }

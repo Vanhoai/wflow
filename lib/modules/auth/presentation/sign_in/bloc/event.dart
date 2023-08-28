@@ -5,6 +5,13 @@ class SignInEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class OnChangeEmailEvent extends SignInEvent{
+  final String email;
+
+  OnChangeEmailEvent({required this.email});
+  @override
+  List<Object?> get props => [email];
+}
 class SignInSubmitted extends SignInEvent {
   final String email;
   final String password;

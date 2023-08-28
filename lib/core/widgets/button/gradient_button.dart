@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/colors.dart';
 
 class GradientButton extends StatelessWidget{
   final VoidCallback onTap;
@@ -10,15 +11,15 @@ class GradientButton extends StatelessWidget{
       onTap:onTap,
       child:Ink(
         height: 50,
-        decoration:  BoxDecoration(
+        decoration:  const BoxDecoration(
           gradient: LinearGradient(
               begin: Alignment.centerLeft,
               end: Alignment.centerRight,
               colors: [
-                Theme.of(context).primaryColor,
-                Theme.of(context).colorScheme.secondary,
+                AppColors.blueColor,
+                AppColors.purpleColor,
               ]),
-          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+          borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
         child: Container(
           // min sizes for Material buttons

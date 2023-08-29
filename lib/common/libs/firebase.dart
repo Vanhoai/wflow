@@ -5,7 +5,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:wflow/configuration/environment.dart';
 
 late final FirebaseApp firebaseApp;
 late final FirebaseAuth firebaseAuth;
@@ -19,19 +18,12 @@ class FirebaseService {
     firebaseApp = await Firebase.initializeApp();
     firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
     firebaseMessaging = FirebaseMessaging.instance;
-    channel = const AndroidNotificationChannel("Wflow", "Wflow");
+    channel = const AndroidNotificationChannel("WFlow", "WFlow");
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     await registerNotification();
-
-    final String deviceToken = await getDeviceToken() ?? "";
-    print("deviceToken: $deviceToken");
-  }
-
-  static void subscribeToTopic(String topic) {
-    firebaseMessaging.subscribeToTopic(topic);
   }
 
   static Future<void> registerNotification() async {
@@ -54,29 +46,15 @@ class FirebaseService {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
 
+        print("notification: $notification");
+        print("android: $android");
+
         // If `onMessage` is triggered with a notification, construct our own
         // local notification to show to users using the created channel.
-        if (notification != null && android != null) {
-          flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-              ),
-            ),
-          );
-        }
       });
     } else {
       print('User declined or has not accepted permission');
     }
-  }
-
-  static Future<void> signOut() async {
-    await firebaseAuth.signOut();
   }
 
   static Future<UserCredential> signInWithGoogle() async {
@@ -87,7 +65,9 @@ class FirebaseService {
       idToken: googleAuth?.idToken,
     );
 
-    return await FirebaseAuth.instance.signInWithCredential(credential);
+    UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+    print("User Credential: $userCredential");
+    return userCredential;
   }
 
   static Future<String?> getDeviceToken() async {
@@ -96,42 +76,7 @@ class FirebaseService {
     return token;
   }
 
-  static Future<void> signInWithEmailLink(String email) async {
-    await signOut();
+  static Future<void> signInWithEmailLink(String email) async {}
 
-    ActionCodeSettings actionCodeSettings = ActionCodeSettings(
-      url: 'https://wflow-5100c.firebaseapp.com/finishSignUp?cartId=1234',
-      handleCodeInApp: true,
-      iOSBundleId: EnvironmentConfiguration.applicationID,
-      androidPackageName: EnvironmentConfiguration.applicationID,
-      androidInstallApp: true,
-      androidMinimumVersion: '21',
-    );
-
-    await firebaseAuth.sendSignInLinkToEmail(email: email, actionCodeSettings: actionCodeSettings);
-  }
-
-  static Future<void> signInWithPhoneNumber() async {
-    await signOut();
-
-    const String phoneNumber = '+84 989 467 834';
-    const String codePhone = "984132";
-
-    await FirebaseAuth.instance.verifyPhoneNumber(
-      timeout: const Duration(seconds: 30),
-      phoneNumber: phoneNumber,
-      verificationCompleted: (PhoneAuthCredential credential) async {
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-        print("userCredential: ${userCredential.toString()}");
-      },
-      verificationFailed: (FirebaseAuthException e) {},
-      codeSent: (String verificationId, int? resendToken) async {
-        String smsCode = codePhone;
-        PhoneAuthCredential credential = PhoneAuthProvider.credential(verificationId: verificationId, smsCode: smsCode);
-        UserCredential userCredential = await FirebaseAuth.instance.signInWithCredential(credential);
-        print("userCredential: ${userCredential.toString()}");
-      },
-      codeAutoRetrievalTimeout: (String verificationId) {},
-    );
-  }
+  static Future<void> signInWithPhoneNumber() async {}
 }

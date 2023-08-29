@@ -5,6 +5,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/widgets/text/gradient.text.dart';
 
 import '../../../../core/widgets/button/gradient_button.dart';
 import '../../../../core/widgets/style/textfieldstyle.dart';
@@ -23,18 +26,17 @@ class SignInScreenHuy extends StatefulWidget {
   }
 }
 
-class _SignInScreenState extends State<SignInScreenHuy> with SingleTickerProviderStateMixin {
-  TabController? _tabController;
+class _SignInScreenState extends State<SignInScreenHuy>  {
+
   @override
   void initState() {
     // TODO: implement initState
-    _tabController = TabController(length: 2, vsync: this);
+
     super.initState();
   }
 
   @override
   void dispose() {
-    _tabController?.dispose();
     // TODO: implement dispose
     super.dispose();
   }
@@ -54,90 +56,121 @@ class _SignInScreenState extends State<SignInScreenHuy> with SingleTickerProvide
       lazy: true,
       child: SafeArea(
           child: Scaffold(
+            resizeToAvoidBottomInset: false,
               body: Container(
-                  width: double.infinity,
+                  width: MediaQuery.of(context).size.width,
                   padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
-                  child: NestedScrollView(
-
-                    scrollDirection: Axis.vertical,
-                    headerSliverBuilder: (context, innerBoxIsScrolled) => [
-                      SliverToBoxAdapter(
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  child:  Column(
+                    children: [
+                      Container(
+                        margin: const EdgeInsets.only(top: 30),
+                        child: SvgPicture.asset(
+                          AppConstants.app,
+                          semanticsLabel: "Logo",
+                        ),
+                      ),
+                      Container(
+                        padding: const EdgeInsets.only(top: 17, bottom: 20),
+                        child:  Text(
+                          'Đăng nhập',
+                          style: TextTitle(fontWeight: FontWeight.w400,size: 24),
+                        ),
+                      ),
+                      const MyForm(),
+                      Container(
+                        margin: const EdgeInsets.symmetric(vertical: 30),
+                        child: Stack(
+                          alignment: Alignment.center,
                           children: [
-                            SvgPicture.asset(
-                              AppConstants.app,
-                              semanticsLabel: "Logo",
+                            Container(
+                              margin: const EdgeInsets.symmetric(horizontal: 66),
+                              height: 1,
+                              width: double.infinity,
+                              color: Colors.black26,
                             ),
-
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              color: Colors.white,
+                              child: Text(
+                                  "Hoặc",
+                                  style: TextTitle(size: 16, fontWeight: FontWeight.w400)
+                              ),
+                            )
                           ],
                         ),
                       ),
+
+                      const SizedBox(
+                        height: 7,
+                      ),
+                      InkWell(
+                        child:Ink(
+                          height: 50,
+                          decoration:  BoxDecoration(
+                            border: Border.all(color:  Colors.black26, width: 1),
+                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                          ),
+                          child: Stack(
+                            // min sizes for Material buttons
+                            children: [
+                              Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 11),
+                                    child: SvgPicture.asset(AppConstants.google),
+                                  )
+                              ),
+                              Align(
+                                alignment: Alignment.center,
+                                child: Text('Đăng nhập với Google',style: TextTitle(size: 16, fontWeight: FontWeight.w400),),
+                              )
+                            ],
+                          ),
+                        ),
+                        onTap: () {
+                        },
+                      ),
+                      Flexible(
+                          child: Container(
+                              margin: const EdgeInsets.symmetric(vertical: 15),
+                              alignment: Alignment.center,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                      "Bạn chưa có tài khoản? " ,
+                                      style: TextTitle(size: 16,fontWeight: FontWeight.w400)
+                                  ),
+                                  InkWell(
+                                      onTap: ()=>{
+                                        Navigator.pushNamed(context, RouteKeys.registerScreen)
+                                      },
+
+                                      child:GradientText(
+                                        "Đăng ký",
+                                        gradient: const LinearGradient(colors: [
+                                          AppColors.blueColor,
+                                          AppColors.purpleColor
+                                        ]
+                                        ),
+                                        style: TextTitle(size: 16,fontWeight: FontWeight.w500),
+                                      )
+                                  ),
+
+                                ],
+                              )
+                          )
+                      )
                     ],
-                    body: DefaultTabController(
-                            length: 2,
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Container(
-                                  padding: const EdgeInsets.only(top: 17, bottom: 20),
-                                  child:  Text(
-                                    'Đăng nhập',
-                                    style: TextTitle(fontWeight: FontWeight.w400,size: 24),
-                                  ),
-                                ),
-                                TabBar(
-                                  indicatorSize: TabBarIndicatorSize.tab,
-                                  indicatorColor: Colors.black,
-                                  controller: _tabController,
-                                  tabs: [
-                                    _tabSelect(icon: AppConstants.email, title: 'Email'),
-                                    _tabSelect(icon: AppConstants.phone, title: 'Số điện thoại'),
-                                  ],
-                                ),
-                                Flexible(
-                                  fit: FlexFit.tight,
-                                  child: TabBarView(//TabarView layout chinh
-                                    controller: _tabController,
-                                    children: const [
-                                      MyForm(),
-                                      Icon(Icons.directions_transit),
-                                    ],
-                                  ),
-                                )
-                              ],
-                            )
-                        )
+                  )
                     ),
                   )
 
 
 
-              )),
+              ),
     );
   }
-}
-
-
-//Widget Tabselect
-Widget _tabSelect({String? icon, String? title}) {
-  return Tab(
-      child: Row(
-          children: [
-            SvgPicture.asset(
-              icon!,
-              semanticsLabel: "Logo",
-            ),
-            const Padding(padding: EdgeInsets.only(left: 17)),
-            Text(title ?? "",
-                style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black
-                )
-            )
-          ]));
 }
 
 
@@ -180,21 +213,21 @@ class _FormState extends State<MyForm>{
         builder: (context,state) {
           return  Form(
                 key: _key,
-                child: ListView(
-                  scrollDirection: Axis.vertical,
+                child: Column(
                   children: [
                     //Email
                     TextFieldFrom(
-                      label: 'Email',
+                      label: 'Tài khoản',
                       controller: emailController,
                       onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
-                      placeholder: 'Nhập địa chỉ email',
+                      placeholder: 'Nhập Email/Số điện thoại',
+                      textInputAction: TextInputAction.next,
                       prefixIcon: Padding(
                         padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
                         child: SvgPicture.asset(
                             AppConstants.email,
                             fit: BoxFit.cover,
-                            colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
+                            colorFilter:  const ColorFilter.mode( Colors.black38, BlendMode.srcIn)),
                       ),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
@@ -253,7 +286,7 @@ class _FormState extends State<MyForm>{
                         //Quên mật khẩu
                         InkWell(
                           child:  Text(
-                              'Quên mật khẩu?',
+                              'Quên mật khẩu',
                               style: TextTitle(fontWeight: FontWeight.w500,size: 14)),
                           onTap: () {
 
@@ -263,83 +296,41 @@ class _FormState extends State<MyForm>{
                     ),
                     const SizedBox(height: 30),
                     //Btn_Login
-                    BlocListener<SignInBloc,SignInState>(
-                      listenWhen: (preState, state) => preState != state,
-                      listener: listener,
-                      child: GradientButton(
-                          onTap: () {
-                            context.read<SignInBloc>().add(SignInSubmittedEvent
-                              (
-                                email: emailController.text,
-                                password:  passwordController.text
-                            )
-                            );
-                          },
-                          text: "Đăng nhập"
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 31,
-                    ),
-                    SvgPicture.asset(AppConstants.bionic),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Stack(
-                      alignment: Alignment.center,
+                    Row(
                       children: [
-                        Container(
-                          height: 1,
-                          width: 265,
-                          color: Colors.black26,
-                        ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8),
-                          color: Colors.white,
-                          child: Text("Hoặc",style: TextTitle(size: 16),),
-                        )
-                      ],),
-                    const SizedBox(
-                      height: 32,
-                    ),
-                    InkWell(
-                      child:Ink(
-                        height: 50,
-                        decoration:  BoxDecoration(
-                          border: Border.all(color:  Colors.black26, width: 1),
-                          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                        ),
-                        child: Stack(
-                          // min sizes for Material buttons
-                          children: [
-
-                            Align(
-                                alignment: Alignment.centerLeft,
-                                child: Container(
-                                  padding: const EdgeInsets.only(left: 11),
-                                  child: SvgPicture.asset(AppConstants.google),
-                                )
+                        Flexible(
+                          flex: 1,
+                          child:BlocListener<SignInBloc,SignInState>(
+                            listenWhen: (preState, state) => preState != state,
+                            listener: listener,
+                            child: GradientButton(
+                                onTap: () {
+                                  context.read<SignInBloc>().add(SignInSubmittedEvent
+                                    (
+                                      email: emailController.text,
+                                      password:  passwordController.text
+                                  )
+                                  );
+                                },
+                                text: "Đăng nhập"
                             ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Text('Đăng nhập với Google',style: TextTitle(size: 16),),
-                            )
-                          ],
+                          ),
+
                         ),
-                      ),
-                      onTap: () {
-
-                      },
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        InkWell(
+                          onTap: () => print("hello"),
+                          borderRadius: BorderRadius.circular(8),
+                          splashColor: AppColors.blueColor,
+                          child: SvgPicture.asset(
+                              height: 50,
+                              AppConstants.bionic
+                          ),
+                        )
+                      ],
                     ),
-                    Container(
-                      margin: const EdgeInsets.symmetric(vertical: 30),
-                      alignment: Alignment.center,
-                      child:  InkWell(
-                        onTap: ()=>{},
-                        child: Text("Bạn chưa có tài khoản ? Đăng ký",style: TextTitle(size: 16),),
-                      ),
-                    )
-
                   ],
                 )
           );

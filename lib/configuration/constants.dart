@@ -17,6 +17,7 @@ class AppConstants {
   static const String google = "${commonIconPath}ic.google.svg";
   static const String lock = "${commonIconPath}ic.lock.svg";
   static const String phone = "${commonIconPath}ic.phone.svg";
+  static const String backArrow = "${commonIconPath}ic.backarrow.svg";
   // path for lottie animation
   static const String lottiePath = "assets/anim/";
   static const String lottieLoading = "${lottiePath}animation.loading.json";

@@ -9,24 +9,28 @@ import 'package:wflow/core/theme/colors.dart';
 import '../style/textfieldstyle.dart';
 
 class TextFieldFrom extends StatefulWidget{
-  final Function(String val)? onChange;
-  final String placeholder;
-  final Widget? prefixIcon;
-  final Widget? suffixIcon;
-  final bool isPassword;
-  final String label;
-  final TextEditingController? controller;
+
   const TextFieldFrom({
     Key? key,
     this.controller,
     this.onChange,
+    this.textInputAction,
+    this.keyboardType = TextInputType.text,
     required this.placeholder,
     required this.label ,
     this.prefixIcon,
     this.suffixIcon,
     this.isPassword = false}): super(key: key);
 
-
+  final Function(String val)? onChange;
+  final String placeholder;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
+  final bool isPassword;
+  final String label;
+  final TextInputAction? textInputAction;
+  final TextEditingController? controller;
+  final TextInputType? keyboardType;
   @override
   State<StatefulWidget> createState() {
     return _StateTextFieldFrom();
@@ -63,15 +67,18 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
             controller: widget.controller,
             onChanged: widget.onChange,
             obscureText: _passwordVisible,
+            textInputAction: widget.textInputAction,
+            keyboardType: widget.keyboardType,
             decoration:  InputDecoration(
               prefixIcon: widget.prefixIcon,
+              prefixIconColor: AppColors.purpleColor,
               suffixIcon: _isPassword(),
               hintText: widget.placeholder,
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
-              hintStyle: TextTitle(colors: AppColors.fadeText,size: 16),
+              hintStyle: TextTitle(colors: AppColors.fadeText,size: 14),
               focusedBorder:  const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),
-                borderSide: BorderSide(color: AppColors.iconColor, width: 1.0),
+                borderSide: BorderSide(color: AppColors.primary, width: 1.0),
               ),
               enabledBorder:  const OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(12)),

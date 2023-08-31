@@ -28,19 +28,18 @@ class _AppState extends State<App> {
           return MultiBlocProvider(
             providers: [
               BlocProvider(
-                create: (BuildContext context) => instance.get<AppBloc>(),
+                create: (BuildContext context) => AppBloc(),
               ),
               BlocProvider(
-                create: (BuildContext context) => instance.get<AppLoadingBloc>(),
+                create: (BuildContext context) => AppLoadingBloc(),
               ),
               BlocProvider(
-                create: (BuildContext context) => instance.get<SecurityBloc>(),
+                create: (BuildContext context) => SecurityBloc(),
               )
             ],
             child: BlocBuilder<AppBloc, AppState>(
               // material app only rebuild when app state change (language, theme)
               buildWhen: (previous, current) => previous != current,
-              bloc: instance.get<AppBloc>(),
               builder: (context, parent) {
                 return Stack(
                   alignment: Alignment.center,

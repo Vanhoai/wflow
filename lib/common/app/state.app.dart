@@ -20,6 +20,20 @@ class AppState extends Equatable {
     );
   }
 
+  factory AppState.fromJson(Map<String, dynamic> json) {
+    return AppState(
+      isDarkMode: json["isDarkMode"],
+      languageCode: json["languageCode"],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "isDarkMode": isDarkMode,
+      "languageCode": languageCode,
+    };
+  }
+
   @override
   List<Object?> get props => [isDarkMode, languageCode];
 }

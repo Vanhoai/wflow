@@ -24,12 +24,3 @@ class ToggleFaceIDEvent extends SecurityEvent {
   @override
   List<Object> get props => [faceIDEnabled];
 }
-
-class ChangeUserEvent extends SecurityEvent {
-  final UserModel user;
-
-  const ChangeUserEvent({required this.user});
-
-  @override
-  List<Object> get props => [user];
-}

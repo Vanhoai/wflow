@@ -1,7 +1,5 @@
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/configuration/configuration.dart';
@@ -44,12 +42,7 @@ class _SignInScreenState extends State<SignInScreenHuy>  {
   @override
   Widget build(BuildContext context) {
     //Set color status bar
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      //<-- For Android SEE HERE (dark icons)
-      statusBarBrightness: Brightness.light,
-    ));
+
     // TODO: implement build
     return BlocProvider<SignInBloc>(
       create: (_) =>  SignInBloc(),

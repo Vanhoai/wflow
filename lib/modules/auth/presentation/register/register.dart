@@ -3,8 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/button/gradient_button.dart';
-import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 
 class RegisterScreen extends StatefulWidget {

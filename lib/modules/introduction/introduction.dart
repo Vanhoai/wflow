@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/auth/presentation/sign_in_huy/sign_in_ui.dart';
 
 class IntroScreen extends StatefulWidget{
@@ -27,7 +28,7 @@ class _IntroductionScreenState extends State<IntroScreen> {
   }
   final introKey = GlobalKey<IntroductionScreenState>();
 
-  Widget _buildImage(String assetName, [double width = 350]) {
+  Widget _buildImage(String assetName, [double width = double.infinity]) {
     return SvgPicture.asset(assetName, width: width);
   }
   @override
@@ -38,13 +39,18 @@ class _IntroductionScreenState extends State<IntroScreen> {
       //<-- For Android SEE HERE (dark icons)
       statusBarBrightness: Brightness.light,
     ));
+
     const bodyStyle = TextStyle(fontSize: 19.0);
     const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontWeight: FontWeight.w700),
+      titleTextStyle: TextStyle(fontSize: 28.0, fontFamily: 'null' ,fontWeight: FontWeight.w700, color: AppColors.primary),
       bodyTextStyle: bodyStyle,
       bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
       pageColor: Colors.white,
       imagePadding: EdgeInsets.zero,
+      bodyAlignment: Alignment.center,
+      bodyFlex: 1,
+      imageFlex: 3,
+      titlePadding: EdgeInsets.only(top: 0.0, bottom: 10.0)
     );
     return SafeArea(
         child: IntroductionScreen(
@@ -52,55 +58,40 @@ class _IntroductionScreenState extends State<IntroScreen> {
           globalBackgroundColor: Colors.white,
           pages: [
             PageViewModel(
-              title: "Fractional shares",
-              body:
-              "Instead of having to buy an entire share, invest any amount you want.",
-              image: _buildImage(AppConstants.plash1),
+              title: "Kết nối",
+              body: "Giữa doanh nghiệp và người lao động",
+              image: _buildImage(AppConstants.introductionCv),
               decoration: pageDecoration,
             ),
             PageViewModel(
-              title: "Another title page",
-              body: "Another beautiful body text for this example onboarding",
-              image: _buildImage(AppConstants.plash1),
-              footer: ElevatedButton(
-                onPressed: () {
-                  introKey.currentState?.animateScroll(0);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlue,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                ),
-                child: const Text(
-                  'FooButton',
-                  style: TextStyle(color: Colors.white),
-                ),
-              ),
-              decoration: pageDecoration.copyWith(
-                bodyFlex: 6,
-                imageFlex: 6,
-                safeArea: 80,
-              ),
+              title: "Tìm kiếm cơ hội việc làm",
+              body:
+              "Với chiếc smartphone trong tay, dễ dàng đăng ký ứng tuyển công việc",
+              image: _buildImage(AppConstants.introductionJob),
+              decoration: pageDecoration,
+            ),
+
+            PageViewModel(
+              title: "Dễ dàng",
+              body:
+              "Tìm kiếm các ứng viên tiềm năng ở mỗi lĩnh vực",
+              image: _buildImage(AppConstants.introductionIntern),
+              decoration: pageDecoration,
             ),
             PageViewModel(
-              title: "Title of last page - reversed",
-              bodyWidget: const Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text("Click on ", style: bodyStyle),
-                  Icon(Icons.edit),
-                  Text(" to edit a post", style: bodyStyle),
-                ],
-              ),
-              decoration: pageDecoration.copyWith(
-                bodyFlex: 2,
-                imageFlex: 4,
-                bodyAlignment: Alignment.bottomCenter,
-                imageAlignment: Alignment.topCenter,
-              ),
-              image: _buildImage(AppConstants.plash1),
-              reverse: true,
+              title: "Thanh toán dễ dàng",
+              body:
+                  //Sửa cái này
+              "Kí hợp đồng, nhận việc, hoàn thành hợp đồng hoàn thành lãnh lương?",
+              image: _buildImage(AppConstants.introductionCash),
+              decoration: pageDecoration
+            ),
+            PageViewModel(
+              title: "Task",
+              body:
+              "Quản lý tiến độ công việc dễ dàng",
+              image: _buildImage(AppConstants.introductionTask),
+              decoration: pageDecoration,
             ),
           ],
           onDone: () => _onIntroEnd(context),

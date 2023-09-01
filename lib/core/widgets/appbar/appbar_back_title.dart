@@ -17,14 +17,17 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
         text,
         style: TextTitle(fontWeight: FontWeight.w500,size: 18),
       ),
-      leading: InkWell(
-        onTap: () {
-          Navigator.pop(context);
-        },
-        borderRadius: BorderRadius.circular(50),
-        child: Padding(
-          padding: const EdgeInsets.all(13),
-          child: SvgPicture.asset(AppConstants.backArrow, height: 24, width: 24,),
+      leading: Padding(
+        padding: const EdgeInsets.all(8),
+        child: InkWell(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          borderRadius: BorderRadius.circular(50),
+          child: Container(
+            alignment: Alignment.center,
+            child: SvgPicture.asset(AppConstants.backArrow, height: 24, width: 24,),
+          ),
         ),
       ),
     );

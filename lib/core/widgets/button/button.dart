@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/theme/colors.dart';
 
-class GradientButton extends StatelessWidget{
+class AppButton extends StatelessWidget{
   final VoidCallback onTap;
   final String text;
-  const GradientButton({ required this.onTap, required this.text ,Key? key}):super(key: key);
+  const AppButton({ required this.onTap, required this.text ,Key? key}):super(key: key);
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -13,13 +13,7 @@ class GradientButton extends StatelessWidget{
       child:Ink(
         height: 50,
         decoration:  const BoxDecoration(
-          gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                AppColors.blueColor,
-                AppColors.purpleColor,
-              ]),
+          color: AppColors.primary,
           borderRadius: BorderRadius.all(Radius.circular(12.0)),
         ),
         child: Container(

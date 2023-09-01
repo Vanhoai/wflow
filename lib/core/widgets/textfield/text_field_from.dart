@@ -54,21 +54,25 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
           padding: const EdgeInsets.only(top: 20,bottom: 9),
           child:  Text(
               widget.label,
-              style: const TextStyle(
-                  fontSize: 14,
+              style: TextTitle(
                   fontWeight: FontWeight.w400,
-                  color: Colors.black
               )
           ),
         ),
         TextFormField(
+            style: TextTitle(
+              size: 16,
+              fontWeight: FontWeight.w400,
+            ),
             maxLines: 1,
+            autofocus: false,
             controller: widget.controller,
             onChanged: widget.onChange,
             obscureText: _passwordVisible,
             textInputAction: widget.textInputAction,
             keyboardType: widget.keyboardType,
             decoration:  InputDecoration(
+
               prefixIcon: widget.prefixIcon,
               prefixIconColor: AppColors.purpleColor,
               suffixIcon: _isPassword(),

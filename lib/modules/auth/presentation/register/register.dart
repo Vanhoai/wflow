@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
-import 'package:wflow/core/widgets/button/gradient_button.dart';
-import 'package:wflow/core/widgets/textfield/text_field_from.dart';
+import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+
+import 'components/index.dart';
+
 
 class RegisterScreen extends StatefulWidget {
 
@@ -31,37 +35,134 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
     return SafeArea(
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-            appBar: const Header(text: "Đăng ký"),
+
             body:Container(
                 width: double.infinity,
-                padding: const EdgeInsets.only(top: 10,left: 20,right: 20),
+                padding: const EdgeInsets.only(top: 10),
                 child: DefaultTabController(
                     length: 2,
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-
-                        TabBar(
-                          indicatorSize: TabBarIndicatorSize.tab,
-                          indicatorColor: Colors.black,
-                          controller: _tabController,
-                          tabs: [
-                            _tabSelect(icon: AppConstants.email, title: 'Email'),
-                            _tabSelect(icon: AppConstants.phone, title: 'Số điện thoại'),
-                          ],
+                        Container(
+                          margin: const EdgeInsets.only(top: 20),
+                          child: Text(
+                            "Đăng ký",
+                            style: TextTitle(
+                              fontWeight: FontWeight.w400,
+                              size: 24,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: TabBar(
+                            indicatorSize: TabBarIndicatorSize.tab,
+                            indicatorColor: Colors.black,
+                            controller: _tabController,
+                            tabs: [
+                              _tabSelect(icon: AppConstants.email, title: 'Email'),
+                              _tabSelect(icon: AppConstants.phone, title: 'Số điện thoại'),
+                            ],
+                          ),
                         ),
                         SizedBox(
                           height: MediaQuery.of(context).size.height * 0.5,
                           child: TabBarView(//TabarView layout chinh
                             controller: _tabController,
                             children: const [
-                              MyForm(),
-                              Icon(Icons.directions_transit),
+                              FormRegisterEmail(),
+                              FormRegisterPhone(),
                             ],
                           ),
                         ),
+                        Container(
+                          margin: const EdgeInsets.symmetric(vertical: 30),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Container(
+                                margin: const EdgeInsets.symmetric(horizontal: 66),
+                                height: 1,
+                                width: double.infinity,
+                                color: Colors.black26,
+                              ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8),
+                                color: Colors.white,
+                                child: Text("Hoặc",
+                                    style: TextTitle(
+                                        size: 16, fontWeight: FontWeight.w400)),
+                              )
+                            ],
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 7,
+                        ),
+                        //Login google xử sao
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: InkWell(
+                            child: Ink(
+                              height: 50,
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.black26, width: 1),
+                                borderRadius:
+                                const BorderRadius.all(Radius.circular(12.0)),
+                              ),
+                              child: Stack(
+                                // min sizes for Material buttons
+                                children: [
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                        padding: const EdgeInsets.only(left: 11),
+                                        child: SvgPicture.asset(AppConstants.google),
+                                      )),
+                                  Align(
+                                    alignment: Alignment.center,
+                                    child: Text(
+                                      'Đăng ký với Google',
+                                      style: TextTitle(
+                                          size: 16, fontWeight: FontWeight.w400),
+                                    ),
+                                  )
+                                ],
+                              ),
+                            ),
+                            onTap: () {},
+                          ),
+                        ),
+                        Container(
+                            margin: const EdgeInsets.symmetric(vertical: 15),
+                            alignment: Alignment.center,
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text("Bạn đã có tài khoản? ",
+                                    style: TextTitle(
+                                        size: 16, fontWeight: FontWeight.w400)),
+                                InkWell(
+                                    borderRadius: BorderRadius.circular(4),
+                                    onTap: () => {
+                                      Navigator.pop(context)
+                                    },
+                                    child: Padding(
+                                        padding: const EdgeInsets.all(2),
+                                        child: Text(
+                                          "Đăng nhập",
+                                          style: TextTitle(
+                                              colors: AppColors.primary,
+                                              size: 16,
+                                              fontWeight: FontWeight.w500),
+                                        )
+                                    )),
+                              ],
+                            ))
                       ],
-                    )
+                    ) 
                 )
             )
         )
@@ -89,108 +190,3 @@ Widget _tabSelect({String? icon, String? title}) {
           ]));
 }
 
-class MyForm extends StatefulWidget{
-
-
-  const MyForm({Key? key}) : super(key: key);
-
-  @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _FormState() ;
-  }
-
-}
-
-class _FormState extends State<MyForm>{
-  late final TextEditingController emailController;
-  late final TextEditingController passwordController;
-  final GlobalKey<FormState> _key = GlobalKey<FormState>();
-  @override
-  void initState() {
-
-    // TODO: implement initState
-    super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
-  }
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-    emailController.dispose();
-    passwordController.dispose();
-  }
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return Form(
-        key: _key,
-        child: Column(
-          children: [
-            //Email
-            TextFieldFrom(
-              label: 'Email',
-              controller: emailController,
-              placeholder: 'Nhập địa chỉ email',
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 16, top: 16, right: 17, left: 18),
-                child: SvgPicture.asset(
-                    AppConstants.email,
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        Colors.black38, BlendMode.srcIn)),
-              ),
-              suffixIcon: Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 16, top: 16, right: 17, left: 18),
-                child: SvgPicture.asset(
-                    AppConstants.checkFill,
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        Colors.green, BlendMode.srcIn)),
-              ),
-            ),
-            //Pass
-            TextFieldFrom(
-              controller: passwordController,
-              label: 'Mật khẩu',
-              placeholder: 'Nhập mật khẩu',
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 16, top: 16, right: 17, left: 18),
-                child: SvgPicture.asset(
-                    AppConstants.lock,
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        Colors.black38, BlendMode.srcIn)),
-              ),
-              isPassword: true,
-            ),
-            TextFieldFrom(
-              controller: passwordController,
-              label: 'Nhập lại mật khẩu',
-              placeholder: 'Nhập lại mật khẩu',
-              prefixIcon: Padding(
-                padding: const EdgeInsets.only(
-                    bottom: 16, top: 16, right: 17, left: 18),
-                child: SvgPicture.asset(
-                    AppConstants.lock,
-                    fit: BoxFit.cover,
-                    colorFilter: const ColorFilter.mode(
-                        Colors.black38, BlendMode.srcIn)),
-              ),
-              isPassword: true,
-            ),
-            const SizedBox(height: 30),
-            //Btn_Login
-            GradientButton(
-                onTap: () {},
-                text: "Đăng ký"
-            ),
-          ],
-        )
-    );
-    }
-  }

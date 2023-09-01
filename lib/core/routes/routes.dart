@@ -6,6 +6,7 @@ import 'package:wflow/modules/auth/presentation/create_account/create_account.da
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in.dart';
 import 'package:wflow/modules/auth/presentation/sign_in_huy/sign_in_ui.dart';
+import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 
@@ -14,13 +15,15 @@ class AppRoutes {
     switch (settings.name) {
       case RouteKeys.signInScreen:
         return MaterialPageRoute(builder: (_) => const SignInScreen());
-        //Thay sau
+      //Test UI
       case RouteKeys.signInScreenHuy:
         return MaterialPageRoute(builder: (_) => const SignInScreenHuy());
       case RouteKeys.registerScreen:
         return MaterialPageRoute(builder: (_) => const RegisterScreen());
       case RouteKeys.introScreen:
         return MaterialPageRoute(builder: (_) => const IntroScreen());
+      case RouteKeys.verificationScreen:
+        return MaterialPageRoute(builder: (_) => const VerificationScreen());
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(

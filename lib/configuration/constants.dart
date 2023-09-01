@@ -18,7 +18,14 @@ class AppConstants {
   static const String lock = "${commonIconPath}ic.lock.svg";
   static const String phone = "${commonIconPath}ic.phone.svg";
   static const String backArrow = "${commonIconPath}ic.backarrow.svg";
-  static const String plash1 = "${commonIconPath}ic.plash1.svg";
+  // path for introduction svg
+  static const String introductionPath = "assets/icons/introduction/";
+  static const String introductionIntern = "${introductionPath}plash.intern.svg";
+  static const String introductionCv = "${introductionPath}plash.cv.svg";
+  static const String introductionJob = "${introductionPath}plash.job.svg";
+  static const String introductionCash = "${introductionPath}plash.cash.svg";
+  static const String introductionTask = "${introductionPath}plash.task.svg";
+
   // path for lottie animation
   static const String lottiePath = "assets/anim/";
   static const String lottieLoading = "${lottiePath}animation.loading.json";

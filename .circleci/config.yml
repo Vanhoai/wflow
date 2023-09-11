@@ -12,7 +12,7 @@ jobs:
       - run:
           name: Assemble Release Build
           command: |
-            cd android && gradlew assembleRelease && cd ..
+            cd android && ./gradlew assembleRelease && cd ..
 workflows:
   sample:
     jobs:

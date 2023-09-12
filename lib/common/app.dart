@@ -9,7 +9,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/introduction/introduction.dart';
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

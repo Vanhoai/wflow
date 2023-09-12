@@ -7,7 +7,7 @@ import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in.dart';
 import 'package:wflow/modules/auth/presentation/sign_in_huy/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
-import 'package:wflow/modules/introduction/introduction.dart';
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 
 class AppRoutes {

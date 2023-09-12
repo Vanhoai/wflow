@@ -89,7 +89,9 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                 const SizedBox(
                   height: 7,
                 ),
+                //Login With Google
                 InkWell(
+                  borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                   child: Ink(
                     height: 50,
                     decoration: BoxDecoration(
@@ -119,6 +121,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                   ),
                   onTap: () {},
                 ),
+                //SignUp
                 Container(
                     margin: const EdgeInsets.symmetric(vertical: 30),
                     alignment: Alignment.center,

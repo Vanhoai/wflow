@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
-import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -19,14 +18,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
   @override
   void initState() {
     super.initState();
-  }
-
-  void toggleDarkMode(bool darkMode) {
-    if (darkMode == false) {
-      instance.get<AppBloc>().add(AppChangeTheme(isDarkMode: true));
-    } else {
-      instance.get<AppBloc>().add(AppChangeTheme(isDarkMode: false));
-    }
   }
 
   Future<void> listener(BuildContext context, PersonalState state) async {
@@ -62,7 +53,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       return SwitchAnimation(
                         value: state.touchIDEnabled,
                         onChanged: (value) =>
-                            instance.get<SecurityBloc>().add(ToggleTouchIDEvent(touchIDEnabled: value)),
+                            context.read<SecurityBloc>().add(ToggleTouchIDEvent(touchIDEnabled: value)),
                       );
                     }),
                   )
@@ -82,7 +73,13 @@ class _PersonalScreenState extends State<PersonalScreen> {
                       builder: ((context, state) {
                         return SwitchAnimation(
                           value: state.isDarkMode,
-                          onChanged: toggleDarkMode,
+                          onChanged: (darkMode) {
+                            if (darkMode == false) {
+                              context.read<AppBloc>().add(AppChangeTheme(isDarkMode: true));
+                            } else {
+                              context.read<AppBloc>().add(AppChangeTheme(isDarkMode: false));
+                            }
+                          },
                         );
                       }),
                     )

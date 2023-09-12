@@ -19,7 +19,7 @@ class _LoadingState extends State<Loading> {
     return Container(
       height: mediaQuery.size.height,
       width: mediaQuery.size.width,
-      color: Colors.white.withAlpha(200),
+      color: Colors.transparent,
       child: LottieAnimation(
         animation: AppConstants.lottieLoading,
         height: widget.height ?? mediaQuery.size.height,
@@ -37,7 +37,7 @@ class GlobalLoading extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: Colors.white.withAlpha(100),
+      color: Colors.transparent,
       child: const Center(
         child: LottieAnimation(
           animation: AppConstants.lottieLoading,

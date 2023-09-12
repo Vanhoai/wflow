@@ -1,34 +1,37 @@
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'dart:convert';
+
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:wflow/common/injection.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SecureHydrateStorage implements Storage {
+  final SharedPreferences sharedPreferences;
+
+  SecureHydrateStorage({required this.sharedPreferences});
+
   @override
   Future<void> clear() async {
-    instance.get<FlutterSecureStorage>().deleteAll();
+    await sharedPreferences.clear();
   }
 
   @override
   Future<void> close() async {}
 
   @override
-  Future<void> delete(String key) {
-    return instance.get<FlutterSecureStorage>().delete(key: key);
+  Future<void> delete(String key) async {
+    await sharedPreferences.remove(key);
   }
 
   @override
-  read(String key) {
-    return instance.get<FlutterSecureStorage>().read(key: key);
+  void read(String key) {
+    sharedPreferences.getString(key);
   }
 
   @override
-  Future<void> write(String key, value) {
+  Future<void> write(String key, dynamic value) async {
     if (value is String) {
-      return instance.get<FlutterSecureStorage>().write(key: key, value: value);
+      await sharedPreferences.setString(key, value);
     } else {
-      // value is Map<String, dynamic>
-      final json = value.toString();
-      return instance.get<FlutterSecureStorage>().write(key: key, value: json);
+      await sharedPreferences.setString(key, jsonEncode(value));
     }
   }
 }

@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/security/bloc.dart';
-import 'package:wflow/configuration/environment.dart';
+import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
@@ -19,6 +20,18 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
+  @override
+  void initState() {
+    super.initState();
+    localization.init(
+      mapLocales: [
+        const MapLocale('en', AppLocale.EN),
+        const MapLocale('vn', AppLocale.VN),
+      ],
+      initLanguageCode: 'en',
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return FutureBuilder(
@@ -53,6 +66,8 @@ class _AppState extends State<App> {
                         ErrorWidget.builder = (errorDetails) => error;
                         return child!;
                       },
+                      supportedLocales: localization.supportedLocales,
+                      localizationsDelegates: localization.localizationsDelegates,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_config_plus/flutter_config_plus.dart';
 import 'package:flutter_flipperkit/flutter_flipperkit.dart';
@@ -8,7 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wflow/common/app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
-import 'package:wflow/core/utils/hydrated.util.dart';
+import 'package:wflow/core/utils/utils.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // required by FlutterConfig
@@ -19,15 +17,9 @@ Future<void> main() async {
   HydratedBloc.storage = SecureHydrateStorage(sharedPreferences: sharedPreferences); // initialize HydratedBloc
 
   FlipperClient flipperClient = FlipperClient.getDefault();
-  flipperClient.addPlugin(FlipperNetworkPlugin(filter: (HttpClientRequest request) {
-    String url = '${request.uri}';
-    if (url.startsWith('https://via.placeholder.com') || url.startsWith('https://gravatar.com')) {
-      return false;
-    }
-    return true;
-  }));
+  flipperClient.addPlugin(FlipperNetworkPlugin());
   flipperClient.addPlugin(FlipperSharedPreferencesPlugin());
   flipperClient.start();
-  print("FlipperClient is running");
+
   runApp(const App());
 }

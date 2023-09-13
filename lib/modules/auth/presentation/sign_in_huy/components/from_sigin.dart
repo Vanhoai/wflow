@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/button/button.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
@@ -84,7 +85,6 @@ class _FormState extends State<FormSignIn>{
                             fit: BoxFit.cover,
                             colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
                       ),
-                      isPassword: true,
                     ),
                     const SizedBox(height: 20),
                     Row  (
@@ -137,7 +137,7 @@ class _FormState extends State<FormSignIn>{
                     //Btn_Login
                     Row(
                       children: [
-                        Flexible(
+                        Expanded(
                           flex: 1,
                           child:BlocListener<SignInBloc,SignInState>(
                             listenWhen: (preState, state) => preState != state,
@@ -156,18 +156,34 @@ class _FormState extends State<FormSignIn>{
                           ),
 
                         ),
-                        const SizedBox(
-                          width: 10,
+
+                        BlocBuilder<SecurityBloc,SecurityState>(
+                          builder: (context, state) {
+                            print(state);
+                            if(state.touchIDEnabled)
+                              {
+                                return (
+                                    Row(
+                                      children: [
+                                        const SizedBox(width: 10,),
+                                        InkWell(
+                                          onTap: () => print("hello"),
+                                          borderRadius: BorderRadius.circular(8),
+                                          splashColor: AppColors.blueColor,
+                                          child: SvgPicture.asset(
+                                              height: 50,
+                                              AppConstants.bionic
+                                          ),
+                                        )
+                                      ],
+                                    )
+
+                                );
+                              }
+                            return const SizedBox(width: 0,);
+                          },
                         ),
-                        InkWell(
-                          onTap: () => print("hello"),
-                          borderRadius: BorderRadius.circular(8),
-                          splashColor: AppColors.blueColor,
-                          child: SvgPicture.asset(
-                              height: 50,
-                              AppConstants.bionic
-                          ),
-                        )
+
                       ],
                     ),
                   ],

@@ -75,6 +75,7 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
 
               prefixIcon: widget.prefixIcon,
               prefixIconColor: AppColors.purpleColor,
+
               suffixIcon: _isPassword(),
               hintText: widget.placeholder,
               contentPadding: const EdgeInsets.symmetric(vertical: 16),

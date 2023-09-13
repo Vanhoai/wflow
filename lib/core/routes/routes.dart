@@ -9,6 +9,7 @@ import 'package:wflow/modules/auth/presentation/sign_in_huy/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/message/message/message.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -24,6 +25,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case RouteKeys.verificationScreen:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
+      case RouteKeys.messageScreen:
+        return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(

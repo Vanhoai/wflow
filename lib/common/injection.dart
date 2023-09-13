@@ -8,9 +8,11 @@ import 'package:wflow/modules/auth/data/auth.repository.impl.dart';
 import 'package:wflow/modules/auth/data/auth.service.dart';
 import 'package:wflow/modules/auth/domain/auth.repository.dart';
 import 'package:wflow/modules/auth/domain/auth.usecase.dart';
+import "package:flutter_localization/flutter_localization.dart";
 
 final GetIt instance = GetIt.instance;
 late SharedPreferences sharedPreferences;
+final FlutterLocalization localization = FlutterLocalization.instance;
 
 Future<void> initAppInjection() async {
   // utils

@@ -18,6 +18,12 @@ class AppConstants {
   static const String lock = "${commonIconPath}ic.lock.svg";
   static const String phone = "${commonIconPath}ic.phone.svg";
   static const String backArrow = "${commonIconPath}ic.backarrow.svg";
+  static const String callOutLine = "${commonIconPath}ic.calloutline.svg";
+  static const String more = "${commonIconPath}ic.more.svg";
+  static const String videoCall = "${commonIconPath}ic.videocall.svg";
+  static const String backArrow2 = "${commonIconPath}ic.backarrow2.svg";
+  static const String smile = "${commonIconPath}ic.smile.svg";
+  static const String mic = "${commonIconPath}ic.mic.svg";
   // path for introduction svg
   static const String introductionPath = "assets/icons/introduction/";
   static const String introductionIntern = "${introductionPath}plash.intern.svg";

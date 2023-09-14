@@ -29,6 +29,15 @@ dependencies:
   hydrated_bloc: ^9.1.2
   introduction_screen: ^3.1.11
   flutter_localization: ^0.1.13
+  #Em huy Dung thu vien
+  emoji_picker_flutter: ^1.6.1
+  voice_message_package: ^1.0.41
+  flutter_sound: ^9.2.13
+  intl: any
+  path_provider: ^2.1.1  #xin quyen
+  permission_handler: ^11.0.0
+
+
 
 dev_dependencies:
   flutter_test:

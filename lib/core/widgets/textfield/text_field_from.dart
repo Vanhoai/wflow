@@ -72,10 +72,8 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
             textInputAction: widget.textInputAction,
             keyboardType: widget.keyboardType,
             decoration:  InputDecoration(
-
               prefixIcon: widget.prefixIcon,
-              prefixIconColor: AppColors.purpleColor,
-
+              prefixIconColor: _focusIconColor(),
               suffixIcon: _isPassword(),
               hintText: widget.placeholder,
               contentPadding: const EdgeInsets.symmetric(vertical: 16),
@@ -95,6 +93,12 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
 
 
 
+  }
+  Color _focusIconColor () {
+    return  MaterialStateColor.resolveWith((states) =>
+    states.contains(MaterialState.focused)
+        ? AppColors.primary
+        : AppColors.fadeText);
   }
   //Kiểm tra phải là input password không?
   Widget? _isPassword ()

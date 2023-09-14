@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/libs/custom_icon_icons.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/button/button.dart';
@@ -26,6 +27,7 @@ class FormSignIn extends StatefulWidget{
 class _FormState extends State<FormSignIn>{
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
+
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
@@ -58,13 +60,15 @@ class _FormState extends State<FormSignIn>{
                       onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
                       placeholder: 'Nhập Email/Số điện thoại',
                       textInputAction: TextInputAction.next,
-                      prefixIcon: Padding(
-                        padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
-                        child: SvgPicture.asset(
-                            AppConstants.email,
-                            fit: BoxFit.cover,
-                            colorFilter:  const ColorFilter.mode( Colors.black38, BlendMode.srcIn)),
-                      ),
+                      // prefixIcon: Padding(
+                      //   padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
+                      //   child: SvgPicture.asset(
+                      //       AppConstants.email,
+                      //       fit: BoxFit.cover,
+                      //       colorFilter: ColorFilter.mode( Colors.black38, BlendMode.srcIn)
+                      //   ),
+                      // ),
+                      prefixIcon: const Icon(CustomIcon.account_circle,size: 24,),
                       suffixIcon: Padding(
                         padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
                         child: SvgPicture.asset(
@@ -85,6 +89,7 @@ class _FormState extends State<FormSignIn>{
                             fit: BoxFit.cover,
                             colorFilter: const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
                       ),
+                      isPassword: true,
                     ),
                     const SizedBox(height: 20),
                     Row  (

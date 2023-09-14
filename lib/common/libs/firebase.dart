@@ -23,7 +23,11 @@ class FirebaseService {
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
+    await setupLocalPushNotification();
     await registerNotification();
+
+    String deviceToken = await getDeviceToken() ?? "";
+    print("Device Token: $deviceToken");
   }
 
   static Future<void> registerNotification() async {
@@ -48,6 +52,24 @@ class FirebaseService {
 
         print("notification: $notification");
         print("android: $android");
+
+        if (notification != null && android != null) {
+          flutterLocalNotificationsPlugin.show(
+            notification.hashCode,
+            notification.title,
+            notification.body,
+            NotificationDetails(
+              android: AndroidNotificationDetails(
+                channel.id,
+                channel.name,
+                icon: android.smallIcon,
+                importance: Importance.max,
+                priority: Priority.high,
+                ticker: 'ticker',
+              ),
+            ),
+          );
+        }
 
         // If `onMessage` is triggered with a notification, construct our own
         // local notification to show to users using the created channel.
@@ -79,4 +101,39 @@ class FirebaseService {
   static Future<void> signInWithEmailLink(String email) async {}
 
   static Future<void> signInWithPhoneNumber() async {}
+
+  static Future<void> setupLocalPushNotification() async {
+    const AndroidInitializationSettings initializationSettingsAndroid =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
+    const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+      requestSoundPermission: false,
+      requestBadgePermission: false,
+      requestAlertPermission: false,
+    );
+
+    const InitializationSettings initializationSettings = InitializationSettings(
+      android: initializationSettingsAndroid,
+      iOS: initializationSettingsDarwin,
+      macOS: initializationSettingsDarwin,
+    );
+
+    await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> pushNotification(String title, String body) async {
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(channel.id, channel.name);
+    DarwinNotificationDetails darwinNotificationDetails = const DarwinNotificationDetails();
+
+    NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+      iOS: darwinNotificationDetails,
+    );
+
+    await FlutterLocalNotificationsPlugin().show(
+      0,
+      title,
+      body,
+      notificationDetails,
+    );
+  }
 }

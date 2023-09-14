@@ -35,9 +35,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     marginHorizontal: 20,
                     marginVertical: 20,
                     label: AppLocale.title.getString(context),
-                    onPressed: () {
-                      context.read<AppBloc>().add(AppChangeLanguage(languageCode: "vn"));
-                    },
+                    onPressed: () => {},
                   );
                 },
               )

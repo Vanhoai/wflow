@@ -36,7 +36,12 @@ class TextFieldVerification extends StatelessWidget{
       FilteringTextInputFormatter.digitsOnly
       ],
       onChanged: (val) {
-      if(val.length == 1) FocusScope.of(context).nextFocus();
+        if(val.length == 1) {
+          FocusScope.of(context).nextFocus();
+        }else if(val.isEmpty)
+        {
+          FocusScope.of(context).previousFocus();
+        }
       },
       ),
     );

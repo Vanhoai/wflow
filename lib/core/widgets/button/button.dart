@@ -8,8 +8,8 @@ class AppButton extends StatelessWidget{
   @override
   Widget build(BuildContext context) {
     return InkWell(
-
       onTap:onTap,
+      borderRadius:const BorderRadius.all(Radius.circular(12.0)),
       child:Ink(
         height: 50,
         decoration:  const BoxDecoration(

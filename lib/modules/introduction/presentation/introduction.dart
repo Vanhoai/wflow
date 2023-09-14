@@ -33,29 +33,30 @@ class _IntroductionScreenState extends State<IntroScreen> {
   }
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      //<-- For Android SEE HERE (dark icons)
-      statusBarBrightness: Brightness.light,
-    ));
+    //status bar white
+    // SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+    //   statusBarColor: Colors.white,
+    //   statusBarIconBrightness: Brightness.dark,
+    //   //<-- For Android SEE HERE (dark icons)
+    //   statusBarBrightness: Brightness.light,
+    // ));
 
     const bodyStyle = TextStyle(fontSize: 19.0);
-    const pageDecoration = PageDecoration(
-      titleTextStyle: TextStyle(fontSize: 28.0, fontFamily: 'null' ,fontWeight: FontWeight.w700, color: AppColors.primary),
+    PageDecoration pageDecoration = PageDecoration(
+      titleTextStyle: const TextStyle(fontSize: 28.0, fontFamily: 'null' ,fontWeight: FontWeight.w700, color: AppColors.primary),
       bodyTextStyle: bodyStyle,
-      bodyPadding: EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
-      pageColor: Colors.white,
+      bodyPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      pageColor: Theme.of(context).colorScheme.background,
       imagePadding: EdgeInsets.zero,
       bodyAlignment: Alignment.center,
       bodyFlex: 1,
       imageFlex: 3,
-      titlePadding: EdgeInsets.only(top: 0.0, bottom: 10.0)
+      titlePadding: const EdgeInsets.only(top: 0.0, bottom: 10.0)
     );
     return SafeArea(
         child: IntroductionScreen(
           key: introKey,
-          globalBackgroundColor: Colors.white,
+          globalBackgroundColor: Theme.of(context).colorScheme.background,
           pages: [
             PageViewModel(
               title: "Kết nối",
@@ -115,9 +116,9 @@ class _IntroductionScreenState extends State<IntroScreen> {
               borderRadius: BorderRadius.all(Radius.circular(25.0)),
             ),
           ),
-          dotsContainerDecorator: const ShapeDecoration(
-            color: Colors.white,
-            shape: RoundedRectangleBorder(
+          dotsContainerDecorator:  ShapeDecoration(
+            color: Theme.of(context).colorScheme.background,
+            shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(8.0)),
             ),
           ),

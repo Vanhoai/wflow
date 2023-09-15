@@ -28,11 +28,14 @@ dependencies:
   shared_preferences: ^2.2.0
   hydrated_bloc: ^9.1.2
   flutter_localization: ^0.1.13
+  json_annotation: ^4.8.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
+  build_runner: ^2.4.6
+  json_serializable: ^6.7.1
 
 flutter:
   uses-material-design: true

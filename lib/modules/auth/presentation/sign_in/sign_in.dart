@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
@@ -29,13 +28,22 @@ class _SignInScreenState extends State<SignInScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              BlocBuilder<AppBloc, AppState>(
+              BlocConsumer<SignInBloc, SignInState>(
+                listener: (context, state) {
+                  if (state is SignInSuccess) {
+                    print("Sign In Success");
+                  } else if (state is SignInFailure) {
+                    print("Sign In Failed");
+                  }
+                },
                 builder: (context, state) {
                   return PrimaryButton(
                     marginHorizontal: 20,
                     marginVertical: 20,
                     label: AppLocale.title.getString(context),
-                    onPressed: () => {},
+                    onPressed: () {
+                      context.read<SignInBloc>().add(SignInSubmitted(email: "", password: ""));
+                    },
                   );
                 },
               )

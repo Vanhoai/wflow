@@ -34,7 +34,8 @@ dependencies:
   voice_message_package: ^1.0.41
   flutter_sound: ^9.2.13
   intl: any
-  path_provider: ^2.1.1  #xin quyen
+  path_provider: ^2.1.1
+  #xin quyen
   permission_handler: ^11.0.0
 
 

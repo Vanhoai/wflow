@@ -3,12 +3,12 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-sealed class MessageEvent extends Equatable {
+sealed class BoxChatEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class ShowEmojiKeyBoardEvent extends MessageEvent{
+class ShowEmojiKeyBoardEvent extends BoxChatEvent{
   final bool isShow;
 
   ShowEmojiKeyBoardEvent({required this.isShow});
@@ -16,7 +16,7 @@ class ShowEmojiKeyBoardEvent extends MessageEvent{
   @override
   List<Object?> get props => [isShow];
 }
-class ShowRecordVoiceEvent extends MessageEvent {
+class ShowRecordVoiceEvent extends BoxChatEvent {
   final bool isShow;
 
   ShowRecordVoiceEvent({required this.isShow});
@@ -25,7 +25,7 @@ class ShowRecordVoiceEvent extends MessageEvent {
   List<Object?> get props => [isShow];
 }
 
-class SendMessageEvent extends MessageEvent{
+class SendMessageEvent extends BoxChatEvent{
   final String text;
 
   SendMessageEvent({required this.text});
@@ -34,7 +34,7 @@ class SendMessageEvent extends MessageEvent{
   List<Object?> get props => [text];
 }
 
-class SendFilesEvent extends MessageEvent{
+class SendFilesEvent extends BoxChatEvent{
   final List<File> files;
 
   SendFilesEvent({required this.files});

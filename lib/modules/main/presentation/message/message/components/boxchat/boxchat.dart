@@ -1,10 +1,4 @@
-
-
-
 import 'dart:async';
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -15,14 +9,15 @@ import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:wflow/modules/main/presentation/message/message/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/message/message/bloc/state.dart';
 
-import '../bloc/event.dart';
+import 'bloc/bloc.dart';
+import 'bloc/event.dart';
+import 'bloc/state.dart';
 
-class BoxChat extends StatefulWidget{
+
+
+class BoxChat extends StatefulWidget {
   const BoxChat({super.key});
-
 
   @override
   State<StatefulWidget> createState() {
@@ -30,24 +25,26 @@ class BoxChat extends StatefulWidget{
   }
 }
 
-class _BoxChatState extends State<BoxChat>{
+class _BoxChatState extends State<BoxChat> {
   late FlutterSoundRecorder _recordingSession;
   late String pathToAudio;
   bool isRecord = false;
   late FocusNode _focusNode;
   late TextEditingController _controller;
-  Future initRecord() async{
+
+  Future initRecord() async {
     //pathToAudio = "${(await getTemporaryDirectory()).path}/audio/temp.wav";
     pathToAudio = '/sdcard/Download/temp.wav';
     final permissionRecord = await Permission.microphone.request();
     final permissionFile = await Permission.storage.request();
-    if(permissionRecord != PermissionStatus.granted || permissionFile != PermissionStatus.granted){
+    if (permissionRecord != PermissionStatus.granted ||
+        permissionFile != PermissionStatus.granted) {
       throw 'Chua co quyen mic';
     }
     _recordingSession = FlutterSoundRecorder();
     await _recordingSession.openRecorder();
-    await _recordingSession.setSubscriptionDuration(const Duration(
-        milliseconds: 10));
+    await _recordingSession
+        .setSubscriptionDuration(const Duration(milliseconds: 10));
   }
 
   Future<void> startRecording() async {
@@ -56,22 +53,19 @@ class _BoxChatState extends State<BoxChat>{
       codec: Codec.pcm16WAV,
     );
     StreamSubscription _recorderSubscription =
-    _recordingSession.onProgress!.listen((e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(
-          e.duration.inMilliseconds,
+        _recordingSession.onProgress!.listen((e) {
+      var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
           isUtc: true);
       var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
-      setState(() {
-
-      });
+      setState(() {});
     });
     _recorderSubscription.cancel();
     setState(() {
       isRecord = true;
     });
   }
-  Future<String?> stopRecording() async {
 
+  Future<String?> stopRecording() async {
     String? result = await _recordingSession.stopRecorder();
     print("Ket qua: " + result!);
     setState(() {
@@ -79,6 +73,7 @@ class _BoxChatState extends State<BoxChat>{
     });
     return result;
   }
+
   @override
   void initState() {
     super.initState();
@@ -86,6 +81,7 @@ class _BoxChatState extends State<BoxChat>{
     _controller = TextEditingController();
     _focusNode = FocusNode();
   }
+
   @override
   void dispose() async {
     // TODO: implement dispose
@@ -94,12 +90,12 @@ class _BoxChatState extends State<BoxChat>{
     _focusNode.dispose();
     await _recordingSession.closeRecorder();
   }
+
   @override
   Widget build(BuildContext context) {
-
-    return BlocBuilder<MessageBloc,MessageState>(
+    return BlocBuilder<BoxChatBloc, BoxChatState>(
       buildWhen: (previous, current) => previous != current,
-      builder: (context, state){
+      builder: (context, state) {
         return Column(
           children: [
             Row(
@@ -115,9 +111,7 @@ class _BoxChatState extends State<BoxChat>{
                       controller: _controller,
                       maxLines: 1,
                       focusNode: _focusNode,
-                      onTap: () {
-
-                      },
+                      onTap: () {},
                       textInputAction: TextInputAction.send,
                       onFieldSubmitted: (value) {
                         print(value);
@@ -130,7 +124,9 @@ class _BoxChatState extends State<BoxChat>{
                                 bottom: 5, top: 5, right: 5, left: 5),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(50),
-                              onTap: (){_showEmojiKeyBoard(context,state);},
+                              onTap: () {
+                                _showEmojiKeyBoard(context, state);
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(8),
                                 child: SvgPicture.asset(
@@ -140,6 +136,42 @@ class _BoxChatState extends State<BoxChat>{
                                 ),
                               ),
                             )),
+                        suffixIcon: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            InkWell(
+                              borderRadius: BorderRadius.circular(50),
+                              onTap: () {
+
+                              },
+                              child: Padding(
+                                padding: const EdgeInsets.all(4),
+                                child: SvgPicture.asset(
+                                  AppConstants.clips,
+                                  height: 22,
+                                  width: 22,
+                                ),
+                              ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(right: 10),
+                              child: InkWell(
+                                borderRadius: BorderRadius.circular(50),
+                                onTap: () {
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.all(4),
+                                  child: SvgPicture.asset(
+                                    AppConstants.camera,
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                         hintText: "Nhắn tin",
                         contentPadding: const EdgeInsets.symmetric(vertical: 0),
                         hintStyle: TextTitle(
@@ -149,12 +181,12 @@ class _BoxChatState extends State<BoxChat>{
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           borderSide:
-                          BorderSide(color: AppColors.primary, width: 1.2),
+                              BorderSide(color: AppColors.primary, width: 1.2),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
                           borderSide:
-                          BorderSide(color: Colors.black26, width: 1.2),
+                              BorderSide(color: Colors.black26, width: 1.2),
                         ),
                       ),
                     ),
@@ -164,15 +196,13 @@ class _BoxChatState extends State<BoxChat>{
                   margin: const EdgeInsets.only(right: 10, left: 5),
                   child: InkWell(
                     onTap: () {
-                      _showRecord(context,state);
+                      _showRecord(context, state);
                     },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
-
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
-                          color: AppColors.primary
-                      ),
+                          color: AppColors.primary),
                       padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(
                         AppConstants.mic,
@@ -196,26 +226,24 @@ class _BoxChatState extends State<BoxChat>{
                 height: 250,
                 child: InkWell(
                   onTap: () {
-                    if(!isRecord){
+                    if (!isRecord) {
                       startRecording();
-                    }else {
+                    } else {
                       stopRecording();
                     }
                   },
                   borderRadius: BorderRadius.circular(50),
                   child: Ink(
-
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
-                        color: isRecord ? Colors.red : AppColors.primary
-                    ),
+                        color: isRecord ? Colors.red : AppColors.primary),
                     padding: const EdgeInsets.all(10),
                     child: SvgPicture.asset(
                       AppConstants.mic,
                       height: 20,
                       width: 20,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.white, BlendMode.srcIn),
+                      colorFilter:
+                          const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                     ),
                   ),
                 ),
@@ -223,23 +251,26 @@ class _BoxChatState extends State<BoxChat>{
             ),
             EmojiKeyboard(
               controller: _controller,
-              emojiShowing: !state.isShowEmojiKeyboard,
+              emojiShowing: state.isShowEmojiKeyboard,
             ),
           ],
         );
       },
     );
   }
-  _showEmojiKeyBoard(BuildContext context, MessageState state){
-    BlocProvider.of<MessageBloc>(context).add(ShowEmojiKeyBoardEvent(isShow: !state.isShowEmojiKeyboard));
-    if (state.isShowEmojiKeyboard == true) {
+
+  _showEmojiKeyBoard(BuildContext context, BoxChatState state) {
+    BlocProvider.of<BoxChatBloc>(context)
+        .add(ShowEmojiKeyBoardEvent(isShow: !state.isShowEmojiKeyboard));
+    if (state.isShowEmojiKeyboard != true) {
       _focusNode.unfocus();
     } else {
       _focusNode.requestFocus();
     }
   }
-  _showRecord(BuildContext context, MessageState state)
-  {
-    BlocProvider.of<MessageBloc>(context).add(ShowRecordVoiceEvent(isShow: !state.isShowRecord));
+
+  _showRecord(BuildContext context, BoxChatState state) {
+    BlocProvider.of<BoxChatBloc>(context)
+        .add(ShowRecordVoiceEvent(isShow: !state.isShowRecord));
   }
 }

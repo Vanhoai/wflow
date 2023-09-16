@@ -4,25 +4,25 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
-class MessageState extends Equatable {
-  late  bool isShowEmojiKeyboard;
+class BoxChatState extends Equatable {
+  late bool isShowEmojiKeyboard;
   late bool isShowRecord;
   final String text;
   final List<File> files;
 
-  MessageState({
+  BoxChatState({
     required this.isShowEmojiKeyboard,
     required this.isShowRecord,
     required this.text,
     required this.files
   });
-  MessageState copyWith({
+  BoxChatState copyWith({
     bool? isShowEmojiKeyboard,
     bool? isShowRecord,
     String? text,
     List<File>? files
   }) {
-    return MessageState(
+    return BoxChatState(
         isShowEmojiKeyboard: isShowEmojiKeyboard ?? this.isShowEmojiKeyboard,
         isShowRecord: isShowRecord ?? this.isShowRecord,
         text: text ?? this.text,

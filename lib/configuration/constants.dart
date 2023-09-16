@@ -24,6 +24,9 @@ class AppConstants {
   static const String backArrow2 = "${commonIconPath}ic.backarrow2.svg";
   static const String smile = "${commonIconPath}ic.smile.svg";
   static const String mic = "${commonIconPath}ic.mic.svg";
+  static const String camera = "${commonIconPath}ic.camera.svg";
+  static const String clips = "${commonIconPath}ic.clips.svg";
+
   // path for introduction svg
   static const String introductionPath = "assets/icons/introduction/";
   static const String introductionIntern = "${introductionPath}plash.intern.svg";

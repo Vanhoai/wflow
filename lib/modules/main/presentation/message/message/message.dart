@@ -1,25 +1,18 @@
 
 
-import 'dart:async';
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
-import 'package:path_provider/path_provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/keyboard/emoji.dart';
+
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:voice_message_package/voice_message_package.dart';
-import 'package:wflow/modules/main/presentation/message/message/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/message/message/bloc/state.dart';
-import 'package:wflow/modules/main/presentation/message/message/components/boxchat.dart';
-import 'package:wflow/modules/main/presentation/message/message/components/mainchat.dart';
+
+import 'package:wflow/modules/main/presentation/message/message/components/boxchat/boxchat.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
+
+import 'components/boxchat/bloc/bloc.dart';
 
 
 
@@ -36,10 +29,6 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-
-
-
-
 
   @override
   void initState() {
@@ -61,9 +50,17 @@ class _MessageScreenState extends State<MessageScreen> {
     ));
     return SafeArea(
       child: Scaffold(
-        body: BlocProvider<MessageBloc>(
-          create: (_) => MessageBloc(),
-          lazy: true,
+        body: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (_) => BoxChatBloc(),
+              lazy: true,
+            ),
+            BlocProvider(
+              create: (_) => MainChatBloc(),
+              lazy: true,
+            ),
+          ],
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [

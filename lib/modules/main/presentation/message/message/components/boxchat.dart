@@ -33,11 +33,9 @@ class BoxChat extends StatefulWidget{
 class _BoxChatState extends State<BoxChat>{
   late FlutterSoundRecorder _recordingSession;
   late String pathToAudio;
-  bool emojiShowing = false;
-  bool showRecord = false;
   bool isRecord = false;
-  final FocusNode _focusNode = FocusNode();
-  final TextEditingController _controller = TextEditingController();
+  late FocusNode _focusNode;
+  late TextEditingController _controller;
   Future initRecord() async{
     //pathToAudio = "${(await getTemporaryDirectory()).path}/audio/temp.wav";
     pathToAudio = '/sdcard/Download/temp.wav';
@@ -53,8 +51,6 @@ class _BoxChatState extends State<BoxChat>{
   }
 
   Future<void> startRecording() async {
-
-
     await _recordingSession.startRecorder(
       toFile: pathToAudio,
       codec: Codec.pcm16WAV,
@@ -87,7 +83,16 @@ class _BoxChatState extends State<BoxChat>{
   void initState() {
     super.initState();
     initRecord();
-
+    _controller = TextEditingController();
+    _focusNode = FocusNode();
+  }
+  @override
+  void dispose() async {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+    _focusNode.dispose();
+    await _recordingSession.closeRecorder();
   }
   @override
   Widget build(BuildContext context) {
@@ -119,7 +124,6 @@ class _BoxChatState extends State<BoxChat>{
                         _controller.clear();
                         _focusNode.requestFocus();
                       },
-                      autofocus: true,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
                             padding: const EdgeInsets.only(

@@ -19,6 +19,7 @@ import 'package:voice_message_package/voice_message_package.dart';
 import 'package:wflow/modules/main/presentation/message/message/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/bloc/state.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat.dart';
 
 
 
@@ -36,7 +37,6 @@ class MessageScreen extends StatefulWidget {
 
 class _MessageScreenState extends State<MessageScreen> {
 
-  List<String> audio = [];
 
 
 
@@ -179,23 +179,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
               ),
               Expanded(
-                  child: ListView.builder(
-                    itemCount: audio.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: VoiceMessage(
-                          audioSrc: audio[index],
-                          //audioFile: _Record(audio[index]),
-                          played: true, // To show played badge or not.
-                          me: true,
-                          showDuration: false,
-                          formatDuration: (duration) => duration.toString().substring(2, 7),// Set message side.
-                          onPlay: () {},
-                          meBgColor: AppColors.primary,// Do something when voice played.
-                        ),
-                      );
-                    },
-                  )
+                  child: MainChat(),
               ),
               const BoxChat(),
             ],

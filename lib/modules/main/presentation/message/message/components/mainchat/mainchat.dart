@@ -24,8 +24,12 @@ class MainChat extends StatefulWidget {
 }
 
 class _MainChatState extends State<MainChat> {
-  final String id = "1";
-
+  final String id = "2";
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build

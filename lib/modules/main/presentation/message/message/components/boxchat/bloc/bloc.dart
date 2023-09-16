@@ -10,8 +10,7 @@ class BoxChatBloc extends Bloc<BoxChatEvent,BoxChatState> {
   BoxChatBloc() : super(initState()){
     on<ShowEmojiKeyBoardEvent>(showEmojiKeyBoard);
     on<ShowRecordVoiceEvent>(showRecordVoice);
-    on<SendFilesEvent>(sendFiles);
-    on<SendMessageEvent>(sendMessage);
+
   }
 
 
@@ -29,11 +28,5 @@ class BoxChatBloc extends Bloc<BoxChatEvent,BoxChatState> {
 
 
 
-  FutureOr<void> sendFiles(SendFilesEvent event, Emitter<BoxChatState> emit) {
-
-  }
-
-  FutureOr<void> sendMessage(SendMessageEvent event, Emitter<BoxChatState> emit) {
-  }
 }
 

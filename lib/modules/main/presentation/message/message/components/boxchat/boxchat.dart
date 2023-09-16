@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -9,6 +10,9 @@ import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
 
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
@@ -31,7 +35,7 @@ class _BoxChatState extends State<BoxChat> {
   bool isRecord = false;
   late FocusNode _focusNode;
   late TextEditingController _controller;
-
+  late File file;
   Future initRecord() async {
     //pathToAudio = "${(await getTemporaryDirectory()).path}/audio/temp.wav";
     pathToAudio = '/sdcard/Download/temp.wav';
@@ -65,12 +69,14 @@ class _BoxChatState extends State<BoxChat> {
     });
   }
 
-  Future<String?> stopRecording() async {
+  Future<String?> stopRecording(BuildContext context) async {
     String? result = await _recordingSession.stopRecorder();
     print("Ket qua: " + result!);
     setState(() {
       isRecord = false;
     });
+    file = File(pathToAudio);
+     BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: "1", type: "record", files: file));
     return result;
   }
 
@@ -115,6 +121,10 @@ class _BoxChatState extends State<BoxChat> {
                       textInputAction: TextInputAction.send,
                       onFieldSubmitted: (value) {
                         print(value);
+                        _sendMessage(
+                          context,
+                          Message(id: "1", content: value, type: "text")
+                        );
                         _controller.clear();
                         _focusNode.requestFocus();
                       },
@@ -229,7 +239,7 @@ class _BoxChatState extends State<BoxChat> {
                     if (!isRecord) {
                       startRecording();
                     } else {
-                      stopRecording();
+                      stopRecording(context);
                     }
                   },
                   borderRadius: BorderRadius.circular(50),
@@ -272,5 +282,9 @@ class _BoxChatState extends State<BoxChat> {
   _showRecord(BuildContext context, BoxChatState state) {
     BlocProvider.of<BoxChatBloc>(context)
         .add(ShowRecordVoiceEvent(isShow: !state.isShowRecord));
+  }
+  _sendMessage(BuildContext context, Message message)
+  {
+    BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
   }
 }

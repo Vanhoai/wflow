@@ -13,6 +13,13 @@ enum FilePickerStatus {
   error,
 }
 
+enum FileExtension {
+  files,
+  image,
+  video,
+  voice,
+}
+
 class PickFile {
   late List<PlatformFile> files = [];
   late FilePickerStatus status;
@@ -22,7 +29,10 @@ class PickFile {
 
   // Config dialog pick file
   static const String titlePickSingleFile = 'Pick excel file';
-  static const String titlePickMultiFile = 'Pick excel files';
+  static const String titlePickMultiFile = 'Pick multiple files';
+  static const String titlePickImage = 'Pick image';
+  static const String titlePickVideo = 'Pick video';
+  static const String titlePickVoice = 'Pick voice';
 
   // Error
   static const String errorPickSingleFile = 'Error pick file';
@@ -30,7 +40,7 @@ class PickFile {
   static const String permissionDenied = 'Permission denied';
   static const String noFilesSelected = 'No files selected';
 
-  static const List<String> allowedExtensions = [
+  static const List<String> allowedExtensionsFiles = [
     'xlsx',
     'xlsm',
     'doc',
@@ -44,16 +54,115 @@ class PickFile {
     'xlam',
     'xla',
     'xlw',
-    'xlr'
+    'xlr',
+    'docx',
+    'docm',
+    'ppt',
+    'pptx',
+    'pdf',
+    'txt',
+    'csv',
+    'json',
+    'zip',
+    'rar',
+    '7z',
+    'tar',
+    'gz',
+    'tgz',
+    'bz2',
+    'tbz2',
   ];
 
-  FutureOr<void> pickSingleFile() async {
-    clearError();
+  static const List<String> allowedExtensionsImage = [
+    'jpg',
+    'jpeg',
+    'png',
+    'gif',
+    'bmp',
+    'webp',
+    'tiff',
+    'psd',
+    'raw',
+    'heif',
+    'pdf',
+  ];
+
+  static const List<String> allowedExtensionsVideo = [
+    'mp4',
+    'avi',
+    'mov',
+    'wmv',
+    'flv',
+    'webm',
+    'mkv',
+    'm4v',
+    '3gp',
+    'mpg',
+    'mpeg',
+    'm2v',
+    'm4p',
+    'm4b',
+    'm4r',
+    'm4a',
+    'mp3',
+    'wav',
+    'wma',
+    'aac',
+    'ogg',
+    'oga',
+    'flac',
+    'alac',
+    'aiff',
+    'aif',
+    'amr',
+    'opus',
+    'spx',
+    'oga',
+    'ogv',
+    'ogx',
+    'spx',
+  ];
+
+  static const List<String> allowedExtensionsVoice = [
+    'mp3',
+    'wav',
+    'wma',
+    'aac',
+    'ogg',
+    'oga',
+    'flac',
+    'alac',
+    'aiff',
+    'aif',
+    'amr',
+    'opus',
+    'spx',
+    'oga',
+    'ogv',
+    'ogx',
+    'spx',
+  ];
+
+  FutureOr<void> pickSingleFile(FileExtension extension) async {
+    dispose();
     try {
       final FilePickerResult? currentFile = await FilePicker.platform
           .pickFiles(
         type: FileType.custom,
-        allowedExtensions: allowedExtensions,
+        allowedExtensions: extension == FileExtension.files
+            ? allowedExtensionsFiles
+            : extension == FileExtension.image
+                ? allowedExtensionsImage
+                : extension == FileExtension.video
+                    ? allowedExtensionsVideo
+                    : allowedExtensionsVoice,
+        dialogTitle: extension == FileExtension.files
+            ? titlePickSingleFile
+            : extension == FileExtension.image
+                ? titlePickImage
+                : extension == FileExtension.video
+                    ? titlePickVideo
+                    : titlePickVoice,
       )
           .then((value) {
         if (value != null) {
@@ -91,14 +200,27 @@ class PickFile {
     }
   }
 
-  FutureOr<void> pickMultiFile() async {
-    clearError();
+  FutureOr<void> pickMultiFile(FileExtension extension) async {
+    dispose();
     try {
       final FilePickerResult? currentFile = await FilePicker.platform
           .pickFiles(
         type: FileType.custom,
         allowMultiple: true,
-        allowedExtensions: allowedExtensions,
+        allowedExtensions: extension == FileExtension.files
+            ? allowedExtensionsFiles
+            : extension == FileExtension.image
+                ? allowedExtensionsImage
+                : extension == FileExtension.video
+                    ? allowedExtensionsVideo
+                    : allowedExtensionsVoice,
+        dialogTitle: extension == FileExtension.files
+            ? titlePickMultiFile
+            : extension == FileExtension.image
+                ? titlePickImage
+                : extension == FileExtension.video
+                    ? titlePickVideo
+                    : titlePickVoice,
       )
           .then((value) {
         if (value != null) {
@@ -136,18 +258,28 @@ class PickFile {
     }
   }
 
-  FutureOr<void> clearError() async {
-    try {
-      error = '';
-    } catch (e) {
-      error = e.toString();
-      print(e);
+  Future<void> getFiles(PickFileEnum pickFileEnum, FileExtension extension) async {
+    switch (pickFileEnum) {
+      case PickFileEnum.pickSingleFile:
+        await pickSingleFile(extension);
+        break;
+      case PickFileEnum.pickMultiFile:
+        await pickMultiFile(extension);
+        break;
+      default:
+        await pickSingleFile(extension);
+        break;
     }
   }
 
-  FutureOr<void> clearFile() async {
+  Future<String> getError() async {
+    return error;
+  }
+
+  Future<void> dispose() async {
     try {
       files.clear();
+      error = '';
     } catch (e) {
       error = e.toString();
       print(e);

@@ -10,6 +10,7 @@ import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
+import 'package:wflow/modules/main/presentation/personal/file/file.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -34,6 +35,8 @@ class AppRoutes {
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
+      case RouteKeys.fileScreen:
+        return MaterialPageRoute(builder: (_) => const FileScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

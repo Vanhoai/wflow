@@ -218,6 +218,8 @@ class _SignInScreenState extends State<SignInScreen> {
               ],
               descriptionContent: 'Day la description content',
             ),
+            const SizedBox(height: 20),
+            const SliderRange(),
           ],
         ),
       ),

@@ -76,7 +76,10 @@ class _BoxChatState extends State<BoxChat> {
       isRecord = false;
     });
     file = File(pathToAudio);
-     BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: "1", type: "record", files: file));
+    if(context.mounted)
+    {
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: "1", type: "record", files: file));
+    }
     return result;
   }
 
@@ -123,7 +126,7 @@ class _BoxChatState extends State<BoxChat> {
                         print(value);
                         _sendMessage(
                           context,
-                          Message(id: "1", content: value, type: "text")
+                          Message(id: "1", content: value, type: "text",)
                         );
                         _controller.clear();
                         _focusNode.requestFocus();

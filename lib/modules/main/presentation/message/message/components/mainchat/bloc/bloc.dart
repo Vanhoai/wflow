@@ -15,7 +15,7 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   late final IO.Socket socket ;
 
   MainChatBloc() : super(initState()){
-    socket = IO.io(Real_Devi, <String, dynamic>{
+    socket = IO.io(EM_Devi, <String, dynamic>{
       'autoConnect': false,
       'transports': ['websocket'],
     });
@@ -29,7 +29,6 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     socket.on('CHAT', (data) => add(GetMessageEvent(chat: data)));
     on<SendFilesEvent>(sendFiles);
     on<SendMessageEvent>(sendMessage);
-    
     on<GetMessageEvent>(getChat);
   }
 
@@ -39,10 +38,10 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   {
 
     List<Message> chat = [
-      const Message(id: "1", content: "Hello", type: "text"),
-      const Message(id: "2", content: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", type: "record"),
-      const Message(id: "1", content: "https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien-003.jpg", type: "image"),
-      const Message(id: "2", content: "Hello 2", type: "text"),
+      Message(id: "1", content: "Hello", type: "text", createAt: DateTime.now().toString()),
+      Message(id: "2", content: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", type: "record",createAt: DateTime.now().toString()),
+      Message(id: "1", content: "https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien-003.jpg", type: "image",createAt: DateTime.now().toString()),
+      Message(id: "2", content: "Hello 2", type: "text",createAt: DateTime.now().toString()),
     ];
     return MainChatState(listChat: chat);
   }
@@ -78,7 +77,8 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     Message message = Message(
       id: event.chat["id"],
       content: event.chat["content"],
-      type: event.chat["type"]
+      type: event.chat["type"],
+      createAt: event.chat["createAt"].toString()
     );
     state.listChat.add(message);
     emit(MainChatState(listChat: state.listChat));

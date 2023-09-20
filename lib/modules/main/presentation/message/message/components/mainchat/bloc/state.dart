@@ -1,13 +1,13 @@
 
 import 'package:equatable/equatable.dart';
 
-
+//De tam
 class Message extends Equatable {
   final String id;
   final String content;
   final String type;
-
-  const Message({required this.id, required this.content, required this.type});
+  String? createAt;
+  Message({required this.id, required this.content, required this.type,this.createAt});
 
 
   @override

@@ -19,7 +19,7 @@ class FileBloc extends Bloc<FileEvent, FileState> {
     Emitter<FileState> emit,
   ) async {
     clearFile(event, emit);
-    await pickFileInstance.pickSingleFile();
+    await pickFileInstance.pickSingleFile(FileExtension.files);
     if (pickFileInstance.status == FilePickerStatus.picked) {
       emit(FileSuccessState(pickFileInstance.files));
     } else if (pickFileInstance.status == FilePickerStatus.cancel) {
@@ -34,7 +34,7 @@ class FileBloc extends Bloc<FileEvent, FileState> {
     Emitter<FileState> emit,
   ) async {
     clearFile(event, emit);
-    await pickFileInstance.pickMultiFile();
+    await pickFileInstance.pickMultiFile(FileExtension.files);
     if (pickFileInstance.status == FilePickerStatus.picked) {
       emit(FileSuccessState(pickFileInstance.files));
     } else if (pickFileInstance.status == FilePickerStatus.cancel) {
@@ -49,7 +49,7 @@ class FileBloc extends Bloc<FileEvent, FileState> {
     Emitter<FileState> emit,
   ) async {
     emit(const FileInitial());
-    await pickFileInstance.clearFile();
+    await pickFileInstance.dispose();
   }
 
   FutureOr<void> cancelFile(
@@ -57,6 +57,6 @@ class FileBloc extends Bloc<FileEvent, FileState> {
     Emitter<FileState> emit,
   ) async {
     emit(const FileInitial());
-    await pickFileInstance.clearFile();
+    await pickFileInstance.dispose();
   }
 }

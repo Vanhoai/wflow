@@ -10,6 +10,7 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in.dart';
+import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -35,11 +36,15 @@ class _AppState extends State<App> {
               ),
               BlocProvider(
                 create: (BuildContext context) => SecurityBloc(),
-              )
+              ),
+              BlocProvider(
+                create: (BuildContext context) => PersonalBloc(),
+              ),
             ],
             child: BlocBuilder<AppBloc, AppState>(
               // material app only rebuild when app state change (language, theme)
               buildWhen: (previous, current) => previous != current,
+              bloc: instance.get<AppBloc>(),
               builder: (context, parent) {
                 return Stack(
                   alignment: Alignment.center,

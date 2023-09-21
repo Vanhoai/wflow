@@ -1,6 +1,7 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/utils/secure.util.dart';
@@ -35,4 +36,5 @@ Future<void> initAppInjection() async {
 
   // common bloc
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
+  instance.registerLazySingleton<AppBloc>(() => AppBloc());
 }

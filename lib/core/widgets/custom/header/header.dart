@@ -7,27 +7,31 @@ class Header extends StatefulWidget {
   const Header({
     super.key,
     this.title,
-    this.subtitle,
-    this.leadingPhotoUrl,
-    this.onTapLeading,
     this.onTapTitle,
+    this.subtitle,
+    this.leadingSize,
+    this.leadingPhotoUrl,
+    this.leadingPadding,
+    this.leadingBadge = false,
+    this.onTapLeading,
     this.decoration,
     this.actions,
     this.actionsSpacing,
     this.decorationAction,
-    this.padding,
   });
 
   final String? title;
   final String? subtitle;
   final String? leadingPhotoUrl;
+  final double? leadingSize;
+  final bool? leadingBadge;
   final Function()? onTapLeading;
   final Function()? onTapTitle;
   final Decoration? decoration;
   final Decoration? decorationAction;
   final List<IconButton>? actions;
   final double? actionsSpacing;
-  final EdgeInsets? padding;
+  final EdgeInsets? leadingPadding;
   @override
   State<Header> createState() => _HeaderState();
 }
@@ -35,7 +39,7 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   Widget _buildLeading(BuildContext context, ThemeData themeData) {
     return Padding(
-      padding: widget.padding ?? const EdgeInsets.symmetric(horizontal: 8),
+      padding: widget.leadingPadding ?? const EdgeInsets.symmetric(horizontal: 8),
       child: Stack(
         children: [
           InkWell(
@@ -44,22 +48,28 @@ class _HeaderState extends State<Header> {
             borderRadius: BorderRadius.circular(16),
             enableFeedback: false,
             child: CircleAvatar(
-              radius: 20,
+              radius: widget.leadingSize ?? 20,
               backgroundImage: NetworkImage(widget.leadingPhotoUrl ?? IMAGE_PHOTO),
               backgroundColor: Colors.transparent,
               foregroundColor: Colors.transparent,
               foregroundImage: NetworkImage(widget.leadingPhotoUrl ?? IMAGE_PHOTO),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: SvgPicture.asset(
-              'assets/icons/online.svg',
-              width: 12,
-              height: 12,
-            ),
-          )
+          Builder(builder: (BuildContext context) {
+            if (widget.leadingBadge!) {
+              return Positioned(
+                bottom: 0,
+                right: 0,
+                child: SvgPicture.asset(
+                  'assets/icons/online.svg',
+                  width: 12,
+                  height: 12,
+                ),
+              );
+            } else {
+              return const SizedBox();
+            }
+          })
         ],
       ),
     );

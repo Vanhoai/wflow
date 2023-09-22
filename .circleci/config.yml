@@ -1,29 +1,24 @@
-version: 2.1
+version: "2.1"
 orbs:
   android: circleci/android@1.0.3
-  flutter: circleci/flutter@2.0.2
-
+  flutter: circleci/flutter@2.0.0
 jobs:
-  build-release:
+  distribute:
     executor:
       name: android/android-machine
-
     steps:
-      - checkout
-      - flutter/install
-      - flutter/build:
-          android: --release --no-shrink
+      - flutter/install_sdk_and_pub:
+          version: 3.0.3
+
+      - flutter/install_android_gradle_dependencies
+
+      - flutter/install_android_gem
 
       - run:
-          name: Copy APK
-          command: cp build/app/outputs/apk/release/app-release.apk app-release.apk
-
-      - store_artifacts:
-          path: app-release.apk
-          destination: app-release.apk
+          command: bundle exec fastlane distribute
+          working_directory: ios
 
 workflows:
-  version: 2
-  build-android:
+  distribute:
     jobs:
-      - build-release
+      - distribute

@@ -22,6 +22,6 @@ jobs:
           destination: app-release.apk
 
 workflows:
-  workflow:
+  build-android:
     jobs:
       - build-release

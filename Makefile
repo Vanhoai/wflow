@@ -16,6 +16,11 @@ build-apk:
 	make setup-prod
 	./scripts/build.sh release apk
 
+push:
+	git add .
+	git commit -m "$(m)"
+	git push
+
 analyze:
 	flutter analyze
 

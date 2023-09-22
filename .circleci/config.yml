@@ -29,6 +29,3 @@ workflows:
           publish_test_results: true
           requires:
             - distribute
-      - distribute:
-          requires:
-            - flutter/test

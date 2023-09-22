@@ -2,6 +2,7 @@ version: "2.1"
 orbs:
   android: circleci/android@1.0.3
   flutter: circleci/flutter@2.0.0
+
 jobs:
   distribute:
     executor:
@@ -19,6 +20,15 @@ jobs:
           working_directory: ios
 
 workflows:
-  distribute:
+  version: 2
+  build_and_test:
     jobs:
-      - distribute
+      - flutter/test:
+          flutter_channel: stable
+          working_directory: wflow
+          publish_test_results: true
+          requires:
+            - distribute
+      - distribute:
+          requires:
+            - flutter/test

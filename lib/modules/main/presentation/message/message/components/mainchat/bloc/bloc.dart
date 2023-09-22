@@ -38,10 +38,10 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   {
 
     List<Message> chat = [
-      Message(id: "1", content: "Hello", type: "text", createAt: DateTime.now().toString()),
+      Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
       Message(id: "2", content: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", type: "record",createAt: DateTime.now().toString()),
       Message(id: "1", content: "https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien-003.jpg", type: "image",createAt: DateTime.now().toString()),
-      Message(id: "2", content: "Hello 2", type: "text",createAt: DateTime.now().toString()),
+      Message(id: "2", content: "Hello, cau the nao roi dạo này còn đập đá chơi đá gà không?", type: "text",createAt: DateTime.now().toString()),
     ];
     return MainChatState(listChat: chat);
   }

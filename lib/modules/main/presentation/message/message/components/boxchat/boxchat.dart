@@ -13,6 +13,9 @@ import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/event.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/record/record.dart';
 
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
@@ -30,65 +33,25 @@ class BoxChat extends StatefulWidget {
 }
 
 class _BoxChatState extends State<BoxChat> {
-  late FlutterSoundRecorder _recordingSession;
-  late String pathToAudio;
-  bool isRecord = false;
   late FocusNode _focusNode;
   late TextEditingController _controller;
   late File file;
-  Future initRecord() async {
-    //pathToAudio = "${(await getTemporaryDirectory()).path}/audio/temp.wav";
-    pathToAudio = '/sdcard/Download/temp.wav';
-    final permissionRecord = await Permission.microphone.request();
-    final permissionFile = await Permission.storage.request();
-    if (permissionRecord != PermissionStatus.granted ||
-        permissionFile != PermissionStatus.granted) {
-      throw 'Chua co quyen mic';
-    }
-    _recordingSession = FlutterSoundRecorder();
-    await _recordingSession.openRecorder();
-    await _recordingSession
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
-  }
 
-  Future<void> startRecording() async {
-    await _recordingSession.startRecorder(
-      toFile: pathToAudio,
-      codec: Codec.pcm16WAV,
-    );
-    StreamSubscription _recorderSubscription =
-        _recordingSession.onProgress!.listen((e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
-          isUtc: true);
-      var timeText = DateFormat('mm:ss:SS', 'en_GB').format(date);
-      setState(() {});
-    });
-    _recorderSubscription.cancel();
-    setState(() {
-      isRecord = true;
-    });
-  }
 
-  Future<String?> stopRecording(BuildContext context) async {
-    String? result = await _recordingSession.stopRecorder();
-    print("Ket qua: " + result!);
-    setState(() {
-      isRecord = false;
-    });
-    file = File(pathToAudio);
-    if(context.mounted)
-    {
-      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: "1", type: "record", files: file));
-    }
-    return result;
-  }
+
+
+
 
   @override
   void initState() {
     super.initState();
-    initRecord();
+
     _controller = TextEditingController();
+    _controller.addListener(() {
+      context.read<BoxChatBloc>().add(IsSendMessageTextEvent(_controller.text));
+    });
     _focusNode = FocusNode();
+
   }
 
   @override
@@ -97,7 +60,6 @@ class _BoxChatState extends State<BoxChat> {
     super.dispose();
     _controller.dispose();
     _focusNode.dispose();
-    await _recordingSession.closeRecorder();
   }
 
   @override
@@ -107,30 +69,28 @@ class _BoxChatState extends State<BoxChat> {
       builder: (context, state) {
         return Column(
           children: [
+            const SizedBox(
+              height: 16,
+            ),
             Row(
               children: [
                 Expanded(
                   child: Container(
                     margin: const EdgeInsets.only(left: 10),
-                    child: TextFormField(
+                    child: TextField(
                       style: TextTitle(
                         size: 16,
                         fontWeight: FontWeight.w400,
                       ),
+                      minLines: 1,
+                      maxLines: 5, // and this
                       controller: _controller,
-                      maxLines: 1,
                       focusNode: _focusNode,
-                      onTap: () {},
-                      textInputAction: TextInputAction.send,
-                      onFieldSubmitted: (value) {
-                        print(value);
-                        _sendMessage(
-                          context,
-                          Message(id: "1", content: value, type: "text",)
-                        );
-                        _controller.clear();
-                        _focusNode.requestFocus();
+                      onTap: () {
+
                       },
+
+                      textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
                             padding: const EdgeInsets.only(
@@ -209,7 +169,17 @@ class _BoxChatState extends State<BoxChat> {
                   margin: const EdgeInsets.only(right: 10, left: 5),
                   child: InkWell(
                     onTap: () {
-                      _showRecord(context, state);
+                      if(!state.isSend)
+                      {
+                        _showRecord(context);
+                      }else {
+                        _sendMessage(
+                            context,
+                            Message(id: "1", content: _controller.text, type: "text",)
+                        );
+                        _controller.clear();
+                        _focusNode.requestFocus();
+                      }
                     },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
@@ -218,7 +188,7 @@ class _BoxChatState extends State<BoxChat> {
                           color: AppColors.primary),
                       padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(
-                        AppConstants.mic,
+                        state.isSend ? AppConstants.send : AppConstants.mic,
                         height: 20,
                         width: 20,
                         colorFilter: const ColorFilter.mode(
@@ -232,36 +202,7 @@ class _BoxChatState extends State<BoxChat> {
             const SizedBox(
               height: 16,
             ),
-            Offstage(
-              offstage: !state.isShowRecord,
-              child: Container(
-                alignment: Alignment.center,
-                height: 250,
-                child: InkWell(
-                  onTap: () {
-                    if (!isRecord) {
-                      startRecording();
-                    } else {
-                      stopRecording(context);
-                    }
-                  },
-                  borderRadius: BorderRadius.circular(50),
-                  child: Ink(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(50),
-                        color: isRecord ? Colors.red : AppColors.primary),
-                    padding: const EdgeInsets.all(10),
-                    child: SvgPicture.asset(
-                      AppConstants.mic,
-                      height: 20,
-                      width: 20,
-                      colorFilter:
-                          const ColorFilter.mode(Colors.white, BlendMode.srcIn),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            const Record(),
             EmojiKeyboard(
               controller: _controller,
               emojiShowing: state.isShowEmojiKeyboard,
@@ -282,12 +223,13 @@ class _BoxChatState extends State<BoxChat> {
     }
   }
 
-  _showRecord(BuildContext context, BoxChatState state) {
-    BlocProvider.of<BoxChatBloc>(context)
-        .add(ShowRecordVoiceEvent(isShow: !state.isShowRecord));
+  _showRecord(BuildContext context) {
+    BlocProvider.of<RecordBloc>(context)
+        .add(ShowRecordVoiceEvent());
   }
   _sendMessage(BuildContext context, Message message)
   {
     BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
   }
+
 }

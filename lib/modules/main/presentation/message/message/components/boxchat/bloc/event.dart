@@ -16,12 +16,13 @@ class ShowEmojiKeyBoardEvent extends BoxChatEvent{
   @override
   List<Object?> get props => [isShow];
 }
-class ShowRecordVoiceEvent extends BoxChatEvent {
-  final bool isShow;
 
-  ShowRecordVoiceEvent({required this.isShow});
+
+class IsSendMessageTextEvent extends BoxChatEvent{
+  final String isSend;
+
+  IsSendMessageTextEvent(this.isSend);
 
   @override
-  List<Object?> get props => [isShow];
+  List<Object?> get props => [isSend];
 }
-

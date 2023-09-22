@@ -11,6 +11,7 @@ import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/boxchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
 
 import 'components/boxchat/bloc/bloc.dart';
 
@@ -59,6 +60,10 @@ class _MessageScreenState extends State<MessageScreen> {
             BlocProvider(
               create: (_) => MainChatBloc(),
               lazy: true,
+            ),
+            BlocProvider(
+                create: (_) => RecordBloc(),
+                lazy: true,
             ),
           ],
           child: Column(

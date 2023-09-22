@@ -9,24 +9,23 @@ import 'state.dart';
 class BoxChatBloc extends Bloc<BoxChatEvent,BoxChatState> {
   BoxChatBloc() : super(initState()){
     on<ShowEmojiKeyBoardEvent>(showEmojiKeyBoard);
-    on<ShowRecordVoiceEvent>(showRecordVoice);
-
+    on<IsSendMessageTextEvent>(isSendMessageText);
   }
 
 
   static BoxChatState initState(){
-    return BoxChatState(isShowEmojiKeyboard: false, isShowRecord: false, text: "", files: []);
+    return BoxChatState(isShowEmojiKeyboard: false, isSend: false, text: "", files: []);
   }
   FutureOr<void> showEmojiKeyBoard(ShowEmojiKeyBoardEvent event, Emitter<BoxChatState> emit) {
       emit(state.copyWith(isShowEmojiKeyboard: event.isShow));
   }
 
 
-  FutureOr<void> showRecordVoice(ShowRecordVoiceEvent event, Emitter<BoxChatState> emit) {
-    emit(state.copyWith(isShowRecord: event.isShow));
+
+
+  FutureOr<void> isSendMessageText(IsSendMessageTextEvent event, Emitter<BoxChatState> emit) {
+    emit(state.copyWith(isSend: event.isSend.isNotEmpty));
+    print(state);
   }
-
-
-
 }
 

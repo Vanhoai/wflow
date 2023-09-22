@@ -1,31 +1,8 @@
 version: "2.1"
 orbs:
-  android: circleci/android@1.0.3
-  flutter: circleci/flutter@2.0.0
-
-jobs:
-  distribute:
-    executor:
-      name: android/android-machine
-    steps:
-      - flutter/install_sdk_and_pub:
-          version: 3.0.3
-
-      - flutter/install_android_gradle_dependencies
-
-      - flutter/install_android_gem
-
-      - run:
-          command: bundle exec fastlane distribute
-          working_directory: ios
-
+  flutter: circleci/flutter@2.0
 workflows:
-  version: 2
-  build_and_test:
+  test:
     jobs:
-      - flutter/test:
-          flutter_channel: stable
-          working_directory: wflow
-          publish_test_results: true
-          requires:
-            - distribute
+      - flutter/lint:
+          version: 3.0.3

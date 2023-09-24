@@ -93,8 +93,7 @@ class FirebaseService {
   }
 
   static Future<String?> getDeviceToken() async {
-    FirebaseMessaging messaging = FirebaseMessaging.instance;
-    final String? token = await messaging.getToken();
+    final String? token = await firebaseMessaging.getToken();
     return token;
   }
 

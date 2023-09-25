@@ -1,53 +1,76 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-enum TrimMode { Length, Lines, None }
+enum TrimMode {
+  Length,
+  Line,
+}
 
-/// Trim mode:
-///  + Length - Trim the text to a specific length. Default is 240 characters. (trimLength)
-///  + Lines - Trim the text to a specific number of lines. Default is 2 lines. (trimLines)
-///  + None - Don't trim, show all the text. (maxLines)
 class TextMore extends StatefulWidget {
-  const TextMore({
-    super.key,
-    this.trimLength = 240,
-    this.trimLines = 2,
-    this.trimMode = TrimMode.Length,
-    this.moreStyle,
-    this.lessStyle,
+  const TextMore(
+    this.data, {
+    Key? key,
     this.preDataText,
     this.postDataText,
     this.preDataTextStyle,
     this.postDataTextStyle,
-    this.callback,
-    this.onLinkPressed,
-    this.linkTextStyle,
-    this.delimiter = '$_kEllipsis ',
-    this.data = '',
-    this.trimExpandedText = '...Show more',
-    this.trimCollapsedText = ' show less',
+    this.trimExpandedText = 'show less',
+    this.trimCollapsedText = 'read more',
     this.colorClickableText,
+    this.trimLength = 240,
+    this.trimLines = 2,
+    this.trimMode = TrimMode.Length,
     this.style,
     this.textAlign,
     this.textDirection,
     this.locale,
     this.textScaleFactor,
+    this.semanticsLabel,
+    this.moreStyle,
+    this.lessStyle,
+    this.delimiter = '$_kEllipsis ',
     this.delimiterStyle,
-    this.maxLines,
-  });
+    this.callback,
+    this.onLinkPressed,
+    this.linkTextStyle,
+  }) : super(key: key);
 
+  /// Used on TrimMode.Length
   final int trimLength;
+
+  /// Used on TrimMode.Lines
   final int trimLines;
+
+  /// Determines the type of trim. TrimMode.Length takes into account
+  /// the number of letters, while TrimMode.Lines takes into account
+  /// the number of lines
   final TrimMode trimMode;
+
+  /// TextStyle for expanded text
   final TextStyle? moreStyle;
+
+  /// TextStyle for compressed text
   final TextStyle? lessStyle;
+
+  /// Textspan used before the data any heading or somthing
   final String? preDataText;
+
+  /// Textspan used after the data end or before the more/less
   final String? postDataText;
+
+  /// Textspan used before the data any heading or somthing
   final TextStyle? preDataTextStyle;
+
+  /// Textspan used after the data end or before the more/less
   final TextStyle? postDataTextStyle;
+
+  ///Called when state change between expanded/compress
   final Function(bool val)? callback;
+
   final ValueChanged<String>? onLinkPressed;
+
   final TextStyle? linkTextStyle;
+
   final String delimiter;
   final String data;
   final String trimExpandedText;
@@ -58,23 +81,24 @@ class TextMore extends StatefulWidget {
   final TextDirection? textDirection;
   final Locale? locale;
   final double? textScaleFactor;
+  final String? semanticsLabel;
   final TextStyle? delimiterStyle;
-  final int? maxLines;
 
   @override
-  State<TextMore> createState() => _TextMoreState();
+  TextMoreState createState() => TextMoreState();
 }
 
 const String _kEllipsis = '\u2026';
+
 const String _kLineSeparator = '\u2028';
 
-class _TextMoreState extends State<TextMore> {
-  bool _isExpanded = true;
+class TextMoreState extends State<TextMore> {
+  bool _readMore = true;
 
   void _onTapLink() {
     setState(() {
-      _isExpanded = !_isExpanded;
-      widget.callback?.call(_isExpanded);
+      _readMore = !_readMore;
+      widget.callback?.call(_readMore);
     });
   }
 
@@ -85,23 +109,26 @@ class _TextMoreState extends State<TextMore> {
     if (widget.style?.inherit ?? false) {
       effectiveTextStyle = defaultTextStyle.style.merge(widget.style);
     }
+
     final textAlign = widget.textAlign ?? defaultTextStyle.textAlign ?? TextAlign.start;
     final textDirection = widget.textDirection ?? Directionality.of(context);
     final textScaleFactor = widget.textScaleFactor ?? MediaQuery.textScaleFactorOf(context);
     final overflow = defaultTextStyle.overflow;
     final locale = widget.locale ?? Localizations.maybeLocaleOf(context);
+
     final colorClickableText = widget.colorClickableText ?? Theme.of(context).colorScheme.secondary;
     final defaultLessStyle = widget.lessStyle ?? effectiveTextStyle?.copyWith(color: colorClickableText);
     final defaultMoreStyle = widget.moreStyle ?? effectiveTextStyle?.copyWith(color: colorClickableText);
     final defaultDelimiterStyle = widget.delimiterStyle ?? effectiveTextStyle;
+
     TextSpan link = TextSpan(
-      text: _isExpanded ? widget.trimExpandedText : widget.trimCollapsedText,
-      style: _isExpanded ? defaultMoreStyle : defaultLessStyle,
+      text: _readMore ? widget.trimCollapsedText : widget.trimExpandedText,
+      style: _readMore ? defaultMoreStyle : defaultLessStyle,
       recognizer: TapGestureRecognizer()..onTap = _onTapLink,
     );
 
     TextSpan delimiter = TextSpan(
-      text: _isExpanded
+      text: _readMore
           ? widget.trimCollapsedText.isNotEmpty
               ? widget.delimiter
               : ''
@@ -113,19 +140,16 @@ class _TextMoreState extends State<TextMore> {
     Widget result = LayoutBuilder(
       builder: (BuildContext context, BoxConstraints constraints) {
         assert(constraints.hasBoundedWidth);
-        final maxWidth = constraints.maxWidth;
+        final double maxWidth = constraints.maxWidth;
+
         TextSpan? preTextSpan;
         TextSpan? postTextSpan;
-
-        // if preDataText is not null then add it to preTextSpan
         if (widget.preDataText != null) {
           preTextSpan = TextSpan(
             text: '${widget.preDataText!} ',
             style: widget.preDataTextStyle ?? effectiveTextStyle,
           );
         }
-
-        // if postDataText is not null then add it to postTextSpan
         if (widget.postDataText != null) {
           postTextSpan = TextSpan(
             text: ' ${widget.postDataText!}',
@@ -133,14 +157,12 @@ class _TextMoreState extends State<TextMore> {
           );
         }
 
+        // Create a TextSpan with data
         final text = TextSpan(
           children: [
             if (preTextSpan != null) preTextSpan,
-            TextSpan(
-              text: widget.data,
-              style: effectiveTextStyle,
-            ),
-            if (postTextSpan != null) postTextSpan,
+            TextSpan(text: widget.data, style: effectiveTextStyle),
+            if (postTextSpan != null) postTextSpan
           ],
         );
 
@@ -151,13 +173,9 @@ class _TextMoreState extends State<TextMore> {
           textDirection: textDirection,
           textScaleFactor: textScaleFactor,
           maxLines: widget.trimLines,
-          ellipsis: overflow == TextOverflow.ellipsis ? _kEllipsis : null,
+          ellipsis: overflow == TextOverflow.ellipsis ? widget.delimiter : null,
           locale: locale,
-          textWidthBasis: defaultTextStyle.textWidthBasis,
-          textHeightBehavior: defaultTextStyle.textHeightBehavior,
-          strutStyle: StrutStyle.fromTextStyle(effectiveTextStyle!),
         );
-
         textPainter.layout(minWidth: 0, maxWidth: maxWidth);
         final linkSize = textPainter.size;
 
@@ -195,7 +213,7 @@ class _TextMoreState extends State<TextMore> {
           case TrimMode.Length:
             if (widget.trimLength < widget.data.length) {
               textSpan = _buildData(
-                data: _isExpanded ? widget.data.substring(0, widget.trimLength) : widget.data,
+                data: _readMore ? widget.data.substring(0, widget.trimLength) : widget.data,
                 textStyle: effectiveTextStyle,
                 linkTextStyle: effectiveTextStyle?.copyWith(
                   decoration: TextDecoration.underline,
@@ -217,10 +235,10 @@ class _TextMoreState extends State<TextMore> {
               );
             }
             break;
-          case TrimMode.Lines:
+          case TrimMode.Line:
             if (textPainter.didExceedMaxLines) {
               textSpan = _buildData(
-                data: _isExpanded
+                data: _readMore
                     ? widget.data.substring(0, endIndex) + (linkLongerThanLine ? _kLineSeparator : '')
                     : widget.data,
                 textStyle: effectiveTextStyle,
@@ -244,50 +262,35 @@ class _TextMoreState extends State<TextMore> {
               );
             }
             break;
-          case TrimMode.None:
-            if (widget.maxLines != null && textPainter.didExceedMaxLines) {
-              textSpan = _buildData(
-                data: widget.data,
-                textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
-                onPressed: widget.onLinkPressed,
-                children: [delimiter, link],
-              );
-            } else {
-              textSpan = _buildData(
-                data: widget.data,
-                textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
-                onPressed: widget.onLinkPressed,
-                children: [],
-              );
-            }
           default:
             throw Exception('TrimMode type: ${widget.trimMode} is not supported');
         }
 
         return Text.rich(
-          TextSpan(children: [
-            if (preTextSpan != null) preTextSpan,
-            textSpan,
-            if (postTextSpan != null) postTextSpan,
-          ]),
+          TextSpan(
+            children: [
+              if (preTextSpan != null) preTextSpan,
+              textSpan,
+              if (postTextSpan != null) postTextSpan,
+            ],
+          ),
           textAlign: textAlign,
           textDirection: textDirection,
           softWrap: true,
+          overflow: TextOverflow.clip,
           textScaleFactor: textScaleFactor,
-          overflow: widget.trimMode == TrimMode.None ? TextOverflow.ellipsis : overflow,
-          locale: locale,
-          maxLines: widget.maxLines,
         );
       },
     );
+    if (widget.semanticsLabel != null) {
+      result = Semantics(
+        textDirection: widget.textDirection,
+        label: widget.semanticsLabel,
+        child: ExcludeSemantics(
+          child: result,
+        ),
+      );
+    }
     return result;
   }
 
@@ -299,20 +302,40 @@ class _TextMoreState extends State<TextMore> {
     required List<TextSpan> children,
   }) {
     RegExp exp = RegExp(r'(?:(?:https?|ftp):\/\/)?[\w/\-?=%.]+\.[\w/\-?=%.]+');
+
     List<TextSpan> contents = [];
+
     while (exp.hasMatch(data)) {
       final match = exp.firstMatch(data);
+
       final firstTextPart = data.substring(0, match!.start);
-      // get the link text in the data
       final linkTextPart = data.substring(match.start, match.end);
-      contents.add(TextSpan(text: firstTextPart));
-      contents.add(TextSpan(
+
+      contents.add(
+        TextSpan(
+          text: firstTextPart,
+        ),
+      );
+      contents.add(
+        TextSpan(
           text: linkTextPart,
           style: linkTextStyle,
-          recognizer: TapGestureRecognizer()..onTap = () => onPressed?.call(linkTextPart.trim())));
+          recognizer: TapGestureRecognizer()
+            ..onTap = () => onPressed?.call(
+                  linkTextPart.trim(),
+                ),
+        ),
+      );
       data = data.substring(match.end, data.length);
     }
-    contents.add(TextSpan(text: data));
-    return TextSpan(children: contents..addAll(children), style: textStyle);
+    contents.add(
+      TextSpan(
+        text: data,
+      ),
+    );
+    return TextSpan(
+      children: contents..addAll(children),
+      style: textStyle,
+    );
   }
 }

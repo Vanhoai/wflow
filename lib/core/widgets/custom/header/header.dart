@@ -9,67 +9,63 @@ class Header extends StatefulWidget {
     this.title,
     this.onTapTitle,
     this.subtitle,
-    this.leadingSize,
-    this.leadingPhotoUrl,
-    this.leadingPadding,
+    this.leadingSize = 32,
+    this.leadingPhotoUrl = IMAGE_PHOTO,
+    this.leadingPadding = const EdgeInsets.all(0),
     this.leadingBadge = false,
     this.onTapLeading,
     this.decoration,
-    this.actions,
-    this.actionsSpacing,
+    this.actions = const [],
+    this.actionsSpacing = 4,
     this.decorationAction,
   });
 
   final String? title;
   final String? subtitle;
-  final String? leadingPhotoUrl;
-  final double? leadingSize;
-  final bool? leadingBadge;
+  final Decoration? decorationAction;
+  final Decoration? decoration;
+  final String leadingPhotoUrl;
+  final double leadingSize;
+  final bool leadingBadge;
   final Function()? onTapLeading;
   final Function()? onTapTitle;
-  final Decoration? decoration;
-  final Decoration? decorationAction;
-  final List<IconButton>? actions;
-  final double? actionsSpacing;
-  final EdgeInsets? leadingPadding;
+  final List<IconButton> actions;
+  final double actionsSpacing;
+  final EdgeInsets leadingPadding;
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
   Widget _buildLeading(BuildContext context, ThemeData themeData) {
-    return Padding(
-      padding: widget.leadingPadding ?? const EdgeInsets.symmetric(horizontal: 8),
+    return InkWell(
+      onTap: widget.onTapLeading,
+      splashFactory: InkRipple.splashFactory,
+      borderRadius: BorderRadius.circular(99),
+      enableFeedback: false,
       child: Stack(
         children: [
-          InkWell(
-            onTap: widget.onTapLeading,
-            splashFactory: InkRipple.splashFactory,
-            borderRadius: BorderRadius.circular(16),
-            enableFeedback: false,
-            child: CircleAvatar(
-              radius: widget.leadingSize ?? 20,
-              backgroundImage: NetworkImage(widget.leadingPhotoUrl ?? IMAGE_PHOTO),
-              backgroundColor: Colors.transparent,
-              foregroundColor: Colors.transparent,
-              foregroundImage: NetworkImage(widget.leadingPhotoUrl ?? IMAGE_PHOTO),
-            ),
-          ),
-          Builder(builder: (BuildContext context) {
-            if (widget.leadingBadge!) {
-              return Positioned(
-                bottom: 0,
-                right: 0,
-                child: SvgPicture.asset(
-                  'assets/icons/online.svg',
-                  width: 12,
-                  height: 12,
-                ),
+          Builder(
+            builder: (context) {
+              if (widget.leadingSize > 32) {
+                return Container();
+              }
+              return CircleAvatar(
+                backgroundColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                backgroundImage: NetworkImage(widget.leadingPhotoUrl),
+                radius: widget.leadingSize,
               );
-            } else {
-              return const SizedBox();
-            }
-          })
+            },
+          ),
+          Positioned(
+            bottom: 0,
+            right: 0,
+            child: SvgPicture.asset(
+              'assets/icons/online.svg',
+              width: 20,
+              height: 20,
+            ),
+          )
         ],
       ),
     );
@@ -103,7 +99,7 @@ class _HeaderState extends State<Header> {
 
   Widget _buildActionContainer(BuildContext context, IconButton icon) {
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: widget.actionsSpacing ?? 4),
+      margin: EdgeInsets.symmetric(horizontal: widget.actionsSpacing),
       alignment: Alignment.center,
       child: Center(
         heightFactor: 1,
@@ -146,7 +142,10 @@ class _HeaderState extends State<Header> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          _buildLeading(context, themeData),
+          Padding(
+            padding: widget.leadingPadding,
+            child: _buildLeading(context, themeData),
+          ),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -161,12 +160,9 @@ class _HeaderState extends State<Header> {
             ),
           ),
           Builder(builder: (BuildContext context) {
-            if (widget.actions != null) {
-              return Row(
-                children: widget.actions!.map((e) => _buildActionContainer(context, e)).toList(),
-              );
-            }
-            return Container();
+            return Row(
+              children: widget.actions.map((e) => _buildActionContainer(context, e)).toList(),
+            );
           }),
         ],
       ),

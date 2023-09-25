@@ -28,6 +28,15 @@ Future<void> main() async {
   }));
   flipperClient.addPlugin(FlipperSharedPreferencesPlugin());
   flipperClient.start();
-  print("FlipperClient is running");
-  runApp(const App());
+  print('FlipperClient is running');
+  try {
+    runApp(const App());
+  } catch (error) {
+    FlutterErrorDetails(
+      exception: error,
+      context: ErrorSummary('Global Error'),
+      library: 'main.dart',
+      stack: StackTrace.current,
+    );
+  }
 }

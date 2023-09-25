@@ -75,7 +75,6 @@ class _SettingScreenState extends State<SettingScreen> {
       SliverAppBar(
         elevation: 10.0,
         automaticallyImplyLeading: false,
-        expandedHeight: 50,
         floating: true,
         leading: IconButton(
             icon: const Icon(Icons.arrow_back),
@@ -176,7 +175,6 @@ class _SettingScreenState extends State<SettingScreen> {
             Padding(
               padding: const EdgeInsets.symmetric(
                 horizontal: 8,
-                vertical: 16,
               ),
               child: Column(
                 children: [

@@ -112,42 +112,16 @@ class _PersonalScreenState extends State<PersonalScreen> {
     );
   }
 
-  List<Widget> _buildAppBar(BuildContext context, bool innerBoxIsScrolled, ThemeData themeData) {
-    return [
-      SliverAppBar(
-        elevation: 10,
-        backgroundColor: Colors.transparent,
-        leading: const Icon(Icons.flutter_dash, size: 30),
-        title: Text('Account', style: themeData.textTheme.titleLarge),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(RouteKeys.settingScreen);
-            },
-            icon: Icon(
-              color: Theme.of(context).colorScheme.onBackground,
-              size: 30,
-              Icons.settings,
-            ),
-            color: Colors.black,
-            alignment: Alignment.center,
-            tooltip: 'Settings',
-            highlightColor: Theme.of(context).colorScheme.primary,
-          ),
-        ],
-      ),
-    ];
-  }
-
   Widget _buildHeader(BuildContext context, ThemeData theme) {
     return Header(
       title: 'Tran Van Hoai',
       subtitle: 'tranvanhoai@gmail.com',
       onTapLeading: () {},
-      leadingSize: 30,
+      leadingSize: 32,
       leadingPadding: const EdgeInsets.only(right: 8),
-      onTapTitle: () {},
+      onTapTitle: () {
+        Navigator.of(context).pushNamed(RouteKeys.profileScreen);
+      },
       actions: [
         IconButton(
           onPressed: () {
@@ -178,6 +152,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
         ],
         shape: BoxShape.circle,
       ),
+      leadingBadge: true,
     );
   }
 
@@ -186,69 +161,81 @@ class _PersonalScreenState extends State<PersonalScreen> {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
       isSafe: true,
-      body: NestedScrollView(
-        headerSliverBuilder: (context, innerBoxIsScrolled) => _buildAppBar(context, innerBoxIsScrolled, themeData),
-        controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
-        clipBehavior: Clip.antiAliasWithSaveLayer,
-        body: RefreshIndicator(
-          triggerMode: RefreshIndicatorTriggerMode.onEdge,
-          onRefresh: () {
-            return Future<void>.delayed(const Duration(seconds: 1), () {
-              return;
-            });
-          },
-          displacement: 0,
-          edgeOffset: 10,
-          child: ListView(
-            padding: const EdgeInsets.all(4),
-            children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 8,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        leading: const Icon(Icons.flutter_dash, size: 30),
+        title: Text('Account', style: themeData.textTheme.titleLarge),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.of(context).pushNamed(RouteKeys.settingScreen);
+            },
+            icon: Icon(
+              color: Theme.of(context).colorScheme.onBackground,
+              size: 30,
+              Icons.settings,
+            ),
+            color: Colors.black,
+            alignment: Alignment.center,
+            tooltip: 'Settings',
+            highlightColor: Theme.of(context).colorScheme.primary,
+          ),
+        ],
+      ),
+      body: RefreshIndicator(
+        onRefresh: () {
+          return Future<void>.delayed(const Duration(seconds: 1), () {
+            return;
+          });
+        },
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.all(4),
+          physics: const AlwaysScrollableScrollPhysics(),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(
+              horizontal: 8,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _buildHeader(context, themeData),
+                const Padding(
+                  padding: EdgeInsets.symmetric(vertical: 8),
+                  child: Divider(),
                 ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.max,
-                  children: [
-                    _buildHeader(context, themeData),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 8),
-                      child: Divider(),
-                    ),
-                    ListView.builder(
-                      itemBuilder: (context, index) {
-                        return ListTile(
-                          leading: Icon(_listMenu[index]['leading']),
-                          title: Text(_listMenu[index]['title']),
-                          trailing: Icon(_listMenu[index]['trailing']),
-                          onTap: () {},
-                          dense: true,
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 8,
-                            vertical: 0,
-                          ),
-                        );
-                      },
-                      itemCount: _listMenu.length,
-                      shrinkWrap: true,
-                      physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.all(0),
-                    ),
-                    Center(
-                      child: TextButton(
-                        onPressed: () {
-                          _showModal(context);
-                        },
-                        clipBehavior: Clip.antiAliasWithSaveLayer,
-                        child: const Text('Add Custom Section'),
+                ListView.builder(
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      leading: Icon(_listMenu[index]['leading']),
+                      title: Text(_listMenu[index]['title']),
+                      trailing: Icon(_listMenu[index]['trailing']),
+                      onTap: () {},
+                      dense: true,
+                      contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 8,
+                        vertical: 0,
                       ),
-                    )
-                  ],
+                    );
+                  },
+                  itemCount: _listMenu.length,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.all(0),
                 ),
-              ),
-            ],
+                Center(
+                  child: TextButton(
+                    onPressed: () {
+                      _showModal(context);
+                    },
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    child: const Text('Add Custom Section'),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

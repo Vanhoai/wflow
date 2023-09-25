@@ -13,15 +13,17 @@ class ChipCustom extends StatelessWidget {
       focusNode: FocusNode(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       backgroundColor: Theme.of(context).colorScheme.primary,
-      labelStyle:
-          Theme.of(context).textTheme.displayMedium!.merge(TextStyle(color: Theme.of(context).colorScheme.background)),
+      labelStyle: Theme.of(context)
+          .textTheme
+          .displayMedium!
+          .merge(TextStyle(color: Theme.of(context).colorScheme.onBackground)),
       clipBehavior: Clip.antiAliasWithSaveLayer,
       elevation: 1,
       labelPadding: const EdgeInsets.all(0),
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.comfortable,
       avatar: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.background,
+          backgroundColor: Theme.of(context).colorScheme.onBackground,
           child: Text(title.substring(0, 1),
               style: Theme.of(context)
                   .textTheme

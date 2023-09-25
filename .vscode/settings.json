@@ -6,5 +6,8 @@
     "dartz",
     "flipperkit",
     "vsync"
-  ]
+  ],
+  "a-file-icon-vscode.folderTheme": "specific",
+  "a-file-icon-vscode.activeIconPacks": ["angular", "rails"],
+  "vsicons.presets.nestjs": true
 }

@@ -134,7 +134,7 @@ class _ExploreCardTileState extends State<ExploreCardTile> with SingleTickerProv
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.background,
+                      color: Theme.of(context).colorScheme.onBackground,
                       width: 2,
                       style: BorderStyle.solid,
                     ),
@@ -150,14 +150,13 @@ class _ExploreCardTileState extends State<ExploreCardTile> with SingleTickerProv
                           Icon(
                             Icons.expand_more,
                             size: 32,
-                            color: Theme.of(context).colorScheme.background,
+                            color: Theme.of(context).colorScheme.onBackground,
                           ),
                     ),
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.zero),
                       minimumSize: MaterialStateProperty.all(Size.zero),
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      visualDensity: VisualDensity.compact,
                     ),
                     tooltip: _isExpanded ? 'Collapse' : 'Expand',
                   ),

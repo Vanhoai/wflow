@@ -51,12 +51,34 @@ class _AppState extends State<App> {
                   children: [
                     MaterialApp(
                       builder: (context, child) {
-                        Widget error = const Text('...rendering error...');
-                        if (widget is Scaffold || widget is Navigator) {
-                          error = Scaffold(body: Center(child: error));
-                        }
-                        ErrorWidget.builder = (errorDetails) => error;
+                        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                          bool isDebug = false;
+                          assert(() {
+                            isDebug = true;
+                            return true;
+                          }());
+                          if (isDebug) {
+                            return ErrorWidget(errorDetails.exception);
+                          }
+                          return Container(
+                            alignment: Alignment.center,
+                            color: Colors.white,
+                            child: Center(
+                              child: Text(
+                                'Something went wrong :( \n\nPlease try again later. \n${errorDetails.exception}',
+                                style: const TextStyle(color: Colors.red),
+                                textDirection: TextDirection.ltr,
+                              ),
+                            ),
+                          );
+                        };
                         return child!;
+                        // Widget error = const Text('...rendering error...');
+                        // if (widget is Scaffold || widget is Navigator) {
+                        //   error = Scaffold(body: Center(child: error));
+                        // }
+                        // ErrorWidget.builder = (errorDetails) => error;
+                        // return child!;
                       },
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
@@ -66,6 +88,7 @@ class _AppState extends State<App> {
                       onGenerateRoute: AppRoutes.generateRoute,
                       initialRoute: RouteKeys.signInScreen,
                       home: const SignInScreen(),
+                      themeAnimationDuration: const Duration(milliseconds: 1000),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

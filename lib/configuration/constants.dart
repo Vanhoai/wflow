@@ -27,7 +27,7 @@ class AppConstants {
   static const String camera = "${commonIconPath}ic.camera.svg";
   static const String clips = "${commonIconPath}ic.clips.svg";
   static const String send = "${commonIconPath}ic.send.svg";
-
+  static const String trash = "${commonIconPath}ic.trash.svg";
   // path for introduction svg
   static const String introductionPath = "assets/icons/introduction/";
   static const String introductionIntern = "${introductionPath}plash.intern.svg";

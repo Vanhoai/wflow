@@ -6,18 +6,21 @@ import 'package:equatable/equatable.dart';
 
 class BoxChatState extends Equatable {
   late bool isShowEmojiKeyboard;
+  late bool isShowVoiceRecord;
   late bool isSend;
   final String text;
   final List<File> files;
 
   BoxChatState({
     required this.isShowEmojiKeyboard,
+    required this.isShowVoiceRecord,
     required this.isSend,
     required this.text,
     required this.files,
   });
   BoxChatState copyWith({
     bool? isShowEmojiKeyboard,
+    bool? isShowVoiceRecord,
     bool? isShowRecord,
     bool? isSend,
     String? text,
@@ -25,6 +28,7 @@ class BoxChatState extends Equatable {
   }) {
     return BoxChatState(
         isShowEmojiKeyboard: isShowEmojiKeyboard ?? this.isShowEmojiKeyboard,
+        isShowVoiceRecord: isShowVoiceRecord ?? this.isShowVoiceRecord,
         isSend: isSend ?? this.isSend,
         text: text ?? this.text,
         files: files ?? this.files
@@ -32,5 +36,5 @@ class BoxChatState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isShowEmojiKeyboard,text,isSend,files];
+  List<Object?> get props => [isShowEmojiKeyboard,isShowVoiceRecord,text,isSend,files];
 }

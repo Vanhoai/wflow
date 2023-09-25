@@ -12,13 +12,7 @@ sealed class RecordEvent extends Equatable {
 }
 
 
-class ShowRecordVoiceEvent extends RecordEvent {
 
-  ShowRecordVoiceEvent();
-
-  @override
-  List<Object?> get props => [];
-}
 
 
 class HandleStartRecordEvent extends RecordEvent {

@@ -7,17 +7,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_sound/public/flutter_sound_recorder.dart';
 import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/state.dart';
-
+import 'package:path_provider/path_provider.dart';
 class RecordBloc extends Bloc<RecordEvent, RecordState>{
   late FlutterSoundRecorder _recordingSession;
-  late String pathToAudio;
+  late String path;
   RecordBloc():super(initState()){
-    pathToAudio = '/sdcard/Download/temp.wav';
     _recordingSession = FlutterSoundRecorder();
-    on<ShowRecordVoiceEvent>(showRecordVoice);
     on<HandleStartRecordEvent>(handleStartRecord);
     on<HandleStopRecordEvent>(handleStopRecord);
     _recordingSession.onProgress;
@@ -26,31 +23,20 @@ class RecordBloc extends Bloc<RecordEvent, RecordState>{
 
 
   static RecordState initState(){
-    return RecordState(isShow: false,isRecord: false,timeRecord:  "00:00:00", file: null);
+    return RecordState(isRecord: false,timeRecord:  "Nhấn để ghi âm", file: null);
   }
 
-  FutureOr<void> showRecordVoice(ShowRecordVoiceEvent event, Emitter<RecordState> emit) async {
-    if(!state.isRecord)
-    {
-      final permissionRecord = await Permission.microphone.request();
-      final permissionFile = await Permission.storage.request();
-      if (permissionRecord != PermissionStatus.granted ||
-          permissionFile != PermissionStatus.granted) {
-        throw 'Chua co quyen mic';
-      }
-    }
-    emit(state.copyWith(isShow: !state.isShow));
 
-  }
 
   FutureOr<void> handleStartRecord(HandleStartRecordEvent event, Emitter<RecordState> emit) async {
-    print("Hello ");
+    final cache = await cachePath;
+    path = '$cache/temp.wav';
     await _recordingSession.openRecorder();
     await _recordingSession
         .setSubscriptionDuration(const Duration(milliseconds: 10));
 
     await _recordingSession.startRecorder(
-      toFile: pathToAudio,
+      toFile: path,
       codec: Codec.pcm16WAV,
     );
 
@@ -67,11 +53,9 @@ class RecordBloc extends Bloc<RecordEvent, RecordState>{
   }
 
 
-
-
   FutureOr<void> handleStopRecord(HandleStopRecordEvent event, Emitter<RecordState> emit) async{
     await _recordingSession.stopRecorder();
-    File file = File(pathToAudio);
+    File file = File(path);
     await _recordingSession.closeRecorder();
     emit(state.copyWith(isRecord: false, file: file));
   }
@@ -87,5 +71,9 @@ class RecordBloc extends Bloc<RecordEvent, RecordState>{
 
   }
 
+  Future<String> get cachePath async {
+    final directory = await getTemporaryDirectory();
+    return directory.path;
+  }
 
 }

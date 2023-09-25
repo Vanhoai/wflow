@@ -1,11 +1,9 @@
-import 'dart:async';
+
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_sound/flutter_sound.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:intl/intl.dart';
-import 'package:permission_handler/permission_handler.dart';
+
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
@@ -13,8 +11,6 @@ import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
-import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/record.dart';
 
 import 'bloc/bloc.dart';
@@ -87,7 +83,7 @@ class _BoxChatState extends State<BoxChat> {
                       controller: _controller,
                       focusNode: _focusNode,
                       onTap: () {
-
+                        context.read<BoxChatBloc>().add(HideAllShowEvent());
                       },
 
                       textInputAction: TextInputAction.newline,
@@ -171,7 +167,7 @@ class _BoxChatState extends State<BoxChat> {
                     onTap: () {
                       if(!state.isSend)
                       {
-                        _showRecord(context);
+                        _showRecord(context,state);
                       }else {
                         _sendMessage(
                             context,
@@ -202,7 +198,11 @@ class _BoxChatState extends State<BoxChat> {
             const SizedBox(
               height: 16,
             ),
-            const Record(),
+            Offstage(
+              offstage: !state.isShowVoiceRecord,
+              child: const Record(),
+            ),
+
             EmojiKeyboard(
               controller: _controller,
               emojiShowing: state.isShowEmojiKeyboard,
@@ -214,18 +214,29 @@ class _BoxChatState extends State<BoxChat> {
   }
 
   _showEmojiKeyBoard(BuildContext context, BoxChatState state) {
+    if(_focusNode.hasFocus)
+    {
+      _focusNode.unfocus();
+    }
     BlocProvider.of<BoxChatBloc>(context)
-        .add(ShowEmojiKeyBoardEvent(isShow: !state.isShowEmojiKeyboard));
-    if (state.isShowEmojiKeyboard != true) {
+        .add(ShowEmojiKeyBoardEvent());
+    if (state.isShowEmojiKeyboard != true ) {
       _focusNode.unfocus();
     } else {
       _focusNode.requestFocus();
     }
+
   }
 
-  _showRecord(BuildContext context) {
-    BlocProvider.of<RecordBloc>(context)
+  _showRecord(BuildContext context, BoxChatState state) {
+    BlocProvider.of<BoxChatBloc>(context)
         .add(ShowRecordVoiceEvent());
+    if (state.isShowVoiceRecord != true ) {
+      _focusNode.unfocus();
+    } else {
+      _focusNode.requestFocus();
+    }
+
   }
   _sendMessage(BuildContext context, Message message)
   {

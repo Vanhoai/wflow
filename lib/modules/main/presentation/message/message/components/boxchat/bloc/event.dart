@@ -9,14 +9,25 @@ sealed class BoxChatEvent extends Equatable {
 }
 
 class ShowEmojiKeyBoardEvent extends BoxChatEvent{
-  final bool isShow;
 
-  ShowEmojiKeyBoardEvent({required this.isShow});
+  ShowEmojiKeyBoardEvent();
 
   @override
-  List<Object?> get props => [isShow];
+  List<Object?> get props => [];
 }
 
+class ShowRecordVoiceEvent extends BoxChatEvent {
+
+  ShowRecordVoiceEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class HideAllShowEvent extends BoxChatEvent{
+  HideAllShowEvent();
+
+}
 
 class IsSendMessageTextEvent extends BoxChatEvent{
   final String isSend;

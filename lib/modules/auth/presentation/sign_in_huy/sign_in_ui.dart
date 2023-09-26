@@ -43,9 +43,9 @@ class _SignInScreenState extends State<SignInScreenHuy> {
       create: (_) => SignInBloc(),
       lazy: true,
       child: SafeArea(
-            child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: Container(
+          child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        body: Container(
             width: MediaQuery.of(context).size.width,
             padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
             child: Column(
@@ -80,9 +80,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         color: Colors.white,
-                        child: Text("Hoặc",
-                            style: TextTitle(
-                                size: 16, fontWeight: FontWeight.w400)),
+                        child: Text("Hoặc", style: TextTitle(size: 16, fontWeight: FontWeight.w400)),
                       )
                     ],
                   ),
@@ -97,8 +95,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                     height: 50,
                     decoration: BoxDecoration(
                       border: Border.all(color: Colors.black26, width: 1),
-                      borderRadius:
-                          const BorderRadius.all(Radius.circular(12.0)),
+                      borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                     ),
                     child: Stack(
                       // min sizes for Material buttons
@@ -113,8 +110,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                           alignment: Alignment.center,
                           child: Text(
                             'Đăng nhập với Google',
-                            style: TextTitle(
-                                size: 16, fontWeight: FontWeight.w400),
+                            style: TextTitle(size: 16, fontWeight: FontWeight.w400),
                           ),
                         )
                       ],
@@ -129,25 +125,16 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text("Bạn chưa có tài khoản? ",
-                            style: TextTitle(
-                                size: 16, fontWeight: FontWeight.w400)),
+                        Text("Bạn chưa có tài khoản? ", style: TextTitle(size: 16, fontWeight: FontWeight.w400)),
                         InkWell(
                             borderRadius: BorderRadius.circular(4),
-                            onTap: () => {
-                              Navigator.pushNamed(
-                                  context, RouteKeys.registerScreen)
-                            },
+                            onTap: () => {Navigator.pushNamed(context, RouteKeys.registerScreen)},
                             child: Padding(
                                 padding: const EdgeInsets.all(2),
                                 child: Text(
                                   "Đăng ký",
-                                  style: TextTitle(
-                                      colors: AppColors.primary,
-                                      size: 16,
-                                      fontWeight: FontWeight.w500),
-                                )
-                            )),
+                                  style: TextTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
+                                ))),
                       ],
                     ))
               ],

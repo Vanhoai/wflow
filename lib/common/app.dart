@@ -10,7 +10,8 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/auth/presentation/sign_in/sign_in.dart';
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/modules/main/presentation/message/message/message.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -74,8 +75,8 @@ class _AppState extends State<App> {
                       darkTheme: themeDataDark,
                       themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute: RouteKeys.signInScreen,
-                      home: const SignInScreen(),
+                      initialRoute: RouteKeys.messageScreen,
+                      home: const IntroScreen(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

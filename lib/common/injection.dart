@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/utils/secure.util.dart';
+import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/modules/auth/data/auth.repository.impl.dart';
 import 'package:wflow/modules/auth/data/auth.service.dart';
 import 'package:wflow/modules/auth/domain/auth.repository.dart';
@@ -37,4 +38,7 @@ Future<void> initAppInjection() async {
 
   // common bloc
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
+
+  //helper datetime
+  instance.registerLazySingleton<Time>(() => Time());
 }

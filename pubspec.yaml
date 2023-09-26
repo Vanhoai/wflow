@@ -27,8 +27,18 @@ dependencies:
   flutter_flipperkit: ^0.0.29
   shared_preferences: ^2.2.0
   hydrated_bloc: ^9.1.2
+  introduction_screen: ^3.1.11
   flutter_localization: ^0.1.13
   json_annotation: ^4.8.1
+  emoji_picker_flutter: ^1.6.1
+  voice_message_package: ^1.0.41
+  flutter_sound: ^9.2.13
+  intl: any
+  path_provider: ^2.1.1
+  #xin quyen
+  permission_handler: ^11.0.0
+  socket_io_client: ^2.0.3
+  file_picker: ^5.3.3
 
 dev_dependencies:
   flutter_test:
@@ -41,10 +51,12 @@ flutter:
   uses-material-design: true
   generate: true
   assets:
-    - assets/images/
+    #- assets/images/
     - assets/languages/
     - assets/anim/
     - assets/icons/bottom/
+    - assets/icons/common/
+    - assets/icons/introduction/
 
   fonts:
     - family: Poppins
@@ -57,3 +69,6 @@ flutter:
           weight: 700
         - asset: assets/fonts/poppins_medium.ttf
           weight: 500
+    - family: CustomIcon
+      fonts:
+        - asset: assets/fonts/custom_icon.ttf

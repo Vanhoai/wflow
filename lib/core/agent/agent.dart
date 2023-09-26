@@ -32,6 +32,7 @@ class Agent {
   }
 
   BaseOptions generateOptions() {
+    print(EnvironmentConfiguration.apiBaseUrl);
     BaseOptions opts = BaseOptions();
     opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
     opts.contentType = Headers.jsonContentType;

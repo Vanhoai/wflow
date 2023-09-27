@@ -55,104 +55,112 @@ class _VerificationScreenState extends State<VerificationScreen>{
   Widget build(BuildContext context) {
     // TODO: implement build
     return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        body: Container(
-          padding:  const EdgeInsets.only(left: 20, right: 20),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                width: MediaQuery.of(context).size.width,
-                margin: const EdgeInsets.only(top: 80),
-                child: SvgPicture.asset(
-                  AppConstants.app,
-                  semanticsLabel: "Logo",
-                ),
-              ),
-              Container(
-                margin: const EdgeInsets.only(top: 49),
-                child: Text(
-                  "Xác nhận số điện thoại",
-                  style: TextTitle(
-                    size: 20,
-                    fontWeight: FontWeight.w400
+      child: Listener(
+        onPointerDown: (PointerDownEvent event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Scaffold(
+          resizeToAvoidBottomInset: false,
+          body: Container(
+            padding:  const EdgeInsets.only(left: 20, right: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Container(
+                  width: MediaQuery.of(context).size.width,
+                  margin: const EdgeInsets.only(top: 80),
+                  child: SvgPicture.asset(
+                    AppConstants.app,
+                    semanticsLabel: "Logo",
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 60,
-              ),
-               const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  TextFieldVerification(),
-                  TextFieldVerification(),
-                  TextFieldVerification(),
-                  TextFieldVerification(),
-                  TextFieldVerification(),
-                  TextFieldVerification(),
-                ]
-              ),
-              const SizedBox(
-                height: 17,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Mã xác nhận sẽ gửi lại sau",
+                Container(
+                  margin: const EdgeInsets.only(top: 49),
+                  child: Text(
+                    "Xác nhận số điện thoại",
                     style: TextTitle(
+                      size: 20,
                       fontWeight: FontWeight.w400
                     ),
                   ),
-                  Text(
-                    '${count}s',
-                    style: TextTitle(
-                        fontWeight: FontWeight.w400
-                    ),
-                  ),
-                ],
-              ),
-              Flexible(
-                fit: FlexFit.tight,
-                child: Stack(
-                  alignment: Alignment.center,
+                ),
+                const SizedBox(
+                  height: 60,
+                ),
+                 const Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    AppButton(
-                      text: "Xác nhận",
-                      onTap: () {},
+                    TextFieldVerification(),
+                    TextFieldVerification(),
+                    TextFieldVerification(),
+                    TextFieldVerification(),
+                    TextFieldVerification(),
+                    TextFieldVerification(),
+                  ]
+                ),
+                const SizedBox(
+                  height: 17,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Mã xác nhận sẽ gửi lại sau",
+                      style: TextTitle(
+                        fontWeight: FontWeight.w400
+                      ),
+                    ),
+                    Text(
+                      '${count}s',
+                      style: TextTitle(
+                          fontWeight: FontWeight.w400
+                      ),
                     ),
                   ],
-                )
-              ),
-              Container(
-                  margin:  EdgeInsets.only(top: 30, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
-                  alignment: Alignment.center,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                Flexible(
+                  fit: FlexFit.tight,
+                  child: Stack(
+                    alignment: Alignment.center,
                     children: [
-                      Text("Bạn đã có tài khoản? ",
-                          style: TextTitle(
-                              size: 16, fontWeight: FontWeight.w400)),
-                      InkWell(
-                          borderRadius: BorderRadius.circular(4),
-                          onTap: () => {
-                            Navigator.pop(context)
-                          },
-                          child: Padding(
-                              padding: const EdgeInsets.all(2),
-                              child: Text(
-                                "Đăng nhập",
-                                style: TextTitle(
-                                    colors: AppColors.primary,
-                                    size: 16,
-                                    fontWeight: FontWeight.w500),
-                              )
-                          )),
+                      AppButton(
+                        text: "Xác nhận",
+                        onTap: () {},
+                      ),
                     ],
-                  ))
-            ],
+                  )
+                ),
+                Container(
+                    margin:  EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+                    alignment: Alignment.center,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text("Bạn đã có tài khoản? ",
+                            style: TextTitle(
+                                size: 16, fontWeight: FontWeight.w400)),
+                        InkWell(
+                            borderRadius: BorderRadius.circular(4),
+                            onTap: () => {
+                              Navigator.pop(context)
+                            },
+                            child: Padding(
+                                padding: const EdgeInsets.all(2),
+                                child: Text(
+                                  "Đăng nhập",
+                                  style: TextTitle(
+                                      colors: AppColors.primary,
+                                      size: 16,
+                                      fontWeight: FontWeight.w500),
+                                )
+                            )),
+                      ],
+                    ))
+              ],
+            ),
           ),
         ),
       ),

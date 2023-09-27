@@ -17,7 +17,7 @@ class BoxChatBloc extends Bloc<BoxChatEvent,BoxChatState> {
 
 
   static BoxChatState initState(){
-    return BoxChatState(isShowEmojiKeyboard: false, isShowVoiceRecord: false,isSend: false, text: "", files: []);
+    return BoxChatState(isShowEmojiKeyboard: false, isShowVoiceRecord: false,isSend: false, files: []);
   }
   FutureOr<void> showEmojiKeyBoard(ShowEmojiKeyBoardEvent event, Emitter<BoxChatState> emit) {
       emit(state.copyWith(isShowEmojiKeyboard: !state.isShowEmojiKeyboard, isShowVoiceRecord: false));

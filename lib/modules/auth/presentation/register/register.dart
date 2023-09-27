@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 import 'components/index.dart';
@@ -33,138 +30,145 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-        child: Scaffold(
-          resizeToAvoidBottomInset: false,
+        child: Listener(
+          onPointerDown: (PointerDownEvent event) {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: Scaffold(
+            resizeToAvoidBottomInset: false,
 
-            body:Container(
-                width: double.infinity,
-                padding: const EdgeInsets.only(top: 10),
-                child: DefaultTabController(
-                    length: 2,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(top: 20),
-                          child: Text(
-                            "Đăng ký",
-                            style: TextTitle(
-                              fontWeight: FontWeight.w400,
-                              size: 24,
+              body:SingleChildScrollView(
+                child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.only(top: 10),
+                    child: DefaultTabController(
+                        length: 2,
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.only(top: 20),
+                              child: Text(
+                                "Đăng ký",
+                                style: TextTitle(
+                                  fontWeight: FontWeight.w400,
+                                  size: 24,
+                                ),
+                              ),
                             ),
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(top: 10),
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: TabBar(
-                            indicatorSize: TabBarIndicatorSize.tab,
-                            indicatorColor: Colors.black,
-                            controller: _tabController,
-                            tabs: [
-                              _tabSelect(icon: AppConstants.email, title: 'Email'),
-                              _tabSelect(icon: AppConstants.phone, title: 'Số điện thoại'),
-                            ],
-                          ),
-                        ),
-                        SizedBox(
-                          height: MediaQuery.of(context).size.height * 0.5,
-                          child: TabBarView(//TabarView layout chinh
-                            controller: _tabController,
-                            children: const [
-                              FormRegisterEmail(),
-                              FormRegisterPhone(),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(vertical: 30),
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              Container(
-                                margin: const EdgeInsets.symmetric(horizontal: 66),
-                                height: 1,
-                                width: double.infinity,
-                                color: Colors.black26,
+                            Container(
+                              margin: const EdgeInsets.only(top: 10),
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: TabBar(
+                                indicatorSize: TabBarIndicatorSize.tab,
+                                indicatorColor: Theme.of(context).primaryColor,
+                                controller: _tabController,
+                                tabs: [
+                                  _tabSelect(icon: AppConstants.email, title: 'Email'),
+                                  _tabSelect(icon: AppConstants.phone, title: (MediaQuery.of(context).size.width <= 400 ? 'Phone' : 'Số điện thoại') ),
+                                ],
                               ),
-                              Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 8),
-                                color: Colors.white,
-                                child: Text("Hoặc",
-                                    style: TextTitle(
-                                        size: 16, fontWeight: FontWeight.w400)),
-                              )
-                            ],
-                          ),
-                        ),
-                        const SizedBox(
-                          height: 7,
-                        ),
-                        //Login google xử sao
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
-                          child: InkWell(
-                            child: Ink(
-                              height: 50,
-                              decoration: BoxDecoration(
-                                border: Border.all(color: Colors.black26, width: 1),
-                                borderRadius:
-                                const BorderRadius.all(Radius.circular(12.0)),
+                            ),
+                            SizedBox(
+                              height: (MediaQuery.of(context).size.height <= 800 ? 400 : MediaQuery.of(context).size.height * 0.5) ,
+                              child: TabBarView(//TabarView layout chinh
+                                controller: _tabController,
+                                children: const [
+                                  FormRegisterEmail(),
+                                  FormRegisterPhone(),
+                                ],
                               ),
+                            ),
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 30),
                               child: Stack(
-                                // min sizes for Material buttons
+                                alignment: Alignment.center,
                                 children: [
-                                  Align(
-                                      alignment: Alignment.centerLeft,
-                                      child: Container(
-                                        padding: const EdgeInsets.only(left: 11),
-                                        child: SvgPicture.asset(AppConstants.google),
-                                      )),
-                                  Align(
-                                    alignment: Alignment.center,
-                                    child: Text(
-                                      'Đăng ký với Google',
-                                      style: TextTitle(
-                                          size: 16, fontWeight: FontWeight.w400),
-                                    ),
+                                  Container(
+                                    margin: const EdgeInsets.symmetric(horizontal: 66),
+                                    height: 1,
+                                    width: double.infinity,
+                                    color: Colors.black26,
+                                  ),
+                                  Container(
+                                    padding: const EdgeInsets.symmetric(horizontal: 8),
+                                    color: Colors.white,
+                                    child: Text("Hoặc",
+                                        style: TextTitle(
+                                            size: 16, fontWeight: FontWeight.w400)),
                                   )
                                 ],
                               ),
                             ),
-                            onTap: () {},
-                          ),
-                        ),
-                        Container(
-                            margin: const EdgeInsets.symmetric(vertical: 15),
-                            alignment: Alignment.center,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text("Bạn đã có tài khoản? ",
-                                    style: TextTitle(
-                                        size: 16, fontWeight: FontWeight.w400)),
-                                InkWell(
-                                    borderRadius: BorderRadius.circular(4),
-                                    onTap: () => {
-                                      Navigator.pop(context)
-                                    },
-                                    child: Padding(
-                                        padding: const EdgeInsets.all(2),
+                            const SizedBox(
+                              height: 7,
+                            ),
+                            //Login google xử sao
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 20),
+                              child: InkWell(
+                                child: Ink(
+                                  height: 50,
+                                  decoration: BoxDecoration(
+                                    border: Border.all(color: Colors.black26, width: 1),
+                                    borderRadius:
+                                    const BorderRadius.all(Radius.circular(12.0)),
+                                  ),
+                                  child: Stack(
+                                    // min sizes for Material buttons
+                                    children: [
+                                      Align(
+                                          alignment: Alignment.centerLeft,
+                                          child: Container(
+                                            padding: const EdgeInsets.only(left: 11),
+                                            child: SvgPicture.asset(AppConstants.google),
+                                          )),
+                                      Align(
+                                        alignment: Alignment.center,
                                         child: Text(
-                                          "Đăng nhập",
+                                          'Đăng ký với Google',
                                           style: TextTitle(
-                                              colors: AppColors.primary,
-                                              size: 16,
-                                              fontWeight: FontWeight.w500),
-                                        )
-                                    )),
-                              ],
-                            ))
-                      ],
-                    ) 
-                )
-            )
+                                              size: 16, fontWeight: FontWeight.w400),
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                ),
+                                onTap: () {},
+                              ),
+                            ),
+                            Container(
+                                margin: const EdgeInsets.symmetric(vertical: 15),
+                                alignment: Alignment.center,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text("Bạn đã có tài khoản? ",
+                                        style: TextTitle(
+                                            size: 16, fontWeight: FontWeight.w400)),
+                                    InkWell(
+                                        borderRadius: BorderRadius.circular(4),
+                                        onTap: () => {
+                                          Navigator.pop(context)
+                                        },
+                                        child: Padding(
+                                            padding: const EdgeInsets.all(2),
+                                            child: Text(
+                                              "Đăng nhập",
+                                              style: TextTitle(
+                                                  colors: Theme.of(context).primaryColor,
+                                                  size: 16,
+                                                  fontWeight: FontWeight.w500),
+                                            )
+                                        )),
+                                  ],
+                                ))
+                          ],
+                        )
+                    )
+                ),
+              )
+          ),
         )
 
     );

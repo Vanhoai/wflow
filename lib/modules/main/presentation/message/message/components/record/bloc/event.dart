@@ -29,3 +29,8 @@ class HandleStopRecordEvent extends RecordEvent{
   @override
   List<Object?> get props => [];
 }
+
+class HandleRemoveRecordEvent extends RecordEvent {
+  HandleRemoveRecordEvent();
+}
+

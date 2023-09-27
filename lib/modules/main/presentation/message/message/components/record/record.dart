@@ -43,24 +43,27 @@ class _RecordState extends State<Record>{
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 5, top: 5, right: 5, left: 5),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(50),
-                          onTap: () {
-
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: SvgPicture.asset(
-                              AppConstants.trash,
-                              height: 30,
-                              width: 30,
-                              colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+                    Visibility(
+                      visible: state.file != null,
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 5, top: 5, right: 5, left: 5),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            onTap: () {
+                              context.read<RecordBloc>().add(HandleRemoveRecordEvent());
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: SvgPicture.asset(
+                                AppConstants.trash,
+                                height: 30,
+                                width: 30,
+                                colorFilter: const ColorFilter.mode(Colors.red, BlendMode.srcIn),
+                              ),
                             ),
-                          ),
-                        )
+                          )
+                      ),
                     ),
                     InkWell(
                       onTap: () {
@@ -85,31 +88,31 @@ class _RecordState extends State<Record>{
                         ),
                       ),
                     ),
+                    Visibility(
+                      visible: state.file != null,
+                      child: Padding(
+                          padding: const EdgeInsets.only(
+                              bottom: 5, top: 5, right: 5, left: 5),
+                          child: InkWell(
+                            borderRadius: BorderRadius.circular(50),
+                            onTap: () {
+                            },
+                            child: Padding(
+                              padding: const EdgeInsets.all(8),
+                              child: SvgPicture.asset(
+                                AppConstants.send,
+                                height: 30,
+                                width: 30,
 
-                    Padding(
-                        padding: const EdgeInsets.only(
-                            bottom: 5, top: 5, right: 5, left: 5),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(50),
-
-                          onTap: () {
-
-                          },
-                          child: Padding(
-                            padding: const EdgeInsets.all(8),
-                            child: SvgPicture.asset(
-                              AppConstants.send,
-                              height: 30,
-                              width: 30,
-
+                              ),
                             ),
-                          ),
-                        )
+                          )
+                      ),
                     ),
                   ]
                 ),
                 Container(
-                  margin: const EdgeInsets.only(top: 5),
+                  margin: const EdgeInsets.only(top: 15),
                   child: Text(
                     state.timeRecord,
                     style: TextTitle(

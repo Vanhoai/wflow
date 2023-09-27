@@ -41,15 +41,6 @@ class SignInBloc extends Bloc<SignInEvent,SignInState>{
   }
 
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) {
-
-    if (kDebugMode) {
-      print(state.email);
-      print(state.password);
-      print(state.regex);
-      print(state.isRemember);
-    }
-
-
     emit(SignInSuccess());
   }
 

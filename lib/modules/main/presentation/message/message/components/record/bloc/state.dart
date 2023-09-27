@@ -17,12 +17,12 @@ class RecordState extends Equatable {
     return RecordState(
       isRecord: isRecord ?? this.isRecord,
       timeRecord: timeRecord ?? this.timeRecord,
-      file: file ?? this.file
+      file: file
     );
   }
 
 
   @override
   List<Object?> get props => [isRecord,timeRecord,file];
-
 }
+

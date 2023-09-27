@@ -15,7 +15,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
       centerTitle: true,
       title: Text(
         text,
-        style: TextTitle(fontWeight: FontWeight.w500,size: 18),
+        style: TextTitle(fontWeight: FontWeight.w400,size: 16),
       ),
       leading: Padding(
         padding: const EdgeInsets.all(8),

@@ -39,6 +39,7 @@ dependencies:
   permission_handler: ^11.0.0
   socket_io_client: ^2.0.3
   file_picker: ^5.3.3
+  camera: ^0.10.5+4
 
 dev_dependencies:
   flutter_test:
@@ -69,6 +70,3 @@ flutter:
           weight: 700
         - asset: assets/fonts/poppins_medium.ttf
           weight: 500
-    - family: CustomIcon
-      fonts:
-        - asset: assets/fonts/custom_icon.ttf

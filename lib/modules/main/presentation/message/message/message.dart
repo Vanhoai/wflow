@@ -70,7 +70,7 @@ class _MessageScreenState extends State<MessageScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Material(
-                elevation: 2,
+                elevation: 0.7,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(

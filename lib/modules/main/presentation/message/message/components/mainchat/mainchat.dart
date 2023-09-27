@@ -133,9 +133,12 @@ class _MainChatState extends State<MainChat> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Image.network(
-          message.content,
-          width: 200,
+        ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.network(
+            message.content,
+            width: 200,
+          ),
         ),
         Container(
           margin: const EdgeInsets.only(top: 4),

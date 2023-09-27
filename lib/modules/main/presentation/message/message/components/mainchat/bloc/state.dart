@@ -21,10 +21,6 @@ class MainChatState extends Equatable{
 
   const MainChatState({required this.listChat});
 
-
-
-
-
   @override
   // TODO: implement props
   List<Object?> get props => [listChat];

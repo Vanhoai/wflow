@@ -27,4 +27,5 @@ class SignInState extends Equatable{
   @override
   List<Object?> get props => [email,password,regex,isRemember];
 }
-class SignInSuccess extends SignInState {}
+class SignInSuccess extends SignInState {
+}

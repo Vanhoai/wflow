@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:voice_message_package/voice_message_package.dart';
 import 'package:wflow/common/injection.dart';
@@ -22,20 +23,34 @@ class MainChat extends StatefulWidget {
 
 class _MainChatState extends State<MainChat> {
   final String id = "1";
-
+  final ScrollController _controller = ScrollController();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
   }
-
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    _controller.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return (BlocBuilder<MainChatBloc, MainChatState>(
+      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
+        SchedulerBinding.instance.addPostFrameCallback((_) {
+          _controller.animateTo(_controller.position.maxScrollExtent,
+              duration: const Duration(milliseconds: 200),
+              curve: Curves.easeOut);
+        });
+
         return ListView.builder(
           itemCount: state.listChat.length,
+          controller: _controller,
           itemBuilder: (context, index) {
             return Container(
                 margin:

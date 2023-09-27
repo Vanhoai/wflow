@@ -59,7 +59,6 @@ class _MessageScreenState extends State<MessageScreen> {
             ),
             BlocProvider(
               create: (_) => MainChatBloc(),
-              lazy: true,
             ),
             BlocProvider(
                 create: (_) => RecordBloc(),

@@ -73,14 +73,13 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
 
 
   FutureOr<void> getChat(GetMessageEvent event, Emitter<MainChatState> emit) {
-    print(event.chat);
     Message message = Message(
       id: event.chat["id"],
       content: event.chat["content"],
       type: event.chat["type"],
       createAt: event.chat["createAt"].toString()
     );
-    state.listChat.add(message);
-    emit(MainChatState(listChat: state.listChat));
+    final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
+    emit(newState);
   }
 }

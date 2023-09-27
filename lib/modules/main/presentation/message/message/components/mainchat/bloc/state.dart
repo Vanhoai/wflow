@@ -2,18 +2,12 @@
 import 'package:equatable/equatable.dart';
 
 //De tam
-class Message extends Equatable {
+class Message {
   final String id;
   final String content;
   final String type;
   String? createAt;
   Message({required this.id, required this.content, required this.type,this.createAt});
-
-
-  @override
-  // TODO: implement props
-  List<Object?> get props => [];
-
 }
 
 class MainChatState extends Equatable{
@@ -21,9 +15,19 @@ class MainChatState extends Equatable{
 
   const MainChatState({required this.listChat});
 
+
+  MainChatState copyWith({
+    List<Message>? listChat
+  }){
+    return MainChatState(listChat: listChat ?? this.listChat);
+  }
+
+
   @override
   // TODO: implement props
   List<Object?> get props => [listChat];
 
 }
+
+
 

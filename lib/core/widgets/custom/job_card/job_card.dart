@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 const String _kProgress = '\u2022';
-const List<String> mockProgress = [
+const List<String> staticProgress = [
   'Set up project both backend and front end',
   'Design mockup application',
   'Deploy mobile application to app store',
 ];
-const List<String> mockTitle = [
+const List<String> staticTitle = [
   'Duration',
   'No information',
   'Description',
@@ -16,7 +16,7 @@ const List<String> mockTitle = [
   'Progress',
 ];
 
-const List<String> mockSkill = [
+const List<String> staticSkill = [
   'Flutter',
   'Dart',
   'Firebase',
@@ -27,36 +27,40 @@ const List<String> mockSkill = [
 class JobCard extends StatefulWidget {
   const JobCard({
     super.key,
-    this.boxDecoration = const BoxDecoration(color: Colors.white, borderRadius: BorderRadius.all(Radius.circular(8))),
+    this.boxDecoration = const BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.all(
+        Radius.circular(8),
+      ),
+    ),
     this.header = const SizedBox(),
-    this.durationContent = 'No information',
-    this.costContent = '\$0',
-    this.descriptionContent = 'No information',
-    this.listSkill = mockSkill,
+    this.duration = 'No information',
+    this.cost = '\$0',
+    required this.description,
     this.showMore = false,
+    this.skill = staticSkill,
     this.showMoreDuration = const Duration(milliseconds: 300),
     this.bottomChild,
-    this.posterContent = 'The Flow (tvhoai241223@gmail.com)',
-    this.progressContent = mockProgress,
-    this.padding = const EdgeInsets.all(8.0),
-    this.margin = const EdgeInsets.all(0.0),
-    this.trimLines = 3,
+    this.poster = 'The Flow (tvhoai241223@gmail.com)',
+    this.progress = staticProgress,
+    this.padding = const EdgeInsets.all(0),
+    this.margin = const EdgeInsets.all(0),
   });
 
   final Widget header;
-  final String durationContent;
-  final String costContent;
-  final String descriptionContent;
+  final String duration;
+  final String cost;
+  final TextMore description;
   final bool showMore;
   final Widget? bottomChild;
   final Decoration boxDecoration;
   final Duration showMoreDuration;
-  final List<String> listSkill;
-  final String posterContent;
-  final List<String> progressContent;
+  final List<String> skill;
+  final String poster;
+  final List<String> progress;
   final EdgeInsets padding;
   final EdgeInsets margin;
-  final int trimLines;
+
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -68,192 +72,6 @@ class _JobCardState extends State<JobCard> {
   }
 
   kSpaceVertical(BuildContext context, {double? height}) => SizedBox(height: height ?? 8);
-
-  Widget _buildDuration(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    final TextStyle contentStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Expanded(
-              child: Text(
-                mockTitle[0],
-                style: titleStyle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Text(
-              widget.durationContent,
-              style: contentStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-        kSpaceVertical(context, height: 2),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: Text(
-                mockTitle[1],
-                style: titleStyle,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
-            Text(
-              widget.costContent,
-              style: contentStyle,
-              maxLines: 1,
-              overflow: TextOverflow.ellipsis,
-            ),
-          ],
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDescription(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    final TextStyle contentStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      textDirection: TextDirection.ltr,
-      verticalDirection: VerticalDirection.down,
-      children: [
-        Text(mockTitle[2], style: titleStyle),
-        kSpaceVertical(context, height: 2),
-        TextMore(
-          widget.descriptionContent,
-          trimMode: TrimMode.Line,
-          trimLines: widget.trimLines,
-          style: contentStyle,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildSkill(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-
-    if (widget.listSkill.length > 5) {
-      widget.listSkill.removeRange(5, widget.listSkill.length);
-    }
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(
-          mockTitle[3],
-          style: titleStyle,
-        ),
-        kSpaceVertical(context),
-        Wrap(
-          spacing: 8.0,
-          runSpacing: 4.0,
-          children: widget.listSkill
-              .map((e) => ChipCustom(
-                    title: e.toString(),
-                    onTap: () {},
-                  ))
-              .toList(),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPoster(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    final TextStyle contentStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    final TextStyle buttonConnectStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.primary,
-    ));
-
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisAlignment: MainAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(mockTitle[4], style: titleStyle),
-        kSpaceVertical(context),
-        Text(widget.posterContent, style: contentStyle),
-        kSpaceVertical(context),
-        TextButton(
-          onPressed: () {},
-          style: ButtonStyle(
-            padding: MaterialStateProperty.all(EdgeInsets.zero),
-            minimumSize: MaterialStateProperty.all(Size.zero),
-            tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-          ),
-          child: Text('Connect', style: buttonConnectStyle),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildProgress(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    final TextStyle contentStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: Theme.of(context).colorScheme.onBackground,
-    ));
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Text(mockTitle[5], style: titleStyle),
-        kSpaceVertical(context),
-        ListView.separated(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: widget.progressContent.length,
-          itemBuilder: (BuildContext context, int index) {
-            return Row(
-              children: [
-                Text(_kProgress, style: contentStyle),
-                kSpaceVertical(context),
-                Expanded(
-                  child: Text(widget.progressContent[index], style: contentStyle),
-                ),
-              ],
-            );
-          },
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          separatorBuilder: (BuildContext context, int index) => kSpaceVertical(context),
-        ),
-      ],
-    );
-  }
 
   Widget _buildBottomChildren(BuildContext context) {
     return const Column(
@@ -302,36 +120,269 @@ class _JobCardState extends State<JobCard> {
         ),
         color: themeData.colorScheme.background,
         elevation: 0,
+        surfaceTintColor: themeData.colorScheme.background,
         child: Column(
-          mainAxisSize: MainAxisSize.min,
+          mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             widget.header,
+
+            // * CUSTOM WIDGET
             kSpaceVertical(context),
-            _buildDuration(context, themeData),
+            // * CUSTOM WIDGET
+
+            // ! BUILD DURATION AND COST =>>>>>>>>>>>>>>>>>>>
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                // ! BUILD DURATION =>>>>>>>>>>>>>>>>>>>
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        staticTitle[0],
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      widget.duration,
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      )),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+                // ! BUILD DURATION =>>>>>>>>>>>>>>>>>>>
+
+                // * CUSTOM WIDGET
+                kSpaceVertical(context, height: 2),
+                // * CUSTOM WIDGET
+
+                // ! BUILD COST =>>>>>>>>>>>>>>>>>>>
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: Text(
+                        staticTitle[1],
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    Text(
+                      widget.cost,
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: Theme.of(context).colorScheme.onBackground,
+                      )),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ],
+              // ! BUILD COST =>>>>>>>>>>>>>>>>>>>
+            ),
+            // ! BUILD DURATION AND COST =>>>>>>>>>>>>>>>>>>>
+
+            // * CUSTOM WIDGET
             kSpaceVertical(context),
-            _buildDescription(context, themeData),
+            // * CUSTOM WIDGET
+
+            // ! BUILD DESCRIPTION =>>>>>>>>>>>>>>>>>>>
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              textDirection: TextDirection.ltr,
+              verticalDirection: VerticalDirection.down,
+              children: [
+                Text(staticTitle[2],
+                    style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                      color: themeData.colorScheme.onBackground,
+                    ))),
+                kSpaceVertical(context, height: 2),
+                widget.description,
+              ],
+            ),
+            // ! BUILD DESCRIPTION =>>>>>>>>>>>>>>>>>>>
+
+            // * CUSTOM WIDGET
             kSpaceVertical(context),
-            _buildSkill(context, themeData),
+            // * CUSTOM WIDGET
+
+            // ! BUILD SKILL =>>>>>>>>>>>>>>>>>>>
+            Builder(
+              builder: (context) {
+                if (widget.skill.isEmpty) return const SizedBox();
+
+                if (widget.skill.length > 5) widget.skill.removeRange(5, widget.skill.length);
+
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(staticTitle[3],
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          color: themeData.colorScheme.onBackground,
+                        ))),
+                    kSpaceVertical(context),
+                    Wrap(
+                      spacing: 8.0,
+                      runSpacing: 4.0,
+                      children: widget.skill.map((e) {
+                        if (e.length > 10) e = '${e.substring(0, 10)}...';
+
+                        return ChipCustom(
+                          title: e.toString(),
+                          onTap: () {},
+                        );
+                      }).toList(),
+                    ),
+                  ],
+                );
+              },
+            ),
+            // ! BUILD SKILL =>>>>>>>>>>>>>>>>>>>
+
+            // * CUSTOM WIDGET
             kSpaceVertical(context),
+            // * CUSTOM WIDGET
+
+            // ! BUILD EXPLORE CARD TILE =>>>>>>>>>>>>>>>>>>>
             Builder(
               builder: (context) {
                 if (widget.showMore) {
                   return ExploreCardTile(
                     duration: widget.showMoreDuration,
                     children: [
+                      // * CUSTOM WIDGET
                       kSpaceVertical(context),
-                      _buildPoster(context, themeData),
+                      // * CUSTOM WIDGET
+
+                      // ! BUILD POSTER =>>>>>>>>>>>>>>>>>>>
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(staticTitle[4],
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                              ))),
+
+                          // * CUSTOM WIDGET
+                          kSpaceVertical(context),
+                          // * CUSTOM WIDGET
+
+                          Text(widget.poster,
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                              ))),
+
+                          // * CUSTOM WIDGET
+                          kSpaceVertical(context),
+                          // * CUSTOM WIDGET
+
+                          TextButton(
+                            onPressed: () {},
+                            style: ButtonStyle(
+                              padding: MaterialStateProperty.all(EdgeInsets.zero),
+                              minimumSize: MaterialStateProperty.all(Size.zero),
+                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                            ),
+                            child: Text('Connect',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: Theme.of(context).colorScheme.primary,
+                                ))),
+                          ),
+                        ],
+                      ),
+                      // ! BUILD POSTER =>>>>>>>>>>>>>>>>>>>
+
+                      // * CUSTOM WIDGET
                       kSpaceVertical(context),
-                      _buildProgress(context, themeData)
+                      // * CUSTOM WIDGET
+
+                      // ! BUILD PROGRESS =>>>>>>>>>>>>>>>>>>>
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(staticTitle[5],
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                              ))),
+
+                          // * CUSTOM WIDGET
+                          kSpaceVertical(context),
+                          // * CUSTOM WIDGET
+
+                          ListView.separated(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            itemCount: widget.progress.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return Row(
+                                children: [
+                                  Text(_kProgress,
+                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                        color: Theme.of(context).colorScheme.onBackground,
+                                      ))),
+
+                                  // * CUSTOM WIDGET
+                                  kSpaceVertical(context),
+                                  // * CUSTOM WIDGET
+
+                                  Expanded(
+                                    child: Text(widget.progress[index],
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: Theme.of(context).colorScheme.onBackground,
+                                        ))),
+                                  ),
+                                ],
+                              );
+                            },
+                            clipBehavior: Clip.antiAliasWithSaveLayer,
+                            separatorBuilder: (BuildContext context, int index) => kSpaceVertical(context),
+                          ),
+                        ],
+                      ),
+                      // ! BUILD PROGRESS =>>>>>>>>>>>>>>>>>>>
                     ],
                   );
                 }
                 return const SizedBox();
               },
             ),
+            // ! BUILD EXPLORE CARD TILE =>>>>>>>>>>>>>>>>>>>
+
+            // ! BOTTOM CHILDREN =>>>>>>>>>>>>>>>>>>>
+            Builder(
+              builder: (context) {
+                if (!widget.showMore) {
+                  return const Expanded(child: SizedBox());
+                }
+                return const SizedBox();
+              },
+            ),
             widget.bottomChild ?? _buildBottomChildren(context),
+            // ! BOTTOM CHILDREN =>>>>>>>>>>>>>>>>>>>
           ],
         ),
       ),

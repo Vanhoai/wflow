@@ -9,7 +9,7 @@ class ChipCustom extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ActionChip(
-      label: Text(title),
+      label: Text(title, style: Theme.of(context).textTheme.displayMedium!.merge(const TextStyle(color: Colors.white))),
       focusNode: FocusNode(),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
       backgroundColor: Theme.of(context).colorScheme.primary,
@@ -23,12 +23,9 @@ class ChipCustom extends StatelessWidget {
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       visualDensity: VisualDensity.comfortable,
       avatar: CircleAvatar(
-          backgroundColor: Theme.of(context).colorScheme.onBackground,
+          backgroundColor: Colors.black,
           child: Text(title.substring(0, 1),
-              style: Theme.of(context)
-                  .textTheme
-                  .displayMedium!
-                  .merge(TextStyle(color: Theme.of(context).colorScheme.primary)))),
+              style: Theme.of(context).textTheme.displayMedium!.merge(const TextStyle(color: Colors.white)))),
       surfaceTintColor: Theme.of(context).colorScheme.surface,
       shadowColor: Theme.of(context).colorScheme.primary,
       onPressed: onTap,

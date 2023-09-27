@@ -6,126 +6,45 @@ const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8
 class Header extends StatefulWidget {
   const Header({
     super.key,
-    this.title,
+    required this.title,
+    required this.subtitle,
+    this.decoration,
     this.onTapTitle,
-    this.subtitle,
     this.leadingSize = 32,
     this.leadingPhotoUrl = IMAGE_PHOTO,
     this.leadingPadding = const EdgeInsets.all(0),
     this.leadingBadge = false,
     this.onTapLeading,
-    this.decoration,
     this.actions = const [],
-    this.actionsSpacing = 4,
+    this.actionsSpacing = 0,
     this.decorationAction,
   });
-
-  final String? title;
-  final String? subtitle;
-  final Decoration? decorationAction;
-  final Decoration? decoration;
-  final String leadingPhotoUrl;
-  final double leadingSize;
-  final bool leadingBadge;
-  final Function()? onTapLeading;
+  final Text title;
   final Function()? onTapTitle;
+  final Function()? onTapLeading;
+  final Text subtitle;
+  final double leadingSize;
+  final String leadingPhotoUrl;
+  final EdgeInsets leadingPadding;
+  final bool leadingBadge;
+  final Decoration? decoration;
   final List<IconButton> actions;
   final double actionsSpacing;
-  final EdgeInsets leadingPadding;
+  final Decoration? decorationAction;
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
-  Widget _buildLeading(BuildContext context, ThemeData themeData) {
-    return InkWell(
-      onTap: widget.onTapLeading,
-      splashFactory: InkRipple.splashFactory,
-      borderRadius: BorderRadius.circular(99),
-      enableFeedback: false,
-      child: Stack(
-        children: [
-          Builder(
-            builder: (context) {
-              if (widget.leadingSize > 32) {
-                return Container();
-              }
-              return CircleAvatar(
-                backgroundColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                backgroundImage: NetworkImage(widget.leadingPhotoUrl),
-                radius: widget.leadingSize,
-              );
-            },
-          ),
-          Positioned(
-            bottom: 0,
-            right: 0,
-            child: SvgPicture.asset(
-              'assets/icons/online.svg',
-              width: 20,
-              height: 20,
-            ),
-          )
-        ],
-      ),
-    );
+  @override
+  void initState() {
+    super.initState();
   }
 
-  Widget _buildTitle(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayLarge!.merge(TextStyle(
-      color: themeData.colorScheme.onBackground,
-    ));
-    return InkWell(
-      onTap: widget.onTapTitle,
-      enableFeedback: false,
-      splashFactory: InkRipple.splashFactory,
-      child: Text(widget.title ?? '', style: titleStyle, maxLines: 1, overflow: TextOverflow.ellipsis),
-    );
-  }
-
-  Widget _buildSubtitle(BuildContext context, ThemeData themeData) {
-    final TextStyle titleStyle = themeData.textTheme.displayMedium!.merge(TextStyle(
-      color: themeData.colorScheme.onBackground,
-    ));
-    return Text(
-      widget.subtitle ?? '',
-      style: titleStyle,
-      strutStyle: const StrutStyle(height: 1.3),
-      textScaleFactor: 0.8,
-      maxLines: 1,
-      overflow: TextOverflow.ellipsis,
-    );
-  }
-
-  Widget _buildActionContainer(BuildContext context, IconButton icon) {
-    return Container(
-      margin: EdgeInsets.symmetric(horizontal: widget.actionsSpacing),
-      alignment: Alignment.center,
-      child: Center(
-        heightFactor: 1,
-        widthFactor: 1,
-        child: Container(
-          decoration: widget.decorationAction ??
-              BoxDecoration(
-                border: Border.all(
-                  color: Colors.grey.withOpacity(0.5),
-                ),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.transparent,
-                    spreadRadius: 0.2,
-                    blurRadius: 0.2,
-                    offset: Offset(0, 0.2),
-                  ),
-                ],
-                shape: BoxShape.circle,
-              ),
-          padding: const EdgeInsets.all(0),
-          margin: const EdgeInsets.all(0),
-          child: icon,
-        ),
-      ),
-    );
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
 
   @override
@@ -134,18 +53,46 @@ class _HeaderState extends State<Header> {
 
     return Container(
       key: widget.key,
-      width: double.infinity,
+      width: MediaQuery.of(context).size.width,
       height: kBottomNavigationBarHeight,
       decoration: widget.decoration,
+      padding: const EdgeInsets.all(0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
+          // ! LEADING =>>>>>>>>>>>>>>>>>>>
           Padding(
             padding: widget.leadingPadding,
-            child: _buildLeading(context, themeData),
+            child: Builder(builder: (context) {
+              if (widget.leadingSize > 32) {
+                return Container();
+              }
+              return InkWell(
+                onTap: widget.onTapLeading,
+                enableFeedback: false,
+                highlightColor: Theme.of(context).colorScheme.background,
+                focusNode: FocusNode(canRequestFocus: false),
+                borderRadius: BorderRadius.circular(widget.leadingSize),
+                child: Material(
+                    color: Colors.transparent,
+                    child: CircleAvatar(
+                      backgroundImage: NetworkImage(widget.leadingPhotoUrl),
+                      radius: widget.leadingSize,
+                      onBackgroundImageError: (exception, stackTrace) {
+                        return;
+                      },
+                      child: Align(
+                          alignment: Alignment.bottomRight,
+                          child: SvgPicture.asset('assets/icons/online.svg', width: 20, height: 20)),
+                    )),
+              );
+            }),
           ),
+          // ! LEADING =>>>>>>>>>>>>>>>>>>>
+
+          // ! TITLE =>>>>>>>>>>>>>>>>>>>
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -153,17 +100,41 @@ class _HeaderState extends State<Header> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  _buildTitle(context, themeData),
-                  _buildSubtitle(context, themeData),
+                  InkWell(
+                    onTap: widget.onTapTitle,
+                    enableFeedback: false,
+                    splashFactory: InkRipple.splashFactory,
+                    splashColor: themeData.colorScheme.primary.withOpacity(0.2),
+                    customBorder: const RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(4)),
+                        side: BorderSide(color: Colors.transparent)),
+                    highlightColor: themeData.colorScheme.primary.withOpacity(0.2),
+                    focusNode: FocusNode(canRequestFocus: false),
+                    overlayColor: MaterialStateProperty.all<Color>(
+                      themeData.colorScheme.primary.withOpacity(0.2),
+                    ),
+                    child: widget.title,
+                  ),
+                  widget.subtitle,
                 ],
               ),
             ),
           ),
+          // ! TITLE =>>>>>>>>>>>>>>>>>>>
+
+          // ! ACTION BUTTON =>>>>>>>>>>>>>>>>>>>
           Builder(builder: (BuildContext context) {
             return Row(
-              children: widget.actions.map((e) => _buildActionContainer(context, e)).toList(),
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              textBaseline: TextBaseline.alphabetic,
+              textDirection: TextDirection.ltr,
+              verticalDirection: VerticalDirection.down,
+              children: widget.actions,
             );
           }),
+          // ! ACTION BUTTON =>>>>>>>>>>>>>>>>>>>
         ],
       ),
     );

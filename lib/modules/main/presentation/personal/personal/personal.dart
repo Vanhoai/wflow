@@ -114,8 +114,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
 
   Widget _buildHeader(BuildContext context, ThemeData theme) {
     return Header(
-      title: 'Tran Van Hoai',
-      subtitle: 'tranvanhoai@gmail.com',
+      title: const Text('Tran Van Hoai'),
+      subtitle: const Text('hoai'),
       onTapLeading: () {},
       leadingSize: 32,
       leadingPadding: const EdgeInsets.only(right: 8),

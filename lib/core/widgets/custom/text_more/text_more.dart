@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 enum TrimMode {
   Length,
   Line,
+  Hidden,
 }
 
 class TextMore extends StatefulWidget {
@@ -19,6 +20,7 @@ class TextMore extends StatefulWidget {
     this.colorClickableText,
     this.trimLength = 240,
     this.trimLines = 2,
+    this.trimHiddenMaxLines = 2,
     this.trimMode = TrimMode.Length,
     this.style,
     this.textAlign,
@@ -40,6 +42,9 @@ class TextMore extends StatefulWidget {
 
   /// Used on TrimMode.Lines
   final int trimLines;
+
+  /// Used on TrimMode.None
+  final int trimHiddenMaxLines;
 
   /// Determines the type of trim. TrimMode.Length takes into account
   /// the number of letters, while TrimMode.Lines takes into account
@@ -262,6 +267,30 @@ class TextMoreState extends State<TextMore> {
               );
             }
             break;
+          case TrimMode.Hidden:
+            if (textPainter.didExceedMaxLines) {
+              textSpan = _buildData(
+                data: widget.data,
+                textStyle: effectiveTextStyle,
+                linkTextStyle: effectiveTextStyle?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                ),
+                onPressed: widget.onLinkPressed,
+                children: [delimiter, link],
+              );
+            } else {
+              textSpan = _buildData(
+                data: widget.data,
+                textStyle: effectiveTextStyle,
+                linkTextStyle: effectiveTextStyle?.copyWith(
+                  decoration: TextDecoration.underline,
+                  color: Colors.blue,
+                ),
+                onPressed: widget.onLinkPressed,
+                children: [],
+              );
+            }
           default:
             throw Exception('TrimMode type: ${widget.trimMode} is not supported');
         }
@@ -277,8 +306,9 @@ class TextMoreState extends State<TextMore> {
           textAlign: textAlign,
           textDirection: textDirection,
           softWrap: true,
-          overflow: TextOverflow.clip,
           textScaleFactor: textScaleFactor,
+          maxLines: widget.trimMode == TrimMode.Hidden ? widget.trimHiddenMaxLines : null,
+          overflow: widget.trimMode == TrimMode.Hidden ? TextOverflow.ellipsis : TextOverflow.clip,
         );
       },
     );

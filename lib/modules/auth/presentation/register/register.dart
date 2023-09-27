@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 import 'components/index.dart';
@@ -42,7 +39,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
               body:SingleChildScrollView(
                 child: Container(
-                    width: double.infinity,
+                    width: MediaQuery.of(context).size.width,
                     padding: const EdgeInsets.only(top: 10),
                     child: DefaultTabController(
                         length: 2,
@@ -64,16 +61,16 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                               padding: const EdgeInsets.symmetric(horizontal: 20),
                               child: TabBar(
                                 indicatorSize: TabBarIndicatorSize.tab,
-                                indicatorColor: Colors.black,
+                                indicatorColor: Theme.of(context).primaryColor,
                                 controller: _tabController,
                                 tabs: [
                                   _tabSelect(icon: AppConstants.email, title: 'Email'),
-                                  _tabSelect(icon: AppConstants.phone, title: 'Số điện thoại'),
+                                  _tabSelect(icon: AppConstants.phone, title: (MediaQuery.of(context).size.width <= 400 ? 'Phone' : 'Số điện thoại') ),
                                 ],
                               ),
                             ),
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.5,
+                              height: (MediaQuery.of(context).size.height <= 800 ? 400 : MediaQuery.of(context).size.height * 0.5) ,
                               child: TabBarView(//TabarView layout chinh
                                 controller: _tabController,
                                 children: const [
@@ -159,7 +156,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                             child: Text(
                                               "Đăng nhập",
                                               style: TextTitle(
-                                                  colors: AppColors.primary,
+                                                  colors: Theme.of(context).primaryColor,
                                                   size: 16,
                                                   fontWeight: FontWeight.w500),
                                             )

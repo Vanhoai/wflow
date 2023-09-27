@@ -51,15 +51,7 @@ class _FormState extends State<FormRegisterEmail>{
                 controller: emailController,
                 placeholder: 'Nhập địa chỉ email',
                 textInputAction: TextInputAction.next,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 16, top: 16, right: 17, left: 18),
-                  child: SvgPicture.asset(
-                      AppConstants.email,
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black38, BlendMode.srcIn)),
-                ),
+                prefixIcon: const Icon(Icons.email,size: 24),
                 suffixIcon: Padding(
                   padding: const EdgeInsets.only(
                       bottom: 16, top: 16, right: 17, left: 18),
@@ -76,15 +68,7 @@ class _FormState extends State<FormRegisterEmail>{
                 label: 'Mật khẩu',
                 placeholder: 'Nhập mật khẩu',
                 textInputAction: TextInputAction.next,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 16, top: 16, right: 17, left: 18),
-                  child: SvgPicture.asset(
-                      AppConstants.lock,
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black38, BlendMode.srcIn)),
-                ),
+                prefixIcon: const Icon(Icons.lock,size: 24,),
                 isPassword: true,
               ),
               TextFieldFrom(
@@ -92,15 +76,7 @@ class _FormState extends State<FormRegisterEmail>{
                 label: 'Nhập lại mật khẩu',
                 placeholder: 'Nhập lại mật khẩu',
                 textInputAction: TextInputAction.done,
-                prefixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 16, top: 16, right: 17, left: 18),
-                  child: SvgPicture.asset(
-                      AppConstants.lock,
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.black38, BlendMode.srcIn)),
-                ),
+                prefixIcon: const Icon(Icons.lock,size: 24,),
                 isPassword: true,
               ),
               const SizedBox(height: 30),

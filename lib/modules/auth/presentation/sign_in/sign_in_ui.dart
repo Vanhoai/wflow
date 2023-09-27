@@ -5,40 +5,22 @@ import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:wflow/modules/auth/presentation/sign_in_huy/bloc/bloc.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 
 import 'components/from_sigin.dart';
 
-class SignInScreenHuy extends StatefulWidget {
-  const SignInScreenHuy({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _SignInScreenState();
   }
 }
 
-class _SignInScreenState extends State<SignInScreenHuy> {
-  @override
-  void initState() {
-    // TODO: implement initState
-
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
-  // Fix scroll and day xuong bloc state
+class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
-    //Set color status bar
-
-    // TODO: implement build
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(),
       lazy: true,
@@ -48,9 +30,9 @@ class _SignInScreenState extends State<SignInScreenHuy> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Scaffold(
-          resizeToAvoidBottomInset: false,
-          body: SingleChildScrollView(
-            child: Container(
+            resizeToAvoidBottomInset: false,
+            body: SingleChildScrollView(
+              child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
                 child: Column(
@@ -70,7 +52,6 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                         style: TextTitle(fontWeight: FontWeight.w400, size: 24),
                       ),
                     ),
-                    //Form
                     const FormSignIn(),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 30),
@@ -86,9 +67,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             color: Colors.white,
-                            child: Text("Hoặc",
-                                style: TextTitle(
-                                    size: 16, fontWeight: FontWeight.w400)),
+                            child: Text("Hoặc", style: TextTitle(size: 16, fontWeight: FontWeight.w400)),
                           )
                         ],
                       ),
@@ -103,8 +82,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                         height: 50,
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.black26, width: 1),
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(12.0)),
+                          borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                         ),
                         child: Stack(
                           // min sizes for Material buttons
@@ -119,8 +97,7 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                               alignment: Alignment.center,
                               child: Text(
                                 'Đăng nhập với Google',
-                                style: TextTitle(
-                                    size: 16, fontWeight: FontWeight.w400),
+                                style: TextTitle(size: 16, fontWeight: FontWeight.w400),
                               ),
                             )
                           ],
@@ -130,36 +107,33 @@ class _SignInScreenState extends State<SignInScreenHuy> {
                     ),
                     //SignUp
                     Container(
-                        margin: const EdgeInsets.symmetric(vertical: 30),
-                        alignment: Alignment.center,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text("Bạn chưa có tài khoản? ",
-                                style: TextTitle(
-                                    size: 16, fontWeight: FontWeight.w400)),
-                            InkWell(
-                                borderRadius: BorderRadius.circular(4),
-                                onTap: () => {
-                                      Navigator.pushNamed(
-                                          context, RouteKeys.registerScreen)
-                                    },
-                                child: Padding(
-                                    padding: const EdgeInsets.all(2),
-                                    child: Text(
-                                      "Đăng ký",
-                                      style: TextTitle(
-                                          colors: AppColors.primary,
-                                          size: 16,
-                                          fontWeight: FontWeight.w500),
-                                    ))),
-                          ],
-                        ))
+                      margin: const EdgeInsets.symmetric(vertical: 30),
+                      alignment: Alignment.center,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text("Bạn chưa có tài khoản? ", style: TextTitle(size: 16, fontWeight: FontWeight.w400)),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(4),
+                            onTap: () => {Navigator.pushNamed(context, RouteKeys.registerScreen)},
+                            child: Padding(
+                              padding: const EdgeInsets.all(2),
+                              child: Text(
+                                "Đăng ký",
+                                style: TextTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    )
                   ],
-                )),
+                ),
+              ),
+            ),
           ),
+        ),
       ),
-        )),
     );
   }
 }

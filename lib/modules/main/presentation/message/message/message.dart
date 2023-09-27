@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,13 +13,6 @@ import 'package:wflow/modules/main/presentation/message/message/components/recor
 
 import 'components/boxchat/bloc/bloc.dart';
 
-
-
-
-
-
-
-
 class MessageScreen extends StatefulWidget {
   const MessageScreen({super.key});
 
@@ -30,19 +21,14 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-
   }
-
-
 
   @override
   Widget build(BuildContext context) {
-    bool isKeyboardShowing = MediaQuery.of(context).viewInsets.vertical > 0;
     SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.white,
       statusBarIconBrightness: Brightness.dark,
@@ -61,8 +47,8 @@ class _MessageScreenState extends State<MessageScreen> {
               create: (_) => MainChatBloc(),
             ),
             BlocProvider(
-                create: (_) => RecordBloc(),
-                lazy: true,
+              create: (_) => RecordBloc(),
+              lazy: true,
             ),
           ],
           child: Column(
@@ -109,8 +95,7 @@ class _MessageScreenState extends State<MessageScreen> {
                               child: Text(
                                 "Chị HR không tuyển dụng không tuyển Huy",
                                 overflow: TextOverflow.ellipsis,
-                                style: TextTitle(
-                                    fontWeight: FontWeight.w700, size: 14),
+                                style: TextTitle(fontWeight: FontWeight.w700, size: 14),
                               ),
                             )
                           ],
@@ -180,7 +165,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 ),
               ),
               Expanded(
-                  child: MainChat(),
+                child: MainChat(),
               ),
               const BoxChat(),
             ],
@@ -190,5 +175,3 @@ class _MessageScreenState extends State<MessageScreen> {
     );
   }
 }
-
-

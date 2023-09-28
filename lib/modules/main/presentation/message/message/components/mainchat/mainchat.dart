@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
@@ -7,6 +9,8 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
 
@@ -23,43 +27,48 @@ class MainChat extends StatefulWidget {
 
 class _MainChatState extends State<MainChat> {
   final String id = "1";
-  final ScrollController _controller = ScrollController();
+  late ScrollController _controller;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
+    _controller = ScrollController();
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
-    _controller.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-
     return (BlocBuilder<MainChatBloc, MainChatState>(
-      buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
+        print(FocusManager.instance.primaryFocus?.hasPrimaryFocus);
         SchedulerBinding.instance.addPostFrameCallback((_) {
-          _controller.animateTo(_controller.position.maxScrollExtent,
+          _controller.animateTo(_controller.position.maxScrollExtent ,
               duration: const Duration(milliseconds: 200),
               curve: Curves.easeOut);
         });
-
-        return ListView.builder(
-          itemCount: state.listChat.length,
-          controller: _controller,
-          itemBuilder: (context, index) {
-            return Container(
-                margin:
-                    const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
-                alignment: state.listChat[index].id == "1"
-                    ? Alignment.centerRight
-                    : Alignment.centerLeft,
-                child: _chat(message: state.listChat[index], context: context));
+        return Listener(
+          onPointerDown: (PointerDownEvent event) {
+            FocusManager.instance.primaryFocus?.unfocus();
+            context.read<BoxChatBloc>().add(HideAllShowEvent());
           },
+          child: ListView.builder(
+            itemCount: state.listChat.length,
+            controller: _controller,
+            itemBuilder: (context, index) {
+              return Container(
+                  margin:
+                      const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                  alignment: state.listChat[index].id == "1"
+                      ? Alignment.centerRight
+                      : Alignment.centerLeft,
+                  child:
+                      _chat(message: state.listChat[index], context: context));
+            },
+          ),
         );
       },
     ));
@@ -111,37 +120,31 @@ class _MainChatState extends State<MainChat> {
   }
 
   Widget _voiceChat({required Message message}) {
-    return Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children:[
-        VoiceMessage(
-          audioSrc:
-          message.content,
-          played: true,
-          // To show played badge or not.
-          me: true,
-          showDuration: false,
-          formatDuration: (duration) => duration.toString().substring(2, 7),
-          // Set message side.
-          meBgColor: id == message.id ? AppColors.primary : const Color(0xFFBDBFBF),
+    return Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+      VoiceMessage(
+        audioSrc: message.content,
+        played: true,
+        // To show played badge or not.
+        me: true,
+        showDuration: false,
+        formatDuration: (duration) => duration.toString().substring(2, 7),
+        // Set message side.
+        meBgColor:
+            id == message.id ? AppColors.primary : const Color(0xFFBDBFBF),
+      ),
+      Container(
+        margin: const EdgeInsets.only(top: 4),
+        decoration: BoxDecoration(
+            color: const Color(0xFFBDBFBF),
+            borderRadius: BorderRadius.circular(8)),
+        alignment: Alignment.center,
+        width: 30,
+        child: Text(
+          instance.get<Time>().getHourMinute(message.createAt.toString()),
+          style: TextTitle(colors: Colors.white, size: 9),
         ),
-        Container(
-          margin: const EdgeInsets.only(top: 4),
-          decoration: BoxDecoration(
-              color: const Color(0xFFBDBFBF),
-              borderRadius: BorderRadius.circular(8)
-          ),
-          alignment: Alignment.center,
-          width: 30,
-          child: Text(
-            instance.get<Time>().getHourMinute(message.createAt.toString()),
-            style: TextTitle(
-                colors: Colors.white,
-                size: 9),
-          ),
-        )
-      ]
-    );
+      )
+    ]);
   }
 
   Widget _imageChat({required Message message}) {
@@ -158,16 +161,13 @@ class _MainChatState extends State<MainChat> {
         Container(
           margin: const EdgeInsets.only(top: 4),
           decoration: BoxDecoration(
-            color: const Color(0xFFBDBFBF),
-            borderRadius: BorderRadius.circular(8)
-          ),
+              color: const Color(0xFFBDBFBF),
+              borderRadius: BorderRadius.circular(8)),
           alignment: Alignment.center,
           width: 30,
           child: Text(
             instance.get<Time>().getHourMinute(message.createAt.toString()),
-            style: TextTitle(
-                colors: Colors.white,
-                size: 9),
+            style: TextTitle(colors: Colors.white, size: 9),
           ),
         )
       ],

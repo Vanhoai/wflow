@@ -37,6 +37,7 @@ class _MessageScreenState extends State<MessageScreen> {
     ));
     return SafeArea(
       child: Scaffold(
+        resizeToAvoidBottomInset: true,
         body: MultiBlocProvider(
           providers: [
             BlocProvider(
@@ -45,6 +46,7 @@ class _MessageScreenState extends State<MessageScreen> {
             ),
             BlocProvider(
               create: (_) => MainChatBloc(),
+              lazy: true,
             ),
             BlocProvider(
               create: (_) => RecordBloc(),
@@ -57,7 +59,8 @@ class _MessageScreenState extends State<MessageScreen> {
               Material(
                 elevation: 0.7,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
+                  padding:
+                      const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -95,7 +98,8 @@ class _MessageScreenState extends State<MessageScreen> {
                               child: Text(
                                 "Chị HR không tuyển dụng không tuyển Huy",
                                 overflow: TextOverflow.ellipsis,
-                                style: TextTitle(fontWeight: FontWeight.w700, size: 14),
+                                style: TextTitle(
+                                    fontWeight: FontWeight.w700, size: 14),
                               ),
                             )
                           ],
@@ -164,10 +168,11 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: MainChat(),
               ),
               const BoxChat(),
+
             ],
           ),
         ),

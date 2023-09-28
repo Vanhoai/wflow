@@ -1,4 +1,5 @@
 
+
 import 'package:equatable/equatable.dart';
 
 //De tam
@@ -12,22 +13,34 @@ class Message {
 
 class MainChatState extends Equatable{
   final List<Message> listChat;
-
-  const MainChatState({required this.listChat});
+  final bool scroll;
+  const MainChatState({required this.listChat, required this.scroll});
 
 
   MainChatState copyWith({
-    List<Message>? listChat
+    List<Message>? listChat,
+    bool? scroll,
   }){
-    return MainChatState(listChat: listChat ?? this.listChat);
+    return MainChatState(
+        listChat: listChat ?? this.listChat,
+        scroll: scroll ?? this.scroll,
+    );
   }
 
 
   @override
   // TODO: implement props
-  List<Object?> get props => [listChat];
+  List<Object?> get props => [listChat,scroll];
 
 }
 
+class ScrollState extends MainChatState{
+  const ScrollState({required super.listChat, required super.scroll});
+
+  @override
+  // TODO: implement props
+  List<Object?> get props => [scroll];
+
+}
 
 

@@ -31,6 +31,7 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     on<SendMessageEvent>(sendMessage);
     on<GetMessageEvent>(getChat);
     on<SendRecordEvent>(sendRecord);
+    on<ScrollEvent>(scroll);
   }
 
 
@@ -43,17 +44,16 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
       Message(id: "2", content: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", type: "record",createAt: DateTime.now().toString()),
       Message(id: "1", content: "https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien-003.jpg", type: "image",createAt: DateTime.now().toString()),
       Message(id: "2", content: "Hello, cau the nao roi dạo này còn đập đá chơi đá gà không?", type: "text",createAt: DateTime.now().toString()),
+      Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
+      Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
+      Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
+
     ];
-    return MainChatState(listChat: chat);
+    return MainChatState(listChat: chat, scroll: false);
   }
 
   FutureOr<void> sendFiles(SendFilesEvent event, Emitter<MainChatState> emit) async {
     final bytes = await event.files.readAsBytes();
-    Map<String, dynamic> data = {
-      'id' : event.id,
-      'content' : bytes,
-      'type' : event.type
-    };
     socket.emit("CHAT",bytes);
   }
 
@@ -88,5 +88,10 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     Message message = Message(id: '1', content: event.file.path, type: 'record',createAt: DateTime.now().toString());
     final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
     emit(newState);
+  }
+
+
+  FutureOr<void> scroll(ScrollEvent event, Emitter<MainChatState> emit) {
+    emit(ScrollState(scroll: !state.scroll, listChat: state.listChat));
   }
 }

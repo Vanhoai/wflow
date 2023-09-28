@@ -37,7 +37,6 @@ class BoxChatBloc extends Bloc<BoxChatEvent,BoxChatState> {
 
   FutureOr<void> isSendMessageText(IsSendMessageTextEvent event, Emitter<BoxChatState> emit) {
     emit(state.copyWith(isSend: event.isSend.isNotEmpty));
-    print(state);
   }
 
 

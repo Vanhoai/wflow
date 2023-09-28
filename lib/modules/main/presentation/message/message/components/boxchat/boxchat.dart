@@ -1,6 +1,7 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -33,11 +34,6 @@ class _BoxChatState extends State<BoxChat> {
   late TextEditingController _controller;
   late File file;
 
-
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -52,7 +48,6 @@ class _BoxChatState extends State<BoxChat> {
 
   @override
   void dispose() async {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
     _focusNode.dispose();
@@ -63,6 +58,7 @@ class _BoxChatState extends State<BoxChat> {
     return BlocBuilder<BoxChatBloc, BoxChatState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
+
         return Column(
           children: [
             const SizedBox(
@@ -84,8 +80,8 @@ class _BoxChatState extends State<BoxChat> {
                       focusNode: _focusNode,
                       onTap: () {
                         context.read<BoxChatBloc>().add(HideAllShowEvent());
+                        context.read<MainChatBloc>().add(ScrollEvent());
                       },
-
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(

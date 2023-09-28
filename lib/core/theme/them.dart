@@ -34,9 +34,8 @@ final themeData = ThemeData(
   textTheme: textTheme,
   colorScheme: const ColorScheme.light(
     primary: AppColors.primary,
-    secondary: AppColors.primary,
   ),
-  fontFamily: "Poppins",
+  fontFamily: "SF-Pro-Display",
 );
 
 final themeDataDark = ThemeData(
@@ -47,5 +46,5 @@ final themeDataDark = ThemeData(
     primary: AppColors.primary,
     secondary: AppColors.primary,
   ),
-  fontFamily: "Poppins",
+  fontFamily: "SF-Pro-Display",
 );

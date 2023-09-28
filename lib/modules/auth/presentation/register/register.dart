@@ -65,7 +65,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                 controller: _tabController,
                                 tabs: [
                                   _tabSelect(icon: AppConstants.email, title: 'Email'),
-                                  _tabSelect(icon: AppConstants.phone, title: (MediaQuery.of(context).size.width <= 400 ? 'Phone' : 'Số điện thoại') ),
+                                  _tabSelect(icon: AppConstants.phone, title: (MediaQuery.of(context).size.width <= 300 ? 'Phone' : 'Số điện thoại') ),
                                 ],
                               ),
                             ),

@@ -3,10 +3,11 @@ version: 2.1
 jobs:
   build:
     docker:
-      - image: cirrusci/flutter
+      - image: curusci/flutter
     steps:
       - checkout
       - run: flutter doctor
+      - run: flutter test
       - run: flutter build apk --release
       - store_artifacts:
           path: build/app/outputs/apk/release/app-release.apk

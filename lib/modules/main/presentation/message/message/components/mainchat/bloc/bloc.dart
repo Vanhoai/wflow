@@ -30,6 +30,7 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     on<SendFilesEvent>(sendFiles);
     on<SendMessageEvent>(sendMessage);
     on<GetMessageEvent>(getChat);
+    on<SendRecordEvent>(sendRecord);
   }
 
 
@@ -79,6 +80,12 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
       type: event.chat["type"],
       createAt: event.chat["createAt"].toString()
     );
+    final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
+    emit(newState);
+  }
+
+  FutureOr<void> sendRecord(SendRecordEvent event, Emitter<MainChatState> emit) {
+    Message message = Message(id: '1', content: event.file.path, type: 'record',createAt: DateTime.now().toString());
     final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
     emit(newState);
   }

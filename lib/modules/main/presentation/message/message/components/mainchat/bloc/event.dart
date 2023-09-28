@@ -44,3 +44,10 @@ class SendFilesEvent extends MainChatEvent{
   @override
   List<Object?> get props => [id,type,files];
 }
+class SendRecordEvent extends MainChatEvent {
+  final File file;
+
+  SendRecordEvent({required this.file});
+  @override
+  List<Object?> get props => [file];
+}

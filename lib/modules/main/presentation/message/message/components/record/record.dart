@@ -7,6 +7,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/state.dart';
@@ -96,6 +98,7 @@ class _RecordState extends State<Record>{
                           child: InkWell(
                             borderRadius: BorderRadius.circular(50),
                             onTap: () {
+                              context.read<MainChatBloc>().add(SendRecordEvent(file: state.file!));
                             },
                             child: Padding(
                               padding: const EdgeInsets.all(8),

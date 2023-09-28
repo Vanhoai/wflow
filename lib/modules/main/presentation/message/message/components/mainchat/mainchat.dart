@@ -116,7 +116,7 @@ class _MainChatState extends State<MainChat> {
         children:[
         VoiceMessage(
           audioSrc:
-          "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3",
+          message.content,
           played: true,
           // To show played badge or not.
           me: true,

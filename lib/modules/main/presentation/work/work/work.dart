@@ -254,6 +254,9 @@ class _WorkScreenState extends State<WorkScreen> {
                       '1.5 years of experience in Flutter',
                     ],
                     showMore: true,
+                    skillCallback: (value) {
+                      print('Skill: $value');
+                    },
                   );
                 },
                 separatorBuilder: (context, index) {

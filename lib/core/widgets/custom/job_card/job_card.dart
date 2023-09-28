@@ -34,6 +34,7 @@ class JobCard extends StatefulWidget {
     this.progress = const [],
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
+    this.skillCallback,
   });
 
   final Widget header;
@@ -50,6 +51,8 @@ class JobCard extends StatefulWidget {
   final List<String> progress;
   final EdgeInsets padding;
   final EdgeInsets margin;
+  // callback
+  final Function(String)? skillCallback;
 
   @override
   State<JobCard> createState() => _JobCardState();
@@ -220,28 +223,36 @@ class _JobCardState extends State<JobCard> {
                   spacing: 8.0,
                   runSpacing: 4.0,
                   children: widget.skill.map((e) {
-                    return Container(
-                      decoration: BoxDecoration(
-                        color: Colors.transparent,
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                          width: 0.5,
+                    return InkWell(
+                      onTap: () {
+                        if (widget.skillCallback != null) {
+                          widget.skillCallback!(e);
+                        }
+                      },
+                      borderRadius: BorderRadius.circular(6),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.transparent,
+                          borderRadius: BorderRadius.circular(6),
+                          border: Border.all(
+                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            width: 0.5,
+                          ),
                         ),
-                      ),
-                      width: 54,
-                      height: 20,
-                      child: Center(
-                        child: Text(
-                          e,
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontSize: 8,
-                            fontWeight: FontWeight.w500,
-                          )),
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
+                        width: 54,
+                        height: 20,
+                        child: Center(
+                          child: Text(
+                            e,
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                              fontSize: 8,
+                              fontWeight: FontWeight.w500,
+                            )),
+                            textAlign: TextAlign.center,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         ),
                       ),
                     );

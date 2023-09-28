@@ -1,10 +1,9 @@
-part of "bloc.dart";
+import 'package:equatable/equatable.dart';
 
-class SignInEvent extends Equatable {
+sealed class SignInEvent extends Equatable{
   @override
   List<Object?> get props => [];
 }
-
 class OnChangeEmailEvent extends SignInEvent{
   final String email;
 
@@ -12,16 +11,29 @@ class OnChangeEmailEvent extends SignInEvent{
   @override
   List<Object?> get props => [email];
 }
-class SignInSubmitted extends SignInEvent {
+class OnChangePasswordEvent extends SignInEvent{
+  final String password;
+
+  OnChangePasswordEvent({required this.password});
+  @override
+  List<Object?> get props => [password];
+}
+class SignInSubmittedEvent extends SignInEvent {
   final String email;
   final String password;
 
-  SignInSubmitted({required this.email, required this.password});
+  SignInSubmittedEvent({required this.email, required this.password});
 
   @override
   List<Object?> get props => [email, password];
 }
+class RememberPassEvent extends SignInEvent{
+  final bool isRemember;
 
+  RememberPassEvent({required this.isRemember});
+  @override
+  List<Object?> get props => [isRemember];
+}
 class SignInWithBiometrics extends SignInEvent {}
 
 class ResetSignInState extends SignInEvent {}

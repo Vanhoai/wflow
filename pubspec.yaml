@@ -35,7 +35,6 @@ dependencies:
   flutter_sound: ^9.2.13
   intl: any
   path_provider: ^2.1.1
-  #xin quyen
   permission_handler: ^11.0.0
   socket_io_client: ^2.0.3
   file_picker: ^5.3.3
@@ -60,13 +59,15 @@ flutter:
     - assets/icons/introduction/
 
   fonts:
-    - family: Poppins
+    - family: Roboto
       fonts:
-        - asset: assets/fonts/poppins_light.ttf
-          weight: 300
-        - asset: assets/fonts/poppins_regular.ttf
-          weight: 400
-        - asset: assets/fonts/poppins_bold.ttf
-          weight: 700
-        - asset: assets/fonts/poppins_medium.ttf
-          weight: 500
+        - asset: assets/fonts/Roboto-Bold.ttf
+        - asset: assets/fonts/Roboto-Medium.ttf
+        - asset: assets/fonts/Roboto-Regular.ttf
+        - asset: assets/fonts/Roboto-Light.ttf
+    - family: SF-Pro-Display
+      fonts:
+        - asset: assets/fonts/SF-Pro-Display-Bold.otf
+        - asset: assets/fonts/SF-Pro-Display-Medium.otf
+        - asset: assets/fonts/SF-Pro-Display-Regular.otf
+        - asset: assets/fonts/SF-Pro-Display-Light.otf

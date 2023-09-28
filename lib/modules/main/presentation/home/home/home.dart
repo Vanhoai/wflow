@@ -1,27 +1,29 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 
 final List<Map<String, dynamic>> staticMenuSelection = [
   {
     'title': 'Balance',
-    'icon': Icons.account_balance_wallet,
+    'icon': AppConstants.ic_balance,
     'onTap': () {},
   },
   {
     'title': 'Reputation',
-    'icon': Icons.star,
+    'icon': AppConstants.ic_reputation,
     'onTap': () {},
   },
   {
     'title': 'Business',
-    'icon': Icons.business,
+    'icon': AppConstants.ic_business,
     'onTap': () {},
   },
   {
     'title': 'More',
-    'icon': Icons.more_horiz,
+    'icon': AppConstants.ic_more,
     'onTap': () {},
   }
 ];
@@ -30,6 +32,8 @@ final List<Map<String, dynamic>> staticRecentTitle = [
   {'title': 'All'},
   {'title': 'Part time'},
   {'title': 'Full time'},
+  {'title': 'Remote'},
+  {'title': 'Remote'},
   {'title': 'Remote'}
 ];
 
@@ -42,55 +46,107 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int _choiceValue = 0;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
     return CommonScaffold(
-      // ! REFRESH INDICATOR =>>>>>>>>>>>>>>>>>>>
       body: RefreshIndicator(
         onRefresh: () async {
           Future<void>.delayed(const Duration(seconds: 1));
         },
         child: CustomScrollView(
           slivers: [
-            //! Header =>>>>>>>>>>>>>>>>>>>
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+              padding: const EdgeInsets.only(top: 17, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Header(
-                  subtitle: const Text('vyhhps22919@fpt.edu.vn'),
-                  title: const Text('Huynh Hong Vy'),
-                  leadingPadding: const EdgeInsets.only(right: 8.0),
+                  subtitle: const Text(
+                    'vyhhps22919@fpt.edu.vn',
+                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  title: const Text(
+                    'Huynh Hong Vy',
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
                   onTapLeading: () {},
                   onTapTitle: () {},
-                  actionsSpacing: 4,
+                  leadingBadge: true,
                   actions: [
-                    IconButton.outlined(
-                      icon: const Icon(Icons.search),
-                      onPressed: () {},
-                      tooltip: 'Search',
+                    InkWell(
+                      onTap: () {},
+                      radius: 99,
+                      borderRadius: BorderRadius.circular(99),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(99),
+                          border: Border.all(
+                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            width: 1,
+                            style: BorderStyle.solid,
+                          ),
+                        ),
+                        width: 28,
+                        height: 28,
+                        padding: const EdgeInsets.all(6.0),
+                        child: SvgPicture.asset(
+                          AppConstants.ic_search,
+                          width: 16,
+                          height: 16,
+                        ),
+                      ),
                     ),
-                    IconButton.outlined(
-                      icon: const Icon(Icons.notifications),
-                      onPressed: () {},
-                      tooltip: 'Notifications',
+                    const SizedBox(width: 8.0),
+                    InkWell(
+                      onTap: () {},
+                      radius: 99,
+                      borderRadius: BorderRadius.circular(99),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(99),
+                              border: Border.all(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                width: 1,
+                                style: BorderStyle.solid,
+                              ),
+                            ),
+                            width: 28,
+                            height: 28,
+                            padding: const EdgeInsets.all(6.0),
+                            child: SvgPicture.asset(
+                              AppConstants.ic_notification,
+                              width: 16,
+                              height: 16,
+                            ),
+                          ),
+                          Positioned(
+                            right: 0,
+                            top: 0,
+                            child: Container(
+                              width: 8,
+                              height: 8,
+                              decoration: BoxDecoration(
+                                color: Colors.red,
+                                borderRadius: BorderRadius.circular(99),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
                     ),
                   ],
                 ),
               ),
             ),
-            //! Header =>>>>>>>>>>>>>>>>>>>
-
-            //! Horizontal Menu Selection =>>>>>>>>>>>>>>>>>>>
             SliverPadding(
-              padding: const EdgeInsets.only(top: 8),
+              padding: const EdgeInsets.only(top: 20),
               sliver: SliverToBoxAdapter(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(
@@ -112,34 +168,24 @@ class _HomeScreenState extends State<HomeScreen> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   Container(
+                                    width: 60,
+                                    height: 60,
                                     decoration: BoxDecoration(
-                                      color: Colors.transparent,
-                                      borderRadius: BorderRadius.circular(8.0),
-                                      boxShadow: [
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(12.0),
+                                      boxShadow: const [
                                         BoxShadow(
-                                          color: themeData.primaryColor.withOpacity(0.5),
-                                          blurRadius: 0.0,
+                                          color: Colors.black12,
+                                          blurRadius: 4,
+                                          offset: Offset(0, 2),
                                         ),
-                                        BoxShadow(
-                                          color: themeData.primaryColor.withOpacity(0.4),
-                                          blurRadius: 10,
-                                          offset: const Offset(1, 1),
-                                          blurStyle: BlurStyle.solid,
-                                        )
                                       ],
                                     ),
                                     padding: const EdgeInsets.all(12.0),
-                                    child: Icon(
+                                    child: SvgPicture.asset(
                                       staticMenuSelection[index]['icon'],
-                                      size: 32,
-                                      color: Colors.white,
-                                      shadows: [
-                                        BoxShadow(
-                                          color: themeData.primaryColor.withOpacity(0.5),
-                                          blurRadius: 2,
-                                          offset: const Offset(0, 2),
-                                        ),
-                                      ],
+                                      height: 24,
+                                      width: 24,
                                     ),
                                   ),
                                   const SizedBox(height: 8.0),
@@ -157,50 +203,69 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            //! Horizontal Menu Selection =>>>>>>>>>>>>>>>>>>>
-
-            //! Horizontal List Hot Job =>>>>>>>>>>>>>>>>>>>
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
+              padding: const EdgeInsets.only(top: 10, bottom: 2, left: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Hot Job',
-                  style: themeData.textTheme.titleMedium,
+                  style: themeData.textTheme.titleMedium!.merge(
+                    const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
-
             SliverToBoxAdapter(
               child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  minHeight: 360,
-                  maxHeight: 380,
-                ),
+                constraints: const BoxConstraints(maxHeight: 250),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    return ListView.builder(
+                    return ListView.separated(
+                      separatorBuilder: (context, index) => const SizedBox(width: 16.0),
                       scrollDirection: Axis.horizontal,
                       shrinkWrap: true,
+                      padding: const EdgeInsets.only(left: 20.0),
                       itemBuilder: (context, index) {
-                        return SizedBox(
+                        return Container(
                           width: constraints.maxWidth * 0.8,
                           height: constraints.maxHeight,
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
                           child: JobCard(
-                            margin: const EdgeInsets.symmetric(horizontal: 8.0),
                             boxDecoration: BoxDecoration(
                               color: themeData.colorScheme.background,
-                              border: Border.all(
-                                color: themeData.colorScheme.onBackground,
-                                width: 1,
-                                style: BorderStyle.solid,
-                              ),
                               borderRadius: BorderRadius.circular(8.0),
+                              boxShadow: const [
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                                BoxShadow(
+                                  color: Colors.black12,
+                                  blurRadius: 4,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
                             ),
-                            padding: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.all(12),
                             header: Header(
-                              title: const Text('Tran Van Hoai'),
-                              subtitle: const Text('hoai'),
-                              leadingPadding: const EdgeInsets.only(right: 8.0),
+                              title: const Text(
+                                'Tran Van Hoai',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              subtitle: const Text(
+                                'hoai',
+                                style: TextStyle(
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
+                              leadingSize: 30,
                               actions: [
                                 IconButton.filled(
                                   icon: Icon(Icons.bookmark_add, color: themeData.colorScheme.onBackground),
@@ -215,19 +280,21 @@ class _HomeScreenState extends State<HomeScreen> {
                                 ),
                               ],
                             ),
-                            cost: '1000\$',
                             skill: const [
                               'Flutter',
                               'Dart',
                               'Firebase',
-                              'NodeJS',
-                              'ExpressJSExpressJSExpressJSExpressJS '
                             ],
+                            cost: '1000\$',
                             duration: '1 month',
                             description: const TextMore(
                               'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                               trimMode: TrimMode.Hidden,
-                              trimHiddenMaxLines: 3,
+                              trimHiddenMaxLines: 2,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                fontSize: 10,
+                              ),
                             ),
                           ),
                         );
@@ -238,33 +305,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            //! Horizontal List Hot Job =>>>>>>>>>>>>>>>>>>>
-
-            //! Vertical List Recent Job =>>>>>>>>>>>>>>>>>>>
             SliverPadding(
-              padding: const EdgeInsets.only(left: 8, right: 8, top: 8),
+              padding: const EdgeInsets.only(top: 7, bottom: 2, left: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Recent Job',
-                  style: themeData.textTheme.titleMedium,
+                  style: themeData.textTheme.titleMedium!.merge(
+                    const TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
                 ),
               ),
             ),
-
-            // ! Choice Filter Section =>>>>>>>>>>>>>>>>>>>
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4),
-              sliver: SliverToBoxAdapter(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minHeight: 50,
-                    maxHeight: 60,
-                  ),
-                  child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-                    itemBuilder: (context, index) {
-                      final e = staticRecentTitle[index];
-                      return ChoiceChip.elevated(
+            SliverToBoxAdapter(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(
+                  maxHeight: 42,
+                ),
+                child: ListView.separated(
+                  separatorBuilder: (context, index) => const SizedBox(width: 8.0),
+                  itemBuilder: (context, index) {
+                    final e = staticRecentTitle[index];
+                    return SizedBox(
+                      height: 28,
+                      child: ChoiceChip.elevated(
                         label: Text(e['title']),
                         selected: _choiceValue == staticRecentTitle.indexOf(e),
                         onSelected: (value) {
@@ -273,46 +339,76 @@ class _HomeScreenState extends State<HomeScreen> {
                           });
                         },
                         showCheckmark: false,
-                      );
-                    },
-                    itemCount: staticRecentTitle.length,
-                    physics: const AlwaysScrollableScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                  ),
+                        labelPadding: EdgeInsets.zero,
+                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+                        visualDensity: VisualDensity.compact,
+                        labelStyle: themeData.textTheme.titleMedium!.copyWith(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w500,
+                          color: _choiceValue == staticRecentTitle.indexOf(e)
+                              ? Colors.white
+                              : themeData.colorScheme.onBackground,
+                        ),
+                        color: _choiceValue == staticRecentTitle.indexOf(e)
+                            ? MaterialStatePropertyAll(Colors.blue.withOpacity(0.5))
+                            : MaterialStatePropertyAll(themeData.colorScheme.background),
+                        elevation: 2,
+                      ),
+                    );
+                  },
+                  itemCount: staticRecentTitle.length,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  scrollDirection: Axis.horizontal,
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(left: 20.0),
                 ),
               ),
             ),
-            // ! Choice Filter Section =>>>>>>>>>>>>>>>>>>>
-
             SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17),
               sliver: SliverList.separated(
                 itemBuilder: (context, index) {
                   return JobCard(
-                    margin: const EdgeInsets.symmetric(horizontal: 8.0),
                     boxDecoration: BoxDecoration(
                       color: themeData.colorScheme.background,
-                      border: Border.all(
-                        color: themeData.colorScheme.onBackground,
-                        width: 1,
-                        style: BorderStyle.solid,
-                      ),
                       borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                        BoxShadow(
+                          color: Colors.black12,
+                          blurRadius: 4,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    padding: const EdgeInsets.all(4),
+                    padding: const EdgeInsets.all(12),
                     header: Header(
-                      title: const Text('Tran Van Hoai'),
-                      subtitle: const Text('hoai'),
-                      leadingPadding: const EdgeInsets.only(right: 8.0),
+                      title: const Text(
+                        'Tran Van Hoai',
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      subtitle: const Text(
+                        'hoai',
+                        style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      leadingSize: 30,
                       actions: [
                         IconButton.filled(
                           icon: Icon(Icons.bookmark_add, color: themeData.colorScheme.onBackground),
                           onPressed: () {},
                           padding: const EdgeInsets.all(0),
                           visualDensity: VisualDensity.compact,
-                          tooltip: 'More',
-                          color: Colors.transparent,
+                          tooltip: 'Save',
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(Colors.transparent),
                           ),
@@ -320,24 +416,39 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                       ],
                     ),
+                    skill: const [
+                      'Flutter',
+                      'Dart',
+                      'Firebase',
+                      'Dart',
+                      'Firebase',
+                      'Dart',
+                      'Firebase',
+                    ],
+                    labelSkill: true,
                     cost: '1000\$',
-                    skill: const ['Flutter', 'Dart', 'Firebase', 'NodeJS', 'ExpressJS'],
                     duration: '1 month',
                     description: const TextMore(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                      trimMode: TrimMode.Line,
-                      trimLines: 3,
+                      trimMode: TrimMode.Hidden,
+                      trimHiddenMaxLines: 2,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        fontSize: 10,
+                      ),
                     ),
+                    progress: const [
+                      '1.5 years of experience in Flutter',
+                    ],
                     showMore: true,
                   );
                 },
                 separatorBuilder: (context, index) {
-                  return const SizedBox(height: 8.0);
+                  return const SizedBox(height: 16.0);
                 },
                 itemCount: 10,
               ),
             ),
-            //! Vertical List Recent Job =>>>>>>>>>>>>>>>>>>>
           ],
           clipBehavior: Clip.none,
           cacheExtent: 1000,

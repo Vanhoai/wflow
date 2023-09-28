@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'dart:ui';
 
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -118,7 +115,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
       subtitle: const Text('hoai'),
       onTapLeading: () {},
       leadingSize: 32,
-      leadingPadding: const EdgeInsets.only(right: 8),
       onTapTitle: () {
         Navigator.of(context).pushNamed(RouteKeys.profileScreen);
       },
@@ -138,20 +134,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
           highlightColor: Theme.of(context).colorScheme.primary,
         ),
       ],
-      decorationAction: BoxDecoration(
-        border: Border.all(
-          color: Colors.transparent,
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Colors.transparent,
-            spreadRadius: 0.2,
-            blurRadius: 0.2,
-            offset: Offset(0, 0.2),
-          ),
-        ],
-        shape: BoxShape.circle,
-      ),
       leadingBadge: true,
     );
   }

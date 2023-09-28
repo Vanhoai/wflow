@@ -1,9 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:share_plus/share_plus.dart';
 
 const List<Map<String, dynamic>> _tabs = [
   {

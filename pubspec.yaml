@@ -3,7 +3,7 @@ description: A Flutter application for student or freelancer and business connec
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.12.0 <4.0.0"
+  sdk: ">=3.0.6 <4.0.0"
 dependencies:
   flutter:
     sdk: flutter

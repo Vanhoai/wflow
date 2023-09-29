@@ -27,6 +27,34 @@ if (keystorePropertiesFile.exists()) {
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
 }
 
+ext.versionMajor = 1
+ext.versionMinor = 0
+ext.versionPatch = 1
+ext.versionClassifier = null
+ext.isSnapShot = false
+ext.minSdkVersion = 23
+
+private Integer generateVersionCode() {
+    return ext.minSdkVersion * 10000000 + ext.versionMajor * 10000 +
+            ext.versionMinor * 100 + ext.versionPatch
+}
+
+private String generateVersionName() {
+    String versionName = "${ext.versionMajor}.${ext.versionMinor}.${ext.versionPatch}"
+
+    if (ext.versionClassifier == null) {
+        if (ext.isSnapShot) {
+            ext.versionClassifier = "SNAPSHOT"
+        }
+    }
+
+    if (ext.versionClassifier != null) {
+        versionName += "-" + ext.versionClassifer
+    }
+
+    return versionName
+}
+
 project.ext.envConfigFiles = [
     debug: "configs/dev/.env",
     release: "configs/prod/.env",
@@ -65,8 +93,10 @@ android {
         minSdkVersion 23
         targetSdkVersion 34
         multiDexEnabled true
-        versionCode flutterVersionCode.toInteger()
-        versionName flutterVersionName
+//        versionCode flutterVersionCode.toInteger()
+//        versionName flutterVersionName
+        versionCode generateVersionCode()
+        versionName generateVersionName()
     }
 
     signingConfigs {

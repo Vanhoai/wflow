@@ -1,6 +1,9 @@
 setup-dev:
 	./scripts/setup.sh dev
 
+setup-dev:
+	./scripts/setup.sh dev
+
 setup-prod:
 	./scripts/setup.sh prod
 

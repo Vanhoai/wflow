@@ -7,6 +7,8 @@ jobs:
     steps:
       - checkout
       - run: flutter doctor
+      - run: flutter channel stable
+      - run: flutter upgrade
       - run: flutter build apk --release
       - store_artifacts:
           path: build/app/outputs/apk/release/app-release.apk

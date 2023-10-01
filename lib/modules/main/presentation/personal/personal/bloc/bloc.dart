@@ -9,8 +9,12 @@ class PersonalBloc extends Bloc<PersonalEvent, PersonalState> {
     on<SignOutEvent>(onLogout);
   }
 
-  void onLogout(SignOutEvent event, Emitter<PersonalState> emit) {
+  void onLogout(SignOutEvent event, Emitter<PersonalState> emit) async {
     // instance.get<SecureStorage>().clear();
     emit(SignOutSuccess());
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    emit(PersonalState());
   }
 }

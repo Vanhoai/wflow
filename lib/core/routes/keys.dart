@@ -7,4 +7,8 @@ class RouteKeys {
   static const String verificationScreen = "/verification";
   static const String messageScreen = "/message";
   static const String fileScreen = "/file_screen";
+
+  // inside personal tab
+  static const String settingScreen = '/settingScreen';
+  static const String profileScreen = '/profileScreen';
 }

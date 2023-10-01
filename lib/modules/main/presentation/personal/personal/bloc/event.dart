@@ -1,4 +1,4 @@
-part of "bloc.dart";
+part of 'bloc.dart';
 
 class PersonalEvent extends Equatable {
   const PersonalEvent();

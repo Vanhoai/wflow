@@ -130,7 +130,9 @@ class _ExploreCardTileState extends State<ExploreCardTile> with SingleTickerProv
             Stack(
               alignment: Alignment.center,
               children: [
-                const Divider(),
+                Divider(
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
+                ),
                 Container(
                   decoration: BoxDecoration(
                     border: Border.all(
@@ -146,12 +148,15 @@ class _ExploreCardTileState extends State<ExploreCardTile> with SingleTickerProv
                       alignment: Alignment.center,
                       filterQuality: FilterQuality.high,
                       turns: _iconTurns,
-                      child: widget.icon ??
-                          Icon(
-                            Icons.expand_more,
-                            size: 32,
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
+                      child: RotatedBox(
+                        quarterTurns: 3,
+                        child: widget.icon ??
+                            Icon(
+                              Icons.arrow_back_rounded,
+                              size: 16,
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                      ),
                     ),
                     style: ButtonStyle(
                       padding: MaterialStateProperty.all(EdgeInsets.zero),

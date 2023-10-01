@@ -10,14 +10,11 @@ class Header extends StatefulWidget {
     required this.subtitle,
     this.decoration,
     this.onTapTitle,
-    this.leadingSize = 32,
+    this.leadingSize = 30,
     this.leadingPhotoUrl = IMAGE_PHOTO,
-    this.leadingPadding = const EdgeInsets.all(0),
     this.leadingBadge = false,
     this.onTapLeading,
     this.actions = const [],
-    this.actionsSpacing = 0,
-    this.decorationAction,
   });
   final Text title;
   final Function()? onTapTitle;
@@ -25,28 +22,14 @@ class Header extends StatefulWidget {
   final Text subtitle;
   final double leadingSize;
   final String leadingPhotoUrl;
-  final EdgeInsets leadingPadding;
   final bool leadingBadge;
   final Decoration? decoration;
-  final List<IconButton> actions;
-  final double actionsSpacing;
-  final Decoration? decorationAction;
+  final List<Widget> actions;
   @override
   State<Header> createState() => _HeaderState();
 }
 
 class _HeaderState extends State<Header> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -62,37 +45,33 @@ class _HeaderState extends State<Header> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
-          // ! LEADING =>>>>>>>>>>>>>>>>>>>
-          Padding(
-            padding: widget.leadingPadding,
-            child: Builder(builder: (context) {
-              if (widget.leadingSize > 32) {
-                return Container();
-              }
-              return InkWell(
-                onTap: widget.onTapLeading,
-                enableFeedback: false,
-                highlightColor: Theme.of(context).colorScheme.background,
-                focusNode: FocusNode(canRequestFocus: false),
-                borderRadius: BorderRadius.circular(widget.leadingSize),
-                child: Material(
-                    color: Colors.transparent,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(widget.leadingPhotoUrl),
-                      radius: widget.leadingSize,
-                      onBackgroundImageError: (exception, stackTrace) {
-                        return;
-                      },
-                      child: Align(
-                          alignment: Alignment.bottomRight,
-                          child: SvgPicture.asset('assets/icons/online.svg', width: 20, height: 20)),
-                    )),
-              );
-            }),
-          ),
-          // ! LEADING =>>>>>>>>>>>>>>>>>>>
-
-          // ! TITLE =>>>>>>>>>>>>>>>>>>>
+          Builder(builder: (context) {
+            if (widget.leadingSize > 30) {
+              return Container();
+            }
+            return InkWell(
+              onTap: widget.onTapLeading,
+              highlightColor: Theme.of(context).colorScheme.background,
+              borderRadius: BorderRadius.circular(99),
+              child: CircleAvatar(
+                backgroundImage: NetworkImage(widget.leadingPhotoUrl),
+                radius: widget.leadingSize,
+                onBackgroundImageError: (exception, stackTrace) {
+                  return;
+                },
+                child: Builder(builder: (context) {
+                  if (!widget.leadingBadge) {
+                    return Container();
+                  }
+                  return Align(
+                    alignment: Alignment.bottomRight,
+                    child: SvgPicture.asset('assets/icons/online.svg', width: 20, height: 20),
+                  );
+                }),
+              ),
+            );
+          }),
+          const SizedBox(width: 12),
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
@@ -120,21 +99,11 @@ class _HeaderState extends State<Header> {
               ),
             ),
           ),
-          // ! TITLE =>>>>>>>>>>>>>>>>>>>
-
-          // ! ACTION BUTTON =>>>>>>>>>>>>>>>>>>>
           Builder(builder: (BuildContext context) {
             return Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              textBaseline: TextBaseline.alphabetic,
-              textDirection: TextDirection.ltr,
-              verticalDirection: VerticalDirection.down,
               children: widget.actions,
             );
           }),
-          // ! ACTION BUTTON =>>>>>>>>>>>>>>>>>>>
         ],
       ),
     );

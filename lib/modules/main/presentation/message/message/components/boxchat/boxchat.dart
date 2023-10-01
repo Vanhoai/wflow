@@ -170,7 +170,10 @@ class _BoxChatState extends State<BoxChat> {
                             Message(id: "1", content: _controller.text, type: "text",)
                         );
                         _controller.clear();
-                        _focusNode.requestFocus();
+                        if(!state.isShowEmojiKeyboard && !state.isShowVoiceRecord)
+                          {
+                            _focusNode.requestFocus();
+                          }
                       }
                     },
                     borderRadius: BorderRadius.circular(50),

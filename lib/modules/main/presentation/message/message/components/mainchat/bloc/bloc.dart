@@ -3,17 +3,18 @@
 
 import 'dart:async';
 
+import 'package:flutter/scheduler.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
 import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 
-const String  EM_Devi = 'http://10.0.2.2:4000/';
+const String  EM_Devi = 'https://wflow.space';
 const String Real_Devi = 'http://192.168.1.202:4000/';
 class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   late final IO.Socket socket ;
-
   MainChatBloc() : super(initState()){
     socket = IO.io(EM_Devi, <String, dynamic>{
       'autoConnect': false,
@@ -49,7 +50,7 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
       Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
 
     ];
-    return MainChatState(listChat: chat, scroll: false);
+    return MainChatState(listChat: chat );
   }
 
   FutureOr<void> sendFiles(SendFilesEvent event, Emitter<MainChatState> emit) async {
@@ -87,11 +88,14 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   FutureOr<void> sendRecord(SendRecordEvent event, Emitter<MainChatState> emit) {
     Message message = Message(id: '1', content: event.file.path, type: 'record',createAt: DateTime.now().toString());
     final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
+
     emit(newState);
   }
 
 
+
+
   FutureOr<void> scroll(ScrollEvent event, Emitter<MainChatState> emit) {
-    emit(ScrollState(scroll: !state.scroll, listChat: state.listChat));
+    emit(Scroll(listChat: state.listChat, scroll: !state.scroll));
   }
 }

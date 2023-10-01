@@ -51,7 +51,7 @@ class SendRecordEvent extends MainChatEvent {
   @override
   List<Object?> get props => [file];
 }
-
-class ScrollEvent extends MainChatEvent{
+class ScrollEvent extends MainChatEvent
+{
   ScrollEvent();
 }

@@ -1,6 +1,4 @@
-import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -27,12 +25,12 @@ class MainChat extends StatefulWidget {
 
 class _MainChatState extends State<MainChat> {
   final String id = "1";
-  late ScrollController _controller;
+
+  final ScrollController scrollController = ScrollController();
 
   @override
   void initState() {
     super.initState();
-    _controller = ScrollController();
   }
 
   @override
@@ -44,21 +42,29 @@ class _MainChatState extends State<MainChat> {
   Widget build(BuildContext context) {
     return (BlocBuilder<MainChatBloc, MainChatState>(
       builder: (context, state) {
-        print(FocusManager.instance.primaryFocus?.hasPrimaryFocus);
-        SchedulerBinding.instance.addPostFrameCallback((_) {
-          _controller.animateTo(_controller.position.maxScrollExtent ,
-              duration: const Duration(milliseconds: 200),
-              curve: Curves.easeOut);
-        });
+        if(state is Scroll)
+        {
+          SchedulerBinding.instance.addPostFrameCallback((timeStamp) {
+            scrollController.animateTo(
+              scrollController.position.minScrollExtent
+            , duration: const Duration(milliseconds: 400), curve: Curves.easeOut);
+          });
+        }
         return Listener(
           onPointerDown: (PointerDownEvent event) {
             FocusManager.instance.primaryFocus?.unfocus();
             context.read<BoxChatBloc>().add(HideAllShowEvent());
           },
           child: ListView.builder(
+            reverse: true,
+            shrinkWrap: true,
+            controller: scrollController,
             itemCount: state.listChat.length,
-            controller: _controller,
             itemBuilder: (context, index) {
+              if(state.listChat.isNotEmpty)
+              {
+                index = (state.listChat.length - 1) - index;
+              }
               return Container(
                   margin:
                       const EdgeInsets.symmetric(vertical: 10, horizontal: 10),

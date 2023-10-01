@@ -14,12 +14,12 @@ class Message {
 class MainChatState extends Equatable{
   final List<Message> listChat;
   final bool scroll;
-  const MainChatState({required this.listChat, required this.scroll});
+  const MainChatState({required this.listChat, this.scroll = false});
 
 
   MainChatState copyWith({
     List<Message>? listChat,
-    bool? scroll,
+    bool? scroll
   }){
     return MainChatState(
         listChat: listChat ?? this.listChat,
@@ -30,17 +30,15 @@ class MainChatState extends Equatable{
 
   @override
   // TODO: implement props
-  List<Object?> get props => [listChat,scroll];
+  List<Object?> get props => [listChat];
 
 }
 
-class ScrollState extends MainChatState{
-  const ScrollState({required super.listChat, required super.scroll});
+class Scroll extends MainChatState {
+  const Scroll({required super.listChat, required super.scroll});
 
   @override
   // TODO: implement props
   List<Object?> get props => [scroll];
-
 }
-
 

@@ -12,7 +12,7 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: MaterialButton(
+      child: ElevatedButton(
         onPressed: () {
           Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
         },

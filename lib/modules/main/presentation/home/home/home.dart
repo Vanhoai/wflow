@@ -1,41 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logger/logger.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-
-final List<Map<String, dynamic>> staticMenuSelection = [
-  {
-    'title': 'Balance',
-    'icon': AppConstants.ic_balance,
-    'onTap': () {},
-  },
-  {
-    'title': 'Reputation',
-    'icon': AppConstants.ic_reputation,
-    'onTap': () {},
-  },
-  {
-    'title': 'Business',
-    'icon': AppConstants.ic_business,
-    'onTap': () {},
-  },
-  {
-    'title': 'More',
-    'icon': AppConstants.ic_more,
-    'onTap': () {},
-  }
-];
-
-final List<Map<String, dynamic>> staticRecentTitle = [
-  {'title': 'All'},
-  {'title': 'Part time'},
-  {'title': 'Full time'},
-  {'title': 'Remote'},
-  {'title': 'Remote'},
-  {'title': 'Remote'}
-];
+import 'package:wflow/modules/main/presentation/home/home/widgets/hot_job_list.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/navigate_feat.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/recent_job_list.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/selection_list.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -45,11 +18,74 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _choiceValue = 0;
+  Logger logger = Logger();
+
+  late ScrollController _scrollController;
+  late ScrollController _hotJobScrollController;
+  late ScrollController _selectionScrollController;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _selectionScrollController = ScrollController(
+      initialScrollOffset: 0.0,
+      keepScrollOffset: true,
+      debugLabel: 'HomeScreen',
+      onAttach: (position) {
+        logger.d('onAttach$position');
+      },
+      onDetach: (position) {
+        logger.d('onDetach$position');
+      },
+    );
+    _hotJobScrollController = ScrollController(
+      initialScrollOffset: 0.0,
+      keepScrollOffset: true,
+      debugLabel: 'HomeScreen',
+      onAttach: (position) {
+        logger.d('onAttach$position');
+      },
+      onDetach: (position) {
+        logger.d('onDetach$position');
+      },
+    );
+    _scrollController = ScrollController(
+      initialScrollOffset: 0.0,
+      keepScrollOffset: true,
+      debugLabel: 'HomeScreen',
+      onAttach: (position) {
+        logger.d('onAttach$position');
+      },
+      onDetach: (position) {
+        logger.d('onDetach$position');
+      },
+    );
+
+    _scrollController.addListener(_scrollControllerListener);
+  }
+
+  _scrollControllerListener() {
+    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      logger.d('reach the bottom');
+    }
+    if (_scrollController.offset <= _scrollController.position.minScrollExtent &&
+        !_scrollController.position.outOfRange) {
+      logger.d('reach the top');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+    int choiceValue = 0;
+
+    void callBackSetChoiceValue(int value) {
+      setState(() {
+        choiceValue = value;
+      });
+      logger.d('choiceValue: $choiceValue');
+    }
 
     return CommonScaffold(
       body: RefreshIndicator(
@@ -57,9 +93,9 @@ class _HomeScreenState extends State<HomeScreen> {
           Future<void>.delayed(const Duration(seconds: 1));
         },
         child: CustomScrollView(
-          slivers: [
+          slivers: <Widget>[
             SliverPadding(
-              padding: const EdgeInsets.only(top: 17, left: 20, right: 20),
+              padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Header(
                   subtitle: const Text(
@@ -145,66 +181,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
+            const NavigateFeat(),
             SliverPadding(
-              padding: const EdgeInsets.only(top: 20),
-              sliver: SliverToBoxAdapter(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(
-                    minHeight: 90,
-                    maxHeight: 100,
-                  ),
-                  child: LayoutBuilder(
-                    builder: (BuildContext context, BoxConstraints constraints) {
-                      return ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: staticMenuSelection.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return SizedBox(
-                            width: constraints.maxWidth / 4,
-                            child: InkWell(
-                              onTap: staticMenuSelection[index]['onTap'],
-                              borderRadius: BorderRadius.circular(8.0),
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Container(
-                                    width: 60,
-                                    height: 60,
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(12.0),
-                                      boxShadow: const [
-                                        BoxShadow(
-                                          color: Colors.black12,
-                                          blurRadius: 4,
-                                          offset: Offset(0, 2),
-                                        ),
-                                      ],
-                                    ),
-                                    padding: const EdgeInsets.all(12.0),
-                                    child: SvgPicture.asset(
-                                      staticMenuSelection[index]['icon'],
-                                      height: 24,
-                                      width: 24,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    staticMenuSelection[index]['title'],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 10, bottom: 2, left: 20),
+              padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Hot Job',
@@ -217,96 +196,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxHeight: 250),
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    return ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(width: 16.0),
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      padding: const EdgeInsets.only(left: 20.0),
-                      itemBuilder: (context, index) {
-                        return Container(
-                          width: constraints.maxWidth * 0.8,
-                          height: constraints.maxHeight,
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: JobCard(
-                            boxDecoration: BoxDecoration(
-                              color: themeData.colorScheme.background,
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: const [
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                                BoxShadow(
-                                  color: Colors.black12,
-                                  blurRadius: 4,
-                                  offset: Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.all(12),
-                            header: Header(
-                              title: const Text(
-                                'Tran Van Hoai',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              subtitle: const Text(
-                                'hoai',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                              ),
-                              leadingSize: 30,
-                              actions: [
-                                IconButton.filled(
-                                  icon: Icon(Icons.bookmark_add, color: themeData.colorScheme.onBackground),
-                                  onPressed: () {},
-                                  padding: const EdgeInsets.all(0),
-                                  visualDensity: VisualDensity.compact,
-                                  tooltip: 'Save',
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                                  ),
-                                  highlightColor: Colors.blue.withOpacity(0.5),
-                                ),
-                              ],
-                            ),
-                            skill: const [
-                              'Flutter',
-                              'Dart',
-                              'Firebase',
-                            ],
-                            cost: '1000\$',
-                            duration: '1 month',
-                            description: const TextMore(
-                              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                              trimMode: TrimMode.Hidden,
-                              trimHiddenMaxLines: 2,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                      itemCount: 10,
-                    );
-                  },
-                ),
-              ),
-            ),
+            HotJobList(scrollController: _hotJobScrollController),
             SliverPadding(
-              padding: const EdgeInsets.only(top: 7, bottom: 2, left: 20),
+              padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Recent Job',
@@ -319,143 +211,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(
-                  maxHeight: 42,
-                ),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(width: 8.0),
-                  itemBuilder: (context, index) {
-                    final e = staticRecentTitle[index];
-                    return SizedBox(
-                      height: 28,
-                      child: ChoiceChip.elevated(
-                        label: Text(e['title']),
-                        selected: _choiceValue == staticRecentTitle.indexOf(e),
-                        onSelected: (value) {
-                          setState(() {
-                            _choiceValue = staticRecentTitle.indexOf(e);
-                          });
-                        },
-                        showCheckmark: false,
-                        labelPadding: EdgeInsets.zero,
-                        padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
-                        visualDensity: VisualDensity.compact,
-                        labelStyle: themeData.textTheme.titleMedium!.copyWith(
-                          fontSize: 10,
-                          fontWeight: FontWeight.w500,
-                          color: _choiceValue == staticRecentTitle.indexOf(e)
-                              ? Colors.white
-                              : themeData.colorScheme.onBackground,
-                        ),
-                        color: _choiceValue == staticRecentTitle.indexOf(e)
-                            ? MaterialStatePropertyAll(Colors.blue.withOpacity(0.5))
-                            : MaterialStatePropertyAll(themeData.colorScheme.background),
-                        elevation: 2,
-                      ),
-                    );
-                  },
-                  itemCount: staticRecentTitle.length,
-                  physics: const AlwaysScrollableScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(left: 20.0),
-                ),
-              ),
+            SelectionList(
+              scrollController: _selectionScrollController,
+              onSelected: callBackSetChoiceValue,
             ),
-            SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 17),
-              sliver: SliverList.separated(
-                itemBuilder: (context, index) {
-                  return JobCard(
-                    boxDecoration: BoxDecoration(
-                      color: themeData.colorScheme.background,
-                      borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    padding: const EdgeInsets.all(12),
-                    header: Header(
-                      title: const Text(
-                        'Tran Van Hoai',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      subtitle: const Text(
-                        'hoai',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      leadingSize: 30,
-                      actions: [
-                        IconButton.filled(
-                          icon: Icon(Icons.bookmark_add, color: themeData.colorScheme.onBackground),
-                          onPressed: () {},
-                          padding: const EdgeInsets.all(0),
-                          visualDensity: VisualDensity.compact,
-                          tooltip: 'Save',
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.transparent),
-                          ),
-                          highlightColor: Colors.blue.withOpacity(0.5),
-                        ),
-                      ],
-                    ),
-                    skill: const [
-                      'Flutter',
-                      'Dart',
-                      'Firebase',
-                      'Dart',
-                      'Firebase',
-                      'Dart',
-                      'Firebase',
-                    ],
-                    labelSkill: true,
-                    cost: '1000\$',
-                    duration: '1 month',
-                    description: const TextMore(
-                      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-                      trimMode: TrimMode.Hidden,
-                      trimHiddenMaxLines: 2,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 10,
-                      ),
-                    ),
-                    progress: const [
-                      '1.5 years of experience in Flutter',
-                    ],
-                    showMore: true,
-                  );
-                },
-                separatorBuilder: (context, index) {
-                  return const SizedBox(height: 16.0);
-                },
-                itemCount: 10,
-              ),
-            ),
+            RecentJobList(
+              selectionValue: 0,
+            )
           ],
           clipBehavior: Clip.none,
           cacheExtent: 1000,
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
         ),
       ),
     );

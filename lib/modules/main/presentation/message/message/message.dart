@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
@@ -26,6 +27,8 @@ class _MessageScreenState extends State<MessageScreen> {
     // TODO: implement initState
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +117,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           InkWell(
                             onTap: () {
                               print("Call");
+                              Navigator.pushNamed(context, RouteKeys.videoCallScreen);
                             },
                             borderRadius: BorderRadius.circular(25),
                             child: Container(

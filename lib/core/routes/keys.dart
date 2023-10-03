@@ -7,4 +7,5 @@ class RouteKeys {
   static const String verificationScreen = "/verification";
   static const String messageScreen = "/message";
   static const String fileScreen = "/file_screen";
+  static const String videoCallScreen = "/videocall";
 }

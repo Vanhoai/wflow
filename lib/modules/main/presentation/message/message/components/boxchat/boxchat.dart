@@ -1,7 +1,6 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -58,7 +57,6 @@ class _BoxChatState extends State<BoxChat> {
     return BlocBuilder<BoxChatBloc, BoxChatState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
-
         return Column(
           children: [
             const SizedBox(

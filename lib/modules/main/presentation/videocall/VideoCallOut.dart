@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/modules/main/presentation/videocall/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/videocall/bloc/state.dart';
+
+import 'bloc/event.dart';
 
 class VideoCallOutScreen extends StatefulWidget {
   const VideoCallOutScreen({super.key});
@@ -17,12 +20,10 @@ class _VideoCallOutScreenState extends State<VideoCallOutScreen> {
   Widget build(BuildContext context) {
     // TODO: implement build
     return BlocProvider(
-      create: (_) => VideoCallBloc(),
-      child: BlocBuilder<VideoCallBloc, VideoCallState>(
-        builder: (context, state) {
-          return Placeholder();
-        },
-      ),
-    );
+        create: (_) =>
+            instance.get<VideoCallBloc>(),
+        child: BlocBuilder(
+            bloc: instance.get<VideoCallBloc>()..add(const VideoCallConnectEvent()),
+            builder: (BuildContext context, state) => const Placeholder()));
   }
 }

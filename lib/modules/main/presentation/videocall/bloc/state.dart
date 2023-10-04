@@ -10,3 +10,7 @@ class VideoCallState extends Equatable {
 class InitVideoCallSate extends VideoCallState{
   const InitVideoCallSate();
 }
+
+class CallVideoConnect extends VideoCallState {
+  const CallVideoConnect();
+}

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 
@@ -11,6 +12,8 @@ import 'package:wflow/modules/main/presentation/message/message/components/boxch
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/videocall/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/videocall/bloc/event.dart';
 
 import 'components/boxchat/bloc/bloc.dart';
 

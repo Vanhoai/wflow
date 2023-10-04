@@ -5,3 +5,7 @@ class VideoCallEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
+
+class VideoCallConnectEvent extends VideoCallEvent{
+  const VideoCallConnectEvent();
+}

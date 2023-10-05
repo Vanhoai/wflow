@@ -1,79 +1,37 @@
 import 'dart:async';
 
-import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/libs/libs.dart';
-import 'package:wflow/common/loading/bloc.dart';
-import 'package:wflow/common/security/bloc.dart';
-import 'package:wflow/configuration/configuration.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/utils/secure.util.dart';
-import 'package:wflow/modules/auth/domain/auth.entity.dart';
-import 'package:wflow/modules/auth/domain/auth.usecase.dart';
 
-part 'event.dart';
-part 'state.dart';
+import 'event.dart';
+import 'state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
-  final AuthUseCase authUseCase;
-
-  SignInBloc({required this.authUseCase}) : super(SignInState()) {
-    on<SignInSubmitted>(onSignInSubmitted);
-    on<SignInWithBiometrics>(onSignInWithBiometric);
-    on<ResetSignInState>(onResetSignInState);
+  SignInBloc() : super(const SignInState()) {
+    on<OnChangeEmailEvent>(onChangeEmail);
+    on<OnChangePasswordEvent>(onChangePassword);
+    on<SignInSubmittedEvent>(signInSubmitted);
+    on<RememberPassEvent>(rememberPass);
   }
 
-  FutureOr<void> onResetSignInState(ResetSignInState event, Emitter<SignInState> emit) async {
-    emit(SignInState());
-  }
-
-  FutureOr<void> onSignInSubmitted(SignInSubmitted event, Emitter<SignInState> emit) async {
-    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-    final response = await authUseCase.signIn("hoaitv241223@gmail.com", "hoaitv241223");
-    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-
-    response.fold(
-      (AuthEntity authEntity) {
-        instance.get<SecureStorage>().write(AppConstants.accessTokenKey, authEntity.accessToken);
-        instance.get<SecureStorage>().write(AppConstants.refreshTokenKey, authEntity.refreshToken);
-        emit(SignInSuccess());
-      },
-      (Failure failure) {
-        emit(SignInFailure(failure: failure));
-      },
-    );
-  }
-
-  FutureOr<void> onSignInWithBiometric(SignInWithBiometrics event, Emitter<SignInState> emit) async {
-    final isEnableTouchID = instance.get<SecurityBloc>().state.touchIDEnabled;
-    if (isEnableTouchID) {
-      final isAuth = await LocalAuth.signInWithBiometric();
-      if (isAuth) {
-        final String keySignInWithBiometric =
-            await instance.get<SecureStorage>().read(AppConstants.keySignInWithBiometric);
-        final String keyPasswordSignInWithBiometric =
-            await instance.get<SecureStorage>().read(AppConstants.keyPasswordSignInWithBiometric);
-
-        instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-        final response = await authUseCase.signIn(keySignInWithBiometric, keyPasswordSignInWithBiometric);
-        instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-
-        response.fold(
-          (AuthEntity authEntity) {
-            instance.get<SecureStorage>().write(AppConstants.accessTokenKey, authEntity.accessToken);
-            instance.get<SecureStorage>().write(AppConstants.refreshTokenKey, authEntity.refreshToken);
-            emit(SignInSuccess());
-          },
-          (Failure failure) {
-            emit(SignInFailure(failure: failure));
-          },
-        );
-      } else {
-        emit(SignInFailure(failure: const CommonFailure(message: "Touch ID is not authenticated")));
-      }
+  FutureOr<void> onChangeEmail(OnChangeEmailEvent event, Emitter<SignInState> emit) {
+    bool emailValid = false;
+    if (double.tryParse(event.email) != null && event.email.length == 10 || event.email.length == 12) {
+      emailValid = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\d]').hasMatch(event.email);
     } else {
-      emit(SignInFailure(failure: const CommonFailure(message: "Touch ID is not enabled")));
+      emailValid = RegExp(r"^[a-zA-Z\d.a-zA-Z\d.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z\d]+\.[a-zA-Z]+").hasMatch(event.email);
     }
+    emit(state.copyWith(email: event.email, regex: emailValid));
+  }
+
+  FutureOr<void> onChangePassword(OnChangePasswordEvent event, Emitter<SignInState> emit) {
+    emit(state.copyWith(password: event.password));
+  }
+
+  FutureOr<void> rememberPass(RememberPassEvent event, Emitter<SignInState> emit) {
+    emit(state.copyWith(isRemember: event.isRemember));
+  }
+
+  FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) {
+    emit(SignInSuccess());
   }
 }

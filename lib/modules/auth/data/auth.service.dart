@@ -19,14 +19,14 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<dynamic> signIn(String email, String password) async {
     try {
+      print("signing in $email $password");
       final response = await agent.dio.post(
-        "/auth/sign-in",
-        data: json.encode({
+        "/auth/sign-in-with-email",
+        data: jsonEncode({
           "email": email,
           "password": password,
         }),
       );
-
       return response.data;
     } catch (error) {
       throw ServerException();

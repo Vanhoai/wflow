@@ -11,11 +11,14 @@ class Agent {
     dio.options = generateOptions();
 
     InterceptorsWrapper interceptorsWrapper = InterceptorsWrapper(onRequest: (options, handler) async {
-      final accessToken = await secureStorage.read(AppConstants.accessTokenKey);
-      options.headers = {
-        ...options.headers,
-        "Authorization": "Bearer $accessToken",
-      };
+      // final accessToken = await secureStorage.read(AppConstants.accessTokenKey);
+      // options.headers = {
+      //   ...options.headers,
+      //   "Authorization": "Bearer $accessToken",
+      // };
+
+      print("Header ${options.headers}");
+
       return handler.next(options);
     }, onError: (DioException exception, handler) async {
       if (exception.response?.statusCode == 401) {
@@ -24,10 +27,12 @@ class Agent {
       }
       return handler.next(exception);
     });
+
     dio.interceptors.add(interceptorsWrapper);
   }
 
   BaseOptions generateOptions() {
+    print(EnvironmentConfiguration.apiBaseUrl);
     BaseOptions opts = BaseOptions();
     opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
     opts.contentType = Headers.jsonContentType;

@@ -5,10 +5,12 @@ class CommonScaffold extends StatelessWidget {
     required this.body,
     this.isSafe = false,
     this.hideKeyboardWhenTouchOutside = false,
+    this.appBar,
     super.key,
   });
 
   final Widget body;
+  final PreferredSizeWidget? appBar;
   final bool isSafe;
   final bool hideKeyboardWhenTouchOutside;
 
@@ -24,10 +26,12 @@ class CommonScaffold extends StatelessWidget {
           ? SafeArea(
               child: Scaffold(
                 body: body,
+                appBar: appBar,
               ),
             )
           : Scaffold(
               body: body,
+              appBar: appBar,
             ),
     );
   }

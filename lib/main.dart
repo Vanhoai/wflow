@@ -9,10 +9,10 @@ import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/core/utils/utils.dart';
 
 Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // required by FlutterConfig
-  await FlutterConfigPlus.loadEnvVariables(); // initialize FlutterConfig
-  await FirebaseService.initialFirebase(); // initialize Firebase
-  await initAppInjection(); // initialize Injection
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterConfigPlus.loadEnvVariables();
+  await FirebaseService.initialFirebase();
+  await initAppInjection();
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   HydratedBloc.storage = SecureHydrateStorage(sharedPreferences: sharedPreferences); // initialize HydratedBloc
 

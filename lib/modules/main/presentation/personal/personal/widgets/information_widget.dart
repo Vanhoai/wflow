@@ -23,8 +23,6 @@ class _InformationWidgetState extends State<InformationWidget> {
               'Trần Văn Hoài',
               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
               )),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -32,10 +30,8 @@ class _InformationWidgetState extends State<InformationWidget> {
             const SizedBox(height: 15),
             Text(
               'hoaitvps22068@fpt.edu.vn',
-              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+              style: themeData.textTheme.displayMedium!.merge(TextStyle(
                 color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
-                fontWeight: FontWeight.w500,
-                fontSize: 14,
               )),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -46,8 +42,6 @@ class _InformationWidgetState extends State<InformationWidget> {
               textAlign: TextAlign.center,
               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
               )),
             ),
             const SizedBox(height: 30),
@@ -63,24 +57,17 @@ class _InformationWidgetState extends State<InformationWidget> {
                     children: [
                       Text(
                         'Reputation',
-                        style: themeData.textTheme.displayLarge!.merge(
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         '90',
-                        style: themeData.textTheme.displayLarge!.merge(
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 22,
-                          ),
-                        ),
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 22,
+                        )),
                       ),
                     ],
                   ),
@@ -100,24 +87,17 @@ class _InformationWidgetState extends State<InformationWidget> {
                     children: [
                       Text(
                         'Worked',
-                        style: themeData.textTheme.displayLarge!.merge(
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 14,
-                          ),
-                        ),
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
                       ),
                       const SizedBox(height: 5),
                       Text(
                         '90',
-                        style: themeData.textTheme.displayLarge!.merge(
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontWeight: FontWeight.w500,
-                            fontSize: 22,
-                          ),
-                        ),
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 22,
+                        )),
                       ),
                     ],
                   ),
@@ -151,13 +131,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                           child: Center(
                             child: Text(
                               'Security',
-                              style: themeData.textTheme.displayLarge!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                              )),
                             ),
                           ),
                         ),
@@ -182,13 +158,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                           child: Center(
                             child: Text(
                               'Edit',
-                              style: themeData.textTheme.displayLarge!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
+                              style: themeData.textTheme.displayLarge!.merge(const TextStyle(
+                                fontSize: 16,
+                              )),
                             ),
                           ),
                         ),
@@ -213,13 +185,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                           child: Center(
                             child: Text(
                               'More',
-                              style: themeData.textTheme.displayLarge!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 16,
-                                ),
-                              ),
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                              )),
                             ),
                           ),
                         ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 class HowJobListWidget extends StatefulWidget {
@@ -25,6 +26,10 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
+  }
+
+  void pressCard() {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
 
   @override
@@ -63,22 +68,20 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                         ),
                       ],
                     ),
+                    cardPressed: pressCard,
                     padding: const EdgeInsets.all(12),
                     header: Header(
-                      title: const Text(
-                        'Tran Van Hoai',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      subtitle: const Text(
-                        'hoai',
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                      title: Text('Google LLC',
+                          style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                            fontSize: 18,
+                            color: themeData.colorScheme.onBackground,
+                          ))),
+                      subtitle: Text('google',
+                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                          ))),
+                      onTapTitle: () {},
+                      onTapLeading: () {},
                       leadingSize: 30,
                       actions: [
                         IconButton.filled(
@@ -101,14 +104,13 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                     ],
                     cost: '1000\$',
                     duration: '1 month',
-                    description: const TextMore(
+                    description: TextMore(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       trimMode: TrimMode.Hidden,
                       trimHiddenMaxLines: 2,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                      ),
+                      style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      )),
                     ),
                   ),
                 );

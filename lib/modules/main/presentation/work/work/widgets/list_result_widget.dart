@@ -22,12 +22,9 @@ class _ListResultWidgetState extends State<ListResultWidget> {
             sliver: SliverToBoxAdapter(
               child: Text(
                 '18 result',
-                style: themeData.textTheme.titleMedium!.merge(
-                  const TextStyle(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
+                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                  color: themeData.colorScheme.onBackground,
+                )),
               ),
             ),
           ),
@@ -54,19 +51,19 @@ class _ListResultWidgetState extends State<ListResultWidget> {
                   ),
                   padding: const EdgeInsets.all(12),
                   header: Header(
-                    title: const Text(
+                    title: Text(
                       'Tran Van Hoai',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      )),
                     ),
-                    subtitle: const Text(
+                    onTapTitle: () {},
+                    onTapLeading: () {},
+                    subtitle: Text(
                       'hoai',
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w500,
-                      ),
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      )),
                     ),
                     leadingSize: 30,
                     actions: [
@@ -95,14 +92,13 @@ class _ListResultWidgetState extends State<ListResultWidget> {
                   labelSkill: true,
                   cost: '1000\$',
                   duration: '1 month',
-                  description: const TextMore(
+                  description: TextMore(
                     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                     trimMode: TrimMode.Hidden,
                     trimHiddenMaxLines: 2,
-                    style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 10,
-                    ),
+                    style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                      color: themeData.colorScheme.onBackground,
+                    )),
                   ),
                   progress: const [
                     '1.5 years of experience in Flutter',

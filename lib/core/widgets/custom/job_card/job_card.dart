@@ -35,6 +35,7 @@ class JobCard extends StatefulWidget {
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
     this.skillCallback,
+    this.cardPressed,
   });
 
   final Widget header;
@@ -51,9 +52,9 @@ class JobCard extends StatefulWidget {
   final List<String> progress;
   final EdgeInsets padding;
   final EdgeInsets margin;
-  // callback
-  final Function(String)? skillCallback;
 
+  final Function(String)? skillCallback;
+  final Function()? cardPressed;
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -67,7 +68,7 @@ class _JobCardState extends State<JobCard> {
   kSpaceVertical(BuildContext context, {double? height}) => SizedBox(height: height ?? 8);
 
   Widget _buildBottomChildren(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisSize: MainAxisSize.max,
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -77,18 +78,16 @@ class _JobCardState extends State<JobCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(
+            const Icon(
               Icons.check_box,
               color: Colors.green,
               size: 14,
             ),
             Text(
               'Payment variable',
-              style: TextStyle(
-                color: Colors.green,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
+              style: Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
+                    color: Colors.green,
+                  )),
               textAlign: TextAlign.start,
               maxLines: 1,
             ),
@@ -97,10 +96,9 @@ class _JobCardState extends State<JobCard> {
         Text(
           'Update 2 seconds ago',
           textAlign: TextAlign.end,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
+          style: Theme.of(context).textTheme.displaySmall!.merge(TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+              )),
           maxLines: 1,
         ),
       ],
@@ -111,260 +109,238 @@ class _JobCardState extends State<JobCard> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return Container(
-      decoration: widget.boxDecoration,
-      padding: widget.padding,
-      margin: widget.margin,
-      child: Card(
-        clipBehavior: Clip.none,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        margin: EdgeInsets.zero,
-        color: themeData.colorScheme.background,
-        elevation: 0,
-        surfaceTintColor: themeData.colorScheme.background,
-        child: Column(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            widget.header,
-            kSpaceVertical(context, height: 12),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        staticTitle[0],
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 14,
-                        )),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Text(
-                      widget.duration,
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 14,
-                      )),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Text(
-                        staticTitle[1],
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 12,
-                        )),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ),
-                    Text(
-                      widget.cost,
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                        color: Theme.of(context).colorScheme.onBackground,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 12,
-                      )),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            kSpaceVertical(context, height: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              textDirection: TextDirection.ltr,
-              verticalDirection: VerticalDirection.down,
-              children: [
-                Text(staticTitle[2],
-                    style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                      color: themeData.colorScheme.onBackground,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 14,
-                    ))),
-                widget.description,
-              ],
-            ),
-            widget.labelSkill ? kSpaceVertical(context) : const SizedBox(),
-            widget.labelSkill
-                ? Text(staticTitle[3],
-                    style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                      color: themeData.colorScheme.onBackground,
-                      fontSize: 14,
-                      fontWeight: FontWeight.w500,
-                    )))
-                : const SizedBox(),
-            kSpaceVertical(context),
-            Builder(
-              builder: (context) {
-                if (widget.skill.isEmpty) return const SizedBox();
-                return Wrap(
-                  spacing: 8.0,
-                  runSpacing: 4.0,
-                  children: widget.skill.map((e) {
-                    return InkWell(
-                      onTap: () {
-                        if (widget.skillCallback != null) {
-                          widget.skillCallback!(e);
-                        }
-                      },
-                      borderRadius: BorderRadius.circular(6),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          color: Colors.transparent,
-                          borderRadius: BorderRadius.circular(6),
-                          border: Border.all(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                            width: 0.5,
-                          ),
-                        ),
-                        width: 54,
-                        height: 20,
-                        child: Center(
-                          child: Text(
-                            e,
-                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                              color: Theme.of(context).colorScheme.onBackground,
-                              fontSize: 10,
-                              fontWeight: FontWeight.w500,
-                            )),
-                            textAlign: TextAlign.center,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
-                );
-              },
-            ),
-            Builder(
-              builder: (context) {
-                if (widget.showMore) {
-                  return ExploreCardTile(
-                    duration: widget.showMoreDuration,
+    return InkWell(
+      onTap: widget.cardPressed,
+      child: Container(
+        decoration: widget.boxDecoration,
+        padding: widget.padding,
+        margin: widget.margin,
+        child: Card(
+          clipBehavior: Clip.none,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          margin: EdgeInsets.zero,
+          color: themeData.colorScheme.background,
+          elevation: 0,
+          surfaceTintColor: themeData.colorScheme.background,
+          child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              widget.header,
+              kSpaceVertical(context, height: 12),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      kSpaceVertical(context),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(staticTitle[4],
-                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ))),
-                          kSpaceVertical(context),
-                          Text(widget.poster,
-                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 12,
-                              ))),
-                          kSpaceVertical(context),
-                          TextButton(
-                            onPressed: () {},
-                            style: ButtonStyle(
-                              padding: MaterialStateProperty.all(EdgeInsets.zero),
-                              minimumSize: MaterialStateProperty.all(Size.zero),
-                              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                            ),
-                            child: Text('Connect',
-                                style: themeData.textTheme.displayMedium!.merge(const TextStyle(
-                                  color: Colors.green,
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                ))),
-                          ),
-                        ],
+                      Expanded(
+                        child: Text(
+                          staticTitle[0],
+                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            color: themeData.colorScheme.onBackground,
+                          )),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
-                      kSpaceVertical(context),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(staticTitle[5],
-                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                              ))),
-                          kSpaceVertical(context),
-                          ListView.separated(
-                            shrinkWrap: true,
-                            physics: const NeverScrollableScrollPhysics(),
-                            itemCount: widget.progress.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return Row(
-                                children: [
-                                  Text(_kProgress,
-                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                        color: Theme.of(context).colorScheme.onBackground,
-                                        fontWeight: FontWeight.w500,
-                                        fontSize: 14,
-                                      ))),
-                                  kSpaceVertical(context),
-                                  Expanded(
-                                    child: Text(widget.progress[index],
-                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                          color: Theme.of(context).colorScheme.onBackground,
-                                          fontWeight: FontWeight.w500,
-                                          fontSize: 12,
-                                        ))),
-                                  ),
-                                ],
-                              );
-                            },
-                            clipBehavior: Clip.antiAliasWithSaveLayer,
-                            separatorBuilder: (BuildContext context, int index) => kSpaceVertical(context),
-                          ),
-                        ],
+                      Text(
+                        widget.duration,
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.colorScheme.onBackground,
+                        )),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Expanded(
+                        child: Text(
+                          staticTitle[1],
+                          style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                            color: themeData.colorScheme.onBackground,
+                          )),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      Text(
+                        widget.cost,
+                        style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                        )),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+              kSpaceVertical(context, height: 12),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                textDirection: TextDirection.ltr,
+                verticalDirection: VerticalDirection.down,
+                children: [
+                  Text(staticTitle[2],
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      ))),
+                  widget.description,
+                ],
+              ),
+              widget.labelSkill ? kSpaceVertical(context) : const SizedBox(),
+              widget.labelSkill
+                  ? Text(staticTitle[3],
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      )))
+                  : const SizedBox(),
+              kSpaceVertical(context),
+              Builder(
+                builder: (context) {
+                  if (widget.skill.isEmpty) return const SizedBox();
+                  return Wrap(
+                    spacing: 8.0,
+                    runSpacing: 4.0,
+                    children: widget.skill.map((e) {
+                      return InkWell(
+                        onTap: () {
+                          if (widget.skillCallback != null) {
+                            widget.skillCallback!(e);
+                          }
+                        },
+                        borderRadius: BorderRadius.circular(6),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.transparent,
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                              width: 0.5,
+                            ),
+                          ),
+                          width: 54,
+                          height: 20,
+                          child: Center(
+                            child: Text(
+                              e,
+                              style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                                color: Theme.of(context).colorScheme.onBackground,
+                                fontSize: 10,
+                              )),
+                              textAlign: TextAlign.center,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      );
+                    }).toList(),
                   );
-                }
-                return const SizedBox();
-              },
-            ),
-            Builder(
-              builder: (context) {
-                if (!widget.showMore) {
-                  return const Expanded(child: SizedBox());
-                }
-                return const SizedBox();
-              },
-            ),
-            widget.bottomChild ?? _buildBottomChildren(context),
-          ],
+                },
+              ),
+              Builder(
+                builder: (context) {
+                  if (widget.showMore) {
+                    return ExploreCardTile(
+                      duration: widget.showMoreDuration,
+                      children: [
+                        kSpaceVertical(context),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(staticTitle[4],
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                ))),
+                            kSpaceVertical(context),
+                            Text(widget.poster,
+                                style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                ))),
+                            kSpaceVertical(context),
+                            TextButton(
+                              onPressed: () {},
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all(EdgeInsets.zero),
+                                minimumSize: MaterialStateProperty.all(Size.zero),
+                                tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                              ),
+                              child: Text('Connect',
+                                  style: themeData.textTheme.displaySmall!.merge(const TextStyle(
+                                    color: Colors.green,
+                                  ))),
+                            ),
+                          ],
+                        ),
+                        kSpaceVertical(context),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Text(staticTitle[5],
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                ))),
+                            kSpaceVertical(context),
+                            ListView.separated(
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemCount: widget.progress.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Row(
+                                  children: [
+                                    Text(_kProgress,
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
+                                        ))),
+                                    kSpaceVertical(context),
+                                    Expanded(
+                                      child: Text(widget.progress[index],
+                                          style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                                            color: themeData.colorScheme.onBackground,
+                                          ))),
+                                    ),
+                                  ],
+                                );
+                              },
+                              clipBehavior: Clip.antiAliasWithSaveLayer,
+                              separatorBuilder: (BuildContext context, int index) => kSpaceVertical(context),
+                            ),
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                  return const SizedBox();
+                },
+              ),
+              Builder(
+                builder: (context) {
+                  if (!widget.showMore) {
+                    return const Expanded(child: SizedBox());
+                  }
+                  return const SizedBox();
+                },
+              ),
+              widget.bottomChild ?? _buildBottomChildren(context),
+            ],
+          ),
         ),
       ),
     );

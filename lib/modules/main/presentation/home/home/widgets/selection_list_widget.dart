@@ -70,9 +70,7 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
                 labelPadding: EdgeInsets.zero,
                 // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
                 visualDensity: VisualDensity.compact,
-                labelStyle: themeData.textTheme.titleMedium!.copyWith(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
+                labelStyle: themeData.textTheme.displaySmall!.copyWith(
                   color:
                       _choiceValue == staticRecentTitle.indexOf(e) ? Colors.white : themeData.colorScheme.onBackground,
                 ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 class RecentJobListWidget extends StatefulWidget {
@@ -20,6 +21,10 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
     selectionValue = widget.selectionValue;
   }
 
+  void pressCard() {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -28,6 +33,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
       sliver: SliverList.separated(
         itemBuilder: (context, index) {
           return JobCard(
+            cardPressed: pressCard,
             boxDecoration: BoxDecoration(
               color: themeData.colorScheme.background,
               borderRadius: BorderRadius.circular(8.0),
@@ -46,19 +52,20 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
             ),
             padding: const EdgeInsets.all(12),
             header: Header(
-              title: const Text(
+              title: Text(
                 'Tran Van Hoai',
-                style: TextStyle(
+                style: themeData.textTheme.displayLarge!.merge(TextStyle(
                   fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+                  color: themeData.colorScheme.onBackground,
+                )),
               ),
-              subtitle: const Text(
+              onTapTitle: () {},
+              onTapLeading: () {},
+              subtitle: Text(
                 'hoai',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                  color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                )),
               ),
               leadingSize: 30,
               actions: [
@@ -87,14 +94,11 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
             labelSkill: true,
             cost: '1000\$',
             duration: '1 month',
-            description: const TextMore(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-              trimMode: TrimMode.Hidden,
-              trimHiddenMaxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 12,
-              ),
+            description: TextMore(
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+              style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                color: themeData.colorScheme.onBackground,
+              )),
             ),
             progress: const [
               '1.5 years of experience in Flutter',

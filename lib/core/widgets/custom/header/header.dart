@@ -76,7 +76,7 @@ class _HeaderState extends State<Header> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   InkWell(

@@ -5,10 +5,7 @@ import 'package:logger/logger.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/hot_job_list.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/navigate_feat.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/recent_job_list.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/selection_list.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -100,13 +97,13 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Header(
                   subtitle: const Text(
                     'vyhhps22919@fpt.edu.vn',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, letterSpacing: 0.1),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   title: const Text(
                     'Huynh Hong Vy',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, letterSpacing: 0.1),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -122,7 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(99),
                           border: Border.all(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            color: themeData.colorScheme.onBackground,
                             width: 1,
                             style: BorderStyle.solid,
                           ),
@@ -134,6 +131,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           AppConstants.ic_search,
                           width: 16,
                           height: 16,
+                          color: themeData.colorScheme.onBackground,
                         ),
                       ),
                     ),
@@ -148,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(99),
                               border: Border.all(
-                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                color: themeData.colorScheme.onBackground,
                                 width: 1,
                                 style: BorderStyle.solid,
                               ),
@@ -160,6 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               AppConstants.ic_notification,
                               width: 16,
                               height: 16,
+                              color: themeData.colorScheme.onBackground,
                             ),
                           ),
                           Positioned(
@@ -181,7 +180,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const NavigateFeat(),
+            const NavigateFeatWidget(),
             SliverPadding(
               padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
@@ -189,14 +188,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Hot Job',
                   style: themeData.textTheme.titleMedium!.merge(
                     const TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
             ),
-            HotJobList(scrollController: _hotJobScrollController),
+            HowJobListWidget(scrollController: _hotJobScrollController),
             SliverPadding(
               padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
@@ -204,18 +203,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   'Recent Job',
                   style: themeData.textTheme.titleMedium!.merge(
                     const TextStyle(
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     ),
                   ),
                 ),
               ),
             ),
-            SelectionList(
+            SelectionListWidget(
               scrollController: _selectionScrollController,
               onSelected: callBackSetChoiceValue,
             ),
-            RecentJobList(
+            const RecentJobListWidget(
               selectionValue: 0,
             )
           ],

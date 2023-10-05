@@ -69,7 +69,7 @@ class _JobCardState extends State<JobCard> {
   Widget _buildBottomChildren(BuildContext context) {
     return const Row(
       mainAxisSize: MainAxisSize.max,
-      crossAxisAlignment: CrossAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
@@ -77,12 +77,16 @@ class _JobCardState extends State<JobCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            Icon(Icons.check_box, color: Colors.green),
+            Icon(
+              Icons.check_box,
+              color: Colors.green,
+              size: 14,
+            ),
             Text(
               'Payment variable',
               style: TextStyle(
                 color: Colors.green,
-                fontSize: 10,
+                fontSize: 12,
                 fontWeight: FontWeight.w500,
               ),
               textAlign: TextAlign.start,
@@ -94,7 +98,7 @@ class _JobCardState extends State<JobCard> {
           'Update 2 seconds ago',
           textAlign: TextAlign.end,
           style: TextStyle(
-            fontSize: 10,
+            fontSize: 12,
             fontWeight: FontWeight.w500,
           ),
           maxLines: 1,
@@ -142,7 +146,7 @@ class _JobCardState extends State<JobCard> {
                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
                           color: Theme.of(context).colorScheme.onBackground,
                           fontWeight: FontWeight.w500,
-                          fontSize: 12,
+                          fontSize: 14,
                         )),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -153,7 +157,7 @@ class _JobCardState extends State<JobCard> {
                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w500,
-                        fontSize: 12,
+                        fontSize: 14,
                       )),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -169,7 +173,7 @@ class _JobCardState extends State<JobCard> {
                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
                           color: Theme.of(context).colorScheme.onBackground,
                           fontWeight: FontWeight.w500,
-                          fontSize: 10,
+                          fontSize: 12,
                         )),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -180,7 +184,7 @@ class _JobCardState extends State<JobCard> {
                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
                         color: Theme.of(context).colorScheme.onBackground,
                         fontWeight: FontWeight.w500,
-                        fontSize: 10,
+                        fontSize: 12,
                       )),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
@@ -201,7 +205,7 @@ class _JobCardState extends State<JobCard> {
                     style: themeData.textTheme.displayLarge!.merge(TextStyle(
                       color: themeData.colorScheme.onBackground,
                       fontWeight: FontWeight.w500,
-                      fontSize: 12,
+                      fontSize: 14,
                     ))),
                 widget.description,
               ],
@@ -211,7 +215,7 @@ class _JobCardState extends State<JobCard> {
                 ? Text(staticTitle[3],
                     style: themeData.textTheme.displayLarge!.merge(TextStyle(
                       color: themeData.colorScheme.onBackground,
-                      fontSize: 12,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                     )))
                 : const SizedBox(),
@@ -246,7 +250,7 @@ class _JobCardState extends State<JobCard> {
                             e,
                             style: themeData.textTheme.displayMedium!.merge(TextStyle(
                               color: Theme.of(context).colorScheme.onBackground,
-                              fontSize: 8,
+                              fontSize: 10,
                               fontWeight: FontWeight.w500,
                             )),
                             textAlign: TextAlign.center,
@@ -276,14 +280,14 @@ class _JobCardState extends State<JobCard> {
                               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                 color: Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 12,
+                                fontSize: 14,
                               ))),
                           kSpaceVertical(context),
                           Text(widget.poster,
                               style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                 color: Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 10,
+                                fontSize: 12,
                               ))),
                           kSpaceVertical(context),
                           TextButton(
@@ -297,7 +301,7 @@ class _JobCardState extends State<JobCard> {
                                 style: themeData.textTheme.displayMedium!.merge(const TextStyle(
                                   color: Colors.green,
                                   fontWeight: FontWeight.w500,
-                                  fontSize: 10,
+                                  fontSize: 12,
                                 ))),
                           ),
                         ],
@@ -312,7 +316,7 @@ class _JobCardState extends State<JobCard> {
                               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                 color: Theme.of(context).colorScheme.onBackground,
                                 fontWeight: FontWeight.w500,
-                                fontSize: 12,
+                                fontSize: 14,
                               ))),
                           kSpaceVertical(context),
                           ListView.separated(
@@ -326,7 +330,7 @@ class _JobCardState extends State<JobCard> {
                                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                         color: Theme.of(context).colorScheme.onBackground,
                                         fontWeight: FontWeight.w500,
-                                        fontSize: 12,
+                                        fontSize: 14,
                                       ))),
                                   kSpaceVertical(context),
                                   Expanded(
@@ -334,7 +338,7 @@ class _JobCardState extends State<JobCard> {
                                         style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                           color: Theme.of(context).colorScheme.onBackground,
                                           fontWeight: FontWeight.w500,
-                                          fontSize: 10,
+                                          fontSize: 12,
                                         ))),
                                   ),
                                 ],

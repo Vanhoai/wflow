@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
-class RecentJobList extends StatefulWidget {
-  RecentJobList({super.key, required this.selectionValue});
+class RecentJobListWidget extends StatefulWidget {
+  const RecentJobListWidget({super.key, required this.selectionValue});
 
-  late int selectionValue = 0;
+  final int selectionValue;
 
   @override
-  State<RecentJobList> createState() => _RecentJobListState();
+  State<RecentJobListWidget> createState() => _RecentJobListWidgetState();
 }
 
-class _RecentJobListState extends State<RecentJobList> {
+class _RecentJobListWidgetState extends State<RecentJobListWidget> {
   late int selectionValue;
 
   @override
@@ -18,13 +18,6 @@ class _RecentJobListState extends State<RecentJobList> {
     // TODO: implement initState
     super.initState();
     selectionValue = widget.selectionValue;
-  }
-
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-    print('didChangeDependencies: $selectionValue');
   }
 
   @override
@@ -38,16 +31,16 @@ class _RecentJobListState extends State<RecentJobList> {
             boxDecoration: BoxDecoration(
               color: themeData.colorScheme.background,
               borderRadius: BorderRadius.circular(8.0),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
+                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
                 BoxShadow(
-                  color: Colors.black12,
+                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
@@ -56,14 +49,14 @@ class _RecentJobListState extends State<RecentJobList> {
               title: const Text(
                 'Tran Van Hoai',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   fontWeight: FontWeight.w500,
                 ),
               ),
               subtitle: const Text(
                 'hoai',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -100,7 +93,7 @@ class _RecentJobListState extends State<RecentJobList> {
               trimHiddenMaxLines: 2,
               style: TextStyle(
                 fontWeight: FontWeight.w500,
-                fontSize: 10,
+                fontSize: 12,
               ),
             ),
             progress: const [

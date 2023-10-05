@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
-class HotJobList extends StatefulWidget {
-  const HotJobList({super.key, required this.scrollController});
+class HowJobListWidget extends StatefulWidget {
+  const HowJobListWidget({super.key, required this.scrollController});
 
   final ScrollController scrollController;
 
   @override
-  State<HotJobList> createState() => _HotJobListState();
+  State<HowJobListWidget> createState() => _HowJobListWidgetState();
 }
 
-class _HotJobListState extends State<HotJobList> {
+class _HowJobListWidgetState extends State<HowJobListWidget> {
   late ScrollController _scrollController;
 
   @override
@@ -32,7 +32,7 @@ class _HotJobListState extends State<HotJobList> {
     final ThemeData themeData = Theme.of(context);
     return SliverToBoxAdapter(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 250),
+        constraints: const BoxConstraints(maxHeight: 255),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return ListView.separated(
@@ -50,16 +50,16 @@ class _HotJobListState extends State<HotJobList> {
                     boxDecoration: BoxDecoration(
                       color: themeData.colorScheme.background,
                       borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
-                          color: Colors.black12,
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                         BoxShadow(
-                          color: Colors.black12,
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
@@ -68,14 +68,14 @@ class _HotJobListState extends State<HotJobList> {
                       title: const Text(
                         'Tran Van Hoai',
                         style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 18,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
                       subtitle: const Text(
                         'hoai',
                         style: TextStyle(
-                          fontSize: 12,
+                          fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -107,7 +107,7 @@ class _HotJobListState extends State<HotJobList> {
                       trimHiddenMaxLines: 2,
                       style: TextStyle(
                         fontWeight: FontWeight.w500,
-                        fontSize: 10,
+                        fontSize: 12,
                       ),
                     ),
                   ),

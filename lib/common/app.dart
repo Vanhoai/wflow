@@ -11,6 +11,7 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -48,23 +49,49 @@ class _AppState extends State<App> {
               ),
               BlocProvider(
                 create: (BuildContext context) => SecurityBloc(),
-              )
+              ),
+              BlocProvider(
+                create: (BuildContext context) => PersonalBloc(),
+              ),
             ],
             child: BlocBuilder<AppBloc, AppState>(
               // material app only rebuild when app state change (language, theme)
               buildWhen: (previous, current) => previous != current,
+              bloc: instance.get<AppBloc>(),
               builder: (context, parent) {
                 return Stack(
                   alignment: Alignment.center,
                   children: [
                     MaterialApp(
                       builder: (context, child) {
-                        Widget error = const Text('...rendering error...');
-                        if (widget is Scaffold || widget is Navigator) {
-                          error = Scaffold(body: Center(child: error));
-                        }
-                        ErrorWidget.builder = (errorDetails) => error;
+                        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                          bool isDebug = false;
+                          assert(() {
+                            isDebug = true;
+                            return true;
+                          }());
+                          if (isDebug) {
+                            return ErrorWidget(errorDetails.exception);
+                          }
+                          return Container(
+                            alignment: Alignment.center,
+                            color: Colors.white,
+                            child: Center(
+                              child: Text(
+                                'Something went wrong :( \n\nPlease try again later. \n${errorDetails.exception}',
+                                style: const TextStyle(color: Colors.red),
+                                textDirection: TextDirection.ltr,
+                              ),
+                            ),
+                          );
+                        };
                         return child!;
+                        // Widget error = const Text('...rendering error...');
+                        // if (widget is Scaffold || widget is Navigator) {
+                        //   error = Scaffold(body: Center(child: error));
+                        // }
+                        // ErrorWidget.builder = (errorDetails) => error;
+                        // return child!;
                       },
                       supportedLocales: localization.supportedLocales,
                       localizationsDelegates: localization.localizationsDelegates,

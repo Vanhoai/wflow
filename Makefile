@@ -18,3 +18,8 @@ build-apk:
 
 analyze:
 	flutter analyze
+
+push:
+	git add .
+	git commit -m "$(m)"
+	git push

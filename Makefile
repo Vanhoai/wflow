@@ -27,5 +27,10 @@ push:
 analyze:
 	flutter analyze
 
+push:
+	git add .
+	git commit -m "$(m)"
+	git push
+	
 generate:
 	dart run build_runner build --delete-conflicting-outputs

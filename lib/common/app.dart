@@ -12,6 +12,7 @@ import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/notification/notification.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -101,8 +102,8 @@ class _AppState extends State<App> {
                       darkTheme: themeDataDark,
                       themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute: RouteKeys.introScreen,
-                      home: const IntroScreen(),
+                      // initialRoute: RouteKeys.introScreen,
+                      home: const NotificatonApp(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

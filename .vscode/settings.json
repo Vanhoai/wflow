@@ -7,7 +7,13 @@
     "flipperkit",
     "vsync"
   ],
-  "a-file-icon-vscode.folderTheme": "specific",
-  "a-file-icon-vscode.activeIconPacks": ["angular", "rails"],
-  "vsicons.presets.nestjs": true
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/home/post/job_information/widgets/widget.dart';
@@ -29,6 +30,10 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
     setState(() {
       choiceValue = value;
     });
+  }
+
+  void navigateToCandidateList() {
+    Navigator.of(context).pushNamed(RouteKeys.candidateListScreen);
   }
 
   @override
@@ -155,7 +160,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
               sliver: SliverToBoxAdapter(
                 child: PrimaryButton(
                   label: 'View Candidate',
-                  onPressed: () {},
+                  onPressed: navigateToCandidateList,
                   width: double.infinity,
                 ),
               ),
@@ -166,6 +171,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
         ),
       ),
     );

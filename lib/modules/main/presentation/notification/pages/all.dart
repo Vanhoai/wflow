@@ -12,15 +12,17 @@ class All extends StatefulWidget {
 class _AllState extends State<All> {
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: notificatons.length,
-      itemBuilder: (context, index) {
-        return ItemNotification(
-          title: notificatons[index][0],
-          content: notificatons[index][1],
-        );
-      },
+    return Expanded(
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: notificatons.length,
+        itemBuilder: (context, index) {
+          return ItemNotification(
+            title: notificatons[index][0],
+            content: notificatons[index][1],
+          );
+        },
+      ),
     );
   }
 }

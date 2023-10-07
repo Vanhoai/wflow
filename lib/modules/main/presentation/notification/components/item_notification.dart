@@ -26,13 +26,20 @@ class _ItemNotificationState extends State<ItemNotification> {
       ),
       child: Row(
         children: <Widget>[
-          Container(
-            width: 40,
-            height: 40,
-            decoration: const BoxDecoration(
-              color: Colors.lightBlue,
-              borderRadius: BorderRadius.all(
-                Radius.circular(16),
+          SizedBox(
+            width: ((MediaQuery.sizeOf(context).width) / 100) * 10.17,
+            height: ((MediaQuery.sizeOf(context).width) / 100) * 10.17,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.grey.shade200,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(999),
+                ),
+              ),
+              child: Icon(
+                Icons.notifications,
+                size: ((MediaQuery.sizeOf(context).width) / 100) * 8.14,
+                color: const Color(0XFF0078E1),
               ),
             ),
           ),

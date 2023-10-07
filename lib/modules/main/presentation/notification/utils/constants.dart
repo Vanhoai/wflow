@@ -32,4 +32,56 @@ final notificatons = [
     'Contract notification',
     'You just sent contract from business',
   ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
+  [
+    'Contract notification',
+    'You just sent contract from business',
+  ],
 ];

@@ -183,7 +183,7 @@ Widget _tabSelect({String? icon, String? title}) {
               icon!,
               semanticsLabel: "Logo",
             ),
-            const Padding(padding: EdgeInsets.only(left: 17)),
+            SizedBox(width: 17),
             Text(title ?? "",
                 style: const TextStyle(
                     fontSize: 16,

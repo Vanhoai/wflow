@@ -30,7 +30,7 @@ class _SignInScreenState extends State<SignInScreen> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Scaffold(
-            resizeToAvoidBottomInset: false,
+            
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,

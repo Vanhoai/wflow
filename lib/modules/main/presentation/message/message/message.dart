@@ -12,8 +12,6 @@ import 'package:wflow/modules/main/presentation/message/message/components/boxch
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/event.dart';
 
 import 'components/boxchat/bloc/bloc.dart';
 

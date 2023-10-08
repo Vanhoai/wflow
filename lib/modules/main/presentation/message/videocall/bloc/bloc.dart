@@ -5,9 +5,10 @@
 import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/event.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/state.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
+
+import 'event.dart';
+import 'state.dart';
 class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
   final StringeeClient _client = StringeeClient();
   String token = 'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLlJZUkhkRWhKQVFMcFhTODlvcjFOQjBDblFraUl5LTE2OTYyNTI5MTYiLCJpc3MiOiJTSy4wLlJZUkhkRWhKQVFMcFhTODlvcjFOQjBDblFraUl5IiwiZXhwIjoxNjk4ODQ0OTE2LCJ1c2VySWQiOiJoeXV5In0.767Xb9ea-r4vTSnxg4Yu91swzaVxrDBGbaG3vY1YlqY';

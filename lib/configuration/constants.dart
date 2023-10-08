@@ -30,6 +30,9 @@ class AppConstants {
   static const String clips = "${commonIconPath}ic.clips.svg";
   static const String send = "${commonIconPath}ic.send.svg";
   static const String trash = "${commonIconPath}ic.trash.svg";
+  static const String search = "${commonIconPath}ic.search.svg";
+  static const String moreOutline = "${commonIconPath}ic.moreoutline.svg";
+  static const String remove = "${commonIconPath}ic.remove.svg";
   // path for introduction svg
   static const String introductionPath = "assets/icons/introduction/";
   static const String introductionIntern = "${introductionPath}plash.intern.svg";

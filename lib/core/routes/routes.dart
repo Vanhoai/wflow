@@ -9,7 +9,8 @@ import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
-import 'package:wflow/modules/main/presentation/videocall/VideoCallOut.dart';
+import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/message/videocall/VideoCallOut.dart';
 import 'package:wflow/modules/main/presentation/personal/profile/profile.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 
@@ -24,6 +25,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case RouteKeys.verificationScreen:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
+      case RouteKeys.roomsScreen:
+        return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.videoCallScreen:

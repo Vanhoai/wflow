@@ -12,8 +12,8 @@ import 'package:wflow/modules/auth/data/auth.service.dart';
 import 'package:wflow/modules/auth/domain/auth.repository.dart';
 import 'package:wflow/modules/auth/domain/auth.usecase.dart';
 import "package:flutter_localization/flutter_localization.dart";
-import 'package:wflow/modules/main/presentation/videocall/bloc/bloc.dart';
 import 'package:logger/logger.dart';
+import 'package:wflow/modules/main/presentation/message/videocall/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
 late SharedPreferences sharedPreferences;

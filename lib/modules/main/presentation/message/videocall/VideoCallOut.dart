@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/videocall/bloc/state.dart';
 
+
+import 'bloc/bloc.dart';
 import 'bloc/event.dart';
 
 class VideoCallOutScreen extends StatefulWidget {

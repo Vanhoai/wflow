@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -28,6 +29,13 @@ class _IntroductionScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //white status bar
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      //<-- For Android SEE HERE (dark icons)
+      statusBarBrightness: Brightness.light,
+    ));
     const bodyStyle = TextStyle(fontSize: 19.0);
     PageDecoration pageDecoration = PageDecoration(
         titleTextStyle:

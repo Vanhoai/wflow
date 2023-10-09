@@ -16,6 +16,7 @@ import 'package:wflow/modules/main/presentation/personal/authenticate/austepthre
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/profile/profile.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
+import 'package:wflow/modules/main/presentation/photo/photo.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -32,6 +33,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
         return MaterialPageRoute(builder: (_) => const MessageScreen());
+      case RouteKeys.photoScreen:
+        return MaterialPageRoute(builder: (_) => const PhotoScreen());
       case RouteKeys.videoCallScreen:
         return MaterialPageRoute(builder: (_) => const VideoCallOutScreen());
       case RouteKeys.createAccountScreen:

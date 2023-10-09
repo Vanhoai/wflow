@@ -10,6 +10,10 @@ class RouteKeys {
   static const String messageScreen = "/message";
   static const String videoCallScreen = "/videocall";
   static const String roomsScreen = "/rooms";
+
+  //Photo
+  static const String photoScreen = "/photo";
+
   // inside personal tab
   static const String settingScreen = '/settingScreen';
   static const String profileScreen = '/profileScreen';

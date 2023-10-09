@@ -11,6 +11,9 @@ import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/videocall/VideoCallOut.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/profile/profile.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 
@@ -42,6 +45,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case RouteKeys.profileScreen:
         return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case RouteKeys.auStepOneScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
+      case RouteKeys.auStepTwoScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
+      case RouteKeys.auStepThreeScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

@@ -7,7 +7,7 @@ class AppButton extends StatelessWidget{
   const AppButton({ required this.onTap, required this.text ,Key? key}):super(key: key);
   @override
   Widget build(BuildContext context) {
-    return InkWell(
+      return InkWell(
       onTap:onTap,
       borderRadius:const BorderRadius.all(Radius.circular(12.0)),
       child:Ink(

@@ -6,6 +6,7 @@ import 'package:voice_message_package/voice_message_package.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
+import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/event.dart';
@@ -162,6 +163,16 @@ class _MainChatState extends State<MainChat> {
           child: Image.network(
             message.content,
             width: 200,
+            loadingBuilder: (BuildContext context, Widget child,
+                ImageChunkEvent? loadingProgress) {
+              if (loadingProgress == null) return child;
+              return const Center(
+                  child: Loading(
+                    height: 24,
+                    width: 24,
+                  )
+              );
+            },
           ),
         ),
         Container(

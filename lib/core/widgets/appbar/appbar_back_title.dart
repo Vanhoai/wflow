@@ -26,7 +26,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
           borderRadius: BorderRadius.circular(50),
           child: Container(
             alignment: Alignment.center,
-            child: SvgPicture.asset(AppConstants.backArrow, height: 24, width: 24,),
+            child: SvgPicture.asset(AppConstants.backArrow, height: 19, width: 19,),
           ),
         ),
       ),

@@ -2,10 +2,16 @@ import 'dart:async';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
+import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/photo/bloc/state.dart';
 
+import 'bloc/event.dart';
 import 'component/image_item_widget.dart';
+import 'component/send_photo.dart';
 
 
 
@@ -117,7 +123,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
     }
     return GridView.custom(
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: 4,
+        crossAxisCount: 3,
       ),
       childrenDelegate: SliverChildBuilderDelegate(
             (BuildContext context, int index) {
@@ -147,13 +153,24 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const Header(text: "Chọn ảnh"),
-      body: Column(
-        children: [
-          Expanded(child: _buildBody(context)),
-        ],
-      )
+
+    var args = ModalRoute.of(context)!.settings.arguments != null ?? ModalRoute.of(context)!.settings.arguments as bool ;
+    args = true;
+    return SafeArea(
+      child: BlocProvider(
+        lazy: true,
+        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: true)),
+        child: Scaffold(
+            appBar: const Header(text: "Chọn ảnh"),
+            body: Column(
+              children: [
+                Expanded(child: _buildBody(context)),
+              ],
+            ),
+            floatingActionButton: const SendPhoto()
+        ),
+      ),
     );
   }
+
 }

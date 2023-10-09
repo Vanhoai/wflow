@@ -41,6 +41,7 @@ class _MessageScreenState extends State<MessageScreen> {
     ));
     return SafeArea(
       child: Scaffold(
+
         resizeToAvoidBottomInset: true,
         body: MultiBlocProvider(
           providers: [

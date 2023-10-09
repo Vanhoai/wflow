@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
@@ -106,7 +107,7 @@ class _BoxChatState extends State<BoxChat> {
                             InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
-
+                                _getImage();
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
@@ -239,5 +240,10 @@ class _BoxChatState extends State<BoxChat> {
   {
     BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
   }
-
+  Future<void> _getImage () async
+  {
+    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen,arguments: true);
+    result as List<File>;
+    if (context.mounted) BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: "", type: "type", files: result));
+  }
 }

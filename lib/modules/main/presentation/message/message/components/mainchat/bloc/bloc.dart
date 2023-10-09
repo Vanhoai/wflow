@@ -43,7 +43,6 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
     List<Message> chat = [
       Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
       Message(id: "2", content: "https://www.learningcontainer.com/wp-content/uploads/2020/02/Kalimba.mp3", type: "record",createAt: DateTime.now().toString()),
-      Message(id: "1", content: "https://vapa.vn/wp-content/uploads/2022/12/anh-3d-thien-nhien-003.jpg", type: "image",createAt: DateTime.now().toString()),
       Message(id: "2", content: "Hello, cau the nao roi dạo này còn đập đá chơi đá gà không?", type: "text",createAt: DateTime.now().toString()),
       Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
       Message(id: "1", content: "Dear anh chị HR \n Em là sinh viên mới tốt nghiệp đang tìm kiếm cơ hội làm việc", type: "text", createAt: DateTime.now().toString()),
@@ -54,8 +53,17 @@ class MainChatBloc extends Bloc<MainChatEvent,MainChatState>{
   }
 
   FutureOr<void> sendFiles(SendFilesEvent event, Emitter<MainChatState> emit) async {
-    final bytes = await event.files.readAsBytes();
-    socket.emit("CHAT",bytes);
+    String content = "";
+    for (int i = 0; i < event.files.length; i ++) {
+      content += event.files[i].path;
+      if(i != event.files.length-1)
+      {
+        content +='*****';
+      }
+    }
+    Message message = Message(id: '1', content: content, type: 'multipleimage',createAt: DateTime.now().toString());
+    final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
+    emit(newState);
   }
 
   FutureOr<void> sendMessage(SendMessageEvent event, Emitter<MainChatState> emit) {

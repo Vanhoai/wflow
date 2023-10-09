@@ -1,5 +1,6 @@
 
 
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -36,7 +37,7 @@ class SendMessageEvent extends MainChatEvent{
 class SendFilesEvent extends MainChatEvent{
   final String id;
   final String type;
-  final File files;
+  final List<File> files;
 
   SendFilesEvent({required this.id, required this.type, required this.files});
 

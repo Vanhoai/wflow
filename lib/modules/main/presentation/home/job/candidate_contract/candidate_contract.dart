@@ -2,7 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
-import 'package:wflow/modules/main/presentation/home/post/candidate_contract/widgets/widget.dart';
+import 'package:wflow/modules/main/presentation/home/job/candidate_contract/widgets/widget.dart';
 
 class CandidateContractScreen extends StatefulWidget {
   const CandidateContractScreen({super.key});

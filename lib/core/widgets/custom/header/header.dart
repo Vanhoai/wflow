@@ -54,7 +54,9 @@ class _HeaderState extends State<Header> {
               highlightColor: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(widget.leadingPhotoUrl),
+                backgroundImage: NetworkImage(
+                  widget.leadingPhotoUrl,
+                ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {
                   return;

@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
-import 'package:wflow/modules/main/presentation/home/post/job_information/widgets/widget.dart';
+import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
 
 class JobInformationScreen extends StatefulWidget {
   const JobInformationScreen({super.key});

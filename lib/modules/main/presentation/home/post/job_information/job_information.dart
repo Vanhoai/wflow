@@ -55,12 +55,12 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
               ),
               backgroundColor: themeData.colorScheme.background,
               surfaceTintColor: Colors.transparent,
-              pinned: true,
+              pinned: false,
               snap: false,
               floating: true,
             ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+              padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
               sliver: SliverToBoxAdapter(
                 child: Header(
                   title: Text(

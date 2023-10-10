@@ -16,12 +16,17 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
   Widget build(BuildContext context) {
     return CommonScaffold(
       hideKeyboardWhenTouchOutside: true,
-      isSafe: true,
       body: RefreshIndicator(
         onRefresh: () async {
           Future.delayed(const Duration(seconds: 1));
         },
         child: CustomScrollView(
+          clipBehavior: Clip.none,
+          cacheExtent: 1000,
+          dragStartBehavior: DragStartBehavior.start,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+          shrinkWrap: true,
+          physics: const BouncingScrollPhysics(),
           slivers: [
             SliverAppBar(
               automaticallyImplyLeading: true,
@@ -30,31 +35,24 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                 onPressed: () => Navigator.pop(context, false),
               ),
             ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              sliver: CandidateContractInfoWidget(),
+            ),
+            const SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              sliver: CandidateCVWidget(),
+            ),
             SliverPadding(
-              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
               sliver: SliverToBoxAdapter(
-                child: CustomScrollView(
-                  physics: const NeverScrollableScrollPhysics(),
-                  shrinkWrap: true,
-                  slivers: [
-                    const CandidateContractInfoWidget(),
-                    // IntroductionWidget(),
-                    const CandidateCVWidget(),
-                    SliverToBoxAdapter(
-                      child: PrimaryButton(
-                        label: 'Create Contract',
-                        onPressed: () {},
-                        width: double.infinity,
-                      ),
-                    ),
-                  ],
-                  clipBehavior: Clip.none,
-                  cacheExtent: 1000,
-                  dragStartBehavior: DragStartBehavior.start,
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                child: PrimaryButton(
+                  label: 'Create Contract',
+                  onPressed: () {},
+                  width: double.infinity,
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

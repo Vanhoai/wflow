@@ -13,31 +13,9 @@ class _NotificatonAppState extends State<NotificatonApp> {
   int _indexSelected = 1;
 
   void onChangedItem(int index) {
-    switch (index) {
-      case 0:
-        setState(
-          () {
-            _indexSelected = 0;
-          },
-        );
-        break;
-      case 1:
-        setState(
-          () {
-            _indexSelected = 1;
-          },
-        );
-        break;
-      case 2:
-        setState(
-          () {
-            _indexSelected = 2;
-          },
-        );
-        break;
-      default:
-        break;
-    }
+    setState(() {
+      _indexSelected = index;
+    });
   }
 
   @override
@@ -57,31 +35,18 @@ class _NotificatonAppState extends State<NotificatonApp> {
         ),
         child: Column(
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ButtonNotification(
-                  width: myButtonsDatas[0][0],
-                  height: myButtonsDatas[0][1],
-                  content: myButtonsDatas[0][2],
-                  isActive: _indexSelected == 0,
-                  onChanged: () => onChangedItem(0),
+            Wrap(
+              direction: Axis.horizontal,
+              children: List.generate(
+                myButtonsDatas.length,
+                (index) => ButtonNotification(
+                  width: myButtonsDatas[index][0],
+                  height: myButtonsDatas[index][1],
+                  content: myButtonsDatas[index][2],
+                  isActive: _indexSelected == index,
+                  onChanged: () => onChangedItem(index),
                 ),
-                ButtonNotification(
-                  width: myButtonsDatas[1][0],
-                  height: myButtonsDatas[1][1],
-                  content: myButtonsDatas[1][2],
-                  isActive: _indexSelected == 1,
-                  onChanged: () => onChangedItem(1),
-                ),
-                ButtonNotification(
-                  width: myButtonsDatas[2][0],
-                  height: myButtonsDatas[2][1],
-                  content: myButtonsDatas[2][2],
-                  isActive: _indexSelected == 2,
-                  onChanged: () => onChangedItem(2),
-                ),
-              ],
+              ),
             ),
             const SizedBox(
               height: 32,

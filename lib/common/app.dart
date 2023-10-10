@@ -13,7 +13,7 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/add_business/add_business.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/notification/notification.dart';
+import 'package:wflow/modules/main/presentation/notification/notification_app.dart';
 
 class App extends StatefulWidget {
   const App({super.key});

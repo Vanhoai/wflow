@@ -19,10 +19,12 @@ class _AddBusinessState extends State<AddBusiness> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        child: Column(
-          children: List.generate(
-            10,
-            (index) => const AddBusinessCard(),
+        child: Expanded(
+          child: ListView.builder(
+            itemCount: 20,
+            itemBuilder: (context, index) {
+              return const AddBusinessCard();
+            },
           ),
         ),
       ),

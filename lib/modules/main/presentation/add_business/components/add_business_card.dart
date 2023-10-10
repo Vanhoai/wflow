@@ -15,29 +15,26 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: AppSize.marginMedium),
-      child: InkWell(
-        onTap: () => {},
-        child: Ink(
-          padding: const EdgeInsets.only(
-            left: AppSize.paddingScreenDefault,
-            right: AppSize.paddingScreenDefault,
-            top: AppSize.paddingMedium,
-            bottom: AppSize.paddingMedium,
-          ),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildAvatar(),
-              _buildContent(),
-              SizedBox(
-                width: ((MediaQuery.sizeOf(context).width) / 100) * 8.16,
-              ),
-              _buildCheckbox(),
-            ],
-          ),
+    return InkWell(
+      onTap: () => {},
+      child: Ink(
+        padding: const EdgeInsets.only(
+          left: AppSize.paddingScreenDefault,
+          right: AppSize.paddingScreenDefault,
+          top: AppSize.paddingMedium * 2,
+          bottom: AppSize.paddingMedium * 2,
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            _buildAvatar(),
+            _buildContent(),
+            SizedBox(
+              width: ((MediaQuery.sizeOf(context).width) / 100) * 8.16,
+            ),
+            _buildCheckbox(),
+          ],
         ),
       ),
     );
@@ -45,13 +42,12 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
 
   Widget _buildAvatar() {
     return Container(
-      width: 50,
-      height: 50,
-      decoration: BoxDecoration(
-        color: Colors.lightBlue,
-        borderRadius: BorderRadius.all(
-          Radius.circular(MediaQuery.sizeOf(context).width),
-        ),
+      width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
+      height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
+      child: CircleAvatar(
+        radius: MediaQuery.sizeOf(context).width,
+        backgroundImage: const NetworkImage(
+            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7b2PVyKI3rMsrNGIdognv6uTxYbDWYi8wAPbBgDa_cCmGU-r8qzIvRcqZTK1sQ_OpsqA&usqp=CAU'),
       ),
     );
   }

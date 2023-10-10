@@ -33,9 +33,8 @@ class _ButtonNotificationState extends State<ButtonNotification> {
         child: OutlinedButton(
           onPressed: widget.onChanged,
           style: OutlinedButton.styleFrom(
-            backgroundColor: widget.isActive
-                ? const Color(0XFF1E88E5)
-                : const Color(0XFFFFFFFF),
+            backgroundColor:
+                widget.isActive ? const Color(0XFF1E88E5) : Colors.white,
             shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(8),
@@ -54,9 +53,7 @@ class _ButtonNotificationState extends State<ButtonNotification> {
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
-              color: widget.isActive
-                  ? const Color(0XFFFFFFFF)
-                  : const Color(0XFF606060),
+              color: widget.isActive ? Colors.white : const Color(0XFF606060),
             ),
           ),
         ),

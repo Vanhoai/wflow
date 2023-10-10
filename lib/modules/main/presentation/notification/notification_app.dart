@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/modules/main/presentation/notification/components/button_notification.dart';
+import 'package:wflow/modules/main/presentation/notification/components/item_notification.dart';
 import 'package:wflow/modules/main/presentation/notification/utils/constants.dart';
 
 class NotificatonApp extends StatefulWidget {
@@ -30,11 +31,8 @@ class _NotificatonAppState extends State<NotificatonApp> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
-          color: Colors.white,
-        ),
         child: Column(
-          children: [
+          children: <Widget>[
             Wrap(
               direction: Axis.horizontal,
               children: List.generate(

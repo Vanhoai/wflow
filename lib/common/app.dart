@@ -11,6 +11,7 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/modules/main/presentation/add_business/add_business.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/notification/notification.dart';
 
@@ -65,7 +66,8 @@ class _AppState extends State<App> {
                   children: [
                     MaterialApp(
                       builder: (context, child) {
-                        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                        ErrorWidget.builder =
+                            (FlutterErrorDetails errorDetails) {
                           bool isDebug = false;
                           assert(() {
                             isDebug = true;
@@ -95,15 +97,17 @@ class _AppState extends State<App> {
                         // return child!;
                       },
                       supportedLocales: localization.supportedLocales,
-                      localizationsDelegates: localization.localizationsDelegates,
+                      localizationsDelegates:
+                          localization.localizationsDelegates,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,
                       darkTheme: themeDataDark,
-                      themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                      themeMode:
+                          parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
                       // initialRoute: RouteKeys.introScreen,
-                      home: const NotificatonApp(),
+                      home: const AddBusiness(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

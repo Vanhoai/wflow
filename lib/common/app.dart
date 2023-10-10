@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/security/bloc.dart';
+import 'package:wflow/common/videocall/bloc/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
@@ -52,6 +54,10 @@ class _AppState extends State<App> {
               ),
               BlocProvider(
                 create: (BuildContext context) => PersonalBloc(),
+              ),
+              BlocProvider(
+                create: (BuildContext context) => VideoCallBloc(client: instance.get<StringeeClient>()),
+
               ),
             ],
             child: BlocBuilder<AppBloc, AppState>(

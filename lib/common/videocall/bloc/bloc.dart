@@ -4,22 +4,24 @@
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 
 import 'event.dart';
 import 'state.dart';
 class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
-  final StringeeClient _client = StringeeClient();
-  String token = 'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLlJZUkhkRWhKQVFMcFhTODlvcjFOQjBDblFraUl5LTE2OTYyNTI5MTYiLCJpc3MiOiJTSy4wLlJZUkhkRWhKQVFMcFhTODlvcjFOQjBDblFraUl5IiwiZXhwIjoxNjk4ODQ0OTE2LCJ1c2VySWQiOiJoeXV5In0.767Xb9ea-r4vTSnxg4Yu91swzaVxrDBGbaG3vY1YlqY';
-
-  VideoCallBloc() : super(const InitVideoCallSate()){
+  final StringeeClient client;
+  String token_huy = 'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpLTE2OTY5NzQ0NDMiLCJpc3MiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpIiwiZXhwIjoxNjk5NTY2NDQzLCJ1c2VySWQiOiJodXkifQ.GzH32KZhobHvm9gk44Kt7lMo1EXiMGqkUuHpisvc2q8';
+  String token_teo =  'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpLTE2OTY5NzQ1MDIiLCJpc3MiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpIiwiZXhwIjoxNjk5NTY2NTAyLCJ1c2VySWQiOiJ0ZW8ifQ.LK0EPc_bVLFjfOIHitq0NwcAAR3dEnyW-fFzYptOiDU';
+  VideoCallBloc({required this.client}) : super(const InitVideoCallSate()){
     on<VideoCallConnectEvent>(videoCallConnect);
+    on<OnCallIncomingEvent>(OnCallIncoming);
   }
 
   FutureOr<void> videoCallConnect(VideoCallConnectEvent event, Emitter<VideoCallState> emit) async {
-    _client.connect(token);
-    await emit.forEach(_client.eventStreamController.stream, onData: (event){
+    client.connect(token_huy);
+    await emit.forEach(client.eventStreamController.stream, onData: (event){
       Map<dynamic, dynamic> map = event;
       switch (map['eventType']) {
         case StringeeClientEvents.didConnect:
@@ -52,6 +54,7 @@ class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
       }
       return const CallVideoConnect();
     });
+
   }
 
 
@@ -85,7 +88,14 @@ class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
 
   /// Invoked when receive an incoming of StringeeCall2
   void handleIncomingCall2Event(StringeeCall2 call) {
+    print('cuoc goi toi' + call.from.toString());
+    print(call.id);
+    add(OnCallIncomingEvent(call: call));
   }
 
 
+
+  FutureOr<void> OnCallIncoming(OnCallIncomingEvent event, Emitter<VideoCallState> emit) {
+    emit( CallInComing(call: event.call));
+  }
 }

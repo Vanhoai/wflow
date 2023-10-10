@@ -4,15 +4,26 @@ import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
 
 class AddBusinessCard extends StatefulWidget {
-  const AddBusinessCard({super.key});
+  const AddBusinessCard({
+    super.key,
+    required this.image,
+    required this.name,
+    required this.email,
+    required this.isCheck,
+    required this.onCheck,
+  });
+
+  final String image;
+  final String name;
+  final String email;
+  final bool isCheck;
+  final Function(bool? value)? onCheck;
 
   @override
   State<AddBusinessCard> createState() => _AddBusinessCardState();
 }
 
 class _AddBusinessCardState extends State<AddBusinessCard> {
-  bool isCheck = false;
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -46,8 +57,9 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: CircleAvatar(
         radius: MediaQuery.sizeOf(context).width,
-        backgroundImage: const NetworkImage(
-            'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7b2PVyKI3rMsrNGIdognv6uTxYbDWYi8wAPbBgDa_cCmGU-r8qzIvRcqZTK1sQ_OpsqA&usqp=CAU'),
+        backgroundImage: NetworkImage(
+          widget.image,
+        ),
       ),
     );
   }
@@ -59,11 +71,11 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Tim Denmisons',
+            widget.name,
             style: textTheme.labelMedium,
           ),
           Text(
-            'timden22068@fpt.edu.vn',
+            widget.email,
             style: textTheme.labelMedium,
           ),
         ],
@@ -80,23 +92,21 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
         border: Border.all(
           width: ((MediaQuery.sizeOf(context).width) / 100) * 0.51,
           style: BorderStyle.solid,
-          color: isCheck ? AppColors.primary : Colors.transparent,
+          color: widget.isCheck ? AppColors.primary : Colors.transparent,
         ),
         borderRadius: BorderRadius.circular(AppSize.borderSmall),
       ),
       child: Transform.scale(
         scale: 1.3,
         child: Checkbox(
-          value: isCheck,
-          onChanged: (value) => setState(() {
-            isCheck = value!;
-          }),
+          value: widget.isCheck,
+          onChanged: widget.onCheck,
           checkColor: AppColors.primary,
           side: const BorderSide(
             color: Colors.transparent,
           ),
           fillColor: MaterialStatePropertyAll(
-              isCheck ? Colors.white : const Color(0XFFD9D9D9)),
+              widget.isCheck ? Colors.white : const Color(0XFFD9D9D9)),
         ),
       ),
     );

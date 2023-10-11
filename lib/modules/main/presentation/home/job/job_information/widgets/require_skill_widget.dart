@@ -93,7 +93,7 @@ class _RequireSkillState extends State<RequireSkill> {
               physics: const AlwaysScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 20.0),
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
             ),
           )
         ],

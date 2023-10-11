@@ -11,10 +11,16 @@ class SearchChatBusiness extends StatefulWidget {
 
 class _SearchChatBusinessState extends State<SearchChatBusiness> {
   TextEditingController controller = TextEditingController();
+  bool isHiddenSuffixIcon = true;
 
-  void onChangedSearch(value) => setState(() {});
+  void onChangedSearch(String value) => setState(() {
+        isHiddenSuffixIcon = value.isEmpty;
+      });
 
-  void onClearSearch() => {};
+  void onClearSearch() => setState(() {
+        isHiddenSuffixIcon = true;
+        controller.clear();
+      });
 
   @override
   Widget build(BuildContext context) {
@@ -77,13 +83,13 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
-      child: controller.text.isEmpty
+      child: isHiddenSuffixIcon
           ? const SizedBox(
               width: 0,
               height: 0,
             )
           : InkWell(
-              onTap: () => {},
+              onTap: () => onClearSearch(),
               child: Container(
                 width: 20,
                 height: 20,

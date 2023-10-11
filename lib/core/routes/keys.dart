@@ -18,5 +18,4 @@ class RouteKeys {
 
   // inside personal tab
   static const String settingScreen = '/settingScreen';
-  static const String profileScreen = '/profileScreen';
 }

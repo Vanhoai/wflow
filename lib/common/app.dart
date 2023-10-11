@@ -12,6 +12,7 @@ import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/add_business/add_business.dart';
+import 'package:wflow/modules/main/presentation/chat_business/chat_business.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/notification/notification_app.dart';
 
@@ -107,7 +108,7 @@ class _AppState extends State<App> {
                           parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
                       // initialRoute: RouteKeys.introScreen,
-                      home: const AddBusiness(),
+                      home: const ChatBusiness(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

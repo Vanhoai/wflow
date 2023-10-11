@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/modules/main/presentation/add_business/components/add_business_card.dart';
-import 'package:wflow/modules/main/presentation/add_business/components/search-business.dart';
+import 'package:wflow/modules/main/presentation/add_business/components/search_add_business.dart';
 import 'package:wflow/modules/main/presentation/add_business/utils/constants.dart';
 
 class AddBusiness extends StatefulWidget {
@@ -29,7 +29,7 @@ class _AddBusinessState extends State<AddBusiness> {
         height: double.infinity,
         child: Column(
           children: [
-            const SearchBusiness(),
+            const SearchAddBusiness(),
             Expanded(
               child: ListView.builder(
                 itemCount: users.length,

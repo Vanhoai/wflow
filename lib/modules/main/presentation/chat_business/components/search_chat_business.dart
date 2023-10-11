@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 
-class SearchBusiness extends StatefulWidget {
-  const SearchBusiness({super.key});
+class SearchChatBusiness extends StatefulWidget {
+  const SearchChatBusiness({super.key});
 
   @override
-  State<SearchBusiness> createState() => _SearchBusinessState();
+  State<SearchChatBusiness> createState() => _SearchChatBusinessState();
 }
 
-class _SearchBusinessState extends State<SearchBusiness> {
+class _SearchChatBusinessState extends State<SearchChatBusiness> {
   TextEditingController controller = TextEditingController();
   String searchContent = '';
 
@@ -51,21 +51,29 @@ class _SearchBusinessState extends State<SearchBusiness> {
                       width: 0,
                       height: 0,
                     )
-                  : Container(
-                      width: 20,
-                      height: 20,
-                      decoration: const BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(
-                          Radius.circular(
-                            999,
+                  : InkWell(
+                      onTap: () => setState(
+                        () {
+                          searchContent = '';
+                          controller.clear();
+                        },
+                      ),
+                      child: Container(
+                        width: 20,
+                        height: 20,
+                        decoration: const BoxDecoration(
+                          color: Colors.grey,
+                          borderRadius: BorderRadius.all(
+                            Radius.circular(
+                              999,
+                            ),
                           ),
                         ),
-                      ),
-                      child: const Icon(
-                        Icons.close,
-                        size: 12,
-                        color: Colors.white,
+                        child: const Icon(
+                          Icons.close,
+                          size: 12,
+                          color: Colors.white,
+                        ),
                       ),
                     ),
             ),

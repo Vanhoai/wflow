@@ -12,6 +12,9 @@ class RouteKeys {
   static const String jobInformationScreen = '/jobInformationScreen';
   static const String candidateListScreen = '/candidateListScreen';
   static const String candidateContractScreen = '/candidateContractScreen';
+  static const String createContractScreen = '/createContractScreen';
+  static const String reviewContractScreen = '/reviewContractScreen';
+  static const String viewContractScreen = '/viewContractScreen';
 
   // inside personal tab
   static const String settingScreen = '/settingScreen';

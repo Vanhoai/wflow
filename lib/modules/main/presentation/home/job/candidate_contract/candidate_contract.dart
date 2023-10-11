@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_contract/widgets/widget.dart';
@@ -12,6 +13,10 @@ class CandidateContractScreen extends StatefulWidget {
 }
 
 class _CandidateContractScreenState extends State<CandidateContractScreen> {
+  void navigateToCreateContract(BuildContext context) {
+    Navigator.of(context).pushNamed(RouteKeys.createContractScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
@@ -44,11 +49,11 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
               sliver: CandidateCVWidget(),
             ),
             SliverPadding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
               sliver: SliverToBoxAdapter(
                 child: PrimaryButton(
                   label: 'Create Contract',
-                  onPressed: () {},
+                  onPressed: () => navigateToCreateContract(context),
                   width: double.infinity,
                 ),
               ),

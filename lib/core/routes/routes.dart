@@ -8,6 +8,7 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/personal/profile/profile.dart';
@@ -39,6 +40,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const JobInformationScreen());
       case RouteKeys.candidateListScreen:
         return MaterialPageRoute(builder: (_) => const CandidateListScreen());
+      case RouteKeys.createContractScreen:
+        return MaterialPageRoute(builder: (_) => const CreateContractScreen());
+      case RouteKeys.reviewContractScreen:
+        return MaterialPageRoute(builder: (_) => const ReviewContractScreen());
+      case RouteKeys.viewContractScreen:
+        return MaterialPageRoute(builder: (_) => const ViewContractScreen());
       case RouteKeys.settingScreen:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case RouteKeys.profileScreen:

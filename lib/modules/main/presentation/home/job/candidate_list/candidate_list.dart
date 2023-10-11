@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -92,19 +91,6 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                 ),
               ),
             ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                width: 50,
-                height: 50,
-                child: CachedNetworkImage(
-                  imageUrl: 'http://via.placeholder.com/200x150',
-                  width: 50,
-                  height: 50,
-                  placeholder: (context, url) => const CircularProgressIndicator(),
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
-                ),
-              ),
-            )
           ],
         ),
       ),

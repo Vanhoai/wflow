@@ -1,6 +1,8 @@
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/libs/libs.dart';
 
 import 'event.dart';
 import 'state.dart';
@@ -11,6 +13,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<OnChangePasswordEvent>(onChangePassword);
     on<SignInSubmittedEvent>(signInSubmitted);
     on<RememberPassEvent>(rememberPass);
+    on<SignInWithGoogleEvent>(signInWithGoogle);
   }
 
   FutureOr<void> onChangeEmail(OnChangeEmailEvent event, Emitter<SignInState> emit) {
@@ -33,5 +36,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) {
     emit(SignInSuccess());
+  }
+
+  FutureOr<void> signInWithGoogle(SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
+    String idToken = await FirebaseService.signInWithGoogle();
+    if (idToken.isNotEmpty) {
+      print('IDToken: $idToken');
+    }
   }
 }

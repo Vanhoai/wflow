@@ -33,7 +33,7 @@ class _MessageScreenState extends State<MessageScreen> {
     super.initState();
     requestPermissions();
   }
-
+  // đem ra màn hinh bottom navigation screen
   requestPermissions() async {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     deviceInfoPlugin.androidInfo.then((value) async {

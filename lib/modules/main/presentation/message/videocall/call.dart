@@ -3,6 +3,7 @@ import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/button/circle_button.dart';
 
 class Call extends StatefulWidget {
@@ -83,7 +84,8 @@ class _CallState extends State<Call> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 15.0),
             child:  Text(
-              widget._toUserId,
+              (widget._showIncomingUi ?
+              widget._fromUserId : widget._toUserId),
               style:  const TextStyle(
                 color: Colors.white,
                 fontSize: 35.0,
@@ -104,10 +106,10 @@ class _CallState extends State<Call> {
       ),
     );
 
-    Widget btnSwitch = Align(
+    Widget btnSwitch = widget._isVideoCall ? Align(
       alignment: Alignment.topLeft,
       child: Padding(
-        padding: const EdgeInsets.only(left: 25.0, top: 25.0),
+        padding: const EdgeInsets.only(left: 20, top: 25.0),
         child: CircleButton(
             icon: const Icon(
               Icons.switch_camera,
@@ -117,7 +119,7 @@ class _CallState extends State<Call> {
             primary: Colors.transparent,
             onPressed: toggleSwitchCamera),
       ),
-    );
+    ): const SizedBox();
 
     Container bottomContainer = Container(
       padding: const EdgeInsets.only(bottom: 30.0),
@@ -181,21 +183,25 @@ class _CallState extends State<Call> {
                                 ),
                           primary: _isMute ? Colors.white : Colors.white54,
                           onPressed: toggleMicro),
-                      CircleButton(
-                          icon: _isVideoEnable
-                              ? const Icon(
-                                  Icons.videocam_off,
-                                  color: Colors.white,
-                                  size: 28,
-                                )
-                              : const Icon(
-                                  Icons.videocam,
-                                  color: Colors.black,
-                                  size: 28,
-                                ),
-                          primary:
+                      LayoutBuilder(
+                        builder: (context, constraints) {
+                          return widget._isVideoCall ?  CircleButton(
+                              icon: _isVideoEnable
+                                  ? const Icon(
+                                Icons.videocam_off,
+                                color: Colors.white,
+                                size: 28,
+                              )
+                                  : const Icon(
+                                Icons.videocam,
+                                color: Colors.black,
+                                size: 28,
+                              ),
+                              primary:
                               _isVideoEnable ? Colors.white54 : Colors.white,
-                          onPressed: toggleVideo),
+                              onPressed: toggleVideo) : const SizedBox();
+                        },
+                      ),
                       CircleButton(
                           icon: const Icon(
                             Icons.call_end,
@@ -210,24 +216,30 @@ class _CallState extends State<Call> {
     );
 
     return WillPopScope(
-      child: Scaffold(
-        backgroundColor: Colors.black,
-        body:  Stack(
-          children: <Widget>[
-            remoteScreen != null
-                ? remoteScreen!
-                : const Placeholder(
-                    color: Colors.transparent,
-                  ),
-            localScreen != null
-                ? localScreen!
-                : const Placeholder(
-                    color: Colors.transparent,
-                  ),
-            nameCalling,
-            bottomContainer,
-            btnSwitch,
-          ],
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: Colors.black,
+          body:  Stack(
+            children: <Widget>[
+              remoteScreen != null
+                  ? remoteScreen!
+                  : Image.asset(
+                  AppConstants.backgroudVideoCall,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fill),
+              localScreen != null
+                  ? localScreen!
+                  : Image.asset(
+                  AppConstants.backgroudVideoCall,
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                  fit: BoxFit.fill),
+              nameCalling,
+              bottomContainer,
+              btnSwitch,
+            ],
+          ),
         ),
       ),
       onWillPop: () {
@@ -415,11 +427,14 @@ class _CallState extends State<Call> {
           localScreen =  StringeeVideoView(
             callId,
             true,
-            alignment: Alignment.topRight,
-            margin: const EdgeInsets.only(top: 25.0, right: 25.0),
+            alignment: Alignment.bottomRight,
+            margin: const EdgeInsets.only(bottom: 100.0, right: 25.0),
             height: 150.0,
             width: 100.0,
-            scalingType: ScalingType.fit,
+            borderRadius: BorderRadius.circular(8),
+            scalingType: ScalingType.fill,
+            isMirror: true,
+
           );
         });
       });
@@ -428,11 +443,13 @@ class _CallState extends State<Call> {
         localScreen =  StringeeVideoView(
           callId,
           true,
-          alignment: Alignment.topRight,
-          margin: const EdgeInsets.only(top: 25.0, right: 25.0),
+          alignment: Alignment.bottomRight,
+          margin: const EdgeInsets.only(bottom: 130.0, right: 25.0),
           height: 150.0,
           width: 100.0,
-          scalingType: ScalingType.fit,
+          borderRadius: BorderRadius.circular(8),
+          scalingType: ScalingType.fill,
+          isMirror: true,
         );
       });
     }
@@ -450,7 +467,7 @@ class _CallState extends State<Call> {
             callId,
             false,
             isMirror: false,
-            scalingType: ScalingType.fit,
+            scalingType: ScalingType.fill,
           );
         });
       });
@@ -460,7 +477,7 @@ class _CallState extends State<Call> {
           callId,
           false,
           isMirror: false,
-          scalingType: ScalingType.fit,
+          scalingType: ScalingType.fill,
         );
       });
     }
@@ -584,25 +601,25 @@ class _CallState extends State<Call> {
     }
   }
 
-  void createForegroundServiceNotification() {
-    flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
-      android: AndroidInitializationSettings('ic_launcher'),
-    ));
-
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.startForegroundService(
-          1,
-          'Screen capture',
-          'Capturing',
-          notificationDetails: const AndroidNotificationDetails(
-            'Test id',
-            'Test name',
-            channelDescription: 'Test description',
-            importance: Importance.defaultImportance,
-            priority: Priority.defaultPriority,
-          ),
-        );
-  }
+  // void createForegroundServiceNotification() {
+  //   flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
+  //     android: AndroidInitializationSettings('ic_launcher'),
+  //   ));
+  //
+  //   flutterLocalNotificationsPlugin
+  //       .resolvePlatformSpecificImplementation<
+  //           AndroidFlutterLocalNotificationsPlugin>()
+  //       ?.startForegroundService(
+  //         1,
+  //         'Screen capture',
+  //         'Capturing',
+  //         notificationDetails: const AndroidNotificationDetails(
+  //           'Test id',
+  //           'Test name',
+  //           channelDescription: 'Test description',
+  //           importance: Importance.defaultImportance,
+  //           priority: Priority.defaultPriority,
+  //         ),
+  //       );
+  // }
 }

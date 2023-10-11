@@ -108,7 +108,7 @@ class _AppState extends State<App> {
                           parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
                       // initialRoute: RouteKeys.introScreen,
-                      home: const ChatBusiness(),
+                      home: const AddBusiness(),
                     ),
                     // add bloc builder here so hide and show loading but not reload material app
                     BlocBuilder(

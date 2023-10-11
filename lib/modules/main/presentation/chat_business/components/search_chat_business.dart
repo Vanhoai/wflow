@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 
@@ -72,10 +74,15 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
   }
 
   Widget _buildPrefixIcon() {
-    return const Icon(
-      Icons.search_outlined,
-      size: 32,
-      color: Color(0XFF828282),
+    return Align(
+      widthFactor: 1,
+      heightFactor: 1,
+      child: SvgPicture.asset(
+        height: 20,
+        width: 20,
+        AppConstants.ic_search,
+        color: AppColors.borderColor,
+      ),
     );
   }
 

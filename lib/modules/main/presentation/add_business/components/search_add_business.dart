@@ -11,14 +11,14 @@ class SearchAddBusiness extends StatefulWidget {
 
 class _SearchAddBusinessState extends State<SearchAddBusiness> {
   TextEditingController controller = TextEditingController();
-  String searchContent = '';
+  bool isHiddenSuffixIcon = true;
 
-  void onChangedSearch(value) => setState(() {
-        searchContent = controller.text;
+  void onChangedSearch(String value) => setState(() {
+        isHiddenSuffixIcon = value.isEmpty;
       });
 
-  void clearSearch() => setState(() {
-        searchContent = '';
+  void onClearSearch() => setState(() {
+        isHiddenSuffixIcon = true;
         controller.clear();
       });
 
@@ -83,13 +83,13 @@ class _SearchAddBusinessState extends State<SearchAddBusiness> {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
-      child: searchContent.isEmpty
+      child: isHiddenSuffixIcon
           ? const SizedBox(
               width: 0,
               height: 0,
             )
           : InkWell(
-              onTap: () => clearSearch(),
+              onTap: () => onClearSearch(),
               child: Container(
                 width: 20,
                 height: 20,

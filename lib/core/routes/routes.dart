@@ -11,8 +11,6 @@ import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
-import 'package:wflow/modules/main/presentation/message/videocall/videocallin/videocallin.dart';
-import 'package:wflow/modules/main/presentation/message/videocall/videocallout/videocallout.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
@@ -37,12 +35,6 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
         return MaterialPageRoute(builder: (_) => const PhotoScreen());
-      case RouteKeys.videoCallOutScreen:
-        return MaterialPageRoute(
-          builder: (_) => VideoCallOutScreen(client: instance.get<StringeeClient>()),
-        );
-      case RouteKeys.videoCallInScreen:
-        return MaterialPageRoute(builder: (_) =>  const VideoCallInScreen());
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(

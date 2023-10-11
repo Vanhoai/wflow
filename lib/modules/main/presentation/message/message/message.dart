@@ -1,23 +1,22 @@
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/videocall/bloc/bloc.dart';
 import 'package:wflow/common/videocall/bloc/event.dart';
 import 'package:wflow/common/videocall/bloc/state.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
-
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/boxchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/message/videocall/videocallin/videocallin.dart';
 
+import '../videocall/call.dart';
 import 'components/boxchat/bloc/bloc.dart';
 
 class MessageScreen extends StatefulWidget {
@@ -32,9 +31,60 @@ class _MessageScreenState extends State<MessageScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    requestPermissions();
   }
 
+  requestPermissions() async {
+    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+    deviceInfoPlugin.androidInfo.then((value) async {
+      if (value.version.sdkInt >= 31) {
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.camera,
+          Permission.microphone,
+          Permission.bluetoothConnect,
+        ].request();
+        print(statuses);
+      } else {
+        Map<Permission, PermissionStatus> statuses = await [
+          Permission.camera,
+          Permission.microphone,
+        ].request();
+        print(statuses);
+      }
+    });
+  }
+  void call(StringeeCall2 call) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => Call(
+          instance.get<StringeeClient>(),
+          call.from!,
+          call.to!,
+          true,
+          call.isVideoCall,
+          StringeeObjectEventType.call2,
+          stringeeCall2: call,
+        ),
+      ),
+    );
+  }
+  void callTapped({required bool isVideoCall, required StringeeObjectEventType callType}) {
+    if (!instance.get<StringeeClient>().hasConnected) return;
 
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+          builder: (context) => Call(
+            instance.get<StringeeClient>(),
+            instance.get<StringeeClient>().userId!,
+            'teo',
+            false,
+            isVideoCall,
+            callType,
+          )),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +116,7 @@ class _MessageScreenState extends State<MessageScreen> {
             listener: (context, state) {
               if(state is CallInComing)
               {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => VideoCallInScreen(call2: state.call)));
+                call(state.call);
               }
             },
             bloc: instance.get<VideoCallBloc>()..add(const VideoCallConnectEvent()),
@@ -131,7 +181,7 @@ class _MessageScreenState extends State<MessageScreen> {
                             InkWell(
                               onTap: () {
                                 print("call");
-                                Navigator.of(context).pushNamed(RouteKeys.videoCallOutScreen);
+                                callTapped(callType: StringeeObjectEventType.call2,isVideoCall: false);
 
                               },
                               borderRadius: BorderRadius.circular(25),
@@ -150,6 +200,7 @@ class _MessageScreenState extends State<MessageScreen> {
                               child: InkWell(
                                 onTap: () {
                                   print("video call");
+                                  callTapped(callType: StringeeObjectEventType.call2,isVideoCall: true);
                                 },
                                 borderRadius: BorderRadius.circular(25),
                                 child: Container(

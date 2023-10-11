@@ -8,8 +8,6 @@ class RouteKeys {
   static const String fileScreen = "/file_screen";
   // inside message tab
   static const String messageScreen = "/message";
-  static const String videoCallOutScreen = "/videocallout";
-  static const String videoCallInScreen = "/videocallin";
 
   static const String roomsScreen = "/rooms";
 

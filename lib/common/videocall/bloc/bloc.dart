@@ -16,7 +16,7 @@ class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
   String token_teo =  'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpLTE2OTY5NzQ1MDIiLCJpc3MiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpIiwiZXhwIjoxNjk5NTY2NTAyLCJ1c2VySWQiOiJ0ZW8ifQ.LK0EPc_bVLFjfOIHitq0NwcAAR3dEnyW-fFzYptOiDU';
   VideoCallBloc({required this.client}) : super(const InitVideoCallSate()){
     on<VideoCallConnectEvent>(videoCallConnect);
-    on<OnCallIncomingEvent>(OnCallIncoming);
+    on<OnCallIncomingEvent>(onCallIncoming);
   }
 
   FutureOr<void> videoCallConnect(VideoCallConnectEvent event, Emitter<VideoCallState> emit) async {
@@ -95,7 +95,7 @@ class VideoCallBloc extends Bloc<VideoCallEvent,VideoCallState>{
 
 
 
-  FutureOr<void> OnCallIncoming(OnCallIncomingEvent event, Emitter<VideoCallState> emit) {
+  FutureOr<void> onCallIncoming(OnCallIncomingEvent event, Emitter<VideoCallState> emit) {
     emit( CallInComing(call: event.call));
   }
 }

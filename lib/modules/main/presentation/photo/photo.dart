@@ -8,6 +8,8 @@ import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/state.dart';
+import 'package:wflow/modules/main/presentation/photo/component/detail_page.dart';
+import 'package:wflow/modules/main/presentation/photo/component/live_photos_widget.dart';
 
 import 'bloc/event.dart';
 import 'component/image_item_widget.dart';
@@ -136,6 +138,9 @@ class _PhotoScreenState extends State<PhotoScreen> {
           return ImageItemWidget(
             key: ValueKey<int>(index),
             entity: entity,
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) =>DetailPage(entity: entity)));
+            },
             option: const ThumbnailOption(size: ThumbnailSize.square(200)),
           );
         },

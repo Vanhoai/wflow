@@ -199,7 +199,7 @@ class _CallState extends State<Call> {
                               ),
                               primary:
                               _isVideoEnable ? Colors.white54 : Colors.white,
-                              onPressed: toggleVideo) : const SizedBox();
+                              onPressed: toggleVideo) : const SizedBox.shrink();
                         },
                       ),
                       CircleButton(

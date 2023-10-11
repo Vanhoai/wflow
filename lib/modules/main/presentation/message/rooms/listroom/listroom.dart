@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
@@ -106,6 +107,7 @@ class _ListRoomState extends State<ListRoom> {
     return InkWell(
       onTap: (){
         print(room.name);
+        Navigator.of(context).pushNamed(RouteKeys.messageScreen);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),

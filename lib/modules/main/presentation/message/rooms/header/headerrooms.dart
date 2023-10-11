@@ -36,9 +36,9 @@ class _HeaderRoomsState extends State<HeaderRooms>{
             padding: const EdgeInsets.symmetric(
                 vertical: 10, horizontal: 20),
             child: AnimatedSwitcher(
-              duration: const Duration(milliseconds: 150),
+              duration: const Duration(milliseconds: 300),
               transitionBuilder: (Widget child, Animation<double> animation) {
-                return ScaleTransition(scale: animation, child: child);
+                return SizeTransition(sizeFactor: animation,axis: Axis.horizontal, child: child,);
               },
               child: !state.showSearch
                   ? Row(

@@ -29,13 +29,6 @@ class _IntroductionScreenState extends State<IntroScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //white status bar
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      //<-- For Android SEE HERE (dark icons)
-      statusBarBrightness: Brightness.light,
-    ));
     const bodyStyle = TextStyle(fontSize: 19.0);
     PageDecoration pageDecoration = PageDecoration(
         titleTextStyle:

@@ -88,12 +88,7 @@ class _MessageScreenState extends State<MessageScreen> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
-      statusBarIconBrightness: Brightness.dark,
-      //<-- For Android SEE HERE (dark icons)
-      statusBarBrightness: Brightness.light,
-    ));
+
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,

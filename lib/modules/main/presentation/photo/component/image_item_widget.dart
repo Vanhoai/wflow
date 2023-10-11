@@ -120,8 +120,8 @@ class ImageItemWidget extends StatelessWidget {
               ),
             ),
             PositionedDirectional(
-              top: 4,
-              end: 4,
+              top: 0,
+              end: 0,
               child: LayoutBuilder(
                 builder: (context, constraints) {
                   if(state is PhotoMultipleState){
@@ -135,15 +135,18 @@ class ImageItemWidget extends StatelessWidget {
                         }
                       },
                       child: Container(
-                        width: 24,
-                        height: 24,
-                        decoration: BoxDecoration(
-                            color: select ? AppColors.blueColor : Colors.black12,
-                            shape: BoxShape.circle,
-                            border: Border.all(
-                              color: Colors.white,
-                              width: 1.5
-                            )
+                        width: 40,
+                        height: 40,
+                        padding: const EdgeInsets.all(9),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: select ? AppColors.blueColor : Colors.black12,
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white,
+                                width: 1.5
+                              )
+                          ),
                         ),
                       ),
                     );

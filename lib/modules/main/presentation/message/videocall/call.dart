@@ -35,7 +35,6 @@ class Call extends StatefulWidget {
     if (stringeeCall2 != null) {
       _stringeeCall2 = stringeeCall2;
     }
-
   }
 
   @override
@@ -67,36 +66,34 @@ class _CallState extends State<Call> {
 
     if (widget._callType == StringeeObjectEventType.call2) {
       makeOrInitAnswerCall2();
-    } else {
-    }
+    } else {}
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget nameCalling =  Container(
+    Widget nameCalling = Container(
       alignment: Alignment.topCenter,
       padding: const EdgeInsets.only(top: 120.0),
-      child:  Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-           Container(
+          Container(
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 15.0),
-            child:  Text(
-              (widget._showIncomingUi ?
-              widget._fromUserId : widget._toUserId),
-              style:  const TextStyle(
+            child: Text(
+              (widget._showIncomingUi ? widget._fromUserId : widget._toUserId),
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 35.0,
               ),
             ),
           ),
-           Container(
+          Container(
             alignment: Alignment.center,
             child: Text(
               status,
-              style:  const TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,
               ),
@@ -106,20 +103,22 @@ class _CallState extends State<Call> {
       ),
     );
 
-    Widget btnSwitch = widget._isVideoCall ? Align(
-      alignment: Alignment.topLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 20, top: 25.0),
-        child: CircleButton(
-            icon: const Icon(
-              Icons.switch_camera,
-              color: Colors.white,
-              size: 28,
+    Widget btnSwitch = widget._isVideoCall
+        ? Align(
+            alignment: Alignment.topLeft,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 20, top: 25.0),
+              child: CircleButton(
+                  icon: const Icon(
+                    Icons.switch_camera,
+                    color: Colors.white,
+                    size: 28,
+                  ),
+                  primary: Colors.transparent,
+                  onPressed: toggleSwitchCamera),
             ),
-            primary: Colors.transparent,
-            onPressed: toggleSwitchCamera),
-      ),
-    ): const SizedBox();
+          )
+        : const SizedBox();
 
     Container bottomContainer = Container(
       padding: const EdgeInsets.only(bottom: 30.0),
@@ -129,7 +128,7 @@ class _CallState extends State<Call> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: widget._showIncomingUi
               ? <Widget>[
-                   Row(
+                  Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: <Widget>[
                       CircleButton(
@@ -152,8 +151,8 @@ class _CallState extends State<Call> {
                   )
                 ]
               : <Widget>[
-                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       CircleButton(
                           icon: _isSpeaker
@@ -169,6 +168,9 @@ class _CallState extends State<Call> {
                                 ),
                           primary: _isSpeaker ? Colors.white : Colors.white54,
                           onPressed: toggleSpeaker),
+                      const SizedBox(
+                        width: 30,
+                      ),
                       CircleButton(
                           icon: _isMute
                               ? const Icon(
@@ -183,23 +185,36 @@ class _CallState extends State<Call> {
                                 ),
                           primary: _isMute ? Colors.white : Colors.white54,
                           onPressed: toggleMicro),
+                      const SizedBox(
+                        width: 30,
+                      ),
                       LayoutBuilder(
                         builder: (context, constraints) {
-                          return widget._isVideoCall ?  CircleButton(
-                              icon: _isVideoEnable
-                                  ? const Icon(
-                                Icons.videocam_off,
-                                color: Colors.white,
-                                size: 28,
+                          return widget._isVideoCall
+                              ? Row(
+                                children: [
+                                  CircleButton(
+                                      icon: _isVideoEnable
+                                          ? const Icon(
+                                        Icons.videocam_off,
+                                        color: Colors.white,
+                                        size: 28,
+                                      )
+                                          : const Icon(
+                                        Icons.videocam,
+                                        color: Colors.black,
+                                        size: 28,
+                                      ),
+                                      primary: _isVideoEnable
+                                          ? Colors.white54
+                                          : Colors.white,
+                                      onPressed: toggleVideo),
+                                  const SizedBox(
+                                    width: 30,
+                                  ),
+                                ],
                               )
-                                  : const Icon(
-                                Icons.videocam,
-                                color: Colors.black,
-                                size: 28,
-                              ),
-                              primary:
-                              _isVideoEnable ? Colors.white54 : Colors.white,
-                              onPressed: toggleVideo) : const SizedBox.shrink();
+                              : const Visibility(visible: false, child: SizedBox.shrink());
                         },
                       ),
                       CircleButton(
@@ -219,22 +234,20 @@ class _CallState extends State<Call> {
       child: SafeArea(
         child: Scaffold(
           backgroundColor: Colors.black,
-          body:  Stack(
+          body: Stack(
             children: <Widget>[
               remoteScreen != null
                   ? remoteScreen!
-                  : Image.asset(
-                  AppConstants.backgroudVideoCall,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.fill),
+                  : Image.asset(AppConstants.backgroudVideoCall,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.fill),
               localScreen != null
                   ? localScreen!
-                  : Image.asset(
-                  AppConstants.backgroudVideoCall,
-                  height: MediaQuery.of(context).size.height,
-                  width: MediaQuery.of(context).size.width,
-                  fit: BoxFit.fill),
+                  : Image.asset(AppConstants.backgroudVideoCall,
+                      height: MediaQuery.of(context).size.height,
+                      width: MediaQuery.of(context).size.width,
+                      fit: BoxFit.fill),
               nameCalling,
               bottomContainer,
               btnSwitch,
@@ -248,7 +261,6 @@ class _CallState extends State<Call> {
       },
     );
   }
-
 
   Future makeOrInitAnswerCall2() async {
     if (!widget._showIncomingUi) {
@@ -323,7 +335,7 @@ class _CallState extends State<Call> {
   }
 
   void endCallTapped() {
-     if (widget._callType == StringeeObjectEventType.call2) {
+    if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.hangup().then((result) {
         print('_endCallTapped -- ${result['message']}');
         bool status = result['status'];
@@ -337,7 +349,7 @@ class _CallState extends State<Call> {
   }
 
   void acceptCallTapped() {
-     if (widget._callType == StringeeObjectEventType.call2) {
+    if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.answer().then((result) {
         print('_acceptCallTapped -- ${result['message']}');
         bool status = result['status'];
@@ -424,7 +436,7 @@ class _CallState extends State<Call> {
       });
       Future.delayed(const Duration(milliseconds: 200), () {
         setState(() {
-          localScreen =  StringeeVideoView(
+          localScreen = StringeeVideoView(
             callId,
             true,
             alignment: Alignment.bottomRight,
@@ -434,13 +446,12 @@ class _CallState extends State<Call> {
             borderRadius: BorderRadius.circular(8),
             scalingType: ScalingType.fill,
             isMirror: true,
-
           );
         });
       });
     } else {
       setState(() {
-        localScreen =  StringeeVideoView(
+        localScreen = StringeeVideoView(
           callId,
           true,
           alignment: Alignment.bottomRight,
@@ -463,7 +474,7 @@ class _CallState extends State<Call> {
       });
       Future.delayed(const Duration(milliseconds: 200), () {
         setState(() {
-          remoteScreen =  StringeeVideoView(
+          remoteScreen = StringeeVideoView(
             callId,
             false,
             isMirror: false,
@@ -473,7 +484,7 @@ class _CallState extends State<Call> {
       });
     } else {
       setState(() {
-        remoteScreen =  StringeeVideoView(
+        remoteScreen = StringeeVideoView(
           callId,
           false,
           isMirror: false,
@@ -533,7 +544,7 @@ class _CallState extends State<Call> {
         setState(() {
           _isSpeaker = false;
         });
-         if (widget._callType == StringeeObjectEventType.call2) {
+        if (widget._callType == StringeeObjectEventType.call2) {
           widget._stringeeCall2!.setSpeakerphoneOn(_isSpeaker);
         }
         break;
@@ -544,7 +555,7 @@ class _CallState extends State<Call> {
   }
 
   void clearDataEndDismiss() {
-     if (widget._callType == StringeeObjectEventType.call2) {
+    if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.destroy();
       widget._stringeeCall2 = null;
       Navigator.pop(context);
@@ -554,7 +565,7 @@ class _CallState extends State<Call> {
   }
 
   void toggleSwitchCamera() {
-     if (widget._callType == StringeeObjectEventType.call2) {
+    if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.switchCamera().then((result) {
         bool status = result['status'];
         if (status) {}
@@ -589,7 +600,7 @@ class _CallState extends State<Call> {
   }
 
   void toggleVideo() {
-     if (widget._callType == StringeeObjectEventType.call2) {
+    if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.enableVideo(!_isVideoEnable).then((result) {
         bool status = result['status'];
         if (status) {
@@ -601,25 +612,25 @@ class _CallState extends State<Call> {
     }
   }
 
-  // void createForegroundServiceNotification() {
-  //   flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
-  //     android: AndroidInitializationSettings('ic_launcher'),
-  //   ));
-  //
-  //   flutterLocalNotificationsPlugin
-  //       .resolvePlatformSpecificImplementation<
-  //           AndroidFlutterLocalNotificationsPlugin>()
-  //       ?.startForegroundService(
-  //         1,
-  //         'Screen capture',
-  //         'Capturing',
-  //         notificationDetails: const AndroidNotificationDetails(
-  //           'Test id',
-  //           'Test name',
-  //           channelDescription: 'Test description',
-  //           importance: Importance.defaultImportance,
-  //           priority: Priority.defaultPriority,
-  //         ),
-  //       );
-  // }
+// void createForegroundServiceNotification() {
+//   flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
+//     android: AndroidInitializationSettings('ic_launcher'),
+//   ));
+//
+//   flutterLocalNotificationsPlugin
+//       .resolvePlatformSpecificImplementation<
+//           AndroidFlutterLocalNotificationsPlugin>()
+//       ?.startForegroundService(
+//         1,
+//         'Screen capture',
+//         'Capturing',
+//         notificationDetails: const AndroidNotificationDetails(
+//           'Test id',
+//           'Test name',
+//           channelDescription: 'Test description',
+//           importance: Importance.defaultImportance,
+//           priority: Priority.defaultPriority,
+//         ),
+//       );
+// }
 }

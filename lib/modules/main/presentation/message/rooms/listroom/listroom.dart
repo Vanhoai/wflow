@@ -92,13 +92,11 @@ class _ListRoomState extends State<ListRoom> {
         if(!context.read<HeaderRoomsBloc>().state.showSearch) return;
         context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
       },
-      child: Container(
-        child: ListView.builder(
-            itemCount: Data.length,
-            itemBuilder: (context, index) {
-              return _room(Data[index]);
-            }
-        ),
+      child: ListView.builder(
+          itemCount: Data.length,
+          itemBuilder: (context, index) {
+            return _room(Data[index]);
+          }
       )
     );
   }

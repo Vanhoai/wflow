@@ -11,7 +11,6 @@ jobs:
       - store_artifacts:
           path: build/app/outputs/apk/release/app-release.apk
           destination: app-release.apk
-        
 
 workflows:
   version: 2

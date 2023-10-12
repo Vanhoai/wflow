@@ -92,11 +92,12 @@ class _SignInScreenState extends State<SignInScreen> {
                               // min sizes for Material buttons
                               children: [
                                 Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                      padding: const EdgeInsets.only(left: 11),
-                                      child: SvgPicture.asset(AppConstants.google),
-                                    )),
+                                  alignment: Alignment.centerLeft,
+                                  child: Container(
+                                    padding: const EdgeInsets.only(left: 11),
+                                    child: SvgPicture.asset(AppConstants.google),
+                                  ),
+                                ),
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(

@@ -1,4 +1,3 @@
-
 import 'dart:ffi';
 import 'dart:io';
 
@@ -16,22 +15,20 @@ class BoxChatState extends Equatable {
     required this.isSend,
     required this.files,
   });
-  BoxChatState copyWith({
-    bool? isShowEmojiKeyboard,
-    bool? isShowVoiceRecord,
-    bool? isShowRecord,
-    bool? isSend,
-    String? text,
-    List<File>? files
-  }) {
+  BoxChatState copyWith(
+      {bool? isShowEmojiKeyboard,
+      bool? isShowVoiceRecord,
+      bool? isShowRecord,
+      bool? isSend,
+      String? text,
+      List<File>? files}) {
     return BoxChatState(
         isShowEmojiKeyboard: isShowEmojiKeyboard ?? this.isShowEmojiKeyboard,
         isShowVoiceRecord: isShowVoiceRecord ?? this.isShowVoiceRecord,
         isSend: isSend ?? this.isSend,
-        files: files ?? this.files
-    );
+        files: files ?? this.files);
   }
 
   @override
-  List<Object?> get props => [isShowEmojiKeyboard,isShowVoiceRecord,isSend,files];
+  List<Object?> get props => [isShowEmojiKeyboard, isShowVoiceRecord, isSend, files];
 }

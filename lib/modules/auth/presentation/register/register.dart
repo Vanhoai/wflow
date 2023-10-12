@@ -23,7 +23,6 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
   @override
   void dispose() {
     _tabController?.dispose();
-    // TODO: implement dispose
     super.dispose();
   }
 
@@ -176,7 +175,7 @@ Widget _tabSelect({String? icon, String? title}) {
       icon!,
       semanticsLabel: 'Logo',
     ),
-    const Padding(padding: EdgeInsets.only(left: 17)),
+    const SizedBox(width: 17),
     Text(title ?? '', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black))
   ]));
 }

@@ -30,6 +30,9 @@ class AppConstants {
   static const String clips = "${commonIconPath}ic.clips.svg";
   static const String send = "${commonIconPath}ic.send.svg";
   static const String trash = "${commonIconPath}ic.trash.svg";
+  static const String search = "${commonIconPath}ic.search.svg";
+  static const String moreOutline = "${commonIconPath}ic.moreoutline.svg";
+  static const String remove = "${commonIconPath}ic.remove.svg";
   // path for introduction svg
   static const String introductionPath = "assets/icons/introduction/";
   static const String introductionIntern = "${introductionPath}plash.intern.svg";
@@ -45,6 +48,9 @@ class AppConstants {
   static const String ic_notification = 'assets/icons/notification.svg';
   static const String ic_search = 'assets/icons/search.svg';
   static const String ic_filter = 'assets/icons/filter.svg';
+
+  //image
+  static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';
   // path for lottie animation
   static const String lottiePath = 'assets/anim/';
   static const String lottieLoading = '${lottiePath}animation.loading.json';
@@ -59,4 +65,5 @@ class AppConstants {
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
   static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';
   static const String keyPasswordSignInWithBiometric = '$keySecureStorage@PASSWORD_SIGN_IN_WITH_BIOMETRIC';
+
 }

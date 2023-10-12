@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
@@ -43,7 +44,6 @@ class _BoxChatState extends State<BoxChat> {
 
   @override
   void dispose() async {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
     _focusNode.dispose();
@@ -75,8 +75,8 @@ class _BoxChatState extends State<BoxChat> {
                       focusNode: _focusNode,
                       onTap: () {
                         context.read<BoxChatBloc>().add(HideAllShowEvent());
+                        context.read<MainChatBloc>().add(ScrollEvent());
                       },
-
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
@@ -101,7 +101,9 @@ class _BoxChatState extends State<BoxChat> {
                           children: [
                             InkWell(
                               borderRadius: BorderRadius.circular(50),
-                              onTap: () {},
+                              onTap: () {
+                                _getImage();
+                              },
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
                                 child: SvgPicture.asset(
@@ -158,7 +160,9 @@ class _BoxChatState extends State<BoxChat> {
                               type: 'text',
                             ));
                         _controller.clear();
-                        _focusNode.requestFocus();
+                        if (!state.isShowEmojiKeyboard && !state.isShowVoiceRecord) {
+                          _focusNode.requestFocus();
+                        }
                       }
                     },
                     borderRadius: BorderRadius.circular(50),
@@ -216,5 +220,13 @@ class _BoxChatState extends State<BoxChat> {
 
   _sendMessage(BuildContext context, Message message) {
     BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
+  }
+
+  Future<void> _getImage() async {
+    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen, arguments: true);
+    result as List<File>;
+    if (context.mounted) {
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
+    }
   }
 }

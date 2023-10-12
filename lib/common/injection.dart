@@ -4,6 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/security/bloc.dart';
@@ -14,6 +15,8 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+
+import 'videocall/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
 late SharedPreferences sharedPreferences;
@@ -33,7 +36,16 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authService: instance.get<AuthService>()));
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
-  // bloc
+  // common bloc
+  instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
+
+  //Video call connect bloc
+  instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
+  instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
+
+  //helper datetime
+  instance.registerLazySingleton<Time>(() => Time());
+
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());

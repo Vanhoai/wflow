@@ -1,5 +1,6 @@
 
 
+import 'dart:ffi';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
@@ -36,11 +37,22 @@ class SendMessageEvent extends MainChatEvent{
 class SendFilesEvent extends MainChatEvent{
   final String id;
   final String type;
-  final File files;
+  final List<File> files;
 
   SendFilesEvent({required this.id, required this.type, required this.files});
 
 
   @override
   List<Object?> get props => [id,type,files];
+}
+class SendRecordEvent extends MainChatEvent {
+  final File file;
+
+  SendRecordEvent({required this.file});
+  @override
+  List<Object?> get props => [file];
+}
+class ScrollEvent extends MainChatEvent
+{
+  ScrollEvent();
 }

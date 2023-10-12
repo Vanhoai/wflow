@@ -46,7 +46,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
     final String? deviceToken = await FirebaseService.getDeviceToken();
-    print('DeviceToken: $deviceToken');
     if (deviceToken == null || deviceToken.isEmpty) {
       emit(const SignInFailure(message: "Can't get device token"));
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

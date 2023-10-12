@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:dartz/dartz_unsafe.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/state.dart';
@@ -14,10 +13,9 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<SendPhotoEvent>(sendPhoto);
   }
 
-  FutureOr<void> onSelectMultiple(
-      OnSelectMultipleEvent event, Emitter<PhotoState> emit) {
+  FutureOr<void> onSelectMultiple(OnSelectMultipleEvent event, Emitter<PhotoState> emit) {
     if (event.multiple) {
-      emit(PhotoMultipleState(entities: []));
+      emit(PhotoMultipleState(entities: const []));
     } else {
       emit(PhotoSingleState(entity: null));
     }
@@ -25,9 +23,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
 
   FutureOr<void> selectPhoto(SelectPhotoEvent event, Emitter<PhotoState> emit) {
     if (state is PhotoSingleState) {
-
-    } else if (state is PhotoMultipleState ) {
-
+    } else if (state is PhotoMultipleState) {
       PhotoMultipleState newState = (state as PhotoMultipleState)
           .copyWith(entities: List.of((state as PhotoMultipleState).entities)..add(event.entity));
       emit(newState);
@@ -37,10 +33,10 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   }
 
   FutureOr<void> unSelectPhoto(UnSelectPhotoEvent event, Emitter<PhotoState> emit) {
-    if (state is PhotoMultipleState ) {
-
-      PhotoMultipleState newState = (state as PhotoMultipleState)
-          .copyWith(entities: List.of((state as PhotoMultipleState).entities)..removeWhere((element) => element.id == event.entity.id));
+    if (state is PhotoMultipleState) {
+      PhotoMultipleState newState = (state as PhotoMultipleState).copyWith(
+          entities: List.of((state as PhotoMultipleState).entities)
+            ..removeWhere((element) => element.id == event.entity.id));
       emit(newState);
     } else {
       emit(state);
@@ -48,18 +44,15 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   }
 
   FutureOr<void> sendPhoto(SendPhotoEvent event, Emitter<PhotoState> emit) async {
-    if(state is PhotoMultipleState)
-    {
+    if (state is PhotoMultipleState) {
       List<File> photos = [];
       for (var element in (state as PhotoMultipleState).entities) {
-       File? file = await element.file;
-       if(file != null)
-       {
-         photos.add(file);
-       }
+        File? file = await element.file;
+        if (file != null) {
+          photos.add(file);
+        }
       }
       emit(SendMultiplePhotoState(photoFile: photos));
     }
-
   }
 }

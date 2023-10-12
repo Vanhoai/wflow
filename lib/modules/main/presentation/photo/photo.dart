@@ -1,22 +1,15 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/photo/bloc/state.dart';
 import 'package:wflow/modules/main/presentation/photo/component/detail_page.dart';
-import 'package:wflow/modules/main/presentation/photo/component/live_photos_widget.dart';
 
 import 'bloc/event.dart';
 import 'component/image_item_widget.dart';
 import 'component/send_photo.dart';
-
-
-
 
 class PhotoScreen extends StatefulWidget {
   const PhotoScreen({Key? key}) : super(key: key);
@@ -107,12 +100,13 @@ class _PhotoScreenState extends State<PhotoScreen> {
       _isLoadingMore = false;
     });
   }
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _requestAssets();
   }
+
   Widget _buildBody(BuildContext context) {
     if (_isLoading) {
       return const Center(child: CircularProgressIndicator.adaptive());
@@ -128,10 +122,8 @@ class _PhotoScreenState extends State<PhotoScreen> {
         crossAxisCount: 3,
       ),
       childrenDelegate: SliverChildBuilderDelegate(
-            (BuildContext context, int index) {
-          if (index == _entities!.length - 8 &&
-              !_isLoadingMore &&
-              _hasMoreToLoad) {
+        (BuildContext context, int index) {
+          if (index == _entities!.length - 8 && !_isLoadingMore && _hasMoreToLoad) {
             _loadMoreAsset();
           }
           final AssetEntity entity = _entities![index];
@@ -139,7 +131,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
             key: ValueKey<int>(index),
             entity: entity,
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) =>DetailPage(entity: entity)));
+              Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailPage(entity: entity)));
             },
             option: const ThumbnailOption(size: ThumbnailSize.square(200)),
           );
@@ -158,24 +150,19 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-
-    var args = ModalRoute.of(context)!.settings.arguments != null ?? ModalRoute.of(context)!.settings.arguments as bool ;
-    args = true;
     return SafeArea(
       child: BlocProvider(
         lazy: true,
         create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: true)),
         child: Scaffold(
-            appBar: const Header(text: "Chọn ảnh"),
+            appBar: const Header(text: 'Chọn ảnh'),
             body: Column(
               children: [
                 Expanded(child: _buildBody(context)),
               ],
             ),
-            floatingActionButton: const SendPhoto()
-        ),
+            floatingActionButton: const SendPhoto()),
       ),
     );
   }
-
 }

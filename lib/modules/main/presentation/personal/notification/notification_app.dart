@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/notification/components/button_notification.dart';
-import 'package:wflow/modules/main/presentation/notification/utils/constants.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/components/button_notification.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/utils/constants.dart';
 
 class NotificatonApp extends StatefulWidget {
   const NotificatonApp({super.key});

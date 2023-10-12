@@ -1,6 +1,6 @@
-import 'package:wflow/modules/main/presentation/notification/pages/all.dart';
-import 'package:wflow/modules/main/presentation/notification/pages/system.dart';
-import 'package:wflow/modules/main/presentation/notification/pages/work.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/pages/all.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/pages/system.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/pages/work.dart';
 
 final List myButtonsDatas = [
   [

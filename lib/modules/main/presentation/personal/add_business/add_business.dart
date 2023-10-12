@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/add_business/components/add_business_card.dart';
-import 'package:wflow/modules/main/presentation/add_business/components/search_add_business.dart';
-import 'package:wflow/modules/main/presentation/add_business/utils/constants.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/components/add_business_card.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/components/search_add_business.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/utils/constants.dart';
 
 class AddBusiness extends StatefulWidget {
   const AddBusiness({super.key});

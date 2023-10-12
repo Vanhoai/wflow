@@ -46,33 +46,33 @@ class _IntroductionScreenState extends State<IntroScreen> {
       globalBackgroundColor: Theme.of(context).colorScheme.background,
       pages: [
         PageViewModel(
-          title: "Kết nối",
-          body: "Giữa doanh nghiệp và người lao động",
+          title: 'Kết nối',
+          body: 'Giữa doanh nghiệp và người lao động',
           image: _buildImage(AppConstants.introductionCv),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Tìm kiếm cơ hội việc làm",
-          body: "Với chiếc smartphone trong tay, dễ dàng đăng ký ứng tuyển công việc",
+          title: 'Tìm kiếm cơ hội việc làm',
+          body: 'Với chiếc smartphone trong tay, dễ dàng đăng ký ứng tuyển công việc',
           image: _buildImage(AppConstants.introductionJob),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Dễ dàng",
-          body: "Tìm kiếm các ứng viên tiềm năng ở mỗi lĩnh vực",
+          title: 'Dễ dàng',
+          body: 'Tìm kiếm các ứng viên tiềm năng ở mỗi lĩnh vực',
           image: _buildImage(AppConstants.introductionIntern),
           decoration: pageDecoration,
         ),
         PageViewModel(
-            title: "Thanh toán dễ dàng",
+            title: 'Thanh toán dễ dàng',
             body:
                 //Sửa cái này
-                "Kí hợp đồng, nhận việc, hoàn thành hợp đồng hoàn thành lãnh lương?",
+                'Kí hợp đồng, nhận việc, hoàn thành hợp đồng hoàn thành lãnh lương?',
             image: _buildImage(AppConstants.introductionCash),
             decoration: pageDecoration),
         PageViewModel(
-          title: "Task",
-          body: "Quản lý tiến độ công việc dễ dàng",
+          title: 'Task',
+          body: 'Quản lý tiến độ công việc dễ dàng',
           image: _buildImage(AppConstants.introductionTask),
           decoration: pageDecoration,
         ),

@@ -1,6 +1,5 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:wflow/configuration/configuration.dart';
-import 'package:wflow/core/widgets/custom/custom.dart';
 
 class Loading extends StatefulWidget {
   const Loading({super.key, this.height, this.width});
@@ -20,11 +19,7 @@ class _LoadingState extends State<Loading> {
       height: mediaQuery.size.height,
       width: mediaQuery.size.width,
       color: Colors.transparent,
-      child: LottieAnimation(
-        animation: AppConstants.lottieLoading,
-        height: widget.height ?? mediaQuery.size.height,
-        width: widget.width ?? mediaQuery.size.width,
-      ),
+      child: const CupertinoActivityIndicator(radius: 16),
     );
   }
 }
@@ -37,13 +32,9 @@ class GlobalLoading extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: Colors.transparent,
+      color: const Color.fromARGB(100, 24, 24, 24),
       child: const Center(
-        child: LottieAnimation(
-          animation: AppConstants.lottieLoading,
-          height: 40,
-          width: 40,
-        ),
+        child: CupertinoActivityIndicator(radius: 16),
       ),
     );
   }

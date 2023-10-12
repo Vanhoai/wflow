@@ -5,7 +5,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
-import 'package:wflow/modules/main/presentation/message/message/message.dart';
+import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
 
@@ -30,6 +30,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -73,7 +74,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         children: const [
           HomeScreen(),
           WorkScreen(),
-          MessageScreen(),
+          RoomsScreen(),
           PersonalScreen(),
         ],
       ),

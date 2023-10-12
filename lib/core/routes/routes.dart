@@ -8,9 +8,15 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
+import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
-import 'package:wflow/modules/main/presentation/personal/profile/profile.dart';
+import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
+import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
+import 'package:wflow/modules/main/presentation/photo/photo.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -23,8 +29,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case RouteKeys.verificationScreen:
         return MaterialPageRoute(builder: (_) => const VerificationScreen());
+      case RouteKeys.roomsScreen:
+        return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
         return MaterialPageRoute(builder: (_) => const MessageScreen());
+      case RouteKeys.photoScreen:
+        return MaterialPageRoute(builder: (_) => const PhotoScreen());
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
@@ -32,10 +42,26 @@ class AppRoutes {
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
+      case RouteKeys.candidateContractScreen:
+        return MaterialPageRoute(builder: (_) => const CandidateContractScreen());
+      case RouteKeys.jobInformationScreen:
+        return MaterialPageRoute(builder: (_) => const JobInformationScreen());
+      case RouteKeys.candidateListScreen:
+        return MaterialPageRoute(builder: (_) => const CandidateListScreen());
+      case RouteKeys.createContractScreen:
+        return MaterialPageRoute(builder: (_) => const CreateContractScreen());
+      case RouteKeys.reviewContractScreen:
+        return MaterialPageRoute(builder: (_) => const ReviewContractScreen());
+      case RouteKeys.viewContractScreen:
+        return MaterialPageRoute(builder: (_) => const ViewContractScreen());
       case RouteKeys.settingScreen:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
-      case RouteKeys.profileScreen:
-        return MaterialPageRoute(builder: (_) => const ProfileScreen());
+      case RouteKeys.auStepOneScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
+      case RouteKeys.auStepTwoScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
+      case RouteKeys.auStepThreeScreen:
+        return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

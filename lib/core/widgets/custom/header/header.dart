@@ -17,8 +17,8 @@ class Header extends StatefulWidget {
     this.actions = const [],
   });
   final Text title;
-  final Function()? onTapTitle;
-  final Function()? onTapLeading;
+  final VoidCallback? onTapTitle;
+  final VoidCallback? onTapLeading;
   final Text subtitle;
   final double leadingSize;
   final String leadingPhotoUrl;
@@ -54,7 +54,9 @@ class _HeaderState extends State<Header> {
               highlightColor: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
-                backgroundImage: NetworkImage(widget.leadingPhotoUrl),
+                backgroundImage: NetworkImage(
+                  widget.leadingPhotoUrl,
+                ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {
                   return;
@@ -76,7 +78,7 @@ class _HeaderState extends State<Header> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   InkWell(

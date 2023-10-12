@@ -1,4 +1,4 @@
-part of "bloc.dart";
+part of 'bloc.dart';
 
 abstract class CreateAccountEvent extends Equatable {
   const CreateAccountEvent();

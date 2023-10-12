@@ -1,10 +1,10 @@
-
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
@@ -16,8 +16,6 @@ import 'package:wflow/modules/main/presentation/message/message/components/recor
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
 import 'bloc/state.dart';
-
-
 
 class BoxChat extends StatefulWidget {
   const BoxChat({super.key});
@@ -33,11 +31,6 @@ class _BoxChatState extends State<BoxChat> {
   late TextEditingController _controller;
   late File file;
 
-
-
-
-
-
   @override
   void initState() {
     super.initState();
@@ -47,12 +40,10 @@ class _BoxChatState extends State<BoxChat> {
       context.read<BoxChatBloc>().add(IsSendMessageTextEvent(_controller.text));
     });
     _focusNode = FocusNode();
-
   }
 
   @override
   void dispose() async {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
     _focusNode.dispose();
@@ -74,7 +65,7 @@ class _BoxChatState extends State<BoxChat> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 10),
                     child: TextField(
-                      style: TextTitle(
+                      style: textTitle(
                         size: 16,
                         fontWeight: FontWeight.w400,
                       ),
@@ -84,13 +75,12 @@ class _BoxChatState extends State<BoxChat> {
                       focusNode: _focusNode,
                       onTap: () {
                         context.read<BoxChatBloc>().add(HideAllShowEvent());
+                        context.read<MainChatBloc>().add(ScrollEvent());
                       },
-
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 5, top: 5, right: 5, left: 5),
+                            padding: const EdgeInsets.only(bottom: 5, top: 5, right: 5, left: 5),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
@@ -112,7 +102,7 @@ class _BoxChatState extends State<BoxChat> {
                             InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
-
+                                _getImage();
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
@@ -127,8 +117,7 @@ class _BoxChatState extends State<BoxChat> {
                               margin: const EdgeInsets.only(right: 10),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(50),
-                                onTap: () {
-                                },
+                                onTap: () {},
                                 child: Padding(
                                   padding: const EdgeInsets.all(4),
                                   child: SvgPicture.asset(
@@ -141,21 +130,16 @@ class _BoxChatState extends State<BoxChat> {
                             )
                           ],
                         ),
-                        hintText: "Nhắn tin",
+                        hintText: 'Nhắn tin',
                         contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                        hintStyle: TextTitle(
-                            colors: AppColors.fadeText,
-                            size: 14,
-                            fontWeight: FontWeight.w500),
+                        hintStyle: textTitle(colors: AppColors.fadeText, size: 14, fontWeight: FontWeight.w500),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide:
-                              BorderSide(color: AppColors.primary, width: 1.2),
+                          borderSide: BorderSide(color: AppColors.primary, width: 1.2),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide:
-                              BorderSide(color: Colors.black26, width: 1.2),
+                          borderSide: BorderSide(color: Colors.black26, width: 1.2),
                         ),
                       ),
                     ),
@@ -165,30 +149,31 @@ class _BoxChatState extends State<BoxChat> {
                   margin: const EdgeInsets.only(right: 10, left: 5),
                   child: InkWell(
                     onTap: () {
-                      if(!state.isSend)
-                      {
-                        _showRecord(context,state);
-                      }else {
+                      if (!state.isSend) {
+                        _showRecord(context, state);
+                      } else {
                         _sendMessage(
                             context,
-                            Message(id: "1", content: _controller.text, type: "text",)
-                        );
+                            Message(
+                              id: '1',
+                              content: _controller.text,
+                              type: 'text',
+                            ));
                         _controller.clear();
-                        _focusNode.requestFocus();
+                        if (!state.isShowEmojiKeyboard && !state.isShowVoiceRecord) {
+                          _focusNode.requestFocus();
+                        }
                       }
                     },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: AppColors.primary),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: AppColors.primary),
                       padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(
                         state.isSend ? AppConstants.send : AppConstants.mic,
                         height: 20,
                         width: 20,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.white, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -202,7 +187,6 @@ class _BoxChatState extends State<BoxChat> {
               offstage: !state.isShowVoiceRecord,
               child: const Record(),
             ),
-
             EmojiKeyboard(
               controller: _controller,
               emojiShowing: state.isShowEmojiKeyboard,
@@ -214,33 +198,35 @@ class _BoxChatState extends State<BoxChat> {
   }
 
   _showEmojiKeyBoard(BuildContext context, BoxChatState state) {
-    if(_focusNode.hasFocus)
-    {
+    if (_focusNode.hasFocus) {
       _focusNode.unfocus();
     }
-    BlocProvider.of<BoxChatBloc>(context)
-        .add(ShowEmojiKeyBoardEvent());
-    if (state.isShowEmojiKeyboard != true ) {
+    BlocProvider.of<BoxChatBloc>(context).add(ShowEmojiKeyBoardEvent());
+    if (state.isShowEmojiKeyboard != true) {
       _focusNode.unfocus();
     } else {
       _focusNode.requestFocus();
     }
-
   }
 
   _showRecord(BuildContext context, BoxChatState state) {
-    BlocProvider.of<BoxChatBloc>(context)
-        .add(ShowRecordVoiceEvent());
-    if (state.isShowVoiceRecord != true ) {
+    BlocProvider.of<BoxChatBloc>(context).add(ShowRecordVoiceEvent());
+    if (state.isShowVoiceRecord != true) {
       _focusNode.unfocus();
     } else {
       _focusNode.requestFocus();
     }
-
   }
-  _sendMessage(BuildContext context, Message message)
-  {
+
+  _sendMessage(BuildContext context, Message message) {
     BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
   }
 
+  Future<void> _getImage() async {
+    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen, arguments: true);
+    result as List<File>;
+    if (context.mounted) {
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
+    }
+  }
 }

@@ -1,67 +1,11 @@
-import 'dart:async';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
+import 'package:logger/logger.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-
-const List<Map<String, dynamic>> _listMenu = [
-  {
-    'leading': Icons.contact_emergency,
-    'title': 'Contact Information',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.summarize,
-    'title': 'Summary',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.pie_chart,
-    'title': 'Expected Salary',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.work,
-    'title': 'Work Experience',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.note,
-    'title': 'Education',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.bar_chart,
-    'title': 'Projects',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.policy,
-    'title': 'Certification and Licenses',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.model_training,
-    'title': 'Seminars and Training',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.show_chart,
-    'title': 'Skills',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.person_add,
-    'title': 'Friends',
-    'trailing': Icons.arrow_forward_ios,
-  },
-  {
-    'leading': Icons.note_alt,
-    'title': 'CV/Resume',
-    'trailing': Icons.arrow_forward_ios,
-  },
-];
+import 'package:wflow/modules/main/presentation/personal/personal/widgets/header_avatar_widget.dart';
+import 'package:wflow/modules/main/presentation/personal/personal/widgets/information_widget.dart';
 
 class PersonalScreen extends StatefulWidget {
   const PersonalScreen({super.key});
@@ -71,157 +15,88 @@ class PersonalScreen extends StatefulWidget {
 }
 
 class _PersonalScreenState extends State<PersonalScreen> {
-  final ScrollController _scrollController = ScrollController();
+  Logger logger = Logger();
+
+  late ScrollController _scrollController;
   @override
   void initState() {
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
-  FutureOr<void> _showModal(BuildContext context) {
-    return showModalBottomSheet(
-      context: context,
-      builder: (context) => const Column(
-        children: [
-          Center(
-            child: Text('Giỡn quài ný ơi!!'),
-          )
-        ],
-      ),
-      isDismissible: true,
-      barrierLabel: 'Dismiss',
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      enableDrag: true,
-      showDragHandle: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(16),
-          topRight: Radius.circular(16),
-        ),
-      ),
-      barrierColor: Colors.black.withOpacity(0.5),
-      elevation: 10,
+    _scrollController = ScrollController(
+      initialScrollOffset: 0.0,
+      keepScrollOffset: true,
+      debugLabel: 'HomeScreen',
+      onAttach: (position) {
+        logger.d('onAttach$position');
+      },
+      onDetach: (position) {
+        logger.d('onDetach$position');
+      },
     );
   }
 
-  Widget _buildHeader(BuildContext context, ThemeData theme) {
-    return Header(
-      title: const Text('Tran Van Hoai'),
-      subtitle: const Text('hoai'),
-      onTapLeading: () {},
-      leadingSize: 32,
-      onTapTitle: () {
-        Navigator.of(context).pushNamed(RouteKeys.profileScreen);
+  void _showModalBottomSheet(BuildContext context) {
+    showCupertinoModalPopup(
+      context: context,
+      builder: (context) {
+        return CupertinoActionSheet(
+          actions: [
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              child: const Text('Upgrade'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              child: const Text('Works'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              child: const Text('Contracts'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+              child: const Text('Notification'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {
+                Navigator.of(context).pushNamed(RouteKeys.settingScreen);
+              },
+              child: const Text('Settings'),
+            ),
+            CupertinoActionSheetAction(
+              onPressed: () {},
+              isDestructiveAction: true,
+              child: const Text('Logout'),
+            ),
+          ],
+        );
       },
-      actions: [
-        IconButton(
-          onPressed: () {
-            showDialog(context: context, builder: (context) => const AboutDialog());
-          },
-          icon: Icon(
-            color: Theme.of(context).colorScheme.onBackground,
-            size: 30,
-            Icons.qr_code,
-          ),
-          color: Colors.black,
-          alignment: Alignment.center,
-          tooltip: MaterialLocalizations.of(context).showMenuTooltip,
-          highlightColor: Theme.of(context).colorScheme.primary,
-        ),
-      ],
-      leadingBadge: true,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
-      isSafe: true,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        leading: const Icon(Icons.flutter_dash, size: 30),
-        title: Text('Account', style: themeData.textTheme.titleLarge),
-        centerTitle: true,
-        actions: [
-          IconButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed(RouteKeys.settingScreen);
-            },
-            icon: Icon(
-              color: Theme.of(context).colorScheme.onBackground,
-              size: 30,
-              Icons.settings,
-            ),
-            color: Colors.black,
-            alignment: Alignment.center,
-            tooltip: 'Settings',
-            highlightColor: Theme.of(context).colorScheme.primary,
-          ),
-        ],
-      ),
       body: RefreshIndicator(
-        onRefresh: () {
-          return Future<void>.delayed(const Duration(seconds: 1), () {
-            return;
-          });
-        },
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(4),
-          physics: const AlwaysScrollableScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 8,
+        child: CustomScrollView(
+          slivers: [
+            const HeaderAvatarWidget(),
+            InformationWidget(
+              morePressed: () => _showModalBottomSheet(context),
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                _buildHeader(context, themeData),
-                const Padding(
-                  padding: EdgeInsets.symmetric(vertical: 8),
-                  child: Divider(),
-                ),
-                ListView.builder(
-                  itemBuilder: (context, index) {
-                    return ListTile(
-                      leading: Icon(_listMenu[index]['leading']),
-                      title: Text(_listMenu[index]['title']),
-                      trailing: Icon(_listMenu[index]['trailing']),
-                      onTap: () {},
-                      dense: true,
-                      contentPadding: const EdgeInsets.symmetric(
-                        horizontal: 8,
-                        vertical: 0,
-                      ),
-                    );
-                  },
-                  itemCount: _listMenu.length,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  padding: const EdgeInsets.all(0),
-                ),
-                Center(
-                  child: TextButton(
-                    onPressed: () {
-                      _showModal(context);
-                    },
-                    clipBehavior: Clip.antiAliasWithSaveLayer,
-                    child: const Text('Add Custom Section'),
-                  ),
-                )
-              ],
-            ),
-          ),
+          ],
+          clipBehavior: Clip.none,
+          cacheExtent: 1000,
+          dragStartBehavior: DragStartBehavior.start,
+          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+          physics: const BouncingScrollPhysics(),
+          shrinkWrap: true,
+          controller: _scrollController,
+          scrollDirection: Axis.vertical,
         ),
+        onRefresh: () async {
+          await Future.delayed(const Duration(seconds: 1));
+        },
       ),
-      hideKeyboardWhenTouchOutside: true,
     );
   }
 }

@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:wflow/firebase_options.dart';
 
 late final FirebaseApp firebaseApp;
 late final FirebaseAuth firebaseAuth;
@@ -15,19 +16,18 @@ late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 class FirebaseService {
   static Future<void> initialFirebase() async {
-    firebaseApp = await Firebase.initializeApp();
+    firebaseApp = await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform,
+    );
     firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
     firebaseMessaging = FirebaseMessaging.instance;
-    channel = const AndroidNotificationChannel("WFlow", "WFlow");
+    channel = const AndroidNotificationChannel('WFlow', 'WFlow');
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);
     await setupLocalPushNotification();
     await registerNotification();
-
-    String deviceToken = await getDeviceToken() ?? "";
-    print("Device Token: $deviceToken");
   }
 
   static Future<void> registerNotification() async {
@@ -50,8 +50,8 @@ class FirebaseService {
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
 
-        print("notification: $notification");
-        print("android: $android");
+        print('notification: $notification');
+        print('android: $android');
 
         if (notification != null && android != null) {
           flutterLocalNotificationsPlugin.show(
@@ -79,7 +79,8 @@ class FirebaseService {
     }
   }
 
-  static Future<UserCredential> signInWithGoogle() async {
+  static Future<String> signInWithGoogle() async {
+    await GoogleSignIn().signOut();
     final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
     final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
     final credential = GoogleAuthProvider.credential(
@@ -88,16 +89,13 @@ class FirebaseService {
     );
 
     UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
-    print("User Credential: $userCredential");
-    return userCredential;
+    return await userCredential.user!.getIdToken() ?? '';
   }
 
   static Future<String?> getDeviceToken() async {
     final String? token = await firebaseMessaging.getToken();
     return token;
   }
-
-  static Future<void> signInWithEmailLink(String email) async {}
 
   static Future<void> signInWithPhoneNumber() async {}
 

@@ -7,12 +7,21 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1077579337878:android:800d3fef673bdfaaec32b7",
+        "mobilesdk_app_id": "1:1077579337878:android:11565aa5fc04f9faec32b7",
         "android_client_info": {
           "package_name": "com.flow.wflow"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "1077579337878-gt7901c4kt2k39h9m2lv71jcmb35furk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.flow.wflow",
+            "certificate_hash": "48bc276d872237842eab6b48c5922b441a4e664d"
+          }
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyAfoz8flhqizZVsDDvtlimWK6mf75qqUus"
@@ -20,7 +29,15 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1077579337878-qg9hklc7k7015l28qgpodq1uiilh3iqs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flow.wflow"
+              }
+            }
+          ]
         }
       }
     }

@@ -4,7 +4,9 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=3.0.6 <4.0.0"
+  # sdk: ">=3.0.6 <4.0.0"
+  sdk: ">=3.0.0 <3.3.0"
+
 dependencies:
   flutter:
     sdk: flutter
@@ -39,10 +41,16 @@ dependencies:
   socket_io_client: ^2.0.3
   file_picker: ^5.3.3
   camera: ^0.10.5+4
+  stringee_flutter_plugin:
+    git:
+      url: https://github.com/stringeecom/stringee_flutter_plugin.git
+  device_info_plus: ^9.0.3
+  photo_manager: ^2.7.1
+  video_player: ^2.1.14
   freezed_annotation: ^2.4.1
-  badges: ^3.1.2
   url_launcher: ^6.1.14
   share_plus: ^7.1.0
+  cached_network_image: ^3.3.0
 
 dev_dependencies:
   flutter_test:
@@ -57,6 +65,7 @@ flutter:
   uses-material-design: true
   assets:
     - assets/languages/
+    - assets/image/
     - assets/anim/
     - assets/icons/bottom/
     - assets/icons/

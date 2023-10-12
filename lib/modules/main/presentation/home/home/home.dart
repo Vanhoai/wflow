@@ -1,14 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:logger/logger.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/hot_job_list.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/navigate_feat.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/recent_job_list.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/selection_list.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,8 +14,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Logger logger = Logger();
-
   late ScrollController _scrollController;
   late ScrollController _hotJobScrollController;
   late ScrollController _selectionScrollController;
@@ -29,62 +23,25 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     _selectionScrollController = ScrollController(
       initialScrollOffset: 0.0,
-      keepScrollOffset: true,
-      debugLabel: 'HomeScreen',
-      onAttach: (position) {
-        logger.d('onAttach$position');
-      },
-      onDetach: (position) {
-        logger.d('onDetach$position');
-      },
     );
     _hotJobScrollController = ScrollController(
       initialScrollOffset: 0.0,
-      keepScrollOffset: true,
-      debugLabel: 'HomeScreen',
-      onAttach: (position) {
-        logger.d('onAttach$position');
-      },
-      onDetach: (position) {
-        logger.d('onDetach$position');
-      },
     );
     _scrollController = ScrollController(
       initialScrollOffset: 0.0,
-      keepScrollOffset: true,
-      debugLabel: 'HomeScreen',
-      onAttach: (position) {
-        logger.d('onAttach$position');
-      },
-      onDetach: (position) {
-        logger.d('onDetach$position');
-      },
     );
-
-    _scrollController.addListener(_scrollControllerListener);
-  }
-
-  _scrollControllerListener() {
-    if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      logger.d('reach the bottom');
-    }
-    if (_scrollController.offset <= _scrollController.position.minScrollExtent &&
-        !_scrollController.position.outOfRange) {
-      logger.d('reach the top');
-    }
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+    // ignore: unused_local_variable
     int choiceValue = 0;
 
     void callBackSetChoiceValue(int value) {
       setState(() {
         choiceValue = value;
       });
-      logger.d('choiceValue: $choiceValue');
     }
 
     return CommonScaffold(
@@ -98,17 +55,21 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Header(
-                  subtitle: const Text(
-                    'vyhhps22919@fpt.edu.vn',
-                    style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                  title: Text(
+                    'Huynh Hong Vy',
+                    style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                      color: themeData.colorScheme.onBackground,
+                    )),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  title: const Text(
-                    'Huynh Hong Vy',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.w500, letterSpacing: 0.1),
+                  subtitle: Text(
+                    'vyhhps22919@fpt.edu.vn',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
+                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                      color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                    )),
                   ),
                   onTapLeading: () {},
                   onTapTitle: () {},
@@ -122,7 +83,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(99),
                           border: Border.all(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            color: themeData.colorScheme.onBackground,
                             width: 1,
                             style: BorderStyle.solid,
                           ),
@@ -134,6 +95,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           AppConstants.ic_search,
                           width: 16,
                           height: 16,
+                          color: themeData.colorScheme.onBackground,
                         ),
                       ),
                     ),
@@ -148,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(99),
                               border: Border.all(
-                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                color: themeData.colorScheme.onBackground,
                                 width: 1,
                                 style: BorderStyle.solid,
                               ),
@@ -160,6 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               AppConstants.ic_notification,
                               width: 16,
                               height: 16,
+                              color: themeData.colorScheme.onBackground,
                             ),
                           ),
                           Positioned(
@@ -181,41 +144,35 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            const NavigateFeat(),
+            const NavigateFeatWidget(),
             SliverPadding(
               padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Hot Job',
-                  style: themeData.textTheme.titleMedium!.merge(
-                    const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                    color: themeData.colorScheme.onBackground,
+                  )),
                 ),
               ),
             ),
-            HotJobList(scrollController: _hotJobScrollController),
+            HowJobListWidget(scrollController: _hotJobScrollController),
             SliverPadding(
               padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Recent Job',
-                  style: themeData.textTheme.titleMedium!.merge(
-                    const TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.w500,
-                    ),
-                  ),
+                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                    color: themeData.colorScheme.onBackground,
+                  )),
                 ),
               ),
             ),
-            SelectionList(
+            SelectionListWidget(
               scrollController: _selectionScrollController,
               onSelected: callBackSetChoiceValue,
             ),
-            RecentJobList(
+            const RecentJobListWidget(
               selectionValue: 0,
             )
           ],

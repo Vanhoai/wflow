@@ -36,15 +36,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authService: instance.get<AuthService>()));
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
-  // common bloc
-  instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
-
   //Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
-
-  //helper datetime
-  instance.registerLazySingleton<Time>(() => Time());
 
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());

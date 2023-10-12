@@ -198,7 +198,7 @@ class _MainChatState extends State<MainChat> {
               width: 30,
               child: Text(
                 instance.get<Time>().getHourMinute(message.createAt.toString()),
-                style: TextTitle(colors: Colors.white, size: 9),
+                style: textTitle(colors: Colors.white, size: 9),
               ),
             )
           ],
@@ -249,7 +249,7 @@ class _MainChatState extends State<MainChat> {
             width: 30,
             child: Text(
               instance.get<Time>().getHourMinute(message.createAt.toString()),
-              style: TextTitle(colors: Colors.white, size: 9),
+              style: textTitle(colors: Colors.white, size: 9),
             ),
           )
         ],

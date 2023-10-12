@@ -14,11 +14,7 @@ class Room {
   final String lastMessage;
   final String createAt;
 
-  Room(
-      {required this.image,
-      required this.name,
-      required this.lastMessage,
-      required this.createAt});
+  Room({required this.image, required this.name, required this.lastMessage, required this.createAt});
 }
 
 List<Room> Data = [
@@ -87,23 +83,21 @@ class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
     return Listener(
-      onPointerDown: (PointerDownEvent event) {
-        FocusManager.instance.primaryFocus?.unfocus();
-        if(!context.read<HeaderRoomsBloc>().state.showSearch) return;
-        context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
-      },
-      child: ListView.builder(
-          itemCount: Data.length,
-          itemBuilder: (context, index) {
-            return _room(Data[index]);
-          }
-      )
-    );
+        onPointerDown: (PointerDownEvent event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+          if (!context.read<HeaderRoomsBloc>().state.showSearch) return;
+          context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
+        },
+        child: ListView.builder(
+            itemCount: Data.length,
+            itemBuilder: (context, index) {
+              return _room(Data[index]);
+            }));
   }
 
   Widget _room(Room room) {
     return InkWell(
-      onTap: (){
+      onTap: () {
         print(room.name);
         Navigator.of(context).pushNamed(RouteKeys.messageScreen);
       },
@@ -114,12 +108,11 @@ class _ListRoomState extends State<ListRoom> {
           children: [
             ClipOval(
                 child: Image.network(
-                  room.image,
-                  fit: BoxFit.cover,
-                  width: 58.0,
-                  height: 58.0,
-                )
-            ),
+              room.image,
+              fit: BoxFit.cover,
+              width: 58.0,
+              height: 58.0,
+            )),
             const SizedBox(
               width: 16,
             ),
@@ -133,10 +126,9 @@ class _ListRoomState extends State<ListRoom> {
                     child: Text(
                       room.name,
                       overflow: TextOverflow.ellipsis,
-                      style: TextTitle(size: 18, fontWeight: FontWeight.w500),
+                      style: textTitle(size: 18, fontWeight: FontWeight.w500),
                     ),
                   ),
-
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
@@ -147,20 +139,14 @@ class _ListRoomState extends State<ListRoom> {
                           child: Text(
                             room.lastMessage,
                             overflow: TextOverflow.ellipsis,
-                            style: TextTitle(
-                                size: 14,
-                                fontWeight: FontWeight.w400,
-                                colors: AppColors.fadeText),
+                            style: textTitle(size: 14, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
                           ),
                         ),
                       ),
                       Text(
                         instance.get<Time>().getHourMinute(room.createAt),
                         overflow: TextOverflow.ellipsis,
-                        style: TextTitle(
-                            size: 12,
-                            fontWeight: FontWeight.w400,
-                            colors: AppColors.fadeText),
+                        style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
                       ),
                     ],
                   )

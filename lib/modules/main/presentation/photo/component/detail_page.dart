@@ -27,7 +27,7 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         title: Text(
           'Detail',
-          style: TextTitle(fontWeight: FontWeight.w400, size: 20),
+          style: textTitle(fontWeight: FontWeight.w400, size: 20),
         ),
         leading: Padding(
           padding: const EdgeInsets.all(8),
@@ -74,9 +74,7 @@ class _DetailPageState extends State<DetailPage> {
         useOrigin: useOrigin == true,
       );
     }
-    if (widget.entity.type == AssetType.video ||
-        widget.entity.type == AssetType.audio ||
-        widget.entity.isLivePhoto) {
+    if (widget.entity.type == AssetType.video || widget.entity.type == AssetType.audio || widget.entity.isLivePhoto) {
       return buildVideo();
     }
     return buildImage();

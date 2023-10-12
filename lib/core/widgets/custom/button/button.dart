@@ -41,7 +41,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               backgroundColor: Theme.of(context).primaryColor,
               foregroundColor: Theme.of(context).colorScheme.onPrimary,
               disabledBackgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               animationDuration: const Duration(milliseconds: 300),
               shadowColor: Colors.blue.withOpacity(0.8),
               elevation: 4,

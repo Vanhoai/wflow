@@ -19,7 +19,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _skillScrollController = ScrollController(
       initialScrollOffset: 0.0,

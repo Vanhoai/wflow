@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class CircleButton extends StatelessWidget {
-  Icon? icon;
-  Color? primary;
-  VoidCallback? onPressed;
+  final Icon? icon;
+  final Color? primary;
+  final VoidCallback? onPressed;
 
-  CircleButton({
+  const CircleButton({
+    super.key,
     required this.icon,
     required this.primary,
     required this.onPressed,
@@ -13,16 +14,14 @@ class CircleButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return ElevatedButton(
       onPressed: onPressed,
-      child: icon,
       style: ElevatedButton.styleFrom(
-        padding: EdgeInsets.all(15.0),
-        shape: CircleBorder(),
-        primary: primary,
+        padding: const EdgeInsets.all(15.0),
+        backgroundColor: primary,
+        shape: const CircleBorder(),
       ),
+      child: icon,
     );
   }
 }
-

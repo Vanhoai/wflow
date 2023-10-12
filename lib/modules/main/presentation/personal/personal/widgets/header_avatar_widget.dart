@@ -14,16 +14,16 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
       padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
       sliver: SliverToBoxAdapter(
         child: SizedBox(
-          height: 230,
+          height: 260,
           child: Stack(
             children: [
               ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: SizedBox(
-                  height: 180,
+                  height: 210,
                   width: MediaQuery.of(context).size.width,
                   child: Image.network(
-                    'https://picsum.photos/200/300',
+                    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -38,7 +38,7 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                   child: CircleAvatar(
                     radius: 48,
                     backgroundImage: NetworkImage(
-                      'https://picsum.photos/200/300',
+                      'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
                     ),
                   ),
                 ),

@@ -20,7 +20,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
   late ScrollController _scrollController;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController = ScrollController(
       initialScrollOffset: 0.0,
@@ -40,7 +39,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
       context: context,
       builder: (context) {
         return CupertinoActionSheet(
-          title: const Text('More'),
           actions: [
             CupertinoActionSheetAction(
               onPressed: () {},
@@ -55,7 +53,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: const Text('Contracts'),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
               child: const Text('Notification'),
             ),
             CupertinoActionSheetAction(

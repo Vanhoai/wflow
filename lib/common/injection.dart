@@ -1,50 +1,43 @@
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/core/utils/time.util.dart';
-import 'package:wflow/modules/auth/data/auth.repository.impl.dart';
-import 'package:wflow/modules/auth/data/auth.service.dart';
-import 'package:wflow/modules/auth/domain/auth.repository.dart';
-import 'package:wflow/modules/auth/domain/auth.usecase.dart';
-import "package:flutter_localization/flutter_localization.dart";
-import 'package:logger/logger.dart';
+import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
+import 'package:wflow/modules/auth/data/auth_service.dart';
+import 'package:wflow/modules/auth/domain/auth_repository.dart';
+import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 
 final GetIt instance = GetIt.instance;
 late SharedPreferences sharedPreferences;
 final FlutterLocalization localization = FlutterLocalization.instance;
 
 Future<void> initAppInjection() async {
-  // utils
+  // core
   instance.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());
   sharedPreferences = await SharedPreferences.getInstance();
-
-  // storage
   instance.registerLazySingleton<SecureStorage>(
-      () => SecureStorage(flutterSecureStorage: instance<FlutterSecureStorage>()));
-
-  // api
+    () => SecureStorage(flutterSecureStorage: instance<FlutterSecureStorage>()),
+  );
   instance.registerLazySingleton<Agent>(() => Agent(secureStorage: instance.get<SecureStorage>()));
 
-  // services
+  // auth
   instance.registerLazySingleton<AuthService>(() => AuthServiceImpl(agent: instance.get<Agent>()));
-
-  // repositories
   instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authService: instance.get<AuthService>()));
-
-  // use case
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
-  // common bloc
-  instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
-
-  //helper datetime
-  instance.registerLazySingleton<Time>(() => Time());
+  // bloc
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
+  instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
+  instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
+  instance.registerLazySingleton<Time>(() => Time());
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

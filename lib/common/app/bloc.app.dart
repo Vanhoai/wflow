@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/modules/auth/domain/auth_entity.dart';
 
 part 'state.app.dart';
 part 'event.app.dart';
@@ -15,11 +16,17 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   }
 
   static AppState onInit() {
-    if (sharedPreferences.containsKey("AppBloc")) {
-      return AppState.fromJson(jsonDecode(sharedPreferences.getString("AppBloc")!));
+    if (sharedPreferences.containsKey('AppBloc')) {
+      return AppState.fromJson(jsonDecode(sharedPreferences.getString('AppBloc')!));
     }
 
-    return const AppState();
+    return const AppState(
+      authEntity: AuthEntity(
+        accessToken: '',
+        refreshToken: '',
+        user: User(id: 0, name: '', role: 0, age: 0, address: '', email: '', phone: '', isVerify: false, avatar: ''),
+      ),
+    );
   }
 
   FutureOr<void> onAppChangeLanguage(AppChangeLanguage event, Emitter<AppState> emit) async {

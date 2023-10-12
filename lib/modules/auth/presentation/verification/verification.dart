@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -14,7 +13,6 @@ class VerificationScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _VerificationScreenState();
   }
 }
@@ -24,13 +22,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
   Timer? _everySecond;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    //Xử lý date ở đây
 
     count = 160;
-
-    // defines a timer
     _everySecond = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
         if (count == 0) {
@@ -44,14 +38,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _everySecond?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SafeArea(
       child: Listener(
         onPointerDown: (PointerDownEvent event) {
@@ -76,7 +68,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   margin: const EdgeInsets.only(top: 49),
                   child: Text(
                     'Xác nhận số điện thoại',
-                    style: TextTitle(size: 20, fontWeight: FontWeight.w400),
+                    style: textTitle(size: 20, fontWeight: FontWeight.w400),
                   ),
                 ),
                 const SizedBox(
@@ -98,11 +90,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   children: [
                     Text(
                       'Mã xác nhận sẽ gửi lại sau',
-                      style: TextTitle(fontWeight: FontWeight.w400),
+                      style: textTitle(fontWeight: FontWeight.w400),
                     ),
                     Text(
                       '${count}s',
-                      style: TextTitle(fontWeight: FontWeight.w400),
+                      style: textTitle(fontWeight: FontWeight.w400),
                     ),
                   ],
                 ),
@@ -126,7 +118,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text('Bạn đã có tài khoản? ', style: TextTitle(size: 16, fontWeight: FontWeight.w400)),
+                        Text('Bạn đã có tài khoản? ', style: textTitle(size: 16, fontWeight: FontWeight.w400)),
                         InkWell(
                             borderRadius: BorderRadius.circular(4),
                             onTap: () => {Navigator.pop(context)},
@@ -134,7 +126,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                 padding: const EdgeInsets.all(2),
                                 child: Text(
                                   'Đăng nhập',
-                                  style: TextTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
+                                  style: textTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
                                 ))),
                       ],
                     ))

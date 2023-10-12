@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 class RecentJobList extends StatefulWidget {
-  RecentJobList({super.key, required this.selectionValue});
+  const RecentJobList({super.key, required this.selectionValue});
 
-  late int selectionValue = 0;
+  final int selectionValue;
 
   @override
   State<RecentJobList> createState() => _RecentJobListState();
@@ -15,14 +15,12 @@ class _RecentJobListState extends State<RecentJobList> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     selectionValue = widget.selectionValue;
   }
 
   @override
   void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
     super.didChangeDependencies();
     print('didChangeDependencies: $selectionValue');
   }

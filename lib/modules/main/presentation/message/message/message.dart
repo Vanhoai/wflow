@@ -93,9 +93,9 @@ class _MessageScreenState extends State<MessageScreen> {
                             ),
                             Expanded(
                               child: Text(
-                                "Chị HR không tuyển dụng không tuyển Huy",
+                                'Chị HR không tuyển dụng không tuyển Huy',
                                 overflow: TextOverflow.ellipsis,
-                                style: TextTitle(fontWeight: FontWeight.w700, size: 14),
+                                style: textTitle(fontWeight: FontWeight.w700, size: 14),
                               ),
                             )
                           ],
@@ -109,7 +109,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         children: [
                           InkWell(
                             onTap: () {
-                              print("Call");
+                              print('Call');
                             },
                             borderRadius: BorderRadius.circular(25),
                             child: Container(
@@ -126,7 +126,7 @@ class _MessageScreenState extends State<MessageScreen> {
                             margin: const EdgeInsets.symmetric(horizontal: 10),
                             child: InkWell(
                               onTap: () {
-                                print("video call");
+                                print('video call');
                               },
                               borderRadius: BorderRadius.circular(25),
                               child: Container(
@@ -144,7 +144,7 @@ class _MessageScreenState extends State<MessageScreen> {
                             margin: const EdgeInsets.only(right: 5),
                             child: InkWell(
                               onTap: () {
-                                print("more");
+                                print('more');
                               },
                               borderRadius: BorderRadius.circular(25),
                               child: Container(
@@ -164,7 +164,7 @@ class _MessageScreenState extends State<MessageScreen> {
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: MainChat(),
               ),
               const BoxChat(),

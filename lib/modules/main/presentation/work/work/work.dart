@@ -45,8 +45,6 @@ class WorkScreen extends StatefulWidget {
 }
 
 class _WorkScreenState extends State<WorkScreen> {
-  final int _choiceValue = 0;
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);

@@ -44,3 +44,5 @@ class SignInWithBiometrics extends SignInEvent {}
 class ResetSignInState extends SignInEvent {}
 
 class SignInWithGoogleEvent extends SignInEvent {}
+
+class SignInInitialEvent extends SignInEvent {}

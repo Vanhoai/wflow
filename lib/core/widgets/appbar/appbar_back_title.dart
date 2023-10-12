@@ -3,19 +3,17 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
-class Header extends StatelessWidget implements PreferredSizeWidget{
-
+class Header extends StatelessWidget implements PreferredSizeWidget {
   const Header({super.key, required this.text});
 
   final String text;
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return AppBar(
       centerTitle: true,
       title: Text(
         text,
-        style: TextTitle(fontWeight: FontWeight.w400,size: 16),
+        style: textTitle(fontWeight: FontWeight.w400, size: 16),
       ),
       leading: Padding(
         padding: const EdgeInsets.all(8),
@@ -26,7 +24,11 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
           borderRadius: BorderRadius.circular(50),
           child: Container(
             alignment: Alignment.center,
-            child: SvgPicture.asset(AppConstants.backArrow, height: 24, width: 24,),
+            child: SvgPicture.asset(
+              AppConstants.backArrow,
+              height: 24,
+              width: 24,
+            ),
           ),
         ),
       ),
@@ -34,7 +36,5 @@ class Header extends StatelessWidget implements PreferredSizeWidget{
   }
 
   @override
-  // TODO: implement preferredSize
-  Size get preferredSize =>  const Size.fromHeight(kToolbarHeight);
-
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
 }

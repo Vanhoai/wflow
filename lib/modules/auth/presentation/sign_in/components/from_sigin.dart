@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -29,8 +30,8 @@ class _FormState extends State<FormSignIn> {
   @override
   void initState() {
     super.initState();
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
+    passwordController = TextEditingController(text: 'admin');
   }
 
   @override
@@ -38,6 +39,37 @@ class _FormState extends State<FormSignIn> {
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
+  }
+
+  Future<void> listener(BuildContext context, SignInState state) async {
+    if (state is SignInSuccess) {
+      Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
+    } else if (state is SignInFailure) {
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Sign In Failure', style: Theme.of(context).textTheme.titleMedium),
+            content: Text(state.message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
@@ -102,8 +134,8 @@ class _FormState extends State<FormSignIn> {
                       ),
                       const Padding(padding: EdgeInsets.only(left: 9)),
                       Text(
-                        "Lưu đăng nhập?",
-                        style: TextTitle(size: 15, colors: Colors.black87, fontWeight: FontWeight.w400),
+                        'Lưu đăng nhập?',
+                        style: textTitle(size: 15, colors: Colors.black87, fontWeight: FontWeight.w400),
                       )
                     ],
                   ),
@@ -112,7 +144,7 @@ class _FormState extends State<FormSignIn> {
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      child: Text('Quên mật khẩu', style: TextTitle(fontWeight: FontWeight.w500, size: 14)),
+                      child: Text('Quên mật khẩu', style: textTitle(fontWeight: FontWeight.w500, size: 14)),
                     ),
                     onTap: () {},
                   )
@@ -132,11 +164,12 @@ class _FormState extends State<FormSignIn> {
                           context.read<SignInBloc>().add(
                               SignInSubmittedEvent(email: emailController.text, password: passwordController.text));
                         },
-                        text: "Đăng nhập",
+                        text: 'Đăng nhập',
                       ),
                     ),
                   ),
                   BlocBuilder<SecurityBloc, SecurityState>(
+                    bloc: instance.get<SecurityBloc>(),
                     builder: (context, state) {
                       if (state.touchIDEnabled) {
                         return (Row(
@@ -145,7 +178,7 @@ class _FormState extends State<FormSignIn> {
                               width: 10,
                             ),
                             InkWell(
-                              onTap: () => print("hello"),
+                              onTap: () => print('hello'),
                               borderRadius: BorderRadius.circular(8),
                               splashColor: AppColors.blueColor,
                               child: SvgPicture.asset(height: 50, AppConstants.bionic),
@@ -165,35 +198,5 @@ class _FormState extends State<FormSignIn> {
         );
       },
     );
-  }
-
-  Future<void> listener(BuildContext context, SignInState state) async {
-    print(state.email);
-    if (state is SignInSuccess) {
-      await showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Text("Sign In Failure", style: Theme.of(context).textTheme.titleMedium),
-            content: const Text("Dang nhap thanh cong"),
-            actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
-                },
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text("OK"),
-                    )
-                  ],
-                ),
-              ),
-            ],
-          );
-        },
-      );
-    }
   }
 }

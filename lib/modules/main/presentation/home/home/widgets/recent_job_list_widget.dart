@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
-class RecentJobList extends StatefulWidget {
-  const RecentJobList({super.key, required this.selectionValue});
+class RecentJobListWidget extends StatefulWidget {
+  const RecentJobListWidget({super.key, required this.selectionValue});
 
   final int selectionValue;
 
   @override
-  State<RecentJobList> createState() => _RecentJobListState();
+  State<RecentJobListWidget> createState() => _RecentJobListWidgetState();
 }
 
-class _RecentJobListState extends State<RecentJobList> {
+class _RecentJobListWidgetState extends State<RecentJobListWidget> {
   late int selectionValue;
 
   @override
@@ -19,10 +20,8 @@ class _RecentJobListState extends State<RecentJobList> {
     selectionValue = widget.selectionValue;
   }
 
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    print('didChangeDependencies: $selectionValue');
+  void pressCard() {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
 
   @override
@@ -33,37 +32,39 @@ class _RecentJobListState extends State<RecentJobList> {
       sliver: SliverList.separated(
         itemBuilder: (context, index) {
           return JobCard(
+            cardPressed: pressCard,
             boxDecoration: BoxDecoration(
               color: themeData.colorScheme.background,
               borderRadius: BorderRadius.circular(8.0),
-              boxShadow: const [
+              boxShadow: [
                 BoxShadow(
-                  color: Colors.black12,
+                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
                 BoxShadow(
-                  color: Colors.black12,
+                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
                   blurRadius: 4,
-                  offset: Offset(0, 2),
+                  offset: const Offset(0, 2),
                 ),
               ],
             ),
             padding: const EdgeInsets.all(12),
             header: Header(
-              title: const Text(
+              title: Text(
                 'Tran Van Hoai',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                  fontSize: 18,
+                  color: themeData.colorScheme.onBackground,
+                )),
               ),
-              subtitle: const Text(
+              onTapTitle: () {},
+              onTapLeading: () {},
+              subtitle: Text(
                 'hoai',
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500,
-                ),
+                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                  color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                )),
               ),
               leadingSize: 30,
               actions: [
@@ -92,14 +93,11 @@ class _RecentJobListState extends State<RecentJobList> {
             labelSkill: true,
             cost: '1000\$',
             duration: '1 month',
-            description: const TextMore(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-              trimMode: TrimMode.Hidden,
-              trimHiddenMaxLines: 2,
-              style: TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 10,
-              ),
+            description: TextMore(
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+              style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                color: themeData.colorScheme.onBackground,
+              )),
             ),
             progress: const [
               '1.5 years of experience in Flutter',

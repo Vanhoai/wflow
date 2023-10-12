@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
-class HotJobList extends StatefulWidget {
-  const HotJobList({super.key, required this.scrollController});
+class HowJobListWidget extends StatefulWidget {
+  const HowJobListWidget({super.key, required this.scrollController});
 
   final ScrollController scrollController;
 
   @override
-  State<HotJobList> createState() => _HotJobListState();
+  State<HowJobListWidget> createState() => _HowJobListWidgetState();
 }
 
-class _HotJobListState extends State<HotJobList> {
+class _HowJobListWidgetState extends State<HowJobListWidget> {
   late ScrollController _scrollController;
 
   @override
@@ -27,12 +28,16 @@ class _HotJobListState extends State<HotJobList> {
     _scrollController.dispose();
   }
 
+  void pressCard() {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return SliverToBoxAdapter(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 250),
+        constraints: const BoxConstraints(maxHeight: 255),
         child: LayoutBuilder(
           builder: (context, constraints) {
             return ListView.separated(
@@ -50,35 +55,33 @@ class _HotJobListState extends State<HotJobList> {
                     boxDecoration: BoxDecoration(
                       color: themeData.colorScheme.background,
                       borderRadius: BorderRadius.circular(8.0),
-                      boxShadow: const [
+                      boxShadow: [
                         BoxShadow(
-                          color: Colors.black12,
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                         BoxShadow(
-                          color: Colors.black12,
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
                           blurRadius: 4,
-                          offset: Offset(0, 2),
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
+                    cardPressed: pressCard,
                     padding: const EdgeInsets.all(12),
                     header: Header(
-                      title: const Text(
-                        'Tran Van Hoai',
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      subtitle: const Text(
-                        'hoai',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
+                      title: Text('Google LLC',
+                          style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                            fontSize: 18,
+                            color: themeData.colorScheme.onBackground,
+                          ))),
+                      subtitle: Text('google',
+                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                          ))),
+                      onTapTitle: () {},
+                      onTapLeading: () {},
                       leadingSize: 30,
                       actions: [
                         IconButton.filled(
@@ -101,14 +104,13 @@ class _HotJobListState extends State<HotJobList> {
                     ],
                     cost: '1000\$',
                     duration: '1 month',
-                    description: const TextMore(
+                    description: TextMore(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       trimMode: TrimMode.Hidden,
                       trimHiddenMaxLines: 2,
-                      style: TextStyle(
-                        fontWeight: FontWeight.w500,
-                        fontSize: 10,
-                      ),
+                      style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                      )),
                     ),
                   ),
                 );

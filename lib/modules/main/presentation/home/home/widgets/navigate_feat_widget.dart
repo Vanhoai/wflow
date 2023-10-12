@@ -25,14 +25,14 @@ final List<Map<String, dynamic>> staticMenuSelection = [
   }
 ];
 
-class NavigateFeat extends StatefulWidget {
-  const NavigateFeat({super.key});
+class NavigateFeatWidget extends StatefulWidget {
+  const NavigateFeatWidget({super.key});
 
   @override
-  State<NavigateFeat> createState() => _NavigateFeatState();
+  State<NavigateFeatWidget> createState() => _NavigateFeatWidgetState();
 }
 
-class _NavigateFeatState extends State<NavigateFeat> {
+class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   @override
   Widget build(BuildContext context) {
     return SliverPadding(

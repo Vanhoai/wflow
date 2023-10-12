@@ -9,17 +9,17 @@ final List<Map<String, dynamic>> staticRecentTitle = [
   {'title': 'Remote'}
 ];
 
-class SelectionList extends StatefulWidget {
-  const SelectionList({super.key, required this.scrollController, required this.onSelected});
+class SelectionListWidget extends StatefulWidget {
+  const SelectionListWidget({super.key, required this.scrollController, required this.onSelected});
 
   final ScrollController scrollController;
   final Function(int) onSelected;
 
   @override
-  State<SelectionList> createState() => _SelectionListState();
+  State<SelectionListWidget> createState() => _SelectionListWidgetState();
 }
 
-class _SelectionListState extends State<SelectionList> {
+class _SelectionListWidgetState extends State<SelectionListWidget> {
   int _choiceValue = 0;
   late ScrollController _scrollController;
   late void Function(int) onSelected;
@@ -29,16 +29,6 @@ class _SelectionListState extends State<SelectionList> {
     // TODO: implement initState
     super.initState();
     _scrollController = widget.scrollController;
-    _scrollController.addListener(() {
-      if (_scrollController.offset >= _scrollController.position.maxScrollExtent &&
-          !_scrollController.position.outOfRange) {
-        print('reach the bottom');
-      }
-      if (_scrollController.offset <= _scrollController.position.minScrollExtent &&
-          !_scrollController.position.outOfRange) {
-        print('reach the top');
-      }
-    });
     onSelected = widget.onSelected;
   }
 
@@ -80,9 +70,7 @@ class _SelectionListState extends State<SelectionList> {
                 labelPadding: EdgeInsets.zero,
                 // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
                 visualDensity: VisualDensity.compact,
-                labelStyle: themeData.textTheme.titleMedium!.copyWith(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w500,
+                labelStyle: themeData.textTheme.displaySmall!.copyWith(
                   color:
                       _choiceValue == staticRecentTitle.indexOf(e) ? Colors.white : themeData.colorScheme.onBackground,
                 ),

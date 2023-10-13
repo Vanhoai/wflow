@@ -21,4 +21,5 @@ class RouteKeys {
   static const String auStepOneScreen = '/au_step_one_screen';
   static const String auStepTwoScreen = '/au_step_two_screen';
   static const String auStepThreeScreen = '/au_step_three_screen';
+  static const String taskScreen = '/task_screen';
 }

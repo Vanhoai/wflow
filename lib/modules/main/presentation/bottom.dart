@@ -2,6 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/videocall/bloc/bloc.dart';
+import 'package:wflow/common/videocall/bloc/event.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
@@ -30,7 +33,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-
+    instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,

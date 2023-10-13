@@ -17,6 +17,7 @@ import 'package:wflow/modules/main/presentation/personal/authenticate/austepthre
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
+import 'package:wflow/modules/main/presentation/work/task/task.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -62,6 +63,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
       case RouteKeys.auStepThreeScreen:
         return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
+      case RouteKeys.taskScreen:
+        return MaterialPageRoute(builder: (_) => const TaskScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

@@ -3,14 +3,14 @@ import 'package:wflow/modules/main/presentation/personal/add_business/components
 import 'package:wflow/modules/main/presentation/personal/add_business/components/search_add_business.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/utils/constants.dart';
 
-class AddBusiness extends StatefulWidget {
-  const AddBusiness({super.key});
+class AddBusinessScreen extends StatefulWidget {
+  const AddBusinessScreen({super.key});
 
   @override
-  State<AddBusiness> createState() => _AddBusinessState();
+  State<AddBusinessScreen> createState() => _AddBusinessScreenState();
 }
 
-class _AddBusinessState extends State<AddBusiness> {
+class _AddBusinessScreenState extends State<AddBusinessScreen> {
   void onCheck(value, index) {
     setState(() {
       users[index][3] = value;

@@ -3,14 +3,14 @@ import 'package:wflow/modules/main/presentation/personal/chat_business/component
 import 'package:wflow/modules/main/presentation/personal/chat_business/components/search_chat_business.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/utils/constants.dart';
 
-class ChatBusiness extends StatefulWidget {
-  const ChatBusiness({super.key});
+class ChatBusinessScreen extends StatefulWidget {
+  const ChatBusinessScreen({super.key});
 
   @override
-  State<ChatBusiness> createState() => _ChatBusinessState();
+  State<ChatBusinessScreen> createState() => _ChatBusinessScreenState();
 }
 
-class _ChatBusinessState extends State<ChatBusiness> {
+class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

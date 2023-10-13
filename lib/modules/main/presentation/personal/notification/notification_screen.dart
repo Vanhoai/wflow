@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/personal/notification_screen/components/category_button.dart';
-import 'package:wflow/modules/main/presentation/personal/notification_screen/components/notification_card.dart';
-import 'package:wflow/modules/main/presentation/personal/notification_screen/utils/constants.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/components/category_button.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/components/notification_card.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/utils/constants.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -22,9 +22,8 @@ class _NotificationScreen extends State<NotificationScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text(
-          'Notification screen',
+          '',
         ),
-        centerTitle: true,
       ),
       body: Container(
         width: double.infinity,

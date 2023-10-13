@@ -12,10 +12,12 @@ import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
-import 'package:wflow/modules/main/presentation/personal/notification_screen/notification_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 
@@ -67,6 +69,10 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
+      case RouteKeys.addBusinessScreen:
+        return MaterialPageRoute(builder: (_) => const AddBusinessScreen());
+      case RouteKeys.chatBusinessScreen:
+        return MaterialPageRoute(builder: (_) => const ChatBusinessScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

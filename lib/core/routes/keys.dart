@@ -17,6 +17,8 @@ class RouteKeys {
   static const String roomsScreen = '/rooms';
   static const String photoScreen = '/photo';
   static const String notificationScreen = '/notification_screen';
+  static const String addBusinessScreen = '/add_business_screen';
+  static const String chatBusinessScreen = '/chat_business_screen';
   static const String profileScreen = '/profileScreen';
   static const String auStepOneScreen = '/au_step_one_screen';
   static const String auStepTwoScreen = '/au_step_two_screen';

@@ -1,35 +1,31 @@
 import 'package:flutter/material.dart';
 
-class ButtonNotification extends StatefulWidget {
-  const ButtonNotification({
+class CategoryButton extends StatefulWidget {
+  const CategoryButton({
     super.key,
-    required this.width,
-    required this.height,
-    required this.content,
+    required this.category,
     required this.isActive,
     required this.onChanged,
   });
 
-  final double width;
-  final double height;
-  final String content;
+  final String category;
   final bool isActive;
   final Function()? onChanged;
 
   @override
-  State<ButtonNotification> createState() => _ButtonNotificationState();
+  State<CategoryButton> createState() => Category_Button();
 }
 
-class _ButtonNotificationState extends State<ButtonNotification> {
+class Category_Button extends State<CategoryButton> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-          left: ((MediaQuery.sizeOf(context).width) / 100) * 2.04,
-          right: ((MediaQuery.sizeOf(context).width) / 100) * 2.04),
+      margin: const EdgeInsets.only(
+        left: 5,
+        right: 5,
+      ),
       child: SizedBox(
-        width: ((MediaQuery.sizeOf(context).width) / 100) * widget.width,
-        height: ((MediaQuery.sizeOf(context).height) / 100) * widget.height,
+        height: 33,
         child: OutlinedButton(
           onPressed: widget.onChanged,
           style: OutlinedButton.styleFrom(
@@ -49,7 +45,7 @@ class _ButtonNotificationState extends State<ButtonNotification> {
             ),
           ),
           child: Text(
-            widget.content,
+            widget.category,
             style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,

@@ -114,7 +114,7 @@ class _MessageScreenState extends State<MessageScreen> {
                 call(state.call);
               }
             },
-            bloc: instance.get<VideoCallBloc>()..add(const VideoCallConnectEvent()),
+            bloc: instance.get<VideoCallBloc>(),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [

@@ -13,6 +13,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   AppBloc() : super(onInit()) {
     on<AppChangeLanguage>(onAppChangeLanguage);
     on<AppChangeTheme>(onAppChangeTheme);
+    on<SetIsFirstTime>(setIsFirstTime);
   }
 
   static AppState onInit() {
@@ -38,6 +39,8 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
   }
 
+
+
   @override
   AppState? fromJson(Map<String, dynamic> json) {
     return AppState.fromJson(json);
@@ -46,5 +49,9 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   @override
   Map<String, dynamic>? toJson(AppState state) {
     return state.toJson();
+  }
+
+  FutureOr<void> setIsFirstTime(SetIsFirstTime event, Emitter<AppState> emit) {
+    emit(state.copyWith(isFirstTime: false));
   }
 }

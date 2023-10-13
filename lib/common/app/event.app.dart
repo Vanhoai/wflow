@@ -22,3 +22,5 @@ class AppChangeTheme extends AppEvent {
   @override
   List<Object?> get props => [isDarkMode];
 }
+class SetIsFirstTime extends AppEvent{
+}

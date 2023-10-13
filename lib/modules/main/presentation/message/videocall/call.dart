@@ -24,7 +24,6 @@ class Call extends StatefulWidget {
     StringeeObjectEventType callType, {
     Key? key,
     StringeeCall2? stringeeCall2,
-    StringeeCall? stringeeCall,
   }) : super(key: key) {
     _client = client;
     _fromUserId = fromUserId;

@@ -2,6 +2,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -17,6 +19,7 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroductionScreenState extends State<IntroScreen> {
   void _onIntroEnd(context) {
+    instance.get<AppBloc>().add(SetIsFirstTime());
     Navigator.of(context).pushReplacementNamed(RouteKeys.signInScreen);
   }
 

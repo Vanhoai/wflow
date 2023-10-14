@@ -11,6 +11,7 @@ import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/work/contract/contract_screen.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
 
@@ -88,7 +89,7 @@ class _AppState extends State<App> {
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
                     // initialRoute: RouteKeys.workScreen,
-                    home: const ContractScreen(),
+                    home: const UpgradeBusinessScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

@@ -32,6 +32,10 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
 
+  void pressSubTitle() {
+    Navigator.pushNamed(context, RouteKeys.companyScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -76,10 +80,13 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                             fontSize: 18,
                             color: themeData.colorScheme.onBackground,
                           ))),
-                      subtitle: Text('google',
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                          ))),
+                      subtitle: InkWell(
+                        onTap: () => pressSubTitle(),
+                        child: Text('google',
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                              color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            ))),
+                      ),
                       onTapTitle: () {},
                       onTapLeading: () {},
                       leadingSize: 30,

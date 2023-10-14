@@ -14,6 +14,7 @@ class RouteKeys {
   static const String reviewContractScreen = '/review_contract_screen';
   static const String viewContractScreen = '/view_contract_screen';
   static const String settingScreen = '/setting_screen';
+  static const String securityScreen = '/security_screen';
   static const String roomsScreen = '/rooms';
   static const String photoScreen = '/photo';
   static const String notificationScreen = '/notification_screen';
@@ -21,4 +22,5 @@ class RouteKeys {
   static const String auStepOneScreen = '/au_step_one_screen';
   static const String auStepTwoScreen = '/au_step_two_screen';
   static const String auStepThreeScreen = '/au_step_three_screen';
+  static const String companyScreen = '/company_screen';
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -13,8 +14,25 @@ class CandidateContractScreen extends StatefulWidget {
 }
 
 class _CandidateContractScreenState extends State<CandidateContractScreen> {
+  late final PdfViewerController pdfViewerController;
+  late final ScrollController scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    pdfViewerController = PdfViewerController();
+    scrollController = ScrollController();
+  }
+
   void navigateToCreateContract(BuildContext context) {
     Navigator.of(context).pushNamed(RouteKeys.createContractScreen);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    pdfViewerController.dispose();
+    scrollController.dispose();
   }
 
   @override
@@ -28,6 +46,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
         child: CustomScrollView(
           clipBehavior: Clip.none,
           cacheExtent: 1000,
+          controller: scrollController,
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           shrinkWrap: true,
@@ -39,14 +58,20 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () => Navigator.pop(context, false),
               ),
+              surfaceTintColor: Colors.transparent,
+              pinned: true,
             ),
             const SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
               sliver: CandidateContractInfoWidget(),
             ),
-            const SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              sliver: CandidateCVWidget(),
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
+              sliver: SliverToBoxAdapter(
+                child: CandidateCVWidget(
+                  pdfViewerController: pdfViewerController,
+                ),
+              ),
             ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),

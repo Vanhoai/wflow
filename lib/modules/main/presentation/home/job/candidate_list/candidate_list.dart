@@ -58,9 +58,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
               ),
               backgroundColor: themeData.colorScheme.background,
               surfaceTintColor: Colors.transparent,
-              pinned: false,
-              snap: false,
-              floating: true,
+              pinned: true,
               title: Text(
                 'Candidates',
                 style: themeData.textTheme.displayLarge!.merge(TextStyle(

@@ -8,6 +8,7 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
@@ -15,6 +16,7 @@ import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
+import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 
@@ -56,12 +58,16 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ViewContractScreen());
       case RouteKeys.settingScreen:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
+      case RouteKeys.securityScreen:
+        return MaterialPageRoute(builder: (_) => const SecurityScreen());
       case RouteKeys.auStepOneScreen:
         return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
       case RouteKeys.auStepTwoScreen:
         return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
       case RouteKeys.auStepThreeScreen:
         return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
+      case RouteKeys.companyScreen:
+        return MaterialPageRoute(builder: (_) => const CompanyScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

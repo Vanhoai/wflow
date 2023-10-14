@@ -39,7 +39,6 @@ class _SignInScreenState extends State<SignInScreen> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Scaffold(
-            
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -115,7 +114,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           onTap: () {
-                            context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            // context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            Navigator.pushNamed(context, RouteKeys.bottomScreen);
                           },
                         );
                       },

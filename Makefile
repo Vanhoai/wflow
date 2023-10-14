@@ -34,3 +34,9 @@ push:
 	
 generate:
 	dart run build_runner build --delete-conflicting-outputs
+
+run:
+	@echo "Running app..."
+	@flutter run --debug
+	@echo "App is running..."
+	

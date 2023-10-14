@@ -16,10 +16,10 @@ class Header extends StatefulWidget {
     this.onTapLeading,
     this.actions = const [],
   });
-  final Text title;
+  final Widget title;
   final VoidCallback? onTapTitle;
   final VoidCallback? onTapLeading;
-  final Text subtitle;
+  final Widget subtitle;
   final double leadingSize;
   final String leadingPhotoUrl;
   final bool leadingBadge;

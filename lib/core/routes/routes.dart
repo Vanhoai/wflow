@@ -21,7 +21,7 @@ import 'package:wflow/modules/main/presentation/personal/notification/notificati
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
-import 'package:wflow/modules/main/presentation/work/contract/contract_screen.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {

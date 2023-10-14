@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/work/contract/utils/constants.dart';
-import 'package:wflow/modules/main/presentation/work/contract/widgets/contract_card.dart';
-import 'package:wflow/modules/main/presentation/work/contract/widgets/search_contract.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/utils/constants.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/contract_card.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/search_contract.dart';
 
 class ContractScreen extends StatefulWidget {
   const ContractScreen({super.key});
@@ -11,8 +11,23 @@ class ContractScreen extends StatefulWidget {
 }
 
 class _ContractScreenState extends State<ContractScreen> {
-  TextEditingController controller = TextEditingController();
-  bool isHiddenSuffixIcon = true;
+  late TextEditingController _controller;
+  late bool _isHiddenSuffixIcon;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _controller = TextEditingController();
+    _isHiddenSuffixIcon = true;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
 
   void onChangedSearch(String value) {
     List<Map<String, dynamic>> result = [];
@@ -29,15 +44,15 @@ class _ContractScreenState extends State<ContractScreen> {
     }
 
     setState(() {
-      isHiddenSuffixIcon = value.isEmpty;
+      _isHiddenSuffixIcon = value.isEmpty;
       foundContracts = result;
     });
   }
 
   void onClearSearch() => setState(() {
-        isHiddenSuffixIcon = true;
+        _isHiddenSuffixIcon = true;
         foundContracts = contracts;
-        controller.clear();
+        _controller.clear();
       });
 
   @override
@@ -52,8 +67,8 @@ class _ContractScreenState extends State<ContractScreen> {
         child: Column(
           children: [
             SearchContract(
-              controller: controller,
-              isHiddenSuffixIcon: isHiddenSuffixIcon,
+              controller: _controller,
+              isHiddenSuffixIcon: _isHiddenSuffixIcon,
               onChangedSearch: onChangedSearch,
               onClearSearch: onClearSearch,
             ),

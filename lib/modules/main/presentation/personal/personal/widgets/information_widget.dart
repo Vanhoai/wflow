@@ -11,10 +11,6 @@ class InformationWidget extends StatefulWidget {
 }
 
 class _InformationWidgetState extends State<InformationWidget> {
-  void navigateToSecurity(BuildContext context) {
-    Navigator.of(context).pushNamed(RouteKeys.securityScreen);
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -133,9 +129,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: InkWell(
-                          onTap: () {
-                            navigateToSecurity(context);
-                          },
+                          onTap: () => Navigator.of(context).pushNamed(RouteKeys.securityScreen),
                           borderRadius: BorderRadius.circular(8),
                           child: Center(
                             child: Text(

@@ -11,7 +11,20 @@ class NotificationScreen extends StatefulWidget {
 }
 
 class _NotificationScreen extends State<NotificationScreen> {
-  int _itemIndexSelected = 1;
+  late int _itemIndexSelected;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _itemIndexSelected = 1;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
 
   void onChangedItemIndexSelected(int i) => setState(() {
         _itemIndexSelected = i;

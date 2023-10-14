@@ -17,12 +17,31 @@ class UpgradeBusinessScreen extends StatefulWidget {
 
 class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
   File? _image;
-  bool _isImage = false;
+  late bool _isImage;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _isImage = false;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+  }
+
+  void _pickImageFromGallery() => Navigator.pop(context, ImageSource.gallery);
+  void _pickImageFromCamera() => Navigator.pop(context, ImageSource.camera);
 
   Future<void> _pickImage({required BuildContext context}) async {
     await showDialog<ImageSource>(
       context: context,
-      builder: (context) => const DialogPickImage(),
+      builder: (context) => DialogPickImage(
+        pickImageFromCamera: () => _pickImageFromCamera(),
+        pickImageFromGallery: () => _pickImageFromGallery(),
+      ),
     ).then((ImageSource? source) async {
       if (source != null) {
         final image = await ImagePicker().pickImage(source: source);

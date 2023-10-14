@@ -1,19 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 
 class DialogPickImage extends StatefulWidget {
-  const DialogPickImage({super.key});
+  const DialogPickImage({
+    super.key,
+    required this.pickImageFromCamera,
+    required this.pickImageFromGallery,
+  });
+
+  final void Function()? pickImageFromCamera;
+  final void Function()? pickImageFromGallery;
 
   @override
   State<DialogPickImage> createState() => _DialogPickImageState();
 }
 
 class _DialogPickImageState extends State<DialogPickImage> {
-  void _pickImageFromGallery() => Navigator.pop(context, ImageSource.gallery);
-  void _pickImageFromCamera() => Navigator.pop(context, ImageSource.camera);
+  late final RoundedRectangleBorder _roundedRectangleBorder;
 
-  final RoundedRectangleBorder _roundedRectangleBorder =
-      RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+  @override
+  void initState() {
+    // TODO: implement initState
+    _roundedRectangleBorder =
+        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,14 +39,14 @@ class _DialogPickImageState extends State<DialogPickImage> {
       ),
       actions: [
         ElevatedButton(
-          onPressed: () => _pickImageFromCamera(),
+          onPressed: widget.pickImageFromCamera,
           style: ElevatedButton.styleFrom(
             shape: _roundedRectangleBorder,
           ),
           child: const Text('Camera'),
         ),
         ElevatedButton(
-          onPressed: () => _pickImageFromGallery(),
+          onPressed: widget.pickImageFromGallery,
           style: ElevatedButton.styleFrom(
             shape: _roundedRectangleBorder,
           ),

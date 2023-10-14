@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/widgets/button/button.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/utils/constants.dart';
@@ -45,27 +43,34 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
               Container(
                 width: double.infinity,
                 height: ((MediaQuery.sizeOf(context).height) / 100) * 29.42,
-                decoration: BoxDecoration(
-                  color: Colors.grey.shade200,
-                  borderRadius: BorderRadius.circular(8),
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
                 ),
-                child: const Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.cloud_upload_outlined,
-                      size: 32,
-                      color: Color(0XFFABABAB),
+                child: Material(
+                  borderRadius: BorderRadius.circular(8),
+                  color: Colors.grey.shade200,
+                  child: InkWell(
+                    onTap: () => {},
+                    borderRadius: BorderRadius.circular(8),
+                    child: const Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Icon(
+                          Icons.cloud_upload_outlined,
+                          size: 32,
+                          color: Color(0XFFABABAB),
+                        ),
+                        Text(
+                          'Upload here',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.normal,
+                            color: Color(0XFFB8B8B8),
+                          ),
+                        ),
+                      ],
                     ),
-                    Text(
-                      'Upload here',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.normal,
-                        color: Color(0XFFB8B8B8),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
               const SizedBox(

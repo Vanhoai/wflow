@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 
@@ -15,16 +14,6 @@ class SettingScreen extends StatefulWidget {
 }
 
 class _SettingScreenState extends State<SettingScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
-  void navigateToCreateContract(BuildContext context) {
-    Navigator.of(context).pushNamed(RouteKeys.createContractScreen);
-  }
-
   void changeTheme(bool isDarkMode) {
     instance.call<AppBloc>().add(AppChangeTheme(isDarkMode: isDarkMode));
   }

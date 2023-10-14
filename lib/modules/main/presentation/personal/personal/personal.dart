@@ -25,12 +25,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
       initialScrollOffset: 0.0,
       keepScrollOffset: true,
       debugLabel: 'HomeScreen',
-      onAttach: (position) {
-        logger.d('onAttach$position');
-      },
-      onDetach: (position) {
-        logger.d('onDetach$position');
-      },
     );
   }
 
@@ -66,6 +60,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
             ),
             CupertinoActionSheetAction(
               onPressed: () {
+                Navigator.of(context).pop();
                 Navigator.of(context).pushNamed(RouteKeys.settingScreen);
               },
               child: const Text('Settings'),

@@ -32,6 +32,10 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
 
+  void pressSubTitle() {
+    Navigator.pushNamed(context, RouteKeys.companyScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -58,12 +62,14 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                       borderRadius: BorderRadius.circular(8.0),
                       boxShadow: [
                         BoxShadow(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
                         BoxShadow(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -86,7 +92,8 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                         'Google',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                            color: themeData.colorScheme.onBackground
+                                .withOpacity(0.5),
                             fontWeight: FontWeight.w400,
                           ),
                         ),
@@ -101,7 +108,8 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                             height: 24,
                             width: 24,
                             colorFilter: ColorFilter.mode(
-                              themeData.colorScheme.onBackground.withOpacity(0.5),
+                              themeData.colorScheme.onBackground
+                                  .withOpacity(0.5),
                               BlendMode.srcIn,
                             ),
                           ),

@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/contract/create_contract/widgets/action_create_contract_widget.dart';
 import 'package:wflow/modules/main/presentation/home/contract/create_contract/widgets/widget.dart';
 
 class CreateContractScreen extends StatefulWidget {
@@ -55,6 +54,8 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                 icon: const Icon(Icons.arrow_back_ios),
                 onPressed: () => Navigator.pop(context, false),
               ),
+              surfaceTintColor: Colors.transparent,
+              pinned: true,
             ),
             SliverToBoxAdapter(
               child: Padding(
@@ -117,11 +118,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                       )),
                     ),
                     const SizedBox(height: 10),
-                    Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: 530,
-                      color: Colors.red,
-                    ),
+                    const TaskCreateContractWidget(),
                     const SizedBox(height: 16),
                     const ActionCreateContractWidget(),
                     const SizedBox(height: 30),

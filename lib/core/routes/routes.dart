@@ -18,6 +18,7 @@ import 'package:wflow/modules/main/presentation/personal/authenticate/austepthre
 import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
@@ -63,6 +64,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ViewContractScreen());
       case RouteKeys.settingScreen:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
+      case RouteKeys.securityScreen:
+        return MaterialPageRoute(builder: (_) => const SecurityScreen());
       case RouteKeys.auStepOneScreen:
         return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
       case RouteKeys.auStepTwoScreen:

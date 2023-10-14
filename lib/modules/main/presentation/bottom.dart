@@ -30,7 +30,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.blue,
@@ -42,6 +41,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
           currentIndex: currentIndex,
           showUnselectedLabels: false,
           showSelectedLabels: false,
+          type: BottomNavigationBarType.fixed,
           iconSize: 24,
           onTap: (value) => setState(() => currentIndex = value),
           items: [

@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8d6f09dd6320855f.jpg';
-
 class Header extends StatefulWidget {
   const Header({
     super.key,
@@ -11,7 +9,8 @@ class Header extends StatefulWidget {
     this.decoration,
     this.onTapTitle,
     this.leadingSize = 30,
-    this.leadingPhotoUrl = IMAGE_PHOTO,
+    this.leadingPhotoUrl =
+        'https://images.pexels.com/photos/18632405/pexels-photo-18632405/free-photo-of-g-yeu-d-cu-ban.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
     this.leadingBadge = false,
     this.onTapLeading,
     this.actions = const [],
@@ -32,8 +31,6 @@ class Header extends StatefulWidget {
 class _HeaderState extends State<Header> {
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-
     return Container(
       key: widget.key,
       width: MediaQuery.of(context).size.width,
@@ -78,24 +75,11 @@ class _HeaderState extends State<Header> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  InkWell(
-                    onTap: widget.onTapTitle,
-                    enableFeedback: false,
-                    splashFactory: InkRipple.splashFactory,
-                    splashColor: themeData.colorScheme.primary.withOpacity(0.2),
-                    customBorder: const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                        side: BorderSide(color: Colors.transparent)),
-                    highlightColor: themeData.colorScheme.primary.withOpacity(0.2),
-                    focusNode: FocusNode(canRequestFocus: false),
-                    overlayColor: MaterialStateProperty.all<Color>(
-                      themeData.colorScheme.primary.withOpacity(0.2),
-                    ),
-                    child: widget.title,
-                  ),
+                  widget.title,
+                  const SizedBox(height: 4),
                   widget.subtitle,
                 ],
               ),

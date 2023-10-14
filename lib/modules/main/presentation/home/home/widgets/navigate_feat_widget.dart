@@ -1,29 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wflow/configuration/constants.dart';
-
-final List<Map<String, dynamic>> staticMenuSelection = [
-  {
-    'title': 'Balance',
-    'icon': AppConstants.ic_balance,
-    'onTap': () {},
-  },
-  {
-    'title': 'Reputation',
-    'icon': AppConstants.ic_reputation,
-    'onTap': () {},
-  },
-  {
-    'title': 'Business',
-    'icon': AppConstants.ic_business,
-    'onTap': () {},
-  },
-  {
-    'title': 'More',
-    'icon': AppConstants.ic_more,
-    'onTap': () {},
-  }
-];
+import 'package:wflow/modules/main/presentation/home/home/function.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
@@ -83,6 +60,13 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                         const SizedBox(height: 8.0),
                         Text(
                           staticMenuSelection[index]['title'],
+                          style: Theme.of(context).textTheme.labelMedium!.merge(
+                                TextStyle(
+                                  color: Theme.of(context).textTheme.labelMedium!.color!.withOpacity(0.5),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
                         ),
                       ],
                     ),

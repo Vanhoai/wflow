@@ -55,7 +55,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 20),
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TabBar(
                         indicatorSize: TabBarIndicatorSize.tab,
@@ -73,7 +73,6 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                       height:
                           (MediaQuery.of(context).size.height <= 800 ? 400 : MediaQuery.of(context).size.height * 0.5),
                       child: TabBarView(
-                        //TabarView layout chinh
                         controller: _tabController,
                         children: const [
                           FormRegisterEmail(),
@@ -100,10 +99,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    //Login google xử sao
+                    const SizedBox(height: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: InkWell(
@@ -114,7 +110,6 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                           ),
                           child: Stack(
-                            // min sizes for Material buttons
                             children: [
                               Align(
                                   alignment: Alignment.centerLeft,
@@ -156,7 +151,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           ),
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
@@ -170,12 +165,19 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
 Widget _tabSelect({String? icon, String? title}) {
   return Tab(
-      child: Row(children: [
-    SvgPicture.asset(
-      icon!,
-      semanticsLabel: 'Logo',
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(
+          icon!,
+          semanticsLabel: 'Logo',
+        ),
+        const SizedBox(width: 17),
+        Text(
+          title ?? '',
+          style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black),
+        )
+      ],
     ),
-    const SizedBox(width: 17),
-    Text(title ?? '', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w400, color: Colors.black))
-  ]));
+  );
 }

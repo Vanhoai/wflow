@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
@@ -16,14 +18,12 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController = widget.scrollController;
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
   }
@@ -37,12 +37,12 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     final ThemeData themeData = Theme.of(context);
     return SliverToBoxAdapter(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 255),
+        constraints: const BoxConstraints(maxHeight: 360),
         child: LayoutBuilder(
           builder: (context, constraints) {
-            return ListView.separated(
+            return ListView.builder(
               controller: _scrollController,
-              separatorBuilder: (context, index) => const SizedBox(width: 16.0),
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               padding: const EdgeInsets.only(left: 20.0),
@@ -50,6 +50,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                 return Container(
                   width: constraints.maxWidth * 0.8,
                   height: constraints.maxHeight,
+                  margin: const EdgeInsets.only(right: 20),
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
                   child: JobCard(
                     boxDecoration: BoxDecoration(
@@ -71,30 +72,41 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                     cardPressed: pressCard,
                     padding: const EdgeInsets.all(12),
                     header: Header(
-                      title: Text('Google LLC',
-                          style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                      title: Text(
+                        'Flutter Developer',
+                        style: themeData.textTheme.displayLarge!.merge(
+                          TextStyle(
                             fontSize: 18,
                             color: themeData.colorScheme.onBackground,
-                          ))),
-                      subtitle: Text('google',
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
+                      subtitle: Text(
+                        'Google',
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(
                             color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                          ))),
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ),
                       onTapTitle: () {},
                       onTapLeading: () {},
                       leadingSize: 30,
                       actions: [
-                        IconButton.filled(
-                          icon: Icon(Icons.bookmark_add, color: themeData.colorScheme.onBackground),
-                          onPressed: () {},
-                          padding: const EdgeInsets.all(0),
-                          visualDensity: VisualDensity.compact,
-                          tooltip: 'Save',
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(Colors.transparent),
+                        InkWell(
+                          child: SvgPicture.asset(
+                            AppConstants.bookmark,
+                            height: 24,
+                            width: 24,
+                            colorFilter: ColorFilter.mode(
+                              themeData.colorScheme.onBackground.withOpacity(0.5),
+                              BlendMode.srcIn,
+                            ),
                           ),
-                          highlightColor: Colors.blue.withOpacity(0.5),
                         ),
+                        const SizedBox(width: 8.0),
                       ],
                     ),
                     skill: const [
@@ -102,13 +114,14 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                       'Dart',
                       'Firebase',
                     ],
+                    labelSkill: true,
                     cost: '1000\$',
                     duration: '1 month',
                     description: TextMore(
                       'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
                       trimMode: TrimMode.Hidden,
-                      trimHiddenMaxLines: 2,
-                      style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                      trimHiddenMaxLines: 3,
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
                         color: themeData.colorScheme.onBackground,
                       )),
                     ),

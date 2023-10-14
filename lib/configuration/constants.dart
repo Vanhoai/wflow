@@ -34,6 +34,7 @@ class AppConstants {
   static const String moreOutline = '${commonIconPath}ic.moreoutline.svg';
   static const String remove = '${commonIconPath}ic.remove.svg';
   static const String bookmark = '${commonIconPath}ic.bookmark.svg';
+  static const String add = '${commonIconPath}ic.add.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';

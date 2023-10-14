@@ -111,7 +111,8 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           onTap: () {
-                            context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            // context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            Navigator.pushNamed(context, RouteKeys.bottomScreen);
                           },
                         );
                       },

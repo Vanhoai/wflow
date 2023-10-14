@@ -32,6 +32,10 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
 
+  void pressSubTitle() {
+    Navigator.pushNamed(context, RouteKeys.companyScreen);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);

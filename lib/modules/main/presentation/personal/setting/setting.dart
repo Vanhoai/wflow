@@ -25,6 +25,10 @@ class _SettingScreenState extends State<SettingScreen> {
     Navigator.of(context).pushNamed(RouteKeys.createContractScreen);
   }
 
+  void changeTheme(bool isDarkMode) {
+    instance.call<AppBloc>().add(AppChangeTheme(isDarkMode: isDarkMode));
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -52,6 +56,9 @@ class _SettingScreenState extends State<SettingScreen> {
                 'Setting',
                 style: themeData.textTheme.displayLarge,
               ),
+              surfaceTintColor: Colors.transparent,
+              pinned: true,
+              centerTitle: true,
             ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
@@ -68,13 +75,11 @@ class _SettingScreenState extends State<SettingScreen> {
                       ),
                     ),
                     BlocBuilder<AppBloc, AppState>(
+                      bloc: instance.call<AppBloc>(),
                       builder: (context, state) {
-                        print('ACASCCSCA: ${state.isDarkMode}');
                         return SwitchAnimation(
                           value: state.isDarkMode,
-                          onChanged: (bool values) {
-                            instance.call<AppBloc>().add(AppChangeTheme(isDarkMode: !values));
-                          },
+                          onChanged: (bool values) => changeTheme(!values),
                         );
                       },
                     ),

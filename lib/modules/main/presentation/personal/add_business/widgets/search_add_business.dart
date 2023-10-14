@@ -1,31 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 
 class SearchAddBusiness extends StatefulWidget {
-  const SearchAddBusiness({super.key});
+  const SearchAddBusiness({
+    super.key,
+    required this.controller,
+    required this.isHiddenSuffixIcon,
+    required this.onChangedSearch,
+    required this.onClearSearch,
+  });
+
+  final TextEditingController controller;
+  final bool isHiddenSuffixIcon;
+  final void Function(String)? onChangedSearch;
+  final void Function()? onClearSearch;
 
   @override
   State<SearchAddBusiness> createState() => _SearchAddBusinessState();
 }
 
 class _SearchAddBusinessState extends State<SearchAddBusiness> {
-  TextEditingController controller = TextEditingController();
-  bool isHiddenSuffixIcon = true;
-
-  void onChangedSearch(String value) => setState(() {
-        isHiddenSuffixIcon = value.isEmpty;
-      });
-
-  void onClearSearch() => setState(() {
-        isHiddenSuffixIcon = true;
-        controller.clear();
-      });
-
   @override
   Widget build(BuildContext context) {
+    return _buildSearchContainer();
+  }
+
+  Widget _buildSearchContainer() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -43,8 +46,8 @@ class _SearchAddBusinessState extends State<SearchAddBusiness> {
       width: double.infinity,
       height: 50,
       child: TextField(
-        controller: controller,
-        onChanged: (value) => onChangedSearch(value),
+        controller: widget.controller,
+        onChanged: widget.onChangedSearch,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: const TextStyle(
@@ -90,13 +93,13 @@ class _SearchAddBusinessState extends State<SearchAddBusiness> {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
-      child: isHiddenSuffixIcon
+      child: widget.isHiddenSuffixIcon
           ? const SizedBox(
               width: 0,
               height: 0,
             )
           : InkWell(
-              onTap: () => onClearSearch(),
+              onTap: widget.onClearSearch,
               child: Container(
                 width: 20,
                 height: 20,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/theme/size.dart';
 
-class ItemNotification extends StatefulWidget {
-  const ItemNotification({
+class NotificationCard extends StatefulWidget {
+  const NotificationCard({
     super.key,
     required this.title,
     required this.content,
@@ -12,10 +12,10 @@ class ItemNotification extends StatefulWidget {
   final String content;
 
   @override
-  State<ItemNotification> createState() => _ItemNotificationState();
+  State<NotificationCard> createState() => NotificationStateCard();
 }
 
-class _ItemNotificationState extends State<ItemNotification> {
+class NotificationStateCard extends State<NotificationCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(

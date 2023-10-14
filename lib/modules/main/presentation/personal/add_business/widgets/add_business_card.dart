@@ -17,7 +17,7 @@ class AddBusinessCard extends StatefulWidget {
   final String name;
   final String email;
   final bool isCheck;
-  final Function(bool? value)? onCheck;
+  final Function(bool?)? onCheck;
 
   @override
   State<AddBusinessCard> createState() => _AddBusinessCardState();

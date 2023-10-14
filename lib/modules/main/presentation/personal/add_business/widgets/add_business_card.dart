@@ -52,7 +52,7 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
   }
 
   Widget _buildAvatar() {
-    return Container(
+    return SizedBox(
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: CircleAvatar(
@@ -105,8 +105,7 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
           side: const BorderSide(
             color: Colors.transparent,
           ),
-          fillColor: MaterialStatePropertyAll(
-              widget.isCheck ? Colors.white : const Color(0XFFD9D9D9)),
+          fillColor: MaterialStatePropertyAll(widget.isCheck ? Colors.white : const Color(0XFFD9D9D9)),
         ),
       ),
     );

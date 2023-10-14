@@ -16,7 +16,6 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller = TextEditingController();
     _isHiddenSuffixIcon = true;
     super.initState();
@@ -24,7 +23,6 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }
@@ -35,12 +33,7 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
     if (value.isEmpty) {
       result = users;
     } else {
-      result = users
-          .where((user) => user['name']
-              .toString()
-              .toLowerCase()
-              .contains(value.toLowerCase()))
-          .toList();
+      result = users.where((user) => user['name'].toString().toLowerCase().contains(value.toLowerCase())).toList();
     }
 
     setState(() {
@@ -49,11 +42,13 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
     });
   }
 
-  void onClearSearch() => setState(() {
-        _isHiddenSuffixIcon = true;
-        foundUsers = users;
-        _controller.clear();
-      });
+  void onClearSearch() {
+    setState(() {
+      _isHiddenSuffixIcon = true;
+      foundUsers = users;
+      _controller.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -62,7 +57,7 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
         title: const Text('Chat for business'),
         centerTitle: true,
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(

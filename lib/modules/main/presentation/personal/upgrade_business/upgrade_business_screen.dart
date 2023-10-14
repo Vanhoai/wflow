@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wflow/core/theme/size.dart';
-import 'package:wflow/core/widgets/button/button.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/utils/constants.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/dialog_pick_image.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/input_group.dart';
@@ -17,20 +17,7 @@ class UpgradeBusinessScreen extends StatefulWidget {
 
 class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
   File? _image;
-  late bool _isImage;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _isImage = false;
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
-  }
+  bool _isImage = false;
 
   void _pickImageFromGallery() => Navigator.pop(context, ImageSource.gallery);
   void _pickImageFromCamera() => Navigator.pop(context, ImageSource.camera);
@@ -83,17 +70,13 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 14,
-              ),
+              const SizedBox(height: 14),
               PickImageCard(
                 image: _image,
                 isImage: _isImage,
                 pickImage: () => _pickImage(context: context),
               ),
-              const SizedBox(
-                height: 28,
-              ),
+              const SizedBox(height: 28),
               Wrap(
                 children: List.generate(
                   inputs.length,
@@ -127,16 +110,12 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                   ),
                 ],
               ),
-              const SizedBox(
-                height: 28,
+              const SizedBox(height: 28),
+              PrimaryButton(
+                onPressed: () => {},
+                label: 'Upgrade',
               ),
-              AppButton(
-                onTap: () => {},
-                text: 'Upgrade',
-              ),
-              const SizedBox(
-                height: 28,
-              ),
+              const SizedBox(height: 28),
             ],
           ),
         ),

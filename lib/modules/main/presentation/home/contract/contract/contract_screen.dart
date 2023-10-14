@@ -16,7 +16,6 @@ class _ContractScreenState extends State<ContractScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _controller = TextEditingController();
     _isHiddenSuffixIcon = true;
     super.initState();
@@ -24,7 +23,6 @@ class _ContractScreenState extends State<ContractScreen> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     super.dispose();
   }
@@ -36,10 +34,7 @@ class _ContractScreenState extends State<ContractScreen> {
       result = contracts;
     } else {
       result = contracts
-          .where((contract) => contract['name']
-              .toString()
-              .toLowerCase()
-              .contains(value.toLowerCase()))
+          .where((contract) => contract['name'].toString().toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
 
@@ -49,11 +44,13 @@ class _ContractScreenState extends State<ContractScreen> {
     });
   }
 
-  void onClearSearch() => setState(() {
-        _isHiddenSuffixIcon = true;
-        foundContracts = contracts;
-        _controller.clear();
-      });
+  void onClearSearch() {
+    setState(() {
+      _isHiddenSuffixIcon = true;
+      foundContracts = contracts;
+      _controller.clear();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +58,7 @@ class _ContractScreenState extends State<ContractScreen> {
       appBar: AppBar(
         title: const Text(''),
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -74,6 +71,7 @@ class _ContractScreenState extends State<ContractScreen> {
             ),
             Expanded(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: foundContracts.length,
                 itemBuilder: (context, index) => ContractCard(
                   image: foundContracts[index]['image'],

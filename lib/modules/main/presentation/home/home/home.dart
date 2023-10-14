@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
@@ -78,6 +79,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   leadingBadge: true,
                   actions: [
                     InkWell(
+                      onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
                       child: SvgPicture.asset(
                         AppConstants.ic_notification,
                         width: 28,

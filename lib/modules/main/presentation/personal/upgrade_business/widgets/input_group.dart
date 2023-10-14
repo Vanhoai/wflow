@@ -17,7 +17,7 @@ class InputGroup extends StatefulWidget {
 class _InputGroupState extends State<InputGroup> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -36,6 +36,7 @@ class _InputGroupState extends State<InputGroup> {
           SizedBox(
             child: TextField(
               decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(16),
                 hintText: widget.hintText,
                 hintStyle: const TextStyle(
                   fontSize: 16,

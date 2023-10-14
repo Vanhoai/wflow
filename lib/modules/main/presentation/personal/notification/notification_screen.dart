@@ -15,20 +15,15 @@ class _NotificationScreen extends State<NotificationScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _itemIndexSelected = 1;
     super.initState();
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    super.dispose();
+  void onChangedItemIndexSelected(int i) {
+    setState(() {
+      _itemIndexSelected = i;
+    });
   }
-
-  void onChangedItemIndexSelected(int i) => setState(() {
-        _itemIndexSelected = i;
-      });
 
   @override
   Widget build(BuildContext context) {
@@ -38,7 +33,7 @@ class _NotificationScreen extends State<NotificationScreen> {
           '',
         ),
       ),
-      body: Container(
+      body: SizedBox(
         width: double.infinity,
         height: double.infinity,
         child: Column(
@@ -59,6 +54,7 @@ class _NotificationScreen extends State<NotificationScreen> {
       height: 33,
       child: Expanded(
         child: ListView.builder(
+          physics: const BouncingScrollPhysics(),
           padding: const EdgeInsets.only(
             left: 15,
             right: 15,
@@ -80,6 +76,7 @@ class _NotificationScreen extends State<NotificationScreen> {
 
     return Expanded(
       child: ListView.builder(
+        physics: const BouncingScrollPhysics(),
         itemCount: notifications.length,
         itemBuilder: (context, index) => NotificationCard(
           title: notifications[index]['title'],

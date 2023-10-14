@@ -11,8 +11,23 @@ class AddBusinessScreen extends StatefulWidget {
 }
 
 class _AddBusinessScreenState extends State<AddBusinessScreen> {
-  TextEditingController controller = TextEditingController();
-  bool isHiddenSuffixIcon = true;
+  late TextEditingController _controller;
+  late bool _isHiddenSuffixIcon;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _controller = TextEditingController();
+    _isHiddenSuffixIcon = true;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
 
   void onCheck(value, id) => setState(() {
         for (int i = 0; i < users.length; i++) {
@@ -45,15 +60,15 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
     }
 
     setState(() {
-      isHiddenSuffixIcon = value.isEmpty;
+      _isHiddenSuffixIcon = value.isEmpty;
       foundUsers = result;
     });
   }
 
   void onClearSearch() => setState(() {
-        isHiddenSuffixIcon = true;
+        _isHiddenSuffixIcon = true;
         foundUsers = users;
-        controller.clear();
+        _controller.clear();
       });
 
   @override
@@ -69,10 +84,10 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
         child: Column(
           children: [
             SearchAddBusiness(
-              controller: controller,
-              isHiddenSuffixIcon: isHiddenSuffixIcon,
-              onChangedSearch: onChangedSearch,
-              onClearSearch: onClearSearch,
+              controller: _controller,
+              isHiddenSuffixIcon: _isHiddenSuffixIcon,
+              onChangedSearch: (value) => onChangedSearch(value),
+              onClearSearch: () => onClearSearch(),
             ),
             Expanded(
               child: ListView.builder(

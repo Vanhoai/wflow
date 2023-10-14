@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/personal/chat_business/components/chat_business_card.dart';
-import 'package:wflow/modules/main/presentation/personal/chat_business/components/search_chat_business.dart';
+import 'package:wflow/modules/main/presentation/personal/chat_business/widgets/chat_business_card.dart';
+import 'package:wflow/modules/main/presentation/personal/chat_business/widgets/search_chat_business.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/utils/constants.dart';
 
 class ChatBusinessScreen extends StatefulWidget {

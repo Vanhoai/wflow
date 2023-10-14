@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/personal/notification/components/category_button.dart';
-import 'package:wflow/modules/main/presentation/personal/notification/components/notification_card.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/widgets/category_button.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/widgets/notification_card.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/utils/constants.dart';
 
 class NotificationScreen extends StatefulWidget {

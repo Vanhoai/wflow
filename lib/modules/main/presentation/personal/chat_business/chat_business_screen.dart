@@ -11,8 +11,23 @@ class ChatBusinessScreen extends StatefulWidget {
 }
 
 class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
-  TextEditingController controller = TextEditingController();
-  bool isHiddenSuffixIcon = true;
+  late TextEditingController _controller;
+  late bool _isHiddenSuffixIcon;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _controller = TextEditingController();
+    _isHiddenSuffixIcon = true;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    super.dispose();
+  }
 
   void onChangedSearch(String value) {
     List<Map<String, dynamic>> result = [];
@@ -29,15 +44,15 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
     }
 
     setState(() {
-      isHiddenSuffixIcon = value.isEmpty;
+      _isHiddenSuffixIcon = value.isEmpty;
       foundUsers = result;
     });
   }
 
   void onClearSearch() => setState(() {
-        isHiddenSuffixIcon = true;
+        _isHiddenSuffixIcon = true;
         foundUsers = users;
-        controller.clear();
+        _controller.clear();
       });
 
   @override
@@ -53,10 +68,10 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
         child: Column(
           children: <Widget>[
             SearchChatBusiness(
-              controller: controller,
-              isHiddenSuffixIcon: isHiddenSuffixIcon,
-              onChangedSearch: onChangedSearch,
-              onClearSearch: onClearSearch,
+              controller: _controller,
+              isHiddenSuffixIcon: _isHiddenSuffixIcon,
+              onChangedSearch: (value) => onChangedSearch(value),
+              onClearSearch: () => onClearSearch(),
             ),
             Expanded(
               child: ListView.builder(

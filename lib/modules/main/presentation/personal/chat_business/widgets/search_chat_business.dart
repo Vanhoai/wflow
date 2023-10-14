@@ -15,8 +15,8 @@ class SearchChatBusiness extends StatefulWidget {
 
   final TextEditingController controller;
   final bool isHiddenSuffixIcon;
-  final void Function(String) onChangedSearch;
-  final void Function() onClearSearch;
+  final void Function(String)? onChangedSearch;
+  final void Function()? onClearSearch;
 
   @override
   State<SearchChatBusiness> createState() => _SearchChatBusinessState();
@@ -25,6 +25,10 @@ class SearchChatBusiness extends StatefulWidget {
 class _SearchChatBusinessState extends State<SearchChatBusiness> {
   @override
   Widget build(BuildContext context) {
+    return _buildSearchContainer();
+  }
+
+  Widget _buildSearchContainer() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.only(
@@ -43,7 +47,7 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
       height: 50,
       child: TextField(
         controller: widget.controller,
-        onChanged: (value) => widget.onChangedSearch(value),
+        onChanged: widget.onChangedSearch,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: const TextStyle(
@@ -95,7 +99,7 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
               height: 0,
             )
           : InkWell(
-              onTap: () => widget.onClearSearch(),
+              onTap: widget.onClearSearch,
               child: Container(
                 width: 20,
                 height: 20,

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
@@ -72,7 +73,7 @@ class _HeaderAvatarCompanyWidgetState extends State<HeaderAvatarCompanyWidget> {
                           const SizedBox(width: 10),
                           PrimaryButton(
                             label: 'Chat',
-                            onPressed: () {},
+                            onPressed: () => Navigator.of(context).pushNamed(RouteKeys.chatBusinessScreen),
                             width: 85,
                             height: 30,
                           ),

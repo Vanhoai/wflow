@@ -10,6 +10,7 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -84,7 +85,7 @@ class _AppState extends State<App> {
                     themeMode:
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: RouteKeys.addBusinessScreen,
+                    initialRoute: RouteKeys.chatBusinessScreen,
                     home: const AddBusinessScreen(),
                   ),
                   BlocBuilder(

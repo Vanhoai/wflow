@@ -5,25 +5,24 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 
 class SearchChatBusiness extends StatefulWidget {
-  const SearchChatBusiness({super.key});
+  const SearchChatBusiness({
+    super.key,
+    required this.controller,
+    required this.isHiddenSuffixIcon,
+    required this.onChangedSearch,
+    required this.onClearSearch,
+  });
+
+  final TextEditingController controller;
+  final bool isHiddenSuffixIcon;
+  final void Function(String) onChangedSearch;
+  final void Function() onClearSearch;
 
   @override
   State<SearchChatBusiness> createState() => _SearchChatBusinessState();
 }
 
 class _SearchChatBusinessState extends State<SearchChatBusiness> {
-  TextEditingController controller = TextEditingController();
-  bool isHiddenSuffixIcon = true;
-
-  void onChangedSearch(String value) => setState(() {
-        isHiddenSuffixIcon = value.isEmpty;
-      });
-
-  void onClearSearch() => setState(() {
-        isHiddenSuffixIcon = true;
-        controller.clear();
-      });
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -43,8 +42,8 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
       width: double.infinity,
       height: 50,
       child: TextField(
-        controller: controller,
-        onChanged: (value) => onChangedSearch(value),
+        controller: widget.controller,
+        onChanged: (value) => widget.onChangedSearch(value),
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: const TextStyle(
@@ -90,13 +89,13 @@ class _SearchChatBusinessState extends State<SearchChatBusiness> {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
-      child: isHiddenSuffixIcon
+      child: widget.isHiddenSuffixIcon
           ? const SizedBox(
               width: 0,
               height: 0,
             )
           : InkWell(
-              onTap: () => onClearSearch(),
+              onTap: () => widget.onClearSearch(),
               child: Container(
                 width: 20,
                 height: 20,

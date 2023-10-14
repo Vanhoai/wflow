@@ -11,6 +11,35 @@ class ChatBusinessScreen extends StatefulWidget {
 }
 
 class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
+  TextEditingController controller = TextEditingController();
+  bool isHiddenSuffixIcon = true;
+
+  void onChangedSearch(String value) {
+    List<Map<String, dynamic>> result = [];
+
+    if (value.isEmpty) {
+      result = users;
+    } else {
+      result = users
+          .where((user) => user['name']
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
+    }
+
+    setState(() {
+      isHiddenSuffixIcon = value.isEmpty;
+      foundUsers = result;
+    });
+  }
+
+  void onClearSearch() => setState(() {
+        isHiddenSuffixIcon = true;
+        foundUsers = users;
+        controller.clear();
+      });
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,17 +52,22 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
         height: double.infinity,
         child: Column(
           children: <Widget>[
-            const SearchChatBusiness(),
+            SearchChatBusiness(
+              controller: controller,
+              isHiddenSuffixIcon: isHiddenSuffixIcon,
+              onChangedSearch: onChangedSearch,
+              onClearSearch: onClearSearch,
+            ),
             Expanded(
               child: ListView.builder(
-                itemCount: userChats.length,
+                itemCount: foundUsers.length,
                 itemBuilder: ((context, index) {
                   return ChatBusinessCard(
-                    image: userChats[index][0],
-                    name: userChats[index][1],
-                    message: userChats[index][2],
-                    time: userChats[index][3],
-                    quantity: userChats[index][4],
+                    image: foundUsers[index]['image'],
+                    name: foundUsers[index]['name'],
+                    message: foundUsers[index]['message'],
+                    time: foundUsers[index]['time'],
+                    quantity: foundUsers[index]['quantity'],
                   );
                 }),
               ),

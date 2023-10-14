@@ -1,8 +1,12 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/widgets/button/button.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/utils/constants.dart';
+import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/dialog_pick_image.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/input_group.dart';
+import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/pick_image_card.dart';
 
 class UpgradeBusinessScreen extends StatefulWidget {
   const UpgradeBusinessScreen({super.key});
@@ -12,6 +16,29 @@ class UpgradeBusinessScreen extends StatefulWidget {
 }
 
 class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
+  File? _image;
+  bool _isImage = false;
+
+  Future<void> _pickImage({required BuildContext context}) async {
+    await showDialog<ImageSource>(
+      context: context,
+      builder: (context) => const DialogPickImage(),
+    ).then((ImageSource? source) async {
+      if (source != null) {
+        final image = await ImagePicker().pickImage(source: source);
+        if (image == null) return;
+        final imageTemporary = File(image.path);
+
+        setState(() {
+          _image = imageTemporary;
+          _isImage = !_isImage;
+        });
+      } else {
+        return;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,38 +67,10 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
               const SizedBox(
                 height: 14,
               ),
-              Container(
-                width: double.infinity,
-                height: ((MediaQuery.sizeOf(context).height) / 100) * 29.42,
-                decoration: const BoxDecoration(
-                  color: Colors.transparent,
-                ),
-                child: Material(
-                  borderRadius: BorderRadius.circular(8),
-                  color: Colors.grey.shade200,
-                  child: InkWell(
-                    onTap: () => {},
-                    borderRadius: BorderRadius.circular(8),
-                    child: const Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: <Widget>[
-                        Icon(
-                          Icons.cloud_upload_outlined,
-                          size: 32,
-                          color: Color(0XFFABABAB),
-                        ),
-                        Text(
-                          'Upload here',
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.normal,
-                            color: Color(0XFFB8B8B8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
+              PickImageCard(
+                image: _image,
+                isImage: _isImage,
+                pickImage: () => _pickImage(context: context),
               ),
               const SizedBox(
                 height: 28,

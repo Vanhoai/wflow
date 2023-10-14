@@ -19,7 +19,9 @@ import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
+import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
+import 'package:wflow/modules/main/presentation/work/contract/contract_screen.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -73,6 +75,10 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const AddBusinessScreen());
       case RouteKeys.chatBusinessScreen:
         return MaterialPageRoute(builder: (_) => const ChatBusinessScreen());
+      case RouteKeys.contractScreen:
+        return MaterialPageRoute(builder: (_) => const ContractScreen());
+      case RouteKeys.upgradeBusinessScreen:
+        return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

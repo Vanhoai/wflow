@@ -19,6 +19,8 @@ class RouteKeys {
   static const String notificationScreen = '/notification_screen';
   static const String addBusinessScreen = '/add_business_screen';
   static const String chatBusinessScreen = '/chat_business_screen';
+  static const String contractScreen = '/contract_screen';
+  static const String upgradeBusinessScreen = '/upgrade_business_screen';
   static const String profileScreen = '/profileScreen';
   static const String auStepOneScreen = '/au_step_one_screen';
   static const String auStepTwoScreen = '/au_step_two_screen';

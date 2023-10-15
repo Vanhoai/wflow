@@ -51,6 +51,9 @@ dependencies:
   url_launcher: ^6.1.14
   share_plus: ^7.1.0
   cached_network_image: ^3.3.0
+  image_picker: ^1.0.4
+  syncfusion_flutter_pdfviewer: ^20.4.54
+  timelines: ^0.1.0
 
 dev_dependencies:
   flutter_test:

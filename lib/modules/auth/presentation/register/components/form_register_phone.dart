@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/button/button.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -9,7 +9,6 @@ class FormRegisterPhone extends StatefulWidget {
   const FormRegisterPhone({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _FormState();
   }
 }
@@ -22,7 +21,6 @@ class _FormState extends State<FormRegisterPhone> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
@@ -31,7 +29,6 @@ class _FormState extends State<FormRegisterPhone> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
@@ -39,14 +36,12 @@ class _FormState extends State<FormRegisterPhone> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
         key: _key,
         child: Column(
           children: [
-            //Email
             TextFieldFrom(
               label: 'Số điện thoại',
               controller: emailController,
@@ -63,7 +58,6 @@ class _FormState extends State<FormRegisterPhone> {
                     fit: BoxFit.cover, colorFilter: const ColorFilter.mode(Colors.green, BlendMode.srcIn)),
               ),
             ),
-            //Pass
             TextFieldFrom(
               controller: passwordController,
               label: 'Mật khẩu',
@@ -87,12 +81,11 @@ class _FormState extends State<FormRegisterPhone> {
               isPassword: true,
             ),
             const SizedBox(height: 30),
-            //Btn_Login
-            AppButton(
-              onTap: () {
+            PrimaryButton(
+              onPressed: () {
                 Navigator.pushReplacementNamed(context, RouteKeys.verificationScreen);
               },
-              text: 'Đăng ký',
+              label: 'Đăng ký',
             ),
           ],
         ),

@@ -4,27 +4,33 @@ import 'package:wflow/core/theme/colors.dart';
 const TextTheme textTheme = TextTheme(
   displaySmall: TextStyle(
     fontSize: 12,
-    fontWeight: FontWeight.w500,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
   displayMedium: TextStyle(
-    fontSize: 14,
-    fontWeight: FontWeight.w500,
+    fontSize: 16,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
   displayLarge: TextStyle(
-    fontSize: 16,
-    fontWeight: FontWeight.w500,
+    fontSize: 20,
+    fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
   labelSmall: TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
   labelMedium: TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
   labelLarge: TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
+    letterSpacing: 0.5,
   ),
 );
 
@@ -35,7 +41,7 @@ final themeData = ThemeData(
   colorScheme: const ColorScheme.light(
     primary: AppColors.primary,
   ),
-  fontFamily: "SF-Pro-Display",
+  fontFamily: 'SF-Pro-Display',
 );
 
 final themeDataDark = ThemeData(
@@ -46,5 +52,5 @@ final themeDataDark = ThemeData(
     primary: AppColors.primary,
     secondary: AppColors.primary,
   ),
-  fontFamily: "SF-Pro-Display",
+  fontFamily: 'SF-Pro-Display',
 );

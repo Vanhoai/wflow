@@ -1,44 +1,39 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/core/widgets/button/button.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-class FormRegisterEmail extends StatefulWidget{
 
+class FormRegisterEmail extends StatefulWidget {
   const FormRegisterEmail({Key? key}) : super(key: key);
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return _FormState() ;
+    return _FormState();
   }
-
 }
 
-class _FormState extends State<FormRegisterEmail>{
+class _FormState extends State<FormRegisterEmail> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
   late final TextEditingController rePasswordController;
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
-
-    // TODO: implement initState
     super.initState();
     emailController = TextEditingController();
     passwordController = TextEditingController();
     rePasswordController = TextEditingController();
-    
   }
+
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     emailController.dispose();
     passwordController.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 20),
       child: Form(
@@ -51,15 +46,11 @@ class _FormState extends State<FormRegisterEmail>{
                 controller: emailController,
                 placeholder: 'Nhập địa chỉ email',
                 textInputAction: TextInputAction.next,
-                prefixIcon: const Icon(Icons.email,size: 24),
+                prefixIcon: const Icon(Icons.email, size: 24),
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 16, top: 16, right: 17, left: 18),
-                  child: SvgPicture.asset(
-                      AppConstants.checkFill,
-                      fit: BoxFit.cover,
-                      colorFilter: const ColorFilter.mode(
-                          Colors.green, BlendMode.srcIn)),
+                  padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
+                  child: SvgPicture.asset(AppConstants.checkFill,
+                      fit: BoxFit.cover, colorFilter: const ColorFilter.mode(Colors.green, BlendMode.srcIn)),
                 ),
               ),
               //Pass
@@ -68,7 +59,10 @@ class _FormState extends State<FormRegisterEmail>{
                 label: 'Mật khẩu',
                 placeholder: 'Nhập mật khẩu',
                 textInputAction: TextInputAction.next,
-                prefixIcon: const Icon(Icons.lock,size: 24,),
+                prefixIcon: const Icon(
+                  Icons.lock,
+                  size: 24,
+                ),
                 isPassword: true,
               ),
               TextFieldFrom(
@@ -76,18 +70,16 @@ class _FormState extends State<FormRegisterEmail>{
                 label: 'Nhập lại mật khẩu',
                 placeholder: 'Nhập lại mật khẩu',
                 textInputAction: TextInputAction.done,
-                prefixIcon: const Icon(Icons.lock,size: 24,),
+                prefixIcon: const Icon(
+                  Icons.lock,
+                  size: 24,
+                ),
                 isPassword: true,
               ),
               const SizedBox(height: 30),
-              //Btn_Login
-              AppButton(
-                  onTap: () {},
-                  text: "Đăng ký"
-              ),
+              PrimaryButton(onPressed: () {}, label: "Đăng ký", height: 64),
             ],
-          )
-      ),
+          )),
     );
-    }
   }
+}

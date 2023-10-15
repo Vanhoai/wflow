@@ -8,7 +8,6 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
-import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
 
 import 'components/from_sigin.dart';
@@ -39,7 +38,6 @@ class _SignInScreenState extends State<SignInScreen> {
             FocusManager.instance.primaryFocus?.unfocus();
           },
           child: Scaffold(
-            
             body: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -81,10 +79,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 7,
-                    ),
-                    //Login With Google
+                    const SizedBox(height: 8),
                     BlocBuilder<SignInBloc, SignInState>(
                       builder: (context, state) {
                         return InkWell(
@@ -93,7 +88,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             height: 50,
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.black26, width: 1),
-                              borderRadius: const BorderRadius.all(Radius.circular(12.0)),
+                              borderRadius: const BorderRadius.all(Radius.circular(8)),
                             ),
                             child: Stack(
                               children: [
@@ -115,12 +110,12 @@ class _SignInScreenState extends State<SignInScreen> {
                             ),
                           ),
                           onTap: () {
-                            context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            // context.read<SignInBloc>().add(SignInWithGoogleEvent());
+                            Navigator.pushNamed(context, RouteKeys.bottomScreen);
                           },
                         );
                       },
                     ),
-                    //SignUp
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 30),
                       alignment: Alignment.center,

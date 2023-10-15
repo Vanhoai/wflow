@@ -3,7 +3,7 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/button/button.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 import 'package:flutter_svg/svg.dart';
@@ -80,7 +80,6 @@ class _FormState extends State<FormSignIn> {
           key: _key,
           child: Column(
             children: [
-              //Email
               TextFieldFrom(
                 label: 'Tài khoản',
                 controller: emailController,
@@ -100,7 +99,6 @@ class _FormState extends State<FormSignIn> {
                           : const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
                 ),
               ),
-              //Pass
               TextFieldFrom(
                 controller: passwordController,
                 label: 'Mật khẩu',
@@ -159,12 +157,12 @@ class _FormState extends State<FormSignIn> {
                     child: BlocListener<SignInBloc, SignInState>(
                       listenWhen: (preState, state) => preState != state,
                       listener: listener,
-                      child: AppButton(
-                        onTap: () {
+                      child: PrimaryButton(
+                        onPressed: () {
                           context.read<SignInBloc>().add(
                               SignInSubmittedEvent(email: emailController.text, password: passwordController.text));
                         },
-                        text: 'Đăng nhập',
+                        label: 'Đăng nhập',
                       ),
                     ),
                   ),

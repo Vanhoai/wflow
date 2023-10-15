@@ -1,29 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-
-final List<Map<String, dynamic>> staticMenuSelection = [
-  {
-    'title': 'Balance',
-    'icon': AppConstants.ic_balance,
-    'onTap': () {},
-  },
-  {
-    'title': 'Reputation',
-    'icon': AppConstants.ic_reputation,
-    'onTap': () {},
-  },
-  {
-    'title': 'Business',
-    'icon': AppConstants.ic_business,
-    'onTap': () {},
-  },
-  {
-    'title': 'More',
-    'icon': AppConstants.ic_more,
-    'onTap': () {},
-  }
-];
+import 'package:wflow/core/routes/keys.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
@@ -32,7 +10,33 @@ class NavigateFeatWidget extends StatefulWidget {
   State<NavigateFeatWidget> createState() => _NavigateFeatWidgetState();
 }
 
+final List<Map<String, dynamic>> staticMenuSelection = [
+  {
+    'title': 'Balance',
+    'icon': AppConstants.ic_balance,
+  },
+  {
+    'title': 'Reputation',
+    'icon': AppConstants.ic_reputation,
+  },
+  {
+    'title': 'Business',
+    'icon': AppConstants.ic_business,
+  },
+  {
+    'title': 'More',
+    'icon': AppConstants.ic_more,
+  }
+];
+
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
+  void navigateTo(int index) {
+    switch (index) {
+      default:
+        Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return SliverPadding(
@@ -62,7 +66,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                           surfaceTintColor: Colors.white,
                           shadowColor: Colors.black,
                           child: InkWell(
-                            onTap: staticMenuSelection[index]['onTap'],
+                            onTap: () => navigateTo(index),
                             borderRadius: BorderRadius.circular(12.0),
                             child: Container(
                               width: 60,
@@ -83,6 +87,13 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                         const SizedBox(height: 8.0),
                         Text(
                           staticMenuSelection[index]['title'],
+                          style: Theme.of(context).textTheme.labelMedium!.merge(
+                                TextStyle(
+                                  color: Theme.of(context).textTheme.labelMedium!.color!.withOpacity(0.5),
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: 14,
+                                ),
+                              ),
                         ),
                       ],
                     ),

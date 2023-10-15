@@ -38,7 +38,6 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
   late FocusNode focusNode;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     focusNode = FocusNode();
     _passwordVisible = widget.isPassword;
@@ -46,7 +45,6 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     focusNode.dispose();
   }
@@ -85,11 +83,11 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
             contentPadding: const EdgeInsets.symmetric(vertical: 16),
             hintStyle: textTitle(colors: AppColors.fadeText, size: 14, fontWeight: FontWeight.w400),
             focusedBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
               borderSide: BorderSide(color: AppColors.primary, width: 1.0),
             ),
             enabledBorder: const OutlineInputBorder(
-              borderRadius: BorderRadius.all(Radius.circular(12)),
+              borderRadius: BorderRadius.all(Radius.circular(8)),
               borderSide: BorderSide(color: Colors.black26, width: 1.0),
             ),
           ),

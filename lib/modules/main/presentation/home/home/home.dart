@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
@@ -17,9 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   late ScrollController _scrollController;
   late ScrollController _hotJobScrollController;
   late ScrollController _selectionScrollController;
+
+  int choiceValue = 0;
+
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _selectionScrollController = ScrollController(
       initialScrollOffset: 0.0,
@@ -35,8 +38,6 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    // ignore: unused_local_variable
-    int choiceValue = 0;
 
     void callBackSetChoiceValue(int value) {
       setState(() {
@@ -56,19 +57,21 @@ class _HomeScreenState extends State<HomeScreen> {
               sliver: SliverToBoxAdapter(
                 child: Header(
                   title: Text(
-                    'Huynh Hong Vy',
+                    'Trần Văn Hoài',
                     style: themeData.textTheme.displayLarge!.merge(TextStyle(
                       color: themeData.colorScheme.onBackground,
+                      fontWeight: FontWeight.w400,
                     )),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
                   subtitle: Text(
-                    'vyhhps22919@fpt.edu.vn',
+                    'hoaitvps22068@fpt.edu.vn',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: themeData.textTheme.displayMedium!.merge(TextStyle(
                       color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                      fontWeight: FontWeight.w400,
                     )),
                   ),
                   onTapLeading: () {},
@@ -76,68 +79,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   leadingBadge: true,
                   actions: [
                     InkWell(
-                      onTap: () {},
-                      radius: 99,
-                      borderRadius: BorderRadius.circular(99),
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(99),
-                          border: Border.all(
-                            color: themeData.colorScheme.onBackground,
-                            width: 1,
-                            style: BorderStyle.solid,
-                          ),
-                        ),
+                      onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+                      child: SvgPicture.asset(
+                        AppConstants.ic_notification,
                         width: 28,
                         height: 28,
-                        padding: const EdgeInsets.all(6.0),
-                        child: SvgPicture.asset(
-                          AppConstants.ic_search,
-                          width: 16,
-                          height: 16,
-                          color: themeData.colorScheme.onBackground,
+                        colorFilter: ColorFilter.mode(
+                          themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                          BlendMode.srcIn,
                         ),
-                      ),
-                    ),
-                    const SizedBox(width: 8.0),
-                    InkWell(
-                      onTap: () {},
-                      radius: 99,
-                      borderRadius: BorderRadius.circular(99),
-                      child: Stack(
-                        children: [
-                          Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(99),
-                              border: Border.all(
-                                color: themeData.colorScheme.onBackground,
-                                width: 1,
-                                style: BorderStyle.solid,
-                              ),
-                            ),
-                            width: 28,
-                            height: 28,
-                            padding: const EdgeInsets.all(6.0),
-                            child: SvgPicture.asset(
-                              AppConstants.ic_notification,
-                              width: 16,
-                              height: 16,
-                              color: themeData.colorScheme.onBackground,
-                            ),
-                          ),
-                          Positioned(
-                            right: 0,
-                            top: 0,
-                            child: Container(
-                              width: 8,
-                              height: 8,
-                              decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(99),
-                              ),
-                            ),
-                          )
-                        ],
                       ),
                     ),
                   ],
@@ -151,7 +101,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'Hot Job',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.colorScheme.onBackground,
+                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                    fontWeight: FontWeight.w400,
                   )),
                 ),
               ),
@@ -163,7 +114,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Text(
                   'Recent Job',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.colorScheme.onBackground,
+                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                    fontWeight: FontWeight.w400,
                   )),
                 ),
               ),

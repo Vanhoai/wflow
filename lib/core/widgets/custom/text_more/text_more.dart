@@ -18,7 +18,7 @@ class TextMore extends StatefulWidget {
     this.trimExpandedText = 'show less',
     this.trimCollapsedText = 'read more',
     this.colorClickableText,
-    this.trimLength = 240,
+    this.trimLength = 150,
     this.trimLines = 2,
     this.trimHiddenMaxLines = 2,
     this.trimMode = TrimMode.Length,

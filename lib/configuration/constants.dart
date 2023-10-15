@@ -2,11 +2,11 @@
 
 class AppConstants {
   // path for icon
-  static const String bottomIconPath = "assets/icons/bottom/";
-  static const String bottomHome = "${bottomIconPath}ic.home.svg";
-  static const String bottomWork = "${bottomIconPath}ic.work.svg";
-  static const String bottomMessage = "${bottomIconPath}ic.message.svg";
-  static const String bottomExtended = "${bottomIconPath}ic.extended.svg";
+  static const String bottomIconPath = 'assets/icons/bottom/';
+  static const String bottomHome = '${bottomIconPath}ic.home.svg';
+  static const String bottomWork = '${bottomIconPath}ic.work.svg';
+  static const String bottomMessage = '${bottomIconPath}ic.message.svg';
+  static const String bottomExtended = '${bottomIconPath}ic.extended.svg';
   //path for common icon
   static const String commonIconPath = "assets/icons/common/";
   static const String app = "${commonIconPath}ic.app.svg";
@@ -35,13 +35,16 @@ class AppConstants {
   static const String remove = "${commonIconPath}ic.remove.svg";
   static const String danger = "${commonIconPath}ic.danger.svg";
   static const String warning = "${commonIconPath}ic.warning.svg";
+  static const String bookmark = '${commonIconPath}ic.bookmark.svg';
+  static const String add = '${commonIconPath}ic.add.svg';
+
   // path for introduction svg
-  static const String introductionPath = "assets/icons/introduction/";
-  static const String introductionIntern = "${introductionPath}plash.intern.svg";
-  static const String introductionCv = "${introductionPath}plash.cv.svg";
-  static const String introductionJob = "${introductionPath}plash.job.svg";
-  static const String introductionCash = "${introductionPath}plash.cash.svg";
-  static const String introductionTask = "${introductionPath}plash.task.svg";
+  static const String introductionPath = 'assets/icons/introduction/';
+  static const String introductionIntern = '${introductionPath}plash.intern.svg';
+  static const String introductionCv = '${introductionPath}plash.cv.svg';
+  static const String introductionJob = '${introductionPath}plash.job.svg';
+  static const String introductionCash = '${introductionPath}plash.cash.svg';
+  static const String introductionTask = '${introductionPath}plash.task.svg';
 
   static const String ic_balance = 'assets/icons/balance.svg';
   static const String ic_reputation = 'assets/icons/reputation.svg';
@@ -67,5 +70,4 @@ class AppConstants {
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
   static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';
   static const String keyPasswordSignInWithBiometric = '$keySecureStorage@PASSWORD_SIGN_IN_WITH_BIOMETRIC';
-
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 
 class InformationWidget extends StatefulWidget {
   const InformationWidget({super.key, required this.morePressed});
@@ -128,7 +129,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: InkWell(
-                          onTap: () {},
+                          onTap: () => Navigator.of(context).pushNamed(RouteKeys.securityScreen),
                           borderRadius: BorderRadius.circular(8),
                           child: Center(
                             child: Text(

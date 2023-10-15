@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/colors.dart';
 
 final List<Map<String, dynamic>> staticRecentTitle = [
   {'title': 'All'},
@@ -26,7 +27,6 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController = widget.scrollController;
     onSelected = widget.onSelected;
@@ -34,7 +34,6 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _scrollController.dispose();
     setState(() {
@@ -56,8 +55,11 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
           itemBuilder: (context, index) {
             final e = staticRecentTitle[index];
             return SizedBox(
-              height: 28,
+              height: 32,
               child: ChoiceChip.elevated(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(6),
+                ),
                 label: Text(e['title']),
                 selected: _choiceValue == staticRecentTitle.indexOf(e),
                 onSelected: (value) {
@@ -67,25 +69,24 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
                   });
                 },
                 showCheckmark: false,
-                labelPadding: EdgeInsets.zero,
-                // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                 visualDensity: VisualDensity.compact,
-                labelStyle: themeData.textTheme.displaySmall!.copyWith(
+                labelStyle: themeData.textTheme.labelMedium!.copyWith(
                   color:
                       _choiceValue == staticRecentTitle.indexOf(e) ? Colors.white : themeData.colorScheme.onBackground,
                 ),
                 color: _choiceValue == staticRecentTitle.indexOf(e)
-                    ? MaterialStatePropertyAll(Colors.blue.withOpacity(0.5))
+                    ? const MaterialStatePropertyAll(AppColors.primary)
                     : MaterialStatePropertyAll(themeData.colorScheme.background),
                 elevation: 2,
               ),
             );
           },
           itemCount: staticRecentTitle.length,
-          physics: const AlwaysScrollableScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           scrollDirection: Axis.horizontal,
           shrinkWrap: true,
-          padding: const EdgeInsets.only(left: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 20),
         ),
       ),
     );

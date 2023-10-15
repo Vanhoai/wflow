@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 const String _kProgress = '\u2022';
 
 const List<String> staticTitle = [
-  'Duration',
+  '# Duration',
   'No information',
-  'Description',
-  'Skill',
-  'Poster',
-  'Progress',
+  '# Description',
+  '# Skills',
+  '# Poster',
+  '# Progress',
 ];
 
 class JobCard extends StatefulWidget {
@@ -78,16 +80,24 @@ class _JobCardState extends State<JobCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const Icon(
-              Icons.check_box,
-              color: Colors.green,
-              size: 14,
+            SvgPicture.asset(
+              AppConstants.checkFill,
+              height: 16,
+              width: 16,
+              colorFilter: const ColorFilter.mode(
+                Colors.greenAccent,
+                BlendMode.srcIn,
+              ),
             ),
+            const SizedBox(width: 8),
             Text(
               'Payment variable',
-              style: Theme.of(context).textTheme.displaySmall!.merge(const TextStyle(
-                    color: Colors.green,
-                  )),
+              style: Theme.of(context).textTheme.displaySmall!.merge(
+                    TextStyle(
+                      color: Colors.greenAccent[800],
+                      fontSize: 14,
+                    ),
+                  ),
               textAlign: TextAlign.start,
               maxLines: 1,
             ),
@@ -96,9 +106,12 @@ class _JobCardState extends State<JobCard> {
         Text(
           'Update 2 seconds ago',
           textAlign: TextAlign.end,
-          style: Theme.of(context).textTheme.displaySmall!.merge(TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              )),
+          style: Theme.of(context).textTheme.displaySmall!.merge(
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                  fontSize: 14,
+                ),
+              ),
           maxLines: 1,
         ),
       ],
@@ -152,21 +165,24 @@ class _JobCardState extends State<JobCard> {
                       ),
                       Text(
                         widget.duration,
-                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground,
-                        )),
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(
+                            color: themeData.colorScheme.onBackground,
+                          ),
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ],
                   ),
+                  const SizedBox(height: 4),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Expanded(
                         child: Text(
                           staticTitle[1],
-                          style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
                             color: themeData.colorScheme.onBackground,
                           )),
                           maxLines: 1,
@@ -175,9 +191,11 @@ class _JobCardState extends State<JobCard> {
                       ),
                       Text(
                         widget.cost,
-                        style: themeData.textTheme.displaySmall!.merge(TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                        )),
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(
+                            color: Theme.of(context).colorScheme.onBackground,
+                          ),
+                        ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       ),
@@ -193,19 +211,28 @@ class _JobCardState extends State<JobCard> {
                 textDirection: TextDirection.ltr,
                 verticalDirection: VerticalDirection.down,
                 children: [
-                  Text(staticTitle[2],
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                  Text(
+                    staticTitle[2],
+                    style: themeData.textTheme.displayMedium!.merge(
+                      TextStyle(
                         color: themeData.colorScheme.onBackground,
-                      ))),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
                   widget.description,
                 ],
               ),
               widget.labelSkill ? kSpaceVertical(context) : const SizedBox(),
               widget.labelSkill
-                  ? Text(staticTitle[3],
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                        color: themeData.colorScheme.onBackground,
-                      )))
+                  ? Text(
+                      staticTitle[3],
+                      style: themeData.textTheme.displayMedium!.merge(
+                        TextStyle(
+                          color: themeData.colorScheme.onBackground,
+                        ),
+                      ),
+                    )
                   : const SizedBox(),
               kSpaceVertical(context),
               Builder(
@@ -231,15 +258,16 @@ class _JobCardState extends State<JobCard> {
                               width: 0.5,
                             ),
                           ),
-                          width: 54,
-                          height: 20,
+                          width: 72,
+                          height: 32,
                           child: Center(
                             child: Text(
                               e,
-                              style: themeData.textTheme.displaySmall!.merge(TextStyle(
-                                color: Theme.of(context).colorScheme.onBackground,
-                                fontSize: 10,
-                              )),
+                              style: themeData.textTheme.displaySmall!.merge(
+                                TextStyle(
+                                  color: Theme.of(context).colorScheme.onBackground,
+                                ),
+                              ),
                               textAlign: TextAlign.center,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
@@ -263,10 +291,14 @@ class _JobCardState extends State<JobCard> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(staticTitle[4],
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            Text(
+                              staticTitle[4],
+                              style: themeData.textTheme.displayMedium!.merge(
+                                TextStyle(
                                   color: themeData.colorScheme.onBackground,
-                                ))),
+                                ),
+                              ),
+                            ),
                             kSpaceVertical(context),
                             Text(widget.poster,
                                 style: themeData.textTheme.displaySmall!.merge(TextStyle(
@@ -280,10 +312,14 @@ class _JobCardState extends State<JobCard> {
                                 minimumSize: MaterialStateProperty.all(Size.zero),
                                 tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                               ),
-                              child: Text('Connect',
-                                  style: themeData.textTheme.displaySmall!.merge(const TextStyle(
+                              child: Text(
+                                'Connect',
+                                style: themeData.textTheme.displaySmall!.merge(
+                                  const TextStyle(
                                     color: Colors.green,
-                                  ))),
+                                  ),
+                                ),
+                              ),
                             ),
                           ],
                         ),
@@ -305,16 +341,24 @@ class _JobCardState extends State<JobCard> {
                               itemBuilder: (BuildContext context, int index) {
                                 return Row(
                                   children: [
-                                    Text(_kProgress,
-                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                    Text(
+                                      _kProgress,
+                                      style: themeData.textTheme.displayMedium!.merge(
+                                        TextStyle(
                                           color: themeData.colorScheme.onBackground,
-                                        ))),
+                                        ),
+                                      ),
+                                    ),
                                     kSpaceVertical(context),
                                     Expanded(
-                                      child: Text(widget.progress[index],
-                                          style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                                      child: Text(
+                                        widget.progress[index],
+                                        style: themeData.textTheme.displaySmall!.merge(
+                                          TextStyle(
                                             color: themeData.colorScheme.onBackground,
-                                          ))),
+                                          ),
+                                        ),
+                                      ),
                                     ),
                                   ],
                                 );

@@ -51,7 +51,12 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
     if (value.isEmpty) {
       result = users;
     } else {
-      result = users.where((user) => user['name'].toString().toLowerCase().contains(value.toLowerCase())).toList();
+      result = users
+          .where((user) => user['name']
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
     }
 
     setState(() {
@@ -88,6 +93,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
             ),
             Expanded(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: foundUsers.length,
                 itemBuilder: (context, index) {
                   return AddBusinessCard(

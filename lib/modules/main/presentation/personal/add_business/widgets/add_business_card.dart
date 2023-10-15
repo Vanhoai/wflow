@@ -92,7 +92,7 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
         border: Border.all(
           width: ((MediaQuery.sizeOf(context).width) / 100) * 0.51,
           style: BorderStyle.solid,
-          color: widget.isCheck ? AppColors.primary : Colors.transparent,
+          color: widget.isCheck ? AppColors.primary : const Color(0XFFD9D9D9),
         ),
         borderRadius: BorderRadius.circular(AppSize.borderSmall),
       ),
@@ -105,7 +105,7 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
           side: const BorderSide(
             color: Colors.transparent,
           ),
-          fillColor: MaterialStatePropertyAll(widget.isCheck ? Colors.white : const Color(0XFFD9D9D9)),
+          fillColor: const MaterialStatePropertyAll(Colors.white),
         ),
       ),
     );

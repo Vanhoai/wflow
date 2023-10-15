@@ -81,6 +81,30 @@ final List categories = [
         'title': 'Contract notification',
         'content': 'You just sent contract from business',
       },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
+      {
+        'title': 'Contract notification',
+        'content': 'You just sent contract from business',
+      },
     ]
   },
   {'category': 'One More', 'notifications': []},

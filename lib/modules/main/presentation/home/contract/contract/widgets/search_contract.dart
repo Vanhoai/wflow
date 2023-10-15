@@ -43,7 +43,7 @@ class _SearchContractState extends State<SearchContract> {
       height: 50,
       child: TextField(
         controller: widget.controller,
-        onChanged: (value) => widget.onChangedSearch(value),
+        onChanged: widget.onChangedSearch,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: const TextStyle(
@@ -95,7 +95,7 @@ class _SearchContractState extends State<SearchContract> {
               height: 0,
             )
           : InkWell(
-              onTap: () => widget.onClearSearch(),
+              onTap: widget.onClearSearch,
               child: Container(
                 width: 20,
                 height: 20,

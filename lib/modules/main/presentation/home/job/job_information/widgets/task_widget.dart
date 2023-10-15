@@ -21,7 +21,6 @@ class TaskWidget extends StatelessWidget {
               fontSize: 18,
             )),
           ),
-          const SizedBox(height: 13.0),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
@@ -29,16 +28,25 @@ class TaskWidget extends StatelessWidget {
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 children: [
-                  Text('$_kProgress \t\t',
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                  Text(
+                    '$_kProgress \t\t',
+                    style: themeData.textTheme.displayMedium!.merge(
+                      TextStyle(
                         color: themeData.colorScheme.onBackground,
-                      ))),
+                      ),
+                    ),
+                  ),
                   Expanded(
-                      child: Text(index.toString(),
-                          style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                            fontSize: 18,
-                          )))),
+                    child: Text(
+                      'Config entity for study english website',
+                      style: themeData.textTheme.displayLarge!.merge(
+                        TextStyle(
+                          color: Theme.of(context).colorScheme.onBackground,
+                          fontSize: 18,
+                        ),
+                      ),
+                    ),
+                  ),
                 ],
               );
             },

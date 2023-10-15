@@ -20,19 +20,6 @@ class RequireSkill extends StatefulWidget {
 }
 
 class _RequireSkillState extends State<RequireSkill> {
-  int _choiceValue = 0;
-
-  late ScrollController _scrollController;
-  late void Function(int) onSelected;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    _scrollController = widget.scrollController;
-    onSelected = widget.onSelected;
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -52,45 +39,33 @@ class _RequireSkillState extends State<RequireSkill> {
               )),
             ),
           ),
-          const SizedBox(height: 13.0),
+          const SizedBox(height: 12.0),
           ConstrainedBox(
             constraints: const BoxConstraints(
-              maxHeight: 42,
+              maxHeight: 50,
             ),
             child: ListView.separated(
-              controller: _scrollController,
               separatorBuilder: (context, index) => const SizedBox(width: 8.0),
               itemBuilder: (context, index) {
                 final e = staticRequireSkill[index];
                 return SizedBox(
                   height: 28,
                   child: ChoiceChip.elevated(
-                    label: Text(e['title']),
-                    selected: _choiceValue == staticRequireSkill.indexOf(e),
-                    onSelected: (value) {
-                      setState(() {
-                        _choiceValue = staticRequireSkill.indexOf(e);
-                        onSelected(_choiceValue);
-                      });
-                    },
+                    label: Text(e['title'], style: themeData.textTheme.displayMedium),
+                    selected: false,
                     showCheckmark: false,
-                    labelPadding: EdgeInsets.zero,
-                    // padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 8),
+                    labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                     visualDensity: VisualDensity.compact,
                     labelStyle: themeData.textTheme.displayLarge!.copyWith(
-                      color: _choiceValue == staticRequireSkill.indexOf(e)
-                          ? Colors.white
-                          : themeData.colorScheme.onBackground,
+                      color: themeData.colorScheme.onBackground,
                     ),
-                    color: _choiceValue == staticRequireSkill.indexOf(e)
-                        ? const MaterialStatePropertyAll(Colors.blue)
-                        : MaterialStatePropertyAll(themeData.colorScheme.background),
-                    elevation: 2,
+                    color: MaterialStatePropertyAll(themeData.colorScheme.background),
+                    elevation: 3,
                   ),
                 );
               },
               itemCount: staticRequireSkill.length,
-              physics: const AlwaysScrollableScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,
               padding: const EdgeInsets.only(left: 20.0, right: 20.0),

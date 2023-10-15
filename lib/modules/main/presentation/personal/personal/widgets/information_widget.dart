@@ -30,7 +30,7 @@ class _InformationWidgetState extends State<InformationWidget> {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 8),
             Text(
               'hoaitvps22068@fpt.edu.vn',
               style: themeData.textTheme.displayMedium!.merge(TextStyle(
@@ -43,9 +43,12 @@ class _InformationWidgetState extends State<InformationWidget> {
             Text(
               'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it ',
               textAlign: TextAlign.center,
-              style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                color: Theme.of(context).colorScheme.onBackground,
-              )),
+              maxLines: 3,
+              style: themeData.textTheme.displayMedium!.merge(
+                TextStyle(
+                  color: Theme.of(context).colorScheme.onBackground,
+                ),
+              ),
             ),
             const SizedBox(height: 30),
             IntrinsicHeight(
@@ -75,7 +78,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                     ],
                   ),
                   const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 32),
                     child: VerticalDivider(
                       color: Colors.grey,
                       thickness: 1,
@@ -111,11 +114,12 @@ class _InformationWidgetState extends State<InformationWidget> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.max,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Material(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: Material(
                       color: themeData.colorScheme.background,
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
@@ -123,7 +127,6 @@ class _InformationWidgetState extends State<InformationWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Container(
-                        width: 80,
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -134,7 +137,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           child: Center(
                             child: Text(
                               'Security',
-                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                 color: Theme.of(context).colorScheme.onBackground,
                               )),
                             ),
@@ -142,7 +145,10 @@ class _InformationWidgetState extends State<InformationWidget> {
                         ),
                       ),
                     ),
-                    Material(
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Material(
                       color: themeData.colorScheme.background,
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
@@ -150,7 +156,6 @@ class _InformationWidgetState extends State<InformationWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Container(
-                        width: 80,
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -169,7 +174,10 @@ class _InformationWidgetState extends State<InformationWidget> {
                         ),
                       ),
                     ),
-                    Material(
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Material(
                       color: themeData.colorScheme.background,
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
@@ -177,7 +185,6 @@ class _InformationWidgetState extends State<InformationWidget> {
                         borderRadius: BorderRadius.circular(8.0),
                       ),
                       child: Container(
-                        width: 80,
                         height: 40,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
@@ -188,7 +195,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           child: Center(
                             child: Text(
                               'More',
-                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                 color: Theme.of(context).colorScheme.onBackground,
                               )),
                             ),
@@ -196,7 +203,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                         ),
                       ),
                     ),
-                  ]),
+                  )
+                ],
+              ),
             ),
           ],
         ),

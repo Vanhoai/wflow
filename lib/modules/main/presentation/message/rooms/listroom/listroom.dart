@@ -19,55 +19,12 @@ class Room {
 
 List<Room> Data = [
   Room(
-      image: "https://thanhlapdoanhnghiepvn.vn/wp-content/uploads/2018/08/c8727ed17ccbc2050a29c97fa9215ae0.jpeg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "KHỐI CÔNG NGHỆ THÔNG TIN - VIETTEL TELECOM",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao? Cái ngành này trong éo ổn lắm cậu nhỉ? Hay là mình lấy vợ giàu",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaâ",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
-  Room(
-      image: "https://upload.wikimedia.org/wikipedia/commons/4/44/210604_%EA%B3%A0%EC%9C%A4%EC%A0%95%282%29.jpg",
-      name: "FPT telecome",
-      lastMessage: "Xin chao?",
-      createAt: DateTime.now().toString()),
+    image:
+        'https://images.pexels.com/photos/18070630/pexels-photo-18070630/free-photo-of-tuy-t-hoang-hon-th-i-trang-b-bi-n.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
+    name: 'Trần Văn Hoài',
+    lastMessage: 'Nay đi chơi không mậy ??',
+    createAt: DateTime.now().toString(),
+  ),
 ];
 
 class ListRoom extends StatefulWidget {
@@ -83,16 +40,18 @@ class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
     return Listener(
-        onPointerDown: (PointerDownEvent event) {
-          FocusManager.instance.primaryFocus?.unfocus();
-          if (!context.read<HeaderRoomsBloc>().state.showSearch) return;
-          context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
+      onPointerDown: (PointerDownEvent event) {
+        FocusManager.instance.primaryFocus?.unfocus();
+        if (!context.read<HeaderRoomsBloc>().state.showSearch) return;
+        context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
+      },
+      child: ListView.builder(
+        itemCount: Data.length,
+        itemBuilder: (context, index) {
+          return _room(Data[index]);
         },
-        child: ListView.builder(
-            itemCount: Data.length,
-            itemBuilder: (context, index) {
-              return _room(Data[index]);
-            }));
+      ),
+    );
   }
 
   Widget _room(Room room) {

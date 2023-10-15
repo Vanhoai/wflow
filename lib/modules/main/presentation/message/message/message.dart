@@ -1,6 +1,5 @@
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
@@ -149,10 +148,12 @@ class _MessageScreenState extends State<MessageScreen> {
                                 width: 12,
                               ),
                               CircleAvatar(
-                                  backgroundColor: Colors.brown.shade800,
-                                  radius: 15,
-                                  backgroundImage: const NetworkImage(
-                                      'https://flutter.github.io/assets-for-api-docs/assets/widgets/owl.jpg')),
+                                backgroundColor: Colors.brown.shade800,
+                                radius: 15,
+                                backgroundImage: const NetworkImage(
+                                  'https://images.pexels.com/photos/18070630/pexels-photo-18070630/free-photo-of-tuy-t-hoang-hon-th-i-trang-b-bi-n.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
+                                ),
+                              ),
                               const SizedBox(
                                 width: 8,
                               ),
@@ -231,9 +232,7 @@ class _MessageScreenState extends State<MessageScreen> {
                     ),
                   ),
                 ),
-                const Expanded(
-                  child: MainChat(),
-                ),
+                const Expanded(child: MainChat()),
                 const BoxChat(),
               ],
             ),

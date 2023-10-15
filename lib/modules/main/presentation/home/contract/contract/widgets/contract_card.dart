@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/size.dart';
 
 class ContractCard extends StatefulWidget {
@@ -23,7 +24,7 @@ class _ContractCardState extends State<ContractCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {},
+      onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen),
       child: Ink(
         padding: const EdgeInsets.only(
           left: AppSize.paddingScreenDefault,
@@ -52,7 +53,7 @@ class _ContractCardState extends State<ContractCard> {
   }
 
   Widget _buildAvatar() {
-    return Container(
+    return SizedBox(
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: CircleAvatar(

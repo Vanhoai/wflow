@@ -18,7 +18,7 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
   }
 
   FutureOr<void> videoCallConnect(VideoCallConnectEvent event, Emitter<VideoCallState> emit) async {
-    client.connect(token_teo);
+    client.connect(token_huy);
     await emit.forEach(client.eventStreamController.stream, onData: (event) {
       Map<dynamic, dynamic> map = event;
       switch (map['eventType']) {

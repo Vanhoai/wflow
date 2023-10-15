@@ -20,6 +20,7 @@ import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
+
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
 
@@ -41,7 +42,6 @@ class _BottomNavigationState extends State<BottomNavigation> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     requestPermissions();
     instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
@@ -67,6 +67,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
             currentIndex: currentIndex,
             showUnselectedLabels: false,
             showSelectedLabels: false,
+            type: BottomNavigationBarType.fixed,
             iconSize: 24,
             onTap: (value) => setState(() => currentIndex = value),
             items: [
@@ -110,14 +111,13 @@ class _BottomNavigationState extends State<BottomNavigation> {
   void call(StringeeCall2 call) {
     ArgumentsCall argumentsCall = ArgumentsCall(
         client: instance.get<StringeeClient>(),
-        toUserId:  call.to! ,
+        toUserId: call.to!,
         fromUserId: call.from!,
         callType: StringeeObjectEventType.call2,
         showIncomingUi: true,
         isVideoCall: call.isVideoCall,
         stringeeCall2: call);
-    Navigator.of(context)
-        .pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
+    Navigator.of(context).pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
   }
 
   FutureOr<void> requestPermissions() async {

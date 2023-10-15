@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/create_account/create_account.dart';
@@ -40,7 +41,16 @@ class AppRoutes {
       case RouteKeys.messageScreen:
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
-        return MaterialPageRoute(builder: (_) => const PhotoScreen());
+        final args = settings.arguments as bool;
+        return MaterialPageRoute(
+            builder: (_) => PhotoScreen(
+                  multiple: args,
+                ));
+      case RouteKeys.callScreen:
+        final args = settings.arguments as ArgumentsCall;
+        return MaterialPageRoute(
+          builder: (_) => CallScreen(argumentsCall: args),
+        );
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
@@ -67,9 +77,9 @@ class AppRoutes {
       case RouteKeys.securityScreen:
         return MaterialPageRoute(builder: (_) => const SecurityScreen());
       case RouteKeys.auStepOneScreen:
-        return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
+        return MaterialPageRoute(builder: (_) => const AuthStepOneScreen());
       case RouteKeys.auStepTwoScreen:
-        return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
+        return MaterialPageRoute(builder: (_) => const AuthStepTwoScreen());
       case RouteKeys.auStepThreeScreen:
         return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
       case RouteKeys.notificationScreen:

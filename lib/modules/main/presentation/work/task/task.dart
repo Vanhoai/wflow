@@ -21,64 +21,52 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-  PersistentBottomSheetController? sheetController;
-  final ScrollController controller = ScrollController();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    sheetController = null;
   }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        key: scaffoldKey,
         appBar: const Header(text: 'Tasks'),
-        body: Listener(
-          onPointerDown: (event) {
-            if (sheetController != null) {
-              sheetController?.close();
-            }
-          },
-          child: BlocProvider(
-            lazy: true,
-            create: (context) => TaskBloc(),
-            child: BlocBuilder<TaskBloc, TaskState>(
-              buildWhen: (previous, current) => true,
-              builder: (context, state) {
-                return Container(
-                  padding:
-                      const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                  child: Stack(
-                    children: [
-                      Container(
-                        width: 1,
-                        margin: const EdgeInsets.only(left: 11, bottom: 48),
-                        color: AppColors.borderColor.withAlpha(80),
-                      ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: state.listTask.length,
-                        itemBuilder: (context, index) {
-                          return _task(state.listTask[index]);
-                        },
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
+        body: BlocProvider(
+          lazy: true,
+          create: (context) => TaskBloc(),
+          child: BlocBuilder<TaskBloc, TaskState>(
+            buildWhen: (previous, current) => true,
+            builder: (context, state) {
+              return Container(
+                padding:
+                    const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                child: Stack(
+                  children: [
+                    Container(
+                      width: 1,
+                      margin: const EdgeInsets.only(left: 11, bottom: 48),
+                      color: AppColors.borderColor.withAlpha(80),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: state.listTask.length,
+                      itemBuilder: (context, index) {
+                        return _task(state.listTask[index], context);
+                      },
+                    ),
+                  ],
+                ),
+              );
+            },
           ),
         ),
       ),
     );
   }
 
-  Widget _task(Task task) {
+  Widget _task(Task task, BuildContext context) {
     return Column(
       children: [
         Row(
@@ -93,8 +81,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 children: [
                   InkWell(
                     onTap: () {
-                      sheetController = scaffoldKey.currentState!
-                          .showBottomSheet((context) => _showDetail(task));
+                      _showDetail(task,context);
                     },
                     borderRadius: BorderRadius.circular(8),
                     child: Container(
@@ -180,77 +167,80 @@ class _TaskScreenState extends State<TaskScreen> {
         return Colors.white;
     }
   }
-
-  Widget _showDetail(Task task) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-      decoration: const BoxDecoration(
-        borderRadius: BorderRadius.only(
-            topRight: Radius.circular(20), topLeft: Radius.circular(20)),
-      ),
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Container(
-              margin: const EdgeInsets.only(bottom: 3),
-              child: Text(
-                "Nhiệm vụ: ",
-                style: textTitle(
-                    size: 14,
-                    fontWeight: FontWeight.w400,
-                    colors: AppColors.fadeText),
-              )),
-          Text(
-            task.title,
-            style: textTitle(size: 14, fontWeight: FontWeight.w500),
-          ),
-          Container(
-              margin: const EdgeInsets.only(top: 8, bottom: 3),
-              child: Text(
-                "Mô tả: ",
-                style: textTitle(
-                    size: 14,
-                    fontWeight: FontWeight.w400,
-                    colors: AppColors.fadeText),
-              )),
-          SizedBox(
-            height: 160,
-            child: Scrollbar(
-              thumbVisibility: true,
-              controller: controller,
-              radius: const Radius.circular(16),
-              child: Padding(
-                padding: const EdgeInsets.only(right: 5),
-                child: SingleChildScrollView(
-                  controller: controller,
-                  physics: const ScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  child: Text(
-                    task.content,
-                    style: textTitle(size: 14, fontWeight: FontWeight.w500),
+  _showDetail (Task task, BuildContext context)
+  {
+    final ScrollController controller = ScrollController();
+    return showModalBottomSheet(context: context,builder: (context) {
+      return Container(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+              topRight: Radius.circular(20), topLeft: Radius.circular(20)),
+        ),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+                margin: const EdgeInsets.only(bottom: 3),
+                child: Text(
+                  "Nhiệm vụ: ",
+                  style: textTitle(
+                      size: 14,
+                      fontWeight: FontWeight.w400,
+                      colors: AppColors.fadeText),
+                )),
+            Text(
+              task.title,
+              style: textTitle(size: 16, fontWeight: FontWeight.w500),
+            ),
+            Container(
+                margin: const EdgeInsets.only(top: 8, bottom: 3),
+                child: Text(
+                  "Mô tả: ",
+                  style: textTitle(
+                      size: 14,
+                      fontWeight: FontWeight.w400,
+                      colors: AppColors.fadeText),
+                )),
+            SizedBox(
+              height: 160,
+              child: Scrollbar(
+                thumbVisibility: true,
+                controller: controller,
+                radius: const Radius.circular(16),
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 5),
+                  child: SingleChildScrollView(
+                    controller: controller,
+                    physics: const ScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    child: Text(
+                      task.content,
+                      style: textTitle(size: 16, fontWeight: FontWeight.w500),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-          Container(
-            alignment: Alignment.centerRight,
-            margin: EdgeInsets.only(top: 10),
-            child: Text(
-              "Deadline: ${instance.get<Time>().getDayMonthYear(task.end)}",
-              style: textTitle(
-                  size: 14,
-                  fontWeight: FontWeight.w500,
-                  colors: task.status == "DONE" ?AppColors.greenColor : AppColors.redColor
+            Container(
+              alignment: Alignment.centerRight,
+              margin: const EdgeInsets.only(top: 10),
+              child: Text(
+                'Deadline: ${instance.get<Time>().getDayMonthYear(task.end)}',
+                style: textTitle(
+                    size: 14,
+                    fontWeight: FontWeight.w500,
+                    colors: task.status == "DONE" ?AppColors.greenColor : AppColors.redColor
+                ),
               ),
             ),
-          ),
-          _buttonStatus(task.status),
-        ],
-      ),
-    );
+            _buttonStatus(task.status),
+          ],
+        ),
+      );
+    },);
   }
 
   Widget _buttonStatus(String status) {

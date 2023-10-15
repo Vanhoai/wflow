@@ -36,5 +36,11 @@ class UnSelectPhotoEvent extends PhotoEvent{
   List<Object?> get props => [entity];
 }
 class SendPhotoEvent extends PhotoEvent{
+  final AssetEntity? entity;
 
+  SendPhotoEvent({ this.entity});
+
+
+  @override
+  List<Object?> get props => [entity];
 }

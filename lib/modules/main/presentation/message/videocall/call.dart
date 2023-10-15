@@ -4,9 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/widgets/button/circle_button.dart';
 
-class Call extends StatefulWidget {
+class CallScreen extends StatefulWidget {
   late StringeeClient _client;
   late StringeeCall2? _stringeeCall2;
   late String _toUserId;
@@ -14,36 +15,28 @@ class Call extends StatefulWidget {
   late StringeeObjectEventType _callType;
   bool _showIncomingUi = false;
   bool _isVideoCall = false;
-
-  Call(
-    StringeeClient client,
-    String fromUserId,
-    String toUserId,
-    bool showIncomingUi,
-    bool isVideoCall,
-    StringeeObjectEventType callType, {
-    Key? key,
-    StringeeCall2? stringeeCall2,
-  }) : super(key: key) {
-    _client = client;
-    _fromUserId = fromUserId;
-    _toUserId = toUserId;
-    _showIncomingUi = showIncomingUi;
-    _isVideoCall = isVideoCall;
-    _callType = callType;
-    if (stringeeCall2 != null) {
-      _stringeeCall2 = stringeeCall2;
+  late bool nameShow = false;
+  CallScreen({Key? key,required ArgumentsCall argumentsCall}) : super(key: key) {
+    _client = argumentsCall.client;
+    _fromUserId = argumentsCall.fromUserId;
+    _toUserId = argumentsCall.toUserId;
+    _showIncomingUi = argumentsCall.showIncomingUi;
+    _isVideoCall = argumentsCall.isVideoCall;
+    _callType = argumentsCall.callType;
+    if (argumentsCall.stringeeCall2 != null) {
+      _stringeeCall2 = argumentsCall.stringeeCall2;
     }
+    nameShow = argumentsCall.showIncomingUi;
   }
 
   @override
   State<StatefulWidget> createState() {
     // TODO: implement createState
-    return _CallState();
+    return _CallScreenState();
   }
 }
 
-class _CallState extends State<Call> {
+class _CallScreenState extends State<CallScreen> {
   String status = '';
   bool _isSpeaker = false;
   bool _isMute = false;
@@ -81,7 +74,7 @@ class _CallState extends State<Call> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Text(
-              (widget._showIncomingUi ? widget._fromUserId : widget._toUserId),
+              (widget.nameShow ? widget._fromUserId : widget._toUserId),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 35.0,

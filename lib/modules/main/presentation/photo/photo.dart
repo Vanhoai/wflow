@@ -12,7 +12,8 @@ import 'component/image_item_widget.dart';
 import 'component/send_photo.dart';
 
 class PhotoScreen extends StatefulWidget {
-  const PhotoScreen({Key? key}) : super(key: key);
+  final bool multiple;
+  const PhotoScreen({Key? key, required this.multiple}) : super(key: key);
 
   @override
   _PhotoScreenState createState() => _PhotoScreenState();
@@ -131,7 +132,12 @@ class _PhotoScreenState extends State<PhotoScreen> {
             key: ValueKey<int>(index),
             entity: entity,
             onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailPage(entity: entity)));
+              if(widget.multiple)
+              {
+                Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailPage(entity: entity)));
+              }else {
+                context.read<PhotoBloc>().add(SendPhotoEvent(entity: entity));
+              }
             },
             option: const ThumbnailOption(size: ThumbnailSize.square(200)),
           );
@@ -153,7 +159,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
     return SafeArea(
       child: BlocProvider(
         lazy: true,
-        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: true)),
+        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.multiple)),
         child: Scaffold(
             appBar: const Header(text: 'Chọn ảnh'),
             body: Column(

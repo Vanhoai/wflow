@@ -13,6 +13,8 @@ class SendPhoto extends StatelessWidget {
       listener: (context, state) {
         if (state is SendMultiplePhotoState) {
           Navigator.of(context).pop(state.photoFile);
+        }else {
+          Navigator.of(context).pop((state as SendSinglePhotoState).file);
         }
       },
       listenWhen: (previous, current) => current is SendMultiplePhotoState || current is SendSinglePhotoState,

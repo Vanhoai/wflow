@@ -53,6 +53,9 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
         }
       }
       emit(SendMultiplePhotoState(photoFile: photos));
+    }else {
+      File? file = await event.entity?.file;
+      emit(SendSinglePhotoState(file: file!));
     }
   }
 }

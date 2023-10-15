@@ -10,6 +10,7 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/modules/main/presentation/home/home/home.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -83,8 +84,8 @@ class _AppState extends State<App> {
                     darkTheme: themeDataDark,
                     themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: RouteKeys.introScreen,
-                    home: const IntroScreen(),
+                    initialRoute: instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
+                    home: const HomeScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

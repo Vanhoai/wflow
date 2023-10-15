@@ -8,6 +8,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/keyboard/emoji.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/modules/main/presentation/camera/camera.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
@@ -70,7 +71,8 @@ class _BoxChatState extends State<BoxChat> {
                         fontWeight: FontWeight.w400,
                       ),
                       minLines: 1,
-                      maxLines: 5, // and this
+                      maxLines: 5,
+                      // and this
                       controller: _controller,
                       focusNode: _focusNode,
                       onTap: () {
@@ -80,7 +82,8 @@ class _BoxChatState extends State<BoxChat> {
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
-                            padding: const EdgeInsets.only(bottom: 5, top: 5, right: 5, left: 5),
+                            padding: const EdgeInsets.only(
+                                bottom: 5, top: 5, right: 5, left: 5),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
@@ -117,7 +120,13 @@ class _BoxChatState extends State<BoxChat> {
                               margin: const EdgeInsets.only(right: 10),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(50),
-                                onTap: () {},
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) {
+                                      return const Camera();
+                                    },
+                                  ));
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.all(4),
                                   child: SvgPicture.asset(
@@ -132,14 +141,19 @@ class _BoxChatState extends State<BoxChat> {
                         ),
                         hintText: 'Nhắn tin',
                         contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                        hintStyle: textTitle(colors: AppColors.fadeText, size: 14, fontWeight: FontWeight.w500),
+                        hintStyle: textTitle(
+                            colors: AppColors.fadeText,
+                            size: 14,
+                            fontWeight: FontWeight.w500),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide: BorderSide(color: AppColors.primary, width: 1.2),
+                          borderSide:
+                              BorderSide(color: AppColors.primary, width: 1.2),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide: BorderSide(color: Colors.black26, width: 1.2),
+                          borderSide:
+                              BorderSide(color: Colors.black26, width: 1.2),
                         ),
                       ),
                     ),
@@ -160,20 +174,24 @@ class _BoxChatState extends State<BoxChat> {
                               type: 'text',
                             ));
                         _controller.clear();
-                        if (!state.isShowEmojiKeyboard && !state.isShowVoiceRecord) {
+                        if (!state.isShowEmojiKeyboard &&
+                            !state.isShowVoiceRecord) {
                           _focusNode.requestFocus();
                         }
                       }
                     },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
-                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: AppColors.primary),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(50),
+                          color: AppColors.primary),
                       padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(
                         state.isSend ? AppConstants.send : AppConstants.mic,
                         height: 20,
                         width: 20,
-                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(
+                            Colors.white, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -219,14 +237,27 @@ class _BoxChatState extends State<BoxChat> {
   }
 
   _sendMessage(BuildContext context, Message message) {
-    BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
+    BlocProvider.of<MainChatBloc>(context)
+        .add(SendMessageEvent(message: message));
   }
 
   Future<void> _getImage() async {
-    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen, arguments: true);
-    result as List<File>;
-    if (context.mounted) {
-      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
+    const mul = false;
+    var result = await Navigator.of(context)
+        .pushNamed(RouteKeys.photoScreen, arguments: mul);
+    if (mul) {
+      result as List<File>;
+      if (context.mounted) {
+        BlocProvider.of<MainChatBloc>(context)
+            .add(SendFilesEvent(id: '', type: 'type', files: result));
+      }
+    } else {
+      result as File;
+      List<File> list = [result];
+      if (context.mounted) {
+        BlocProvider.of<MainChatBloc>(context)
+            .add(SendFilesEvent(id: '', type: 'type', files: list));
+      }
     }
   }
 }

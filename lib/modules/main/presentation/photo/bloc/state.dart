@@ -46,5 +46,10 @@ class SendMultiplePhotoState extends PhotoState{
 }
 
 class SendSinglePhotoState extends PhotoState{
+  final File file;
+
+  SendSinglePhotoState({required this.file});
+  List<Object?> get props => [file];
+
 
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/create_account/create_account.dart';
@@ -13,16 +14,16 @@ import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/message/videocall/call.dart';
+import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
-import 'package:wflow/modules/main/presentation/personal/authenticate/austepone/austepone.dart';
-import 'package:wflow/modules/main/presentation/personal/authenticate/austepthree/austepthree.dart';
-import 'package:wflow/modules/main/presentation/personal/authenticate/austeptwo/austeptwo.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
+import 'package:wflow/modules/main/presentation/work/task/task.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 
 class AppRoutes {
@@ -41,7 +42,13 @@ class AppRoutes {
       case RouteKeys.messageScreen:
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
-        return MaterialPageRoute(builder: (_) => const PhotoScreen());
+        final args = settings.arguments as bool;
+        return MaterialPageRoute(builder: (_) => PhotoScreen(multiple: args,));
+      case RouteKeys.callScreen:
+        final args = settings.arguments as ArgumentsCall;
+        return MaterialPageRoute(
+          builder: (_) => CallScreen( argumentsCall: args),
+        );
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
@@ -66,11 +73,13 @@ class AppRoutes {
       case RouteKeys.securityScreen:
         return MaterialPageRoute(builder: (_) => const SecurityScreen());
       case RouteKeys.auStepOneScreen:
-        return MaterialPageRoute(builder: (_) => const AuStepOneScreen());
+        return MaterialPageRoute(builder: (_) => const AuthStepOneScreen());
       case RouteKeys.auStepTwoScreen:
-        return MaterialPageRoute(builder: (_) => const AuStepTwoScreen());
+        return MaterialPageRoute(builder: (_) => const AuthStepTwoScreen());
       case RouteKeys.auStepThreeScreen:
-        return MaterialPageRoute(builder: (_) => const AuStepThreeScreen());
+        return MaterialPageRoute(builder: (_) => const AuthStepThreeScreen());
+      case RouteKeys.taskScreen:
+        return MaterialPageRoute(builder: (_) => const TaskScreen());
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:
@@ -82,7 +91,6 @@ class AppRoutes {
       case RouteKeys.upgradeBusinessScreen:
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
-        return MaterialPageRoute(builder: (_) => const CompanyScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

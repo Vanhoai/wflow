@@ -15,6 +15,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
         text,
         style: textTitle(fontWeight: FontWeight.w400, size: 16),
       ),
+      backgroundColor: Colors.white,
+      surfaceTintColor: Colors.white,
       leading: Padding(
         padding: const EdgeInsets.all(8),
         child: InkWell(
@@ -26,8 +28,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             alignment: Alignment.center,
             child: SvgPicture.asset(
               AppConstants.backArrow,
-              height: 24,
-              width: 24,
+              height: 19,
+              width: 19,
             ),
           ),
         ),

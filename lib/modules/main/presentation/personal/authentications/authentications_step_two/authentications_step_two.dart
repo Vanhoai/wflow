@@ -2,50 +2,38 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
-class AuStepThreeScreen extends StatelessWidget {
-  const AuStepThreeScreen({super.key});
+class AuthStepTwoScreen extends StatelessWidget {
+  const AuthStepTwoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
           appBar: const Header(
-            text: 'Verify account',
+            text: "Verify account",
           ),
           body: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Bước 3/3', style: textTitle(colors: AppColors.primary, fontWeight: FontWeight.w500, size: 12)),
+                  Text('Bước 2/3', style: textTitle(colors: AppColors.primary, fontWeight: FontWeight.w500, size: 12)),
                   Padding(
                       padding: const EdgeInsets.only(top: 27, bottom: 12),
-                      child: Text('Chụp ảnh chân dung', style: textTitle(size: 16, fontWeight: FontWeight.w500))),
-                  RichText(
-                    text: TextSpan(style: const TextStyle(height: 1.4), children: [
-                      TextSpan(
-                          text: 'Ảnh chụp cần phải rõ ràng, không bị chói hoặc mờ và phải',
-                          style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText)),
-                      TextSpan(
-                          text: ' khớp với ảnh trên giấy tờ tùy thân',
-                          style: textTitle(
-                            size: 12,
-                            fontWeight: FontWeight.w500,
-                          ))
-                    ]),
-                  ),
+                      child: Text('Chụp mặt sau giấy tờ tùy thân',
+                          style: textTitle(size: 16, fontWeight: FontWeight.w500))),
                   const SizedBox(
-                    height: 42,
+                    height: 12,
                   ),
                   Container(
                     alignment: Alignment.center,
-                    margin: const EdgeInsets.symmetric(horizontal: 60),
-                    height: 288,
+                    height: 213,
                     decoration: BoxDecoration(color: AppColors.fade, borderRadius: BorderRadius.circular(8)),
                     child: false
                         ? Image(
@@ -58,7 +46,7 @@ class AuStepThreeScreen extends StatelessWidget {
                               ));
                             },
                             fit: BoxFit.cover,
-                            image: FileImage(File('')))
+                            image: FileImage(File("")))
                         : null,
                   ),
                   Container(
@@ -117,7 +105,7 @@ class AuStepThreeScreen extends StatelessWidget {
                     child: InkWell(
                       borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {
-                        print('Lấy hình');
+                        print("Lấy hình");
                       },
                       child: Ink(
                         padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
@@ -157,8 +145,10 @@ class AuStepThreeScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                       animationDuration: const Duration(milliseconds: 300),
                     ),
-                    onPressed: () {},
-                    child: const Text('Xác nhận', style: TextStyle(color: Colors.white, fontSize: 16)),
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(RouteKeys.auStepThreeScreen);
+                    },
+                    child: const Text('Tiếp tục', style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
                   const SizedBox(
                     height: 24,

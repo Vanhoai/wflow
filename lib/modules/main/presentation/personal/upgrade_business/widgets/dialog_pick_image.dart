@@ -19,7 +19,6 @@ class _DialogPickImageState extends State<DialogPickImage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _roundedRectangleBorder =
         RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
     super.initState();

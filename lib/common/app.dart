@@ -9,7 +9,6 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 
 class App extends StatefulWidget {
@@ -82,9 +81,12 @@ class _AppState extends State<App> {
                     title: EnvironmentConfiguration.appHeading,
                     theme: themeData,
                     darkTheme: themeDataDark,
-                    themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                    themeMode:
+                        parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
+                    initialRoute: instance.get<AppBloc>().state.isFirstTime
+                        ? RouteKeys.introScreen
+                        : RouteKeys.signInScreen,
                     home: const HomeScreen(),
                   ),
                   BlocBuilder(

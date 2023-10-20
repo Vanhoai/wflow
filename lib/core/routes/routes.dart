@@ -9,12 +9,11 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
-import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
-import 'package:wflow/modules/main/presentation/message/videocall/call.dart';
+import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
@@ -43,21 +42,26 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
         final args = settings.arguments as bool;
-        return MaterialPageRoute(builder: (_) => PhotoScreen(multiple: args,));
+        return MaterialPageRoute(
+            builder: (_) => PhotoScreen(
+                  multiple: args,
+                ));
       case RouteKeys.callScreen:
         final args = settings.arguments as ArgumentsCall;
         return MaterialPageRoute(
-          builder: (_) => CallScreen( argumentsCall: args),
+          builder: (_) => CallScreen(argumentsCall: args),
         );
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => CreateAccountScreen(createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
+          builder: (_) => CreateAccountScreen(
+              createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
-        return MaterialPageRoute(builder: (_) => const CandidateContractScreen());
+        return MaterialPageRoute(
+            builder: (_) => const CandidateContractScreen());
       case RouteKeys.jobInformationScreen:
         return MaterialPageRoute(builder: (_) => const JobInformationScreen());
       case RouteKeys.candidateListScreen:

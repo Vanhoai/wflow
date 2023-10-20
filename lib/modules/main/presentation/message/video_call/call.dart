@@ -7,6 +7,7 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/widgets/button/circle_button.dart';
 
+// ignore: must_be_immutable
 class CallScreen extends StatefulWidget {
   late StringeeClient _client;
   late StringeeCall2? _stringeeCall2;
@@ -604,25 +605,4 @@ class _CallScreenState extends State<CallScreen> {
     }
   }
 
-// void createForegroundServiceNotification() {
-//   flutterLocalNotificationsPlugin.initialize(const InitializationSettings(
-//     android: AndroidInitializationSettings('ic_launcher'),
-//   ));
-//
-//   flutterLocalNotificationsPlugin
-//       .resolvePlatformSpecificImplementation<
-//           AndroidFlutterLocalNotificationsPlugin>()
-//       ?.startForegroundService(
-//         1,
-//         'Screen capture',
-//         'Capturing',
-//         notificationDetails: const AndroidNotificationDetails(
-//           'Test id',
-//           'Test name',
-//           channelDescription: 'Test description',
-//           importance: Importance.defaultImportance,
-//           priority: Priority.defaultPriority,
-//         ),
-//       );
-// }
 }

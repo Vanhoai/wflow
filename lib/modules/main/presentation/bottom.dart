@@ -30,16 +30,24 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationState extends State<BottomNavigation>
+    with SingleTickerProviderStateMixin {
   int currentIndex = 0;
+  late AnimationController _animationController;
 
-  Widget bottomTabBar(String icon, bool isActive) {
+  Widget _bottomTabBar(String icon, bool isActive) {
     return SvgPicture.asset(
       icon,
       color: isActive ? Colors.blueAccent : Colors.blueGrey,
       height: 24,
       width: 24,
     );
+  }
+
+  void _onTabTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
   }
 
   @override
@@ -98,7 +106,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
         .pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
   }
 
-  FutureOr<void> requestPermissions() async {
+  FutureOr<void> _requestPermissions() async {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     deviceInfoPlugin.androidInfo.then((value) async {
       if (value.version.sdkInt >= 31) {

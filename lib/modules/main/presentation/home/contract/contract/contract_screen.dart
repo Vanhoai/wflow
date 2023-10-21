@@ -27,14 +27,17 @@ class _ContractScreenState extends State<ContractScreen> {
     super.dispose();
   }
 
-  void onChangedSearch(String value) {
+  void _onChangedSearch(String value) {
     List<Map<String, dynamic>> result = [];
 
     if (value.isEmpty) {
       result = contracts;
     } else {
       result = contracts
-          .where((contract) => contract['name'].toString().toLowerCase().contains(value.toLowerCase()))
+          .where((contract) => contract['name']
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
           .toList();
     }
 
@@ -44,7 +47,7 @@ class _ContractScreenState extends State<ContractScreen> {
     });
   }
 
-  void onClearSearch() {
+  void _onClearSearch() {
     setState(() {
       _isHiddenSuffixIcon = true;
       foundContracts = contracts;
@@ -66,8 +69,8 @@ class _ContractScreenState extends State<ContractScreen> {
             SearchContract(
               controller: _controller,
               isHiddenSuffixIcon: _isHiddenSuffixIcon,
-              onChangedSearch: onChangedSearch,
-              onClearSearch: onClearSearch,
+              onChangedSearch: (value) => _onChangedSearch(value),
+              onClearSearch: () => _onClearSearch,
             ),
             Expanded(
               child: ListView.builder(

@@ -23,26 +23,26 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
   void _pickImageFromCamera() => Navigator.pop(context, ImageSource.camera);
 
   Future<void> _pickImage({required BuildContext context}) async {
-    await showDialog<ImageSource>(
+    ImageSource? source = await showDialog<ImageSource>(
       context: context,
       builder: (context) => DialogPickImage(
         pickImageFromCamera: () => _pickImageFromCamera(),
         pickImageFromGallery: () => _pickImageFromGallery(),
       ),
-    ).then((ImageSource? source) async {
-      if (source != null) {
-        final image = await ImagePicker().pickImage(source: source);
-        if (image == null) return;
-        final imageTemporary = File(image.path);
+    );
 
-        setState(() {
-          _image = imageTemporary;
-          _isImage = !_isImage;
-        });
-      } else {
-        return;
-      }
-    });
+    if (source != null) {
+      final image = await ImagePicker().pickImage(source: source);
+      if (image == null) return;
+      final imageTemporary = File(image.path);
+
+      setState(() {
+        _image = imageTemporary;
+        _isImage = !_isImage;
+      });
+    } else {
+      return;
+    }
   }
 
   @override
@@ -77,18 +77,7 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                 pickImage: () => _pickImage(context: context),
               ),
               const SizedBox(height: 28),
-              Wrap(
-                children: List.generate(
-                  inputs.length,
-                  (index) => Container(
-                    margin: const EdgeInsets.only(bottom: 28),
-                    child: InputGroup(
-                      labelText: inputs[index]['labelText'],
-                      hintText: inputs[index]['hintText'],
-                    ),
-                  ),
-                ),
-              ),
+              _buildInputGroup(),
               const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -117,6 +106,21 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
               ),
               const SizedBox(height: 28),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildInputGroup() {
+    return Wrap(
+      children: List.generate(
+        inputs.length,
+        (index) => Container(
+          margin: const EdgeInsets.only(bottom: 28),
+          child: InputGroup(
+            labelText: inputs[index]['labelText'],
+            hintText: inputs[index]['hintText'],
           ),
         ),
       ),

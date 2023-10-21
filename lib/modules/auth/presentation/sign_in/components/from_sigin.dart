@@ -1,14 +1,14 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
@@ -29,27 +29,31 @@ class _FormState extends State<FormSignIn> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
-    super.initState();
     emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
     passwordController = TextEditingController(text: 'admin');
+    super.initState();
   }
 
   @override
   void dispose() {
-    super.dispose();
     emailController.dispose();
     passwordController.dispose();
+    super.dispose();
   }
 
   Future<void> listener(BuildContext context, SignInState state) async {
     if (state is SignInSuccess) {
       Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
     } else if (state is SignInFailure) {
-      await showDialog(
+      await showCupertinoDialog(
         context: context,
         builder: (context) {
-          return AlertDialog(
-            title: Text('Sign In Failure', style: Theme.of(context).textTheme.titleMedium),
+          return CupertinoAlertDialog(
+            title: Text(
+              'Notification',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
             content: Text(state.message),
             actions: [
               TextButton(
@@ -133,23 +137,24 @@ class _FormState extends State<FormSignIn> {
                       const Padding(padding: EdgeInsets.only(left: 9)),
                       Text(
                         'Lưu đăng nhập?',
-                        style: textTitle(size: 15, colors: Colors.black87, fontWeight: FontWeight.w400),
+                        style: Theme.of(context).textTheme.bodyLarge,
                       )
                     ],
                   ),
-                  //Quên mật khẩu
                   InkWell(
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
-                      child: Text('Quên mật khẩu', style: textTitle(fontWeight: FontWeight.w500, size: 14)),
+                      child: Text(
+                        'Quên mật khẩu',
+                        style: Theme.of(context).textTheme.bodyLarge,
+                      ),
                     ),
                     onTap: () {},
                   )
                 ],
               ),
               const SizedBox(height: 30),
-              //Btn_Login
               Row(
                 children: [
                   Expanded(
@@ -160,7 +165,11 @@ class _FormState extends State<FormSignIn> {
                       child: PrimaryButton(
                         onPressed: () {
                           context.read<SignInBloc>().add(
-                              SignInSubmittedEvent(email: emailController.text, password: passwordController.text));
+                                SignInSubmittedEvent(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                ),
+                              );
                         },
                         label: 'Đăng nhập',
                       ),
@@ -184,9 +193,7 @@ class _FormState extends State<FormSignIn> {
                           ],
                         ));
                       }
-                      return const SizedBox(
-                        width: 0,
-                      );
+                      return const SizedBox();
                     },
                   ),
                 ],

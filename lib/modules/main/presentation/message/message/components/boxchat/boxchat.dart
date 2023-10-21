@@ -6,8 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/keyboard/emoji.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/core/widgets/shared/keyboard/emoji.dart';
 import 'package:wflow/modules/main/presentation/camera/camera.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
@@ -66,10 +65,7 @@ class _BoxChatState extends State<BoxChat> {
                   child: Container(
                     margin: const EdgeInsets.only(left: 10),
                     child: TextField(
-                      style: textTitle(
-                        size: 16,
-                        fontWeight: FontWeight.w400,
-                      ),
+                      style: Theme.of(context).textTheme.bodyLarge,
                       minLines: 1,
                       maxLines: 5,
                       // and this
@@ -82,8 +78,7 @@ class _BoxChatState extends State<BoxChat> {
                       textInputAction: TextInputAction.newline,
                       decoration: InputDecoration(
                         prefixIcon: Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 5, top: 5, right: 5, left: 5),
+                            padding: const EdgeInsets.only(bottom: 5, top: 5, right: 5, left: 5),
                             child: InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
@@ -141,19 +136,14 @@ class _BoxChatState extends State<BoxChat> {
                         ),
                         hintText: 'Nhắn tin',
                         contentPadding: const EdgeInsets.symmetric(vertical: 0),
-                        hintStyle: textTitle(
-                            colors: AppColors.fadeText,
-                            size: 14,
-                            fontWeight: FontWeight.w500),
+                        hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
                         focusedBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide:
-                              BorderSide(color: AppColors.primary, width: 1.2),
+                          borderSide: BorderSide(color: AppColors.primary, width: 1.2),
                         ),
                         enabledBorder: const OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(12)),
-                          borderSide:
-                              BorderSide(color: Colors.black26, width: 1.2),
+                          borderSide: BorderSide(color: Colors.black26, width: 1.2),
                         ),
                       ),
                     ),
@@ -174,24 +164,20 @@ class _BoxChatState extends State<BoxChat> {
                               type: 'text',
                             ));
                         _controller.clear();
-                        if (!state.isShowEmojiKeyboard &&
-                            !state.isShowVoiceRecord) {
+                        if (!state.isShowEmojiKeyboard && !state.isShowVoiceRecord) {
                           _focusNode.requestFocus();
                         }
                       }
                     },
                     borderRadius: BorderRadius.circular(50),
                     child: Ink(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          color: AppColors.primary),
+                      decoration: BoxDecoration(borderRadius: BorderRadius.circular(50), color: AppColors.primary),
                       padding: const EdgeInsets.all(10),
                       child: SvgPicture.asset(
                         state.isSend ? AppConstants.send : AppConstants.mic,
                         height: 20,
                         width: 20,
-                        colorFilter: const ColorFilter.mode(
-                            Colors.white, BlendMode.srcIn),
+                        colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn),
                       ),
                     ),
                   ),
@@ -237,26 +223,22 @@ class _BoxChatState extends State<BoxChat> {
   }
 
   _sendMessage(BuildContext context, Message message) {
-    BlocProvider.of<MainChatBloc>(context)
-        .add(SendMessageEvent(message: message));
+    BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
   }
 
   Future<void> _getImage() async {
     const mul = false;
-    var result = await Navigator.of(context)
-        .pushNamed(RouteKeys.photoScreen, arguments: mul);
+    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen, arguments: mul);
     if (mul) {
       result as List<File>;
       if (context.mounted) {
-        BlocProvider.of<MainChatBloc>(context)
-            .add(SendFilesEvent(id: '', type: 'type', files: result));
+        BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
       }
     } else {
       result as File;
       List<File> list = [result];
       if (context.mounted) {
-        BlocProvider.of<MainChatBloc>(context)
-            .add(SendFilesEvent(id: '', type: 'type', files: list));
+        BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: list));
       }
     }
   }

@@ -51,7 +51,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   void initState() {
     super.initState();
     _requestPermissions();
-    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
     _animationController.repeat(min: 0, max: 1, reverse: true);
 
     instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
@@ -73,10 +73,6 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
       },
       bloc: instance.get<VideoCallBloc>(),
       child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          toolbarHeight: 0,
-        ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(top: 30),
@@ -94,7 +90,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
                     BoxShadow(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),
                       blurRadius: 8,
-                      offset: Offset(0, _animationController.value * 8),
+                      offset: Offset(0, _animationController.value * 10),
                     ),
                     BoxShadow(
                       color: Theme.of(context).primaryColor.withOpacity(0.2),

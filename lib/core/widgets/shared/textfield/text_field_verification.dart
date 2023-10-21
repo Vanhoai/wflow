@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 class TextFieldVerification extends StatelessWidget {
   const TextFieldVerification({super.key, this.controller});
   final TextEditingController? controller;
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return SizedBox(
       height: 53,
       width: 53,
       child: TextField(
-        style: textTitle(
-          size: 16,
-          fontWeight: FontWeight.w400,
-        ),
+        style: Theme.of(context).textTheme.displayMedium,
         controller: controller,
         textAlign: TextAlign.center,
         decoration: const InputDecoration(

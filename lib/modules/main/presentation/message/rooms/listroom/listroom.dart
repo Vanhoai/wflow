@@ -4,7 +4,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/event.dart';
 
@@ -85,7 +84,7 @@ class _ListRoomState extends State<ListRoom> {
                     child: Text(
                       room.name,
                       overflow: TextOverflow.ellipsis,
-                      style: textTitle(size: 18, fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   Row(
@@ -98,14 +97,14 @@ class _ListRoomState extends State<ListRoom> {
                           child: Text(
                             room.lastMessage,
                             overflow: TextOverflow.ellipsis,
-                            style: textTitle(size: 14, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                       ),
                       Text(
                         instance.get<Time>().getHourMinute(room.createAt),
                         overflow: TextOverflow.ellipsis,
-                        style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.textGrey),
                       ),
                     ],
                   )

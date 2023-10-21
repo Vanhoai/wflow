@@ -43,11 +43,14 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
         final args = settings.arguments as bool;
-        return MaterialPageRoute(builder: (_) => PhotoScreen(multiple: args,));
+        return MaterialPageRoute(
+            builder: (_) => PhotoScreen(
+                  multiple: args,
+                ));
       case RouteKeys.callScreen:
         final args = settings.arguments as ArgumentsCall;
         return MaterialPageRoute(
-          builder: (_) => CallScreen( argumentsCall: args),
+          builder: (_) => CallScreen(argumentsCall: args),
         );
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
@@ -91,6 +94,7 @@ class AppRoutes {
       case RouteKeys.upgradeBusinessScreen:
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
+        return MaterialPageRoute(builder: (_) => const CompanyScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

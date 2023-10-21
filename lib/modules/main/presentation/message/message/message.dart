@@ -10,7 +10,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/boxchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
@@ -129,7 +128,7 @@ class _MessageScreenState extends State<MessageScreen> {
                               child: Text(
                                 'Chị HR không tuyển dụng không tuyển Huy',
                                 overflow: TextOverflow.ellipsis,
-                                style: textTitle(fontWeight: FontWeight.w700, size: 14),
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             )
                           ],

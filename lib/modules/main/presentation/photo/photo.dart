@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/photo/component/detail_page.dart';
 
@@ -132,10 +132,9 @@ class _PhotoScreenState extends State<PhotoScreen> {
             key: ValueKey<int>(index),
             entity: entity,
             onTap: () {
-              if(widget.multiple)
-              {
+              if (widget.multiple) {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailPage(entity: entity)));
-              }else {
+              } else {
                 context.read<PhotoBloc>().add(SendPhotoEvent(entity: entity));
               }
             },
@@ -161,7 +160,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
         lazy: true,
         create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.multiple)),
         child: Scaffold(
-            appBar: const Header(text: 'Chọn ảnh'),
+            appBar: const AppHeader(text: 'Chọn ảnh'),
             body: Column(
               children: [
                 Expanded(child: _buildBody(context)),

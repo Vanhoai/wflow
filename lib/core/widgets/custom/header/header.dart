@@ -9,8 +9,7 @@ class Header extends StatefulWidget {
     this.decoration,
     this.onTapTitle,
     this.leadingSize = 30,
-    this.leadingPhotoUrl =
-        'https://images.pexels.com/photos/18632405/pexels-photo-18632405/free-photo-of-g-yeu-d-cu-ban.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
+    this.leadingPhotoUrl = '',
     this.leadingBadge = false,
     this.onTapLeading,
     this.actions = const [],
@@ -51,6 +50,7 @@ class _HeaderState extends State<Header> {
               highlightColor: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
+                backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                 backgroundImage: NetworkImage(
                   widget.leadingPhotoUrl,
                 ),

@@ -8,7 +8,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
@@ -101,15 +100,14 @@ class _MainChatState extends State<MainChat> {
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Text(
           message.content,
-          style: textTitle(
-              fontWeight: FontWeight.w400, size: 14, colors: id == message.id ? Colors.white : Colors.black87),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: id == message.id ? Colors.white : Colors.black),
         ),
         Container(
           alignment: Alignment.centerLeft,
           width: 30,
           child: Text(
             instance.get<Time>().getHourMinute(message.createAt.toString()),
-            style: textTitle(colors: id == message.id ? Colors.white : AppColors.fadeText, size: 10),
+            style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),
           ),
         )
       ]),
@@ -135,7 +133,7 @@ class _MainChatState extends State<MainChat> {
         width: 30,
         child: Text(
           instance.get<Time>().getHourMinute(message.createAt.toString()),
-          style: textTitle(colors: Colors.white, size: 9),
+          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),
         ),
       )
     ]);
@@ -198,7 +196,7 @@ class _MainChatState extends State<MainChat> {
               width: 30,
               child: Text(
                 instance.get<Time>().getHourMinute(message.createAt.toString()),
-                style: textTitle(colors: Colors.white, size: 9),
+                style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),
               ),
             )
           ],
@@ -249,7 +247,7 @@ class _MainChatState extends State<MainChat> {
             width: 30,
             child: Text(
               instance.get<Time>().getHourMinute(message.createAt.toString()),
-              style: textTitle(colors: Colors.white, size: 9),
+              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),
             ),
           )
         ],

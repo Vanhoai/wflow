@@ -2,8 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
 
 class CompanyScreen extends StatefulWidget {

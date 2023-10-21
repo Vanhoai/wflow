@@ -28,10 +28,11 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> {
+class _BottomNavigationState extends State<BottomNavigation> with SingleTickerProviderStateMixin {
   int currentIndex = 0;
+  late AnimationController _animationController;
 
-  Widget bottomTabBar(String icon, bool isActive) {
+  Widget _bottomTabBar(String icon, bool isActive) {
     return SvgPicture.asset(
       icon,
       color: isActive ? Colors.blueAccent : Colors.blueGrey,
@@ -40,11 +41,26 @@ class _BottomNavigationState extends State<BottomNavigation> {
     );
   }
 
+  void _onTabTapped(int index) {
+    setState(() {
+      currentIndex = index;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
-    requestPermissions();
+    _requestPermissions();
+    _animationController = AnimationController(vsync: this, duration: const Duration(seconds: 2));
+    _animationController.repeat(min: 0, max: 1, reverse: true);
+
     instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
+  }
+
+  @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
   }
 
   @override
@@ -61,47 +77,99 @@ class _BottomNavigationState extends State<BottomNavigation> {
           backgroundColor: Colors.blue,
           toolbarHeight: 0,
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+        floatingActionButton: Padding(
+          padding: const EdgeInsets.only(top: 30),
+          child: AnimatedBuilder(
+            animation: _animationController,
+            builder: (context, child) {
+              return Container(
+                height: 68,
+                width: 68,
+                clipBehavior: Clip.hardEdge,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(34),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: Offset(0, _animationController.value * 8),
+                    ),
+                    BoxShadow(
+                      color: Theme.of(context).primaryColor.withOpacity(0.2),
+                      blurRadius: 8,
+                      offset: Offset(0, _animationController.value * -4),
+                    ),
+                  ],
+                ),
+                child: FloatingActionButton(
+                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                  isExtended: true,
+                  onPressed: () => setState(() {
+                    currentIndex = 2;
+                  }),
+                  child: SvgPicture.asset(
+                    AppConstants.flash,
+                    height: 24,
+                    width: 24,
+                    colorFilter: const ColorFilter.mode(
+                      Color.fromARGB(255, 40, 114, 250),
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
         bottomNavigationBar: SizedBox(
           height: 80,
           child: BottomNavigationBar(
             currentIndex: currentIndex,
-            showUnselectedLabels: false,
-            showSelectedLabels: false,
+            selectedLabelStyle: const TextStyle(
+              fontSize: 14,
+            ),
             type: BottomNavigationBarType.fixed,
             iconSize: 24,
-            onTap: (value) => setState(() => currentIndex = value),
+            onTap: _onTabTapped,
             items: [
               BottomNavigationBarItem(
-                icon: bottomTabBar(AppConstants.bottomHome, false),
-                activeIcon: bottomTabBar(AppConstants.bottomHome, true),
+                icon: _bottomTabBar(AppConstants.bottomHome, false),
+                activeIcon: _bottomTabBar(AppConstants.bottomHome, true),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: bottomTabBar(AppConstants.bottomWork, false),
-                activeIcon: bottomTabBar(AppConstants.bottomWork, true),
-                label: 'Freelance',
+                icon: _bottomTabBar(AppConstants.bottomWork, false),
+                activeIcon: _bottomTabBar(AppConstants.bottomWork, true),
+                label: 'Works',
+              ),
+              const BottomNavigationBarItem(
+                icon: SizedBox.shrink(),
+                activeIcon: SizedBox.shrink(),
+                label: '',
               ),
               BottomNavigationBarItem(
-                icon: bottomTabBar(AppConstants.bottomMessage, false),
-                activeIcon: bottomTabBar(AppConstants.bottomMessage, true),
+                icon: _bottomTabBar(AppConstants.bottomMessage, false),
+                activeIcon: _bottomTabBar(AppConstants.bottomMessage, true),
                 label: 'Message',
               ),
               BottomNavigationBarItem(
-                icon: bottomTabBar(AppConstants.bottomExtended, false),
-                activeIcon: bottomTabBar(AppConstants.bottomExtended, true),
+                icon: _bottomTabBar(AppConstants.bottomExtended, false),
+                activeIcon: _bottomTabBar(AppConstants.bottomExtended, true),
                 label: 'Personal',
               ),
             ],
           ),
         ),
-        // LazyLoadIndexedStack is a custom widget that I created to solve the problem of rebuilding the widget when switching tabs.
         body: LazyLoadIndexedStack(
           index: currentIndex,
-          children: const [
-            HomeScreen(),
-            WorkScreen(),
-            RoomsScreen(),
-            PersonalScreen(),
+          children: [
+            const HomeScreen(),
+            const WorkScreen(),
+            Container(),
+            const RoomsScreen(),
+            const PersonalScreen(),
           ],
         ),
       ),
@@ -120,7 +188,7 @@ class _BottomNavigationState extends State<BottomNavigation> {
     Navigator.of(context).pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
   }
 
-  FutureOr<void> requestPermissions() async {
+  FutureOr<void> _requestPermissions() async {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     deviceInfoPlugin.androidInfo.then((value) async {
       if (value.version.sdkInt >= 31) {

@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 
 part 'state.app.dart';
@@ -25,6 +26,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
       authEntity: AuthEntity(
         accessToken: '',
         refreshToken: '',
+        isSignIn: false,
         user: User(id: 0, name: '', role: 0, age: 0, address: '', email: '', phone: '', isVerify: false, avatar: ''),
       ),
     );
@@ -38,8 +40,6 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   FutureOr<void> onAppChangeTheme(AppChangeTheme event, Emitter<AppState> emit) {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
   }
-
-
 
   @override
   AppState? fromJson(Map<String, dynamic> json) {

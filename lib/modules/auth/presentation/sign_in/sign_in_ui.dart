@@ -5,7 +5,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
@@ -22,11 +21,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
@@ -56,7 +50,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       padding: const EdgeInsets.only(top: 17, bottom: 20),
                       child: Text(
                         'Đăng nhập',
-                        style: textTitle(fontWeight: FontWeight.w400, size: 24),
+                        style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
                     const FormSignIn(),
@@ -74,7 +68,10 @@ class _SignInScreenState extends State<SignInScreen> {
                           Container(
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             color: Colors.white,
-                            child: Text('Hoặc', style: textTitle(size: 16, fontWeight: FontWeight.w400)),
+                            child: Text(
+                              'Hoặc',
+                              style: Theme.of(context).textTheme.displayMedium,
+                            ),
                           )
                         ],
                       ),
@@ -103,7 +100,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                   alignment: Alignment.center,
                                   child: Text(
                                     'Đăng nhập với Google',
-                                    style: textTitle(size: 16, fontWeight: FontWeight.w400),
+                                    style: Theme.of(context).textTheme.displayMedium,
                                   ),
                                 )
                               ],
@@ -122,7 +119,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text('Bạn chưa có tài khoản? ', style: textTitle(size: 16, fontWeight: FontWeight.w400)),
+                          Text(
+                            'Bạn chưa có tài khoản? ',
+                            style: Theme.of(context).textTheme.displayMedium,
+                          ),
                           InkWell(
                             borderRadius: BorderRadius.circular(4),
                             onTap: () => Navigator.pushNamed(context, RouteKeys.registerScreen),
@@ -130,7 +130,10 @@ class _SignInScreenState extends State<SignInScreen> {
                               padding: const EdgeInsets.all(2),
                               child: Text(
                                 'Đăng ký',
-                                style: textTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .displayMedium!
+                                    .merge(const TextStyle(color: AppColors.primary)),
                               ),
                             ),
                           ),

@@ -14,20 +14,6 @@ class HowJobListWidget extends StatefulWidget {
 }
 
 class _HowJobListWidgetState extends State<HowJobListWidget> {
-  late ScrollController _scrollController;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = widget.scrollController;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-  }
-
   void pressCard() {
     Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }
@@ -45,7 +31,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
         child: LayoutBuilder(
           builder: (context, constraints) {
             return ListView.builder(
-              controller: _scrollController,
+              controller: widget.scrollController,
               physics: const BouncingScrollPhysics(),
               scrollDirection: Axis.horizontal,
               shrinkWrap: true,

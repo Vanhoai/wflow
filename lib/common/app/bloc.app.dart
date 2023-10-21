@@ -4,7 +4,6 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 
 part 'state.app.dart';
@@ -15,6 +14,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     on<AppChangeLanguage>(onAppChangeLanguage);
     on<AppChangeTheme>(onAppChangeTheme);
     on<SetIsFirstTime>(setIsFirstTime);
+    on<AppChangeAuth>(onAppChangeAuth);
   }
 
   static AppState onInit() {
@@ -41,6 +41,14 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
   }
 
+  FutureOr<void> setIsFirstTime(SetIsFirstTime event, Emitter<AppState> emit) {
+    emit(state.copyWith(isFirstTime: false));
+  }
+
+  FutureOr<void> onAppChangeAuth(AppChangeAuth event, Emitter<AppState> emit) {
+    emit(state.copyWith(authEntity: event.authEntity));
+  }
+
   @override
   AppState? fromJson(Map<String, dynamic> json) {
     return AppState.fromJson(json);
@@ -49,9 +57,5 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   @override
   Map<String, dynamic>? toJson(AppState state) {
     return state.toJson();
-  }
-
-  FutureOr<void> setIsFirstTime(SetIsFirstTime event, Emitter<AppState> emit) {
-    emit(state.copyWith(isFirstTime: false));
   }
 }

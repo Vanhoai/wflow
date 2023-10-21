@@ -1,21 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/theme/colors.dart';
 
-import '../style/textfieldstyle.dart';
-
 class TextFieldFrom extends StatefulWidget {
-  const TextFieldFrom(
-      {Key? key,
-      this.controller,
-      this.onChange,
-      this.textInputAction,
-      this.keyboardType = TextInputType.text,
-      required this.placeholder,
-      required this.label,
-      this.prefixIcon,
-      this.suffixIcon,
-      this.isPassword = false})
-      : super(key: key);
+  const TextFieldFrom({
+    super.key,
+    this.controller,
+    this.onChange,
+    this.textInputAction,
+    this.keyboardType = TextInputType.text,
+    required this.placeholder,
+    required this.label,
+    this.prefixIcon,
+    this.suffixIcon,
+    this.isPassword = false,
+  });
 
   final Function(String val)? onChange;
   final String placeholder;
@@ -56,16 +54,13 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
         Container(
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(top: 20, bottom: 9),
-          child: Text(widget.label,
-              style: textTitle(
-                fontWeight: FontWeight.w400,
-              )),
+          child: Text(
+            widget.label,
+            style: Theme.of(context).textTheme.displayMedium,
+          ),
         ),
         TextFormField(
-          style: textTitle(
-            size: 16,
-            fontWeight: FontWeight.w400,
-          ),
+          style: Theme.of(context).textTheme.displayMedium,
           maxLines: 1,
           autofocus: false,
           focusNode: focusNode,
@@ -81,7 +76,7 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
             suffixIconColor: _focusIconColor(),
             hintText: widget.placeholder,
             contentPadding: const EdgeInsets.symmetric(vertical: 16),
-            hintStyle: textTitle(colors: AppColors.fadeText, size: 14, fontWeight: FontWeight.w400),
+            hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.fadeText),
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),
               borderSide: BorderSide(color: AppColors.primary, width: 1.0),

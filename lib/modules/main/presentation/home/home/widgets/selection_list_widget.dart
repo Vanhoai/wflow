@@ -22,24 +22,6 @@ class SelectionListWidget extends StatefulWidget {
 
 class _SelectionListWidgetState extends State<SelectionListWidget> {
   int _choiceValue = 0;
-  late ScrollController _scrollController;
-  late void Function(int) onSelected;
-
-  @override
-  void initState() {
-    super.initState();
-    _scrollController = widget.scrollController;
-    onSelected = widget.onSelected;
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _scrollController.dispose();
-    setState(() {
-      _choiceValue = 0;
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +32,7 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
           maxHeight: 42,
         ),
         child: ListView.separated(
-          controller: _scrollController,
+          controller: widget.scrollController,
           separatorBuilder: (context, index) => const SizedBox(width: 8.0),
           itemBuilder: (context, index) {
             final e = staticRecentTitle[index];
@@ -65,7 +47,7 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
                 onSelected: (value) {
                   setState(() {
                     _choiceValue = staticRecentTitle.indexOf(e);
-                    onSelected(_choiceValue);
+                    widget.onSelected(_choiceValue);
                   });
                 },
                 showCheckmark: false,

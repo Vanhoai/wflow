@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 class AuthStepThreeScreen extends StatelessWidget {
   const AuthStepThreeScreen({super.key});
@@ -14,7 +13,7 @@ class AuthStepThreeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: const Header(
+          appBar: const AppHeader(
             text: 'Verify account',
           ),
           body: Container(
@@ -22,21 +21,18 @@ class AuthStepThreeScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Bước 3/3', style: textTitle(colors: AppColors.primary, fontWeight: FontWeight.w500, size: 12)),
+                  Text('Bước 3/3', style: Theme.of(context).textTheme.displayLarge),
                   Padding(
                       padding: const EdgeInsets.only(top: 27, bottom: 12),
-                      child: Text('Chụp ảnh chân dung', style: textTitle(size: 16, fontWeight: FontWeight.w500))),
+                      child: Text('Chụp ảnh chân dung', style: Theme.of(context).textTheme.displayMedium)),
                   RichText(
                     text: TextSpan(style: const TextStyle(height: 1.4), children: [
                       TextSpan(
                           text: 'Ảnh chụp cần phải rõ ràng, không bị chói hoặc mờ và phải',
-                          style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText)),
+                          style: Theme.of(context).textTheme.bodyLarge),
                       TextSpan(
                           text: ' khớp với ảnh trên giấy tờ tùy thân',
-                          style: textTitle(
-                            size: 12,
-                            fontWeight: FontWeight.w500,
-                          ))
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.primary))
                     ]),
                   ),
                   const SizedBox(
@@ -82,7 +78,7 @@ class AuthStepThreeScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh hợp lệ',
-                                  style: textTitle(size: 12, colors: AppColors.greenColor, fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.greenColor),
                                 )
                               ],
                             );
@@ -100,7 +96,7 @@ class AuthStepThreeScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh không hợp lệ',
-                                  style: textTitle(size: 12, colors: AppColors.redColor, fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.redColor),
                                 )
                               ],
                             );
@@ -139,7 +135,7 @@ class AuthStepThreeScreen extends StatelessWidget {
                             ),
                             Text(
                               'CHỤP ẢNH',
-                              style: textTitle(size: 12, colors: AppColors.primary, fontWeight: FontWeight.w500),
+                              style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.primary),
                             )
                           ],
                         ),

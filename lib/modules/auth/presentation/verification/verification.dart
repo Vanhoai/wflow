@@ -4,9 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/button/button.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:wflow/core/widgets/textfield/text_field_verification.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
+import 'package:wflow/core/widgets/shared/textfield/text_field_verification.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key});
@@ -68,7 +67,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   margin: const EdgeInsets.only(top: 49),
                   child: Text(
                     'Xác nhận số điện thoại',
-                    style: textTitle(size: 20, fontWeight: FontWeight.w400),
+                    style: Theme.of(context).textTheme.displayLarge,
                   ),
                 ),
                 const SizedBox(
@@ -90,11 +89,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   children: [
                     Text(
                       'Mã xác nhận sẽ gửi lại sau',
-                      style: textTitle(fontWeight: FontWeight.w400),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                     Text(
                       '${count}s',
-                      style: textTitle(fontWeight: FontWeight.w400),
+                      style: Theme.of(context).textTheme.displayMedium,
                     ),
                   ],
                 ),
@@ -106,30 +105,39 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     child: Stack(
                       alignment: Alignment.center,
                       children: [
-                        AppButton(
-                          text: 'Xác nhận',
-                          onTap: () {},
+                        PrimaryButton(
+                          label: 'Xác nhận',
+                          onPressed: () {},
                         ),
                       ],
                     )),
                 Container(
-                    margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
-                    alignment: Alignment.center,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text('Bạn đã có tài khoản? ', style: textTitle(size: 16, fontWeight: FontWeight.w400)),
-                        InkWell(
-                            borderRadius: BorderRadius.circular(4),
-                            onTap: () => {Navigator.pop(context)},
-                            child: Padding(
-                                padding: const EdgeInsets.all(2),
-                                child: Text(
-                                  'Đăng nhập',
-                                  style: textTitle(colors: AppColors.primary, size: 16, fontWeight: FontWeight.w500),
-                                ))),
-                      ],
-                    ))
+                  margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+                  alignment: Alignment.center,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        'Bạn đã có tài khoản? ',
+                        style: Theme.of(context).textTheme.displayMedium,
+                      ),
+                      InkWell(
+                        borderRadius: BorderRadius.circular(4),
+                        onTap: () => {Navigator.pop(context)},
+                        child: Padding(
+                          padding: const EdgeInsets.all(2),
+                          child: Text(
+                            'Đăng nhập',
+                            style: Theme.of(context)
+                                .textTheme
+                                .displayMedium!
+                                .merge(const TextStyle(color: AppColors.primary)),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )
               ],
             ),
           ),

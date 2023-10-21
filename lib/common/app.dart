@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:wflow/common/app/bloc.app.dart';
@@ -9,8 +10,16 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
+
+SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
+  statusBarColor: Colors.white,
+  statusBarIconBrightness: Brightness.dark,
+  statusBarBrightness: Brightness.light,
+  systemNavigationBarColor: Colors.white,
+  systemNavigationBarDividerColor: Colors.white,
+  systemNavigationBarIconBrightness: Brightness.dark,
+);
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -38,6 +47,7 @@ class _AppState extends State<App> {
       future: instance.allReady(),
       builder: ((context, snapshot) {
         if (snapshot.hasData) {
+          SystemChrome.setSystemUIOverlayStyle(systemUiOverlayStyle);
           return BlocBuilder<AppBloc, AppState>(
             buildWhen: (previous, current) => previous != current,
             bloc: instance.get<AppBloc>(),

@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/state.dart';
@@ -47,11 +46,8 @@ class _HeaderRoomsState extends State<HeaderRooms> {
                       children: [
                         Expanded(
                           child: Text(
-                            "Message",
-                            style: textTitle(
-                              size: 25,
-                              fontWeight: FontWeight.w700,
-                            ),
+                            'Message',
+                            style: Theme.of(context).textTheme.titleLarge,
                           ),
                         ),
                         InkWell(
@@ -91,10 +87,7 @@ class _HeaderRoomsState extends State<HeaderRooms> {
                       child: TextFormField(
                         focusNode: focusNode,
                         autofocus: true,
-                        style: textTitle(
-                          size: 14,
-                          fontWeight: FontWeight.w400,
-                        ),
+                        style: Theme.of(context).textTheme.titleLarge,
                         maxLines: 1,
                         decoration: InputDecoration(
                           prefixIcon: Padding(
@@ -125,10 +118,10 @@ class _HeaderRoomsState extends State<HeaderRooms> {
                                   ),
                                 ),
                               )),
-                          hintText: "Tìm kiếm",
+                          hintText: 'Tìm kiếm',
                           filled: true,
                           contentPadding: const EdgeInsets.symmetric(vertical: -5),
-                          hintStyle: textTitle(colors: AppColors.fadeText, size: 14, fontWeight: FontWeight.w400),
+                          hintStyle: Theme.of(context).textTheme.titleLarge,
                           focusedBorder: const OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(8)),
                             borderSide: BorderSide(color: Colors.black26, width: 1.0),

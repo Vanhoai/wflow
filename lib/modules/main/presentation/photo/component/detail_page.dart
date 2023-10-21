@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 import 'common_util.dart';
 import 'live_photos_widget.dart';
@@ -27,7 +26,7 @@ class _DetailPageState extends State<DetailPage> {
       appBar: AppBar(
         title: Text(
           'Detail',
-          style: textTitle(fontWeight: FontWeight.w400, size: 20),
+          style: Theme.of(context).textTheme.titleLarge,
         ),
         leading: Padding(
           padding: const EdgeInsets.all(8),

@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
-class Header extends StatelessWidget implements PreferredSizeWidget {
-  const Header({super.key, required this.text});
+class AppHeader extends StatelessWidget implements PreferredSizeWidget {
+  const AppHeader({super.key, required this.text});
 
   final String text;
   @override
@@ -13,7 +12,7 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       title: Text(
         text,
-        style: textTitle(fontWeight: FontWeight.w400, size: 16),
+        style: Theme.of(context).textTheme.displayMedium,
       ),
       backgroundColor: Colors.white,
       surfaceTintColor: Colors.white,
@@ -28,8 +27,8 @@ class Header extends StatelessWidget implements PreferredSizeWidget {
             alignment: Alignment.center,
             child: SvgPicture.asset(
               AppConstants.backArrow,
-              height: 19,
-              width: 19,
+              height: 24,
+              width: 24,
             ),
           ),
         ),

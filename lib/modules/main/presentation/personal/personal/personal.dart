@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:logger/logger.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/widgets/header_avatar_widget.dart';
@@ -15,8 +14,6 @@ class PersonalScreen extends StatefulWidget {
 }
 
 class _PersonalScreenState extends State<PersonalScreen> {
-  Logger logger = Logger();
-
   late ScrollController _scrollController;
   @override
   void initState() {
@@ -66,7 +63,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: const Text('Settings'),
             ),
             CupertinoActionSheetAction(
-              onPressed: () {},
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.signInScreen, (route) => false),
               isDestructiveAction: true,
               child: const Text('Logout'),
             ),
@@ -79,6 +76,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
+      isSafe: true,
       body: RefreshIndicator(
         child: CustomScrollView(
           slivers: [

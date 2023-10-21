@@ -4,9 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 
 class AuthStepOneScreen extends StatelessWidget {
   const AuthStepOneScreen({super.key});
@@ -16,24 +15,24 @@ class AuthStepOneScreen extends StatelessWidget {
     Theme.of(context).copyWith(primaryColor: AppColors.blueColor);
     return SafeArea(
       child: Scaffold(
-          appBar: const Header(
-            text: "Verify account",
+          appBar: const AppHeader(
+            text: 'Verify account',
           ),
           body: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Bước 1/3', style: textTitle(colors: AppColors.primary, fontWeight: FontWeight.w500, size: 12)),
+                  Text('Bước 1/3', style: Theme.of(context).textTheme.displayLarge),
                   Padding(
-                      padding: const EdgeInsets.only(top: 27, bottom: 12),
-                      child: Text('Chụp mặt trước giấy tờ tùy thân',
-                          style: textTitle(size: 16, fontWeight: FontWeight.w500))),
-                  Text('Các loại giấy tờ hợp lệ: Căn cước công dân, chứng minh nhân dân.',
-                      style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText)),
-                  const SizedBox(
-                    height: 42,
+                    padding: const EdgeInsets.only(top: 27, bottom: 12),
+                    child: Text('Chụp mặt trước giấy tờ tùy thân', style: Theme.of(context).textTheme.displayMedium),
                   ),
+                  Text(
+                    'Các loại giấy tờ hợp lệ: Căn cước công dân, chứng minh nhân dân.',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  const SizedBox(height: 42),
                   Container(
                     alignment: Alignment.center,
                     height: 213,
@@ -49,7 +48,7 @@ class AuthStepOneScreen extends StatelessWidget {
                               ));
                             },
                             fit: BoxFit.cover,
-                            image: FileImage(File("")))
+                            image: FileImage(File('')))
                         : null,
                   ),
                   Container(
@@ -73,7 +72,7 @@ class AuthStepOneScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh hợp lệ',
-                                  style: textTitle(size: 12, colors: AppColors.greenColor, fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.displayMedium,
                                 )
                               ],
                             );
@@ -91,7 +90,7 @@ class AuthStepOneScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh không hợp lệ',
-                                  style: textTitle(size: 12, colors: AppColors.redColor, fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.displayMedium,
                                 )
                               ],
                             );
@@ -108,7 +107,7 @@ class AuthStepOneScreen extends StatelessWidget {
                     child: InkWell(
                       borderRadius: const BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {
-                        print("Lấy hình");
+                        print('Lấy hình');
                       },
                       child: Ink(
                         padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
@@ -130,7 +129,7 @@ class AuthStepOneScreen extends StatelessWidget {
                             ),
                             Text(
                               'CHỤP ẢNH',
-                              style: textTitle(size: 12, colors: AppColors.primary, fontWeight: FontWeight.w500),
+                              style: Theme.of(context).textTheme.displayMedium,
                             )
                           ],
                         ),

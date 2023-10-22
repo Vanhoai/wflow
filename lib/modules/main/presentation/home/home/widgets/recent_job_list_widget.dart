@@ -5,23 +5,13 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 class RecentJobListWidget extends StatefulWidget {
-  const RecentJobListWidget({super.key, required this.selectionValue});
-
-  final int selectionValue;
+  const RecentJobListWidget({super.key});
 
   @override
   State<RecentJobListWidget> createState() => _RecentJobListWidgetState();
 }
 
 class _RecentJobListWidgetState extends State<RecentJobListWidget> {
-  late int selectionValue;
-
-  @override
-  void initState() {
-    super.initState();
-    selectionValue = widget.selectionValue;
-  }
-
   void pressCard() {
     Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
   }

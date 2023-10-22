@@ -1,10 +1,6 @@
-import 'dart:async';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/videocall/bloc/bloc.dart';
@@ -60,14 +56,17 @@ class _MessageScreenState extends State<MessageScreen> {
   void callTapped(
       {required bool isVideoCall, required StringeeObjectEventType callType}) {
     if (!instance.get<StringeeClient>().hasConnected) return;
-    Navigator.of(context).pushNamed(RouteKeys.callScreen,
-        arguments: ArgumentsCall(
-            client: instance.get<StringeeClient>(),
-            toUserId: 'teo',
-            fromUserId: instance.get<StringeeClient>().userId!,
-            callType: callType,
-            showIncomingUi: false,
-            isVideoCall: isVideoCall));
+    Navigator.of(context).pushNamed(
+      RouteKeys.callScreen,
+      arguments: ArgumentsCall(
+        client: instance.get<StringeeClient>(),
+        toUserId: 'teo',
+        fromUserId: instance.get<StringeeClient>().userId!,
+        callType: callType,
+        showIncomingUi: false,
+        isVideoCall: isVideoCall,
+      ),
+    );
   }
 
   @override

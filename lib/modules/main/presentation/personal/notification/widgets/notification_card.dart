@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 
 class NotificationCard extends StatefulWidget {
@@ -30,9 +31,7 @@ class NotificationStateCard extends State<NotificationCard> {
         child: Row(
           children: <Widget>[
             _buildIcon(),
-            const SizedBox(
-              width: AppSize.paddingLarge,
-            ),
+            const SizedBox(width: AppSize.paddingLarge),
             _buildContent(),
           ],
         ),
@@ -42,18 +41,18 @@ class NotificationStateCard extends State<NotificationCard> {
 
   Widget _buildIcon() {
     return Container(
-      width: ((MediaQuery.sizeOf(context).width) / 100) * 10.17,
-      height: ((MediaQuery.sizeOf(context).width) / 100) * 10.17,
+      width: 50,
+      height: 50,
       decoration: BoxDecoration(
-        color: Colors.grey.shade200,
+        color: AppColors.primary.withOpacity(0.1),
         borderRadius: BorderRadius.all(
           Radius.circular(MediaQuery.sizeOf(context).width),
         ),
       ),
-      child: Icon(
+      child: const Icon(
         Icons.notifications,
-        size: ((MediaQuery.sizeOf(context).width) / 100) * 8.14,
-        color: const Color(0XFF0078E1),
+        size: 24,
+        color: AppColors.primary,
       ),
     );
   }
@@ -75,7 +74,7 @@ class NotificationStateCard extends State<NotificationCard> {
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.normal,
-            color: Color(0XFF555555),
+            color: Color.fromARGB(255, 138, 138, 138),
           ),
         ),
       ],

@@ -54,21 +54,22 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                   leading: InkWell(
                     onTap: () => Navigator.pop(context),
                     child: Container(
-                      height: 40,
-                      width: 40,
-                      color: Colors.transparent,
-                      child: Center(
-                        child: SvgPicture.asset(
-                          AppConstants.backArrow,
-                          height: 28,
-                          width: 28,
-                        ),
+                      alignment: Alignment.center,
+                      child: SvgPicture.asset(
+                        AppConstants.backArrow,
+                        height: 28,
+                        width: 28,
                       ),
                     ),
                   ),
                   backgroundColor: themeData.colorScheme.background,
                   surfaceTintColor: Colors.transparent,
                   pinned: true,
+                  title: const Text(
+                    'Information',
+                    textAlign: TextAlign.center,
+                  ),
+                  centerTitle: true,
                 ),
                 SliverPadding(
                   padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),

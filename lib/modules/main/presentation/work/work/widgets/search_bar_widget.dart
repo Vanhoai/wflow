@@ -3,107 +3,107 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 
 class SearchBarWidget extends StatefulWidget {
-  const SearchBarWidget({super.key, required this.onSearch});
-
-  final void Function(String) onSearch;
+  const SearchBarWidget({super.key});
 
   @override
   State<SearchBarWidget> createState() => _SearchBarWidgetState();
 }
 
 class _SearchBarWidgetState extends State<SearchBarWidget> {
-  late TextEditingController _searchController;
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-    _searchController = TextEditingController();
-    _searchController.addListener(() {
-      widget.onSearch(_searchController.text);
-    });
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 18),
-      sliver: SliverToBoxAdapter(
-        child: Row(
-          children: [
-            Expanded(
-              child: Container(
-                decoration: BoxDecoration(
-                  boxShadow: [
-                    BoxShadow(
-                      color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                    BoxShadow(
-                      color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                      blurRadius: 4,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                  borderRadius: BorderRadius.circular(12.0),
-                ),
-                child: TextFormField(
-                  controller: _searchController,
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    prefixIcon: const Icon(Icons.search),
-                    border: const OutlineInputBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(12.0)),
-                      borderSide: BorderSide.none,
-                    ),
-                    isDense: true,
-                    contentPadding: const EdgeInsets.all(10.0),
-                    filled: true,
-                    fillColor: themeData.colorScheme.background,
-                    disabledBorder: InputBorder.none,
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              decoration: BoxDecoration(
+                boxShadow: [
+                  BoxShadow(
+                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
                   ),
-                  clipBehavior: Clip.none,
-                  textInputAction: TextInputAction.search,
-                  keyboardType: TextInputType.text,
-                  onChanged: (value) {},
-                ),
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-            Material(
-              color: themeData.colorScheme.background,
-              elevation: 3.0,
-              shadowColor: themeData.colorScheme.onBackground,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12.0),
-              ),
-              child: InkWell(
-                onTap: () {},
-                borderRadius: BorderRadius.circular(12.0),
-                child: Container(
-                  height: 48,
-                  width: 48,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(12.0),
-                    color: Colors.transparent,
+                  BoxShadow(
+                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                    blurRadius: 4,
+                    offset: const Offset(0, 2),
                   ),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+                ],
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: TextFormField(
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  prefixIcon: Padding(
+                    padding: const EdgeInsets.all(12),
                     child: SvgPicture.asset(
-                      AppConstants.ic_filter,
-                      color: themeData.colorScheme.onBackground,
+                      AppConstants.search,
+                      width: 24,
+                      height: 24,
+                      colorFilter: ColorFilter.mode(
+                        themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                        BlendMode.srcIn,
+                      ),
                     ),
+                  ),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8),
+                    borderSide: BorderSide.none,
+                  ),
+                  isDense: true,
+                  contentPadding: const EdgeInsets.all(10.0),
+                  filled: true,
+                  fillColor: themeData.colorScheme.background,
+                  disabledBorder: InputBorder.none,
+                ),
+                clipBehavior: Clip.none,
+                textInputAction: TextInputAction.search,
+                keyboardType: TextInputType.text,
+                onChanged: (value) {},
+              ),
+            ),
+          ),
+          const SizedBox(width: 8),
+          Material(
+            color: themeData.colorScheme.background,
+            elevation: 3.0,
+            shadowColor: themeData.colorScheme.onBackground,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            child: InkWell(
+              onTap: () {},
+              borderRadius: BorderRadius.circular(8.0),
+              child: Container(
+                height: 48,
+                width: 48,
+                alignment: Alignment.center,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8.0),
+                  color: Colors.transparent,
+                ),
+                child: SvgPicture.asset(
+                  AppConstants.ic_filter,
+                  height: 24,
+                  width: 24,
+                  colorFilter: ColorFilter.mode(
+                    themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                    BlendMode.srcIn,
                   ),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }

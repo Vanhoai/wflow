@@ -51,13 +51,13 @@ class AppConstants {
   static const String ic_notification = 'assets/icons/notification.svg';
   static const String ic_search = 'assets/icons/search.svg';
   static const String ic_filter = 'assets/icons/filter.svg';
+  static const String icLogo = 'assets/icons/logo.svg';
 
   //image
   static const String backgroudVideoCall =
       'assets/image/backgroudvideocall.jpg';
   // path for lottie animation
   static const String lottiePath = 'assets/anim/';
-  static const String lottieLoading = '${lottiePath}animation.loading.json';
 
   // languages
   static const String pathVN = 'assets/languages/vn.json';

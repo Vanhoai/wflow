@@ -22,26 +22,12 @@ class _HomeScreenState extends State<HomeScreen> {
   late ScrollController _hotJobScrollController;
   late ScrollController _selectionScrollController;
 
-  int choiceValue = 0;
-
   @override
   void initState() {
+    _selectionScrollController = ScrollController();
+    _hotJobScrollController = ScrollController();
+    _scrollController = ScrollController();
     super.initState();
-    _selectionScrollController = ScrollController(
-      initialScrollOffset: 0.0,
-    );
-    _hotJobScrollController = ScrollController(
-      initialScrollOffset: 0.0,
-    );
-    _scrollController = ScrollController(
-      initialScrollOffset: 0.0,
-    );
-  }
-
-  void callBackSetChoiceValue(int value) {
-    setState(() {
-      choiceValue = value;
-    });
   }
 
   @override
@@ -141,13 +127,8 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SelectionListWidget(
-              scrollController: _selectionScrollController,
-              onSelected: callBackSetChoiceValue,
-            ),
-            const RecentJobListWidget(
-              selectionValue: 0,
-            )
+            SelectionListWidget(scrollController: _selectionScrollController),
+            const RecentJobListWidget(),
           ],
           clipBehavior: Clip.none,
           cacheExtent: 1000,

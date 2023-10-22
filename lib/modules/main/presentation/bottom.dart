@@ -76,47 +76,50 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: Padding(
           padding: const EdgeInsets.only(top: 30),
-          child: AnimatedBuilder(
-            animation: _animationController,
-            builder: (context, child) {
-              return Container(
-                height: 68,
-                width: 68,
-                clipBehavior: Clip.hardEdge,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(34),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Theme.of(context).primaryColor.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: Offset(0, _animationController.value * 10),
-                    ),
-                    BoxShadow(
-                      color: Theme.of(context).primaryColor.withOpacity(0.2),
-                      blurRadius: 8,
-                      offset: Offset(0, _animationController.value * -4),
-                    ),
-                  ],
-                ),
-                child: FloatingActionButton(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  isExtended: true,
-                  onPressed: () => setState(() {
-                    currentIndex = 2;
-                  }),
-                  child: SvgPicture.asset(
-                    AppConstants.flash,
-                    height: 24,
-                    width: 24,
-                    colorFilter: const ColorFilter.mode(
-                      Color.fromARGB(255, 40, 114, 250),
-                      BlendMode.srcIn,
+          child: Visibility(
+            visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+            child: AnimatedBuilder(
+              animation: _animationController,
+              builder: (context, child) {
+                return Container(
+                  height: 68,
+                  width: 68,
+                  clipBehavior: Clip.hardEdge,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(34),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: Offset(0, _animationController.value * 10),
+                      ),
+                      BoxShadow(
+                        color: Theme.of(context).primaryColor.withOpacity(0.2),
+                        blurRadius: 8,
+                        offset: Offset(0, _animationController.value * -4),
+                      ),
+                    ],
+                  ),
+                  child: FloatingActionButton(
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+                    isExtended: true,
+                    onPressed: () => setState(() {
+                      currentIndex = 2;
+                    }),
+                    child: SvgPicture.asset(
+                      AppConstants.flash,
+                      height: 24,
+                      width: 24,
+                      colorFilter: const ColorFilter.mode(
+                        Color.fromARGB(255, 40, 114, 250),
+                        BlendMode.srcIn,
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
         bottomNavigationBar: SizedBox(

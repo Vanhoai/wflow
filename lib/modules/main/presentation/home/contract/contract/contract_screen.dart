@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/utils/constants.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/contract_card.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/search_contract.dart';
@@ -34,10 +35,7 @@ class _ContractScreenState extends State<ContractScreen> {
       result = contracts;
     } else {
       result = contracts
-          .where((contract) => contract['name']
-              .toString()
-              .toLowerCase()
-              .contains(value.toLowerCase()))
+          .where((contract) => contract['name'].toString().toLowerCase().contains(value.toLowerCase()))
           .toList();
     }
 
@@ -58,9 +56,7 @@ class _ContractScreenState extends State<ContractScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
+      appBar: const AppHeader(text: 'Works'),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,

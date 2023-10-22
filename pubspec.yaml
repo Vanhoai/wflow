@@ -54,6 +54,7 @@ dependencies:
   image_picker: ^1.0.4
   syncfusion_flutter_pdfviewer: ^20.4.54
   timelines: ^0.1.0
+  retrofit: ^4.0.3
 
 dev_dependencies:
   flutter_test:

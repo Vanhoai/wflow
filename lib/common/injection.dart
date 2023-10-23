@@ -15,6 +15,10 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
+import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/domain/post/post_repository.dart';
+import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -29,12 +33,17 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<SecureStorage>(
     () => SecureStorage(flutterSecureStorage: instance<FlutterSecureStorage>()),
   );
-  instance.registerLazySingleton<Agent>(() => Agent(secureStorage: instance.get<SecureStorage>()));
+  instance.registerFactory<Agent>(() => Agent(secureStorage: instance.get<SecureStorage>()));
 
   // auth
   instance.registerLazySingleton<AuthService>(() => AuthServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authService: instance.get<AuthService>()));
   instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
+
+  // post
+  instance.registerLazySingleton<PostService>(() => PostServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<PostRepository>(() => PostRepositoryImpl(postService: instance.get<PostService>()));
+  instance.registerLazySingleton<PostUseCase>(() => PostUseCaseImpl(postRepository: instance.get<PostRepository>()));
 
   //Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());

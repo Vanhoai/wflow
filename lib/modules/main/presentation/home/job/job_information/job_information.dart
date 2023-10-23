@@ -8,7 +8,9 @@ import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
 
 class JobInformationScreen extends StatefulWidget {
-  const JobInformationScreen({super.key});
+  const JobInformationScreen({super.key, required this.work});
+
+  final num work;
 
   @override
   State<JobInformationScreen> createState() => _JobInformationScreenState();

@@ -6,13 +6,13 @@ part 'post_entity.g.dart';
 @JsonSerializable()
 class PostEntity extends Equatable {
   final num id;
-  final num updatedAt;
+  final String updatedAt;
   final String position;
   final String title;
   final String content;
   final String duration;
   final String salary;
-  final String creatorId;
+  final num creatorId;
   final String creatorName;
   final String creatorAvatar;
   final String companyName;
@@ -43,13 +43,13 @@ class PostEntity extends Equatable {
 
   PostEntity copyWith({
     num? id,
-    num? updatedAt,
+    String? updatedAt,
     String? position,
     String? title,
     String? content,
     String? duration,
     String? salary,
-    String? creatorId,
+    num? creatorId,
     String? creatorName,
     String? creatorAvatar,
     String? companyName,

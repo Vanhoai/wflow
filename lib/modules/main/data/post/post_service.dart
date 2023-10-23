@@ -8,7 +8,9 @@ abstract class PostService {
   Future<List<PostEntity>> getRecentJob();
   Future<List<PostEntity>> getHotJob();
   Future<List<CategoryEntity>> getPostCategories();
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request);
+  Future<PostEntity> getPostId(String id);
 }
 
 class PostServiceImpl implements PostService {
@@ -80,7 +82,8 @@ class PostServiceImpl implements PostService {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request) async {
     try {
       final response = await agent.dio.get(
         '/post/finds-by-category',
@@ -91,18 +94,36 @@ class PostServiceImpl implements PostService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }
 
-      List<PostEntity> posts = httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
+      List<PostEntity> posts =
+          httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
         meta: httpResponse.meta,
         data: posts,
       );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<PostEntity> getPostId(String id) async {
+    try {
+      final response = await agent.dio.get(
+        '/post/find/$id',
+      );
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+      return PostEntity.fromJson(httpResponse.data);
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

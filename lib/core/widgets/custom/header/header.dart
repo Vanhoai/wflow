@@ -42,9 +42,6 @@ class _HeaderState extends State<Header> {
         mainAxisSize: MainAxisSize.max,
         children: <Widget>[
           Builder(builder: (context) {
-            if (widget.leadingSize > 30) {
-              return Container();
-            }
             return InkWell(
               onTap: widget.onTapLeading,
               highlightColor: Theme.of(context).colorScheme.background,

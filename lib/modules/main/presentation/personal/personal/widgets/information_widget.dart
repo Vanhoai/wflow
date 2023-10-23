@@ -50,7 +50,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                 ),
               ),
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 20),
             IntrinsicHeight(
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -110,7 +110,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                 ],
               ),
             ),
-            const SizedBox(height: 50),
+            const SizedBox(height: 24),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
@@ -124,16 +124,16 @@ class _InformationWidgetState extends State<InformationWidget> {
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: InkWell(
                           onTap: () => Navigator.of(context).pushNamed(RouteKeys.securityScreen),
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                           child: Center(
                             child: Text(
                               'Security',
@@ -153,16 +153,16 @@ class _InformationWidgetState extends State<InformationWidget> {
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: InkWell(
                           onTap: () {},
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                           child: Center(
                             child: Text(
                               'Edit',
@@ -182,16 +182,16 @@ class _InformationWidgetState extends State<InformationWidget> {
                       elevation: 3.0,
                       shadowColor: themeData.colorScheme.onBackground,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0),
+                        borderRadius: BorderRadius.circular(4.0),
                       ),
                       child: Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                         ),
                         child: InkWell(
                           onTap: widget.morePressed,
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(4),
                           child: Center(
                             child: Text(
                               'More',

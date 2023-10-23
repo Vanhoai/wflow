@@ -70,16 +70,6 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                 const SizedBox(width: 8.0),
               ],
             ),
-            skill: const [
-              'Flutter',
-              'Dart',
-              'Firebase',
-              'Dart',
-              'Firebase',
-              'Dart',
-              'Firebase',
-            ],
-            labelSkill: true,
             cost: '1000\$',
             duration: '1 month',
             description: TextMore(
@@ -90,10 +80,6 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                 color: themeData.colorScheme.onBackground,
               )),
             ),
-            progress: const [
-              '1.5 years of experience in Flutter',
-            ],
-            showMore: true,
           );
         },
         separatorBuilder: (context, index) {

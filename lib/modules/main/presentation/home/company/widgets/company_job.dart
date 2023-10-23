@@ -1,30 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
-class RecentJobListWidget extends StatefulWidget {
-  const RecentJobListWidget({super.key});
+class CompanyJobPostWidget extends StatefulWidget {
+  const CompanyJobPostWidget({super.key});
 
   @override
-  State<RecentJobListWidget> createState() => _RecentJobListWidgetState();
+  State<CompanyJobPostWidget> createState() => _CompanyJobPostWidgetState();
 }
 
-class _RecentJobListWidgetState extends State<RecentJobListWidget> {
-  void pressCard() {
-    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
-  }
-
+class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return SliverPadding(
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-      sliver: SliverList.separated(
+
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 20),
+      child: ListView.separated(
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (context, index) {
           return JobCard(
-            cardPressed: pressCard,
+            margin: const EdgeInsets.symmetric(horizontal: 20),
             boxDecoration: BoxDecoration(
               color: themeData.colorScheme.background,
               borderRadius: BorderRadius.circular(8.0),
@@ -44,18 +41,17 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
             padding: const EdgeInsets.all(12),
             header: Header(
               title: Text(
-                'Flutter Developer',
+                'Tran Van Hoai',
                 style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                  fontSize: 18,
                   color: themeData.colorScheme.onBackground,
                 )),
               ),
               onTapTitle: () {},
               onTapLeading: () {},
               subtitle: Text(
-                'Google',
+                'hoai',
                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                  color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                  color: themeData.colorScheme.onBackground,
                 )),
               ),
               leadingSize: 30,
@@ -87,12 +83,12 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
             cost: '1000\$',
             duration: '1 month',
             description: TextMore(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-              style: themeData.textTheme.displayMedium!.merge(
-                TextStyle(
-                  color: themeData.colorScheme.onBackground,
-                ),
-              ),
+              'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+              trimMode: TrimMode.Hidden,
+              trimHiddenMaxLines: 2,
+              style: themeData.textTheme.displaySmall!.merge(TextStyle(
+                color: themeData.colorScheme.onBackground,
+              )),
             ),
             progress: const [
               '1.5 years of experience in Flutter',

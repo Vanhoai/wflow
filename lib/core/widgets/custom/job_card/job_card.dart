@@ -36,8 +36,8 @@ class JobCard extends StatefulWidget {
     this.progress = const [],
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
-    this.skillCallback,
     this.cardPressed,
+    this.isShowSkill = true,
   });
 
   final Widget header;
@@ -49,14 +49,14 @@ class JobCard extends StatefulWidget {
   final Decoration boxDecoration;
   final Duration showMoreDuration;
   final bool labelSkill;
+  final bool isShowSkill;
   final List<String> skill;
   final String poster;
   final List<String> progress;
   final EdgeInsets padding;
   final EdgeInsets margin;
-
-  final Function(String)? skillCallback;
   final Function()? cardPressed;
+
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -234,26 +234,24 @@ class _JobCardState extends State<JobCard> {
                       ),
                     )
                   : const SizedBox(),
-              kSpaceVertical(context),
-              Builder(
-                builder: (context) {
-                  if (widget.skill.isEmpty) return const SizedBox();
-                  return SizedBox(
-                    height: 32,
-                    child: ListView.separated(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: widget.skill.length,
-                      separatorBuilder: (context, index) => const SizedBox(width: 8),
-                      itemBuilder: (context, index) {
-                        return InkWell(
-                          onTap: () {
-                            if (widget.skillCallback != null) {
-                              widget.skillCallback!(widget.skill[index]);
-                            }
-                          },
-                          borderRadius: BorderRadius.circular(6),
-                          child: Container(
+              Visibility(
+                visible: widget.isShowSkill,
+                child: kSpaceVertical(context),
+              ),
+              Visibility(
+                visible: widget.isShowSkill,
+                child: Builder(
+                  builder: (context) {
+                    if (widget.skill.isEmpty) return const SizedBox();
+                    return SizedBox(
+                      height: 32,
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.skill.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
+                        itemBuilder: (context, index) {
+                          return Container(
                             decoration: BoxDecoration(
                               color: Colors.transparent,
                               borderRadius: BorderRadius.circular(6),
@@ -277,12 +275,12 @@ class _JobCardState extends State<JobCard> {
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                },
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
               Builder(
                 builder: (context) {

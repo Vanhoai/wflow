@@ -1,4 +1,4 @@
-export 'hot_job_list_widget.dart';
-export 'navigate_feat_widget.dart';
-export 'recent_job_list_widget.dart';
-export 'selection_list_widget.dart';
+export 'hot_job.dart';
+export 'navigate_feat.dart';
+export 'recent_job.dart';
+export 'selection.dart';

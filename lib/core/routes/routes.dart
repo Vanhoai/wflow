@@ -63,7 +63,8 @@ class AppRoutes {
         return MaterialPageRoute(
             builder: (_) => const CandidateContractScreen());
       case RouteKeys.jobInformationScreen:
-        return MaterialPageRoute(builder: (_) => const JobInformationScreen());
+        final work = settings.arguments as num;
+        return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
         return MaterialPageRoute(builder: (_) => const CandidateListScreen());
       case RouteKeys.createContractScreen:
@@ -95,6 +96,7 @@ class AppRoutes {
       case RouteKeys.upgradeBusinessScreen:
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
+        return MaterialPageRoute(builder: (_) => const CompanyScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

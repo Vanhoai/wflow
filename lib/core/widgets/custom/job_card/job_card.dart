@@ -36,8 +36,8 @@ class JobCard extends StatefulWidget {
     this.progress = const [],
     this.padding = const EdgeInsets.all(0),
     this.margin = const EdgeInsets.all(0),
-    this.skillCallback,
     this.cardPressed,
+    this.isShowSkill = true,
   });
 
   final Widget header;
@@ -49,14 +49,14 @@ class JobCard extends StatefulWidget {
   final Decoration boxDecoration;
   final Duration showMoreDuration;
   final bool labelSkill;
+  final bool isShowSkill;
   final List<String> skill;
   final String poster;
   final List<String> progress;
   final EdgeInsets padding;
   final EdgeInsets margin;
-
-  final Function(String)? skillCallback;
   final Function()? cardPressed;
+
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -234,50 +234,53 @@ class _JobCardState extends State<JobCard> {
                       ),
                     )
                   : const SizedBox(),
-              kSpaceVertical(context),
-              Builder(
-                builder: (context) {
-                  if (widget.skill.isEmpty) return const SizedBox();
-                  return Wrap(
-                    spacing: 8.0,
-                    runSpacing: 4.0,
-                    children: widget.skill.map((e) {
-                      return InkWell(
-                        onTap: () {
-                          if (widget.skillCallback != null) {
-                            widget.skillCallback!(e);
-                          }
-                        },
-                        borderRadius: BorderRadius.circular(6),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.transparent,
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                              width: 0.5,
-                            ),
-                          ),
-                          width: 72,
-                          height: 32,
-                          child: Center(
-                            child: Text(
-                              e,
-                              style: themeData.textTheme.displaySmall!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).colorScheme.onBackground,
-                                ),
+              Visibility(
+                visible: widget.isShowSkill,
+                child: kSpaceVertical(context),
+              ),
+              Visibility(
+                visible: widget.isShowSkill,
+                child: Builder(
+                  builder: (context) {
+                    if (widget.skill.isEmpty) return const SizedBox();
+                    return SizedBox(
+                      height: 32,
+                      child: ListView.separated(
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.horizontal,
+                        itemCount: widget.skill.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
+                        itemBuilder: (context, index) {
+                          return Container(
+                            decoration: BoxDecoration(
+                              color: Colors.transparent,
+                              borderRadius: BorderRadius.circular(6),
+                              border: Border.all(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                width: 0.5,
                               ),
-                              textAlign: TextAlign.center,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
                             ),
-                          ),
-                        ),
-                      );
-                    }).toList(),
-                  );
-                },
+                            width: 72,
+                            height: 32,
+                            child: Center(
+                              child: Text(
+                                widget.skill[index],
+                                style: themeData.textTheme.displaySmall!.merge(
+                                  TextStyle(
+                                    color: Theme.of(context).colorScheme.onBackground,
+                                  ),
+                                ),
+                                textAlign: TextAlign.center,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
+                ),
               ),
               Builder(
                 builder: (context) {
@@ -300,10 +303,12 @@ class _JobCardState extends State<JobCard> {
                               ),
                             ),
                             kSpaceVertical(context),
-                            Text(widget.poster,
-                                style: themeData.textTheme.displaySmall!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                ))),
+                            Text(
+                              widget.poster,
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
+                            ),
                             kSpaceVertical(context),
                             TextButton(
                               onPressed: () {},
@@ -314,7 +319,7 @@ class _JobCardState extends State<JobCard> {
                               ),
                               child: Text(
                                 'Connect',
-                                style: themeData.textTheme.displaySmall!.merge(
+                                style: themeData.textTheme.displayMedium!.merge(
                                   const TextStyle(
                                     color: Colors.green,
                                   ),
@@ -329,10 +334,12 @@ class _JobCardState extends State<JobCard> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(staticTitle[5],
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                ))),
+                            Text(
+                              staticTitle[5],
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
+                            ),
                             kSpaceVertical(context),
                             ListView.separated(
                               shrinkWrap: true,
@@ -353,7 +360,7 @@ class _JobCardState extends State<JobCard> {
                                     Expanded(
                                       child: Text(
                                         widget.progress[index],
-                                        style: themeData.textTheme.displaySmall!.merge(
+                                        style: themeData.textTheme.displayMedium!.merge(
                                           TextStyle(
                                             color: themeData.colorScheme.onBackground,
                                           ),

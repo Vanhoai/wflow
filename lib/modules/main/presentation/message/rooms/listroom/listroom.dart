@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
-import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/message/rooms/header/bloc/event.dart';
 
 class Room {
   final String image;
@@ -17,7 +13,7 @@ class Room {
   Room({required this.image, required this.name, required this.lastMessage, required this.createAt});
 }
 
-List<Room> Data = [
+List<Room> data = [
   Room(
     image:
         'https://images.pexels.com/photos/18070630/pexels-photo-18070630/free-photo-of-tuy-t-hoang-hon-th-i-trang-b-bi-n.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
@@ -39,18 +35,11 @@ class ListRoom extends StatefulWidget {
 class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
-    return Listener(
-      onPointerDown: (PointerDownEvent event) {
-        FocusManager.instance.primaryFocus?.unfocus();
-        if (!context.read<HeaderRoomsBloc>().state.showSearch) return;
-        context.read<HeaderRoomsBloc>().add(ShowSearchEvent(show: false));
+    return ListView.builder(
+      itemCount: data.length,
+      itemBuilder: (context, index) {
+        return _room(data[index]);
       },
-      child: ListView.builder(
-        itemCount: Data.length,
-        itemBuilder: (context, index) {
-          return _room(Data[index]);
-        },
-      ),
     );
   }
 
@@ -85,7 +74,7 @@ class _ListRoomState extends State<ListRoom> {
                     child: Text(
                       room.name,
                       overflow: TextOverflow.ellipsis,
-                      style: textTitle(size: 18, fontWeight: FontWeight.w500),
+                      style: Theme.of(context).textTheme.titleLarge,
                     ),
                   ),
                   Row(
@@ -98,14 +87,14 @@ class _ListRoomState extends State<ListRoom> {
                           child: Text(
                             room.lastMessage,
                             overflow: TextOverflow.ellipsis,
-                            style: textTitle(size: 14, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
+                            style: Theme.of(context).textTheme.bodyLarge,
                           ),
                         ),
                       ),
                       Text(
                         instance.get<Time>().getHourMinute(room.createAt),
                         overflow: TextOverflow.ellipsis,
-                        style: textTitle(size: 12, fontWeight: FontWeight.w400, colors: AppColors.fadeText),
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.textGrey),
                       ),
                     ],
                   )

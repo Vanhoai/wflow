@@ -1,16 +1,11 @@
-import 'dart:async';
-
-import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/boxchat/boxchat.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/mainchat.dart';
@@ -25,44 +20,19 @@ class MessageScreen extends StatefulWidget {
 }
 
 class _MessageScreenState extends State<MessageScreen> {
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-    requestPermissions();
-  }
-
-  // đem ra màn hinh bottom navigation screen
-  FutureOr<void> requestPermissions() async {
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-    deviceInfoPlugin.androidInfo.then((value) async {
-      if (value.version.sdkInt >= 31) {
-        Map<Permission, PermissionStatus> statuses = await [
-          Permission.camera,
-          Permission.microphone,
-          Permission.bluetoothConnect,
-        ].request();
-        print(statuses);
-      } else {
-        Map<Permission, PermissionStatus> statuses = await [
-          Permission.camera,
-          Permission.microphone,
-        ].request();
-        print(statuses);
-      }
-    });
-  }
-
   void callTapped({required bool isVideoCall, required StringeeObjectEventType callType}) {
     if (!instance.get<StringeeClient>().hasConnected) return;
-    Navigator.of(context).pushNamed(RouteKeys.callScreen,
-        arguments: ArgumentsCall(
-            client: instance.get<StringeeClient>(),
-            toUserId: 'teo',
-            fromUserId: instance.get<StringeeClient>().userId!,
-            callType: callType,
-            showIncomingUi: false,
-            isVideoCall: isVideoCall));
+    Navigator.of(context).pushNamed(
+      RouteKeys.callScreen,
+      arguments: ArgumentsCall(
+        client: instance.get<StringeeClient>(),
+        toUserId: 'teo',
+        fromUserId: instance.get<StringeeClient>().userId!,
+        callType: callType,
+        showIncomingUi: false,
+        isVideoCall: isVideoCall,
+      ),
+    );
   }
 
   @override
@@ -129,7 +99,7 @@ class _MessageScreenState extends State<MessageScreen> {
                               child: Text(
                                 'Chị HR không tuyển dụng không tuyển Huy',
                                 overflow: TextOverflow.ellipsis,
-                                style: textTitle(fontWeight: FontWeight.w700, size: 14),
+                                style: Theme.of(context).textTheme.titleLarge,
                               ),
                             )
                           ],

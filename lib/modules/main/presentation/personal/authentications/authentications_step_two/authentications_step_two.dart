@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/appbar/appbar_back_title.dart';
-import 'package:wflow/core/widgets/style/textfieldstyle.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/loading/loading.dart';
 
 class AuthStepTwoScreen extends StatelessWidget {
   const AuthStepTwoScreen({super.key});
@@ -13,47 +13,40 @@ class AuthStepTwoScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          appBar: const Header(
-            text: "Verify account",
+          appBar: const AppHeader(
+            text: 'Verify account',
           ),
           body: Container(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Bước 2/3',
-                      style: textTitle(
-                          colors: AppColors.primary,
-                          fontWeight: FontWeight.w500,
-                          size: 12)),
+                  Text('Bước 2/3', style: Theme.of(context).textTheme.displayLarge),
                   Padding(
                       padding: const EdgeInsets.only(top: 27, bottom: 12),
-                      child: Text('Chụp mặt sau giấy tờ tùy thân',
-                          style: textTitle(
-                              size: 16, fontWeight: FontWeight.w500))),
+                      child: Text('Chụp mặt sau giấy tờ tùy thân', style: Theme.of(context).textTheme.displayMedium)),
                   const SizedBox(
                     height: 12,
                   ),
                   Container(
-                      alignment: Alignment.center,
-                      height: 213,
-                      decoration: BoxDecoration(
-                          color: AppColors.fade,
-                          borderRadius: BorderRadius.circular(8)),
-                      child: const SizedBox()
-                      // ? Image(
-                      //     loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                      //       if (loadingProgress == null) return child;
-                      //       return const Center(
-                      //           child: Loading(
-                      //         height: 24,
-                      //         width: 24,
-                      //       ));
-                      //     },
-                      //     fit: BoxFit.cover,
-                      //     image: FileImage(File("")))
-                      // : null,
-                      ),
+                    alignment: Alignment.center,
+                    height: 213,
+                    decoration: BoxDecoration(color: AppColors.fade, borderRadius: BorderRadius.circular(8)),
+                    child: null,
+                    // child: false
+                    //     ? Image(
+                    //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    //           if (loadingProgress == null) return child;
+                    //           return const Center(
+                    //               child: Loading(
+                    //             height: 24,
+                    //             width: 24,
+                    //           ));
+                    //         },
+                    //         fit: BoxFit.cover,
+                    //         image: FileImage(File('')))
+                    //     : null,
+                  ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 13),
                     alignment: Alignment.center,
@@ -75,10 +68,7 @@ class AuthStepTwoScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh hợp lệ',
-                                  style: textTitle(
-                                      size: 12,
-                                      colors: AppColors.greenColor,
-                                      fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.displayMedium,
                                 )
                               ],
                             );
@@ -96,10 +86,7 @@ class AuthStepTwoScreen extends StatelessWidget {
                                 ),
                                 Text(
                                   'Ảnh không hợp lệ',
-                                  style: textTitle(
-                                      size: 12,
-                                      colors: AppColors.redColor,
-                                      fontWeight: FontWeight.w400),
+                                  style: Theme.of(context).textTheme.displayMedium,
                                 )
                               ],
                             );
@@ -117,7 +104,7 @@ class AuthStepTwoScreen extends StatelessWidget {
                       borderRadius:
                           const BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {
-                        print("Lấy hình");
+                        print('Lấy hình');
                       },
                       child: Ink(
                         padding: const EdgeInsets.only(
@@ -141,10 +128,7 @@ class AuthStepTwoScreen extends StatelessWidget {
                             ),
                             Text(
                               'CHỤP ẢNH',
-                              style: textTitle(
-                                  size: 12,
-                                  colors: AppColors.primary,
-                                  fontWeight: FontWeight.w500),
+                              style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                             )
                           ],
                         ),

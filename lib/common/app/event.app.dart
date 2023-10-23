@@ -22,5 +22,14 @@ class AppChangeTheme extends AppEvent {
   @override
   List<Object?> get props => [isDarkMode];
 }
-class SetIsFirstTime extends AppEvent{
+
+class SetIsFirstTime extends AppEvent {}
+
+class AppChangeAuth extends AppEvent {
+  final AuthEntity authEntity;
+
+  AppChangeAuth({required this.authEntity});
+
+  @override
+  List<Object?> get props => [authEntity];
 }

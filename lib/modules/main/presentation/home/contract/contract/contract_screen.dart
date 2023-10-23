@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/utils/constants.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/contract_card.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/search_contract.dart';
@@ -27,7 +28,7 @@ class _ContractScreenState extends State<ContractScreen> {
     super.dispose();
   }
 
-  void onChangedSearch(String value) {
+  void _onChangedSearch(String value) {
     List<Map<String, dynamic>> result = [];
 
     if (value.isEmpty) {
@@ -44,7 +45,7 @@ class _ContractScreenState extends State<ContractScreen> {
     });
   }
 
-  void onClearSearch() {
+  void _onClearSearch() {
     setState(() {
       _isHiddenSuffixIcon = true;
       foundContracts = contracts;
@@ -55,9 +56,7 @@ class _ContractScreenState extends State<ContractScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
+      appBar: const AppHeader(text: 'Works'),
       body: SizedBox(
         width: double.infinity,
         height: double.infinity,
@@ -66,8 +65,8 @@ class _ContractScreenState extends State<ContractScreen> {
             SearchContract(
               controller: _controller,
               isHiddenSuffixIcon: _isHiddenSuffixIcon,
-              onChangedSearch: onChangedSearch,
-              onClearSearch: onClearSearch,
+              onChangedSearch: (value) => _onChangedSearch(value),
+              onClearSearch: () => _onClearSearch,
             ),
             Expanded(
               child: ListView.builder(

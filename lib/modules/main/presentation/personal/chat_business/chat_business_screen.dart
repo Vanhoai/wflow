@@ -33,7 +33,12 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
     if (value.isEmpty) {
       result = users;
     } else {
-      result = users.where((user) => user['name'].toString().toLowerCase().contains(value.toLowerCase())).toList();
+      result = users
+          .where((user) => user['name']
+              .toString()
+              .toLowerCase()
+              .contains(value.toLowerCase()))
+          .toList();
     }
 
     setState(() {
@@ -70,6 +75,7 @@ class _ChatBusinessScreenState extends State<ChatBusinessScreen> {
             ),
             Expanded(
               child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
                 itemCount: foundUsers.length,
                 itemBuilder: ((context, index) {
                   return ChatBusinessCard(

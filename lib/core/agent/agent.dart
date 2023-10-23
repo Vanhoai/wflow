@@ -1,4 +1,6 @@
 import 'package:dio/dio.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
 
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -11,7 +13,7 @@ class Agent {
     dio.options = generateOptions();
 
     InterceptorsWrapper interceptorsWrapper = InterceptorsWrapper(onRequest: (options, handler) async {
-      final accessToken = await secureStorage.read(AppConstants.accessTokenKey);
+      final accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
       options.headers = {
         ...options.headers,
         'Authorization': 'Bearer $accessToken',

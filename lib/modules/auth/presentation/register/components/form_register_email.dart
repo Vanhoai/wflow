@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-import 'package:wflow/core/widgets/textfield/text_field_from.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
 
 class FormRegisterEmail extends StatefulWidget {
   const FormRegisterEmail({Key? key}) : super(key: key);
@@ -40,7 +40,6 @@ class _FormState extends State<FormRegisterEmail> {
           key: _key,
           child: Column(
             children: [
-              //Email
               TextFieldFrom(
                 label: 'Email',
                 controller: emailController,
@@ -53,7 +52,6 @@ class _FormState extends State<FormRegisterEmail> {
                       fit: BoxFit.cover, colorFilter: const ColorFilter.mode(Colors.green, BlendMode.srcIn)),
                 ),
               ),
-              //Pass
               TextFieldFrom(
                 controller: passwordController,
                 label: 'Mật khẩu',
@@ -77,7 +75,7 @@ class _FormState extends State<FormRegisterEmail> {
                 isPassword: true,
               ),
               const SizedBox(height: 30),
-              PrimaryButton(onPressed: () {}, label: "Đăng ký", height: 64),
+              PrimaryButton(onPressed: () {}, label: 'Đăng ký', height: 64),
             ],
           )),
     );

@@ -5,7 +5,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
-import 'package:wflow/core/widgets/button/circle_button.dart';
+import 'package:wflow/core/widgets/custom/button/circle_button.dart';
 
 // ignore: must_be_immutable
 class CallScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class CallScreen extends StatefulWidget {
   bool _showIncomingUi = false;
   bool _isVideoCall = false;
   late bool nameShow = false;
-  CallScreen({Key? key,required ArgumentsCall argumentsCall}) : super(key: key) {
+  CallScreen({Key? key, required ArgumentsCall argumentsCall}) : super(key: key) {
     _client = argumentsCall.client;
     _fromUserId = argumentsCall.fromUserId;
     _toUserId = argumentsCall.toUserId;
@@ -32,7 +32,6 @@ class CallScreen extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _CallScreenState();
   }
 }
@@ -46,12 +45,10 @@ class _CallScreenState extends State<CallScreen> {
   Widget? localScreen;
   Widget? remoteScreen;
 
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-      FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
 
     _isSpeaker = widget._isVideoCall;
@@ -185,28 +182,26 @@ class _CallScreenState extends State<CallScreen> {
                         builder: (context, constraints) {
                           return widget._isVideoCall
                               ? Row(
-                                children: [
-                                  CircleButton(
-                                      icon: _isVideoEnable
-                                          ? const Icon(
-                                        Icons.videocam_off,
-                                        color: Colors.white,
-                                        size: 28,
-                                      )
-                                          : const Icon(
-                                        Icons.videocam,
-                                        color: Colors.black,
-                                        size: 28,
-                                      ),
-                                      primary: _isVideoEnable
-                                          ? Colors.white54
-                                          : Colors.white,
-                                      onPressed: toggleVideo),
-                                  const SizedBox(
-                                    width: 30,
-                                  ),
-                                ],
-                              )
+                                  children: [
+                                    CircleButton(
+                                        icon: _isVideoEnable
+                                            ? const Icon(
+                                                Icons.videocam_off,
+                                                color: Colors.white,
+                                                size: 28,
+                                              )
+                                            : const Icon(
+                                                Icons.videocam,
+                                                color: Colors.black,
+                                                size: 28,
+                                              ),
+                                        primary: _isVideoEnable ? Colors.white54 : Colors.white,
+                                        onPressed: toggleVideo),
+                                    const SizedBox(
+                                      width: 30,
+                                    ),
+                                  ],
+                                )
                               : const Visibility(visible: false, child: SizedBox.shrink());
                         },
                       ),

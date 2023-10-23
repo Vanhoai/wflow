@@ -14,6 +14,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     on<AppChangeLanguage>(onAppChangeLanguage);
     on<AppChangeTheme>(onAppChangeTheme);
     on<SetIsFirstTime>(setIsFirstTime);
+    on<AppChangeAuth>(onAppChangeAuth);
   }
 
   static AppState onInit() {
@@ -25,6 +26,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
       authEntity: AuthEntity(
         accessToken: '',
         refreshToken: '',
+        isSignIn: false,
         user: User(id: 0, name: '', role: 0, age: 0, address: '', email: '', phone: '', isVerify: false, avatar: ''),
       ),
     );
@@ -39,7 +41,13 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
   }
 
+  FutureOr<void> setIsFirstTime(SetIsFirstTime event, Emitter<AppState> emit) {
+    emit(state.copyWith(isFirstTime: false));
+  }
 
+  FutureOr<void> onAppChangeAuth(AppChangeAuth event, Emitter<AppState> emit) {
+    emit(state.copyWith(authEntity: event.authEntity));
+  }
 
   @override
   AppState? fromJson(Map<String, dynamic> json) {
@@ -49,9 +57,5 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   @override
   Map<String, dynamic>? toJson(AppState state) {
     return state.toJson();
-  }
-
-  FutureOr<void> setIsFirstTime(SetIsFirstTime event, Emitter<AppState> emit) {
-    emit(state.copyWith(isFirstTime: false));
   }
 }

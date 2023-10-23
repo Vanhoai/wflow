@@ -7,11 +7,13 @@ part 'auth_entity.g.dart';
 class AuthEntity extends Equatable {
   final String accessToken;
   final String refreshToken;
+  final bool isSignIn;
   final User user;
 
   const AuthEntity({
     required this.accessToken,
     required this.refreshToken,
+    required this.isSignIn,
     required this.user,
   });
 
@@ -22,17 +24,19 @@ class AuthEntity extends Equatable {
   AuthEntity copyWith({
     String? accessToken,
     String? refreshToken,
+    bool? isSignIn,
     User? user,
   }) {
     return AuthEntity(
       accessToken: accessToken ?? this.accessToken,
       refreshToken: refreshToken ?? this.refreshToken,
+      isSignIn: isSignIn ?? this.isSignIn,
       user: user ?? this.user,
     );
   }
 
   @override
-  List<Object?> get props => [accessToken, refreshToken, user];
+  List<Object?> get props => [accessToken, refreshToken, isSignIn, user];
 }
 
 @JsonSerializable()

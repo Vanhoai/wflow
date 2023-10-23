@@ -56,11 +56,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     response.fold(
       (AuthEntity left) {
-        instance.get<AppBloc>().state.copyWith(authEntity: left);
+        instance.get<AppBloc>().add(AppChangeAuth(authEntity: left));
         emit(SignInSuccess());
       },
       (Failure right) {
-        emit(SignInFailure(message: right.message));
+        emit(const SignInFailure(message: 'Something went wrong when sign in, please try again!'));
+        emit(const SignInState());
       },
     );
 

@@ -135,8 +135,9 @@ class _ExploreCardTileState extends State<ExploreCardTile> with SingleTickerProv
                 ),
                 Container(
                   decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.background,
                     border: Border.all(
-                      color: Theme.of(context).colorScheme.onBackground,
+                      color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
                       width: 2,
                       style: BorderStyle.solid,
                     ),

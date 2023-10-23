@@ -9,6 +9,7 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
@@ -54,14 +55,12 @@ class AppRoutes {
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => CreateAccountScreen(
-              createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
+          builder: (_) => CreateAccountScreen(createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
-        return MaterialPageRoute(
-            builder: (_) => const CandidateContractScreen());
+        return MaterialPageRoute(builder: (_) => const CandidateContractScreen());
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
         return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));

@@ -1,42 +1,41 @@
 {
   "project_info": {
-    "project_number": "40145309512",
-    "project_id": "wflow-5100c",
-    "storage_bucket": "wflow-5100c.appspot.com"
+    "project_number": "1077579337878",
+    "project_id": "wflow-35849",
+    "storage_bucket": "wflow-35849.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:40145309512:android:1c0382d86baa7b46192d7d",
+        "mobilesdk_app_id": "1:1077579337878:android:11565aa5fc04f9faec32b7",
         "android_client_info": {
           "package_name": "com.flow.wflow"
         }
       },
       "oauth_client": [
         {
-          "client_id": "40145309512-aos1v7jqk5nqlm8p1unchv1br53q44vt.apps.googleusercontent.com",
+          "client_id": "1077579337878-gt7901c4kt2k39h9m2lv71jcmb35furk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.flow.wflow",
-            "certificate_hash": "633df8e9aa0d3ef49da1f6c24d11ca194d4ab66a"
+            "certificate_hash": "48bc276d872237842eab6b48c5922b441a4e664d"
           }
-        },
-        {
-          "client_id": "40145309512-n7nh8t7e0ktimlfddovqjjuceiu467n8.apps.googleusercontent.com",
-          "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDDomvmFprT8CJhdjiNEtmBoo-crtFl_pQ"
+          "current_key": "AIzaSyAfoz8flhqizZVsDDvtlimWK6mf75qqUus"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "40145309512-n7nh8t7e0ktimlfddovqjjuceiu467n8.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "1077579337878-qg9hklc7k7015l28qgpodq1uiilh3iqs.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.flow.wflow"
+              }
             }
           ]
         }

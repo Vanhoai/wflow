@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 
 class SettingScreen extends StatefulWidget {
@@ -22,6 +23,7 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
+      appBar: const AppHeader(text: 'Setting'),
       hideKeyboardWhenTouchOutside: true,
       body: RefreshIndicator(
         onRefresh: () async {
@@ -35,20 +37,6 @@ class _SettingScreenState extends State<SettingScreen> {
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-              title: Text(
-                'Setting',
-                style: themeData.textTheme.displayLarge,
-              ),
-              surfaceTintColor: Colors.transparent,
-              pinned: true,
-              centerTitle: true,
-            ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
               sliver: SliverToBoxAdapter(

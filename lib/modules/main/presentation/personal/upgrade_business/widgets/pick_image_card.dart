@@ -21,6 +21,8 @@ class PickImageCard extends StatefulWidget {
 class _PickImageCardState extends State<PickImageCard> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return Container(
       width: double.infinity,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 29.42,
@@ -29,26 +31,28 @@ class _PickImageCardState extends State<PickImageCard> {
       ),
       child: widget.isImage
           ? Image.file(widget.image!)
-          : Material(
-              borderRadius: BorderRadius.circular(8),
-              color: Colors.grey.shade200,
+          : Container(
+              decoration: BoxDecoration(
+                color: themeData.colorScheme.onBackground.withOpacity(0.05),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: InkWell(
                 onTap: () => widget.pickImage(),
                 borderRadius: BorderRadius.circular(8),
-                child: const Column(
+                child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     Icon(
                       Icons.cloud_upload_outlined,
-                      size: 32,
-                      color: Color(0XFFABABAB),
+                      size: 24,
+                      color: themeData.colorScheme.onBackground.withOpacity(0.8),
                     ),
                     Text(
                       'Upload here',
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.normal,
-                        color: Color(0XFFB8B8B8),
+                        color: themeData.colorScheme.onBackground.withOpacity(0.8),
                       ),
                     ),
                   ],

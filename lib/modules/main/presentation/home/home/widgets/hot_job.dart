@@ -5,6 +5,7 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HowJobListWidget extends StatefulWidget {
   const HowJobListWidget({super.key, required this.scrollController});
@@ -30,95 +31,236 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
           builder: (context, state) {
             return LayoutBuilder(
               builder: (context, constraints) {
-                return ListView.builder(
-                  controller: widget.scrollController,
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.horizontal,
-                  shrinkWrap: true,
-                  itemCount: state.hotJobs.length,
-                  padding: const EdgeInsets.only(left: 20.0),
-                  itemBuilder: (context, index) {
-                    final job = state.hotJobs[index];
+                return Visibility(
+                  visible: !state.isLoading,
+                  replacement: Shimmer.fromColors(
+                    baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                    highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                    child: ListView.builder(
+                      itemCount: 5,
+                      padding: const EdgeInsets.only(left: 20.0),
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return Container(
+                          height: constraints.maxHeight,
+                          width: constraints.maxWidth * 0.8,
+                          margin: const EdgeInsets.only(right: 20),
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(8.0),
+                            border: Border.all(
+                              color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                              width: 1,
+                            ),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Row(
+                                children: [
+                                  const CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 32,
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      children: [
+                                        Container(
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius: BorderRadius.circular(4.0),
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Container(
+                                          height: 20,
+                                          decoration: BoxDecoration(
+                                            borderRadius: BorderRadius.circular(4.0),
+                                            color: Colors.white,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4.0),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    height: 20,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Container(
+                                    height: 20,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Expanded(
+                                    child: Container(
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4.0),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 8),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Container(
+                                      height: 20,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(4.0),
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Container(
+                                    height: 20,
+                                    width: 80,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(4.0),
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(height: 20),
+                              Expanded(
+                                child: Container(
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(width: 20),
+                    controller: widget.scrollController,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.horizontal,
+                    shrinkWrap: true,
+                    itemCount: state.hotJobs.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    itemBuilder: (context, index) {
+                      final job = state.hotJobs[index];
 
-                    return Container(
-                      width: constraints.maxWidth * 0.8,
-                      height: constraints.maxHeight,
-                      margin: const EdgeInsets.only(right: 20),
-                      padding: const EdgeInsets.symmetric(vertical: 8.0),
-                      child: JobCard(
-                        boxDecoration: BoxDecoration(
-                          color: themeData.colorScheme.background,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        cardPressed: () => pressCard(job.id),
-                        padding: const EdgeInsets.all(12),
-                        header: Header(
-                          leadingPhotoUrl: job.companyLogo,
-                          title: Text(
-                            job.position,
-                            style: themeData.textTheme.displayLarge!.merge(
-                              TextStyle(
-                                fontSize: 18,
-                                color: themeData.colorScheme.onBackground,
-                                fontWeight: FontWeight.w400,
+                      return Container(
+                        width: constraints.maxWidth * 0.8,
+                        height: constraints.maxHeight,
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        child: JobCard(
+                          isHorizontal: true,
+                          boxDecoration: BoxDecoration(
+                            color: themeData.colorScheme.background,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
-                          ),
-                          subtitle: Text(
-                            job.companyName,
-                            style: themeData.textTheme.displayMedium!.merge(
-                              TextStyle(
-                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                                fontWeight: FontWeight.w400,
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
+                            ],
                           ),
-                          onTapTitle: () {},
-                          onTapLeading: () {},
-                          leadingSize: 30,
-                          actions: [
-                            InkWell(
-                              child: SvgPicture.asset(
-                                AppConstants.bookmark,
-                                height: 24,
-                                width: 24,
-                                colorFilter: ColorFilter.mode(
-                                  themeData.colorScheme.onBackground.withOpacity(0.5),
-                                  BlendMode.srcIn,
+                          cardPressed: () => pressCard(job.id),
+                          padding: const EdgeInsets.all(12),
+                          header: Header(
+                            leadingPhotoUrl: job.companyLogo,
+                            title: Text(
+                              job.position,
+                              style: themeData.textTheme.displayLarge!.merge(
+                                TextStyle(
+                                  fontSize: 18,
+                                  color: themeData.colorScheme.onBackground,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8.0),
-                          ],
+                            subtitle: Text(
+                              job.companyName,
+                              style: themeData.textTheme.displayMedium!.merge(
+                                TextStyle(
+                                  color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            onTapTitle: () {},
+                            onTapLeading: () {},
+                            leadingSize: 32,
+                            actions: [
+                              InkWell(
+                                child: SvgPicture.asset(
+                                  AppConstants.bookmark,
+                                  height: 24,
+                                  width: 24,
+                                  colorFilter: ColorFilter.mode(
+                                    themeData.colorScheme.onBackground.withOpacity(0.5),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                            ],
+                          ),
+                          cost: '${job.salary} VND',
+                          duration: job.duration,
+                          description: TextMore(
+                            job.content,
+                            trimMode: TrimMode.Hidden,
+                            trimHiddenMaxLines: 3,
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              ),
+                            ),
+                          ),
                         ),
-                        skill: job.skills,
-                        labelSkill: false,
-                        isShowSkill: false,
-                        cost: '${job.salary} VND',
-                        duration: job.duration,
-                        description: TextMore(
-                          job.content,
-                          trimMode: TrimMode.Hidden,
-                          trimHiddenMaxLines: 3,
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                          )),
-                        ),
-                      ),
-                    );
-                  },
+                      );
+                    },
+                  ),
                 );
               },
             );

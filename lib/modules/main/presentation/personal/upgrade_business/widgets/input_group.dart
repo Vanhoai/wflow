@@ -30,9 +30,7 @@ class _InputGroupState extends State<InputGroup> {
               color: Colors.black,
             ),
           ),
-          const SizedBox(
-            height: 14,
-          ),
+          const SizedBox(height: 4),
           SizedBox(
             child: TextField(
               decoration: InputDecoration(

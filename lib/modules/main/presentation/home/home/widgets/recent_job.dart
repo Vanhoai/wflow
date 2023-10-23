@@ -85,20 +85,18 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                     const SizedBox(width: 8.0),
                   ],
                 ),
-                skill: job.skills,
-                labelSkill: true,
                 cost: '${job.salary} VND',
                 duration: job.duration,
                 description: TextMore(
                   job.content,
+                  trimMode: TrimMode.Hidden,
+                  trimHiddenMaxLines: 3,
                   style: themeData.textTheme.displayMedium!.merge(
                     TextStyle(
                       color: themeData.colorScheme.onBackground,
                     ),
                   ),
                 ),
-                progress: job.tasks,
-                showMore: true,
               );
             },
           ),

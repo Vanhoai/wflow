@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 
 class SecurityScreen extends StatefulWidget {
@@ -15,11 +16,6 @@ class SecurityScreen extends StatefulWidget {
 class _SecurityScreenState extends State<SecurityScreen> {
   bool TouchID = false;
   bool FaceID = false;
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   void onClickTouchID(BuildContext context) {}
 
@@ -32,10 +28,12 @@ class _SecurityScreenState extends State<SecurityScreen> {
   void onClickAccessibility(BuildContext context) {}
 
   void onClickTermOfService(BuildContext context) {}
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
+      appBar: const AppHeader(text: 'Security'),
       hideKeyboardWhenTouchOutside: true,
       body: RefreshIndicator(
         onRefresh: () async {
@@ -49,20 +47,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),
           slivers: [
-            SliverAppBar(
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-              title: Text(
-                'Security',
-                style: themeData.textTheme.displayLarge,
-              ),
-              surfaceTintColor: Colors.transparent,
-              pinned: true,
-              centerTitle: true,
-            ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
               sliver: SliverToBoxAdapter(
@@ -73,7 +57,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   children: [
                     Text(
                       'Touch ID',
-                      style: themeData.textTheme.displayLarge!.merge(
+                      style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
                     ),
@@ -100,7 +84,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   children: [
                     Text(
                       'Face ID',
-                      style: themeData.textTheme.displayLarge!.merge(
+                      style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
                     ),
@@ -129,7 +113,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     children: [
                       Text(
                         'Verify',
-                        style: themeData.textTheme.displayLarge!.merge(
+                        style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
                       ),
@@ -140,7 +124,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                         children: [
                           Text(
                             'Not verify',
-                            style: themeData.textTheme.displayLarge!.merge(
+                            style: themeData.textTheme.displayMedium!.merge(
                               TextStyle(color: themeData.colorScheme.onBackground),
                             ),
                           ),
@@ -167,7 +151,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
               padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
               sliver: SliverToBoxAdapter(
                 child: Text('Legal',
-                    style: themeData.textTheme.displayLarge!.merge(
+                    style: themeData.textTheme.displayMedium!.merge(
                       TextStyle(color: themeData.colorScheme.onBackground.withOpacity(0.7)),
                     )),
               ),
@@ -185,7 +169,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     children: [
                       Text(
                         'Privacy policy',
-                        style: themeData.textTheme.displayLarge!.merge(
+                        style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
                       ),
@@ -215,7 +199,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     children: [
                       Text(
                         'Accessibility',
-                        style: themeData.textTheme.displayLarge!.merge(
+                        style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
                       ),
@@ -245,7 +229,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     children: [
                       Text(
                         'Term of service',
-                        style: themeData.textTheme.displayLarge!.merge(
+                        style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
                       ),

@@ -73,26 +73,21 @@ class _PersonalScreenState extends State<PersonalScreen> {
   Widget build(BuildContext context) {
     return CommonScaffold(
       isSafe: true,
-      body: RefreshIndicator(
-        child: CustomScrollView(
-          slivers: [
-            const HeaderAvatarWidget(),
-            InformationWidget(
-              morePressed: () => _showModalBottomSheet(context),
-            ),
-          ],
-          clipBehavior: Clip.none,
-          cacheExtent: 1000,
-          dragStartBehavior: DragStartBehavior.start,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-          physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          controller: _scrollController,
-          scrollDirection: Axis.vertical,
-        ),
-        onRefresh: () async {
-          await Future.delayed(const Duration(seconds: 1));
-        },
+      body: CustomScrollView(
+        slivers: [
+          const HeaderAvatarWidget(),
+          InformationWidget(
+            morePressed: () => _showModalBottomSheet(context),
+          ),
+        ],
+        clipBehavior: Clip.none,
+        cacheExtent: 1000,
+        dragStartBehavior: DragStartBehavior.start,
+        keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+        physics: const BouncingScrollPhysics(),
+        shrinkWrap: true,
+        controller: _scrollController,
+        scrollDirection: Axis.vertical,
       ),
     );
   }

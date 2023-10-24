@@ -31,6 +31,9 @@ push:
 	git add .
 	git commit -m "$(m)"
 	git push
+
+genicon:
+	dart run flutter_launcher_icons
 	
 generate:
 	dart run build_runner build --delete-conflicting-outputs

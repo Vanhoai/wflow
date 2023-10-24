@@ -15,6 +15,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     on<AppChangeTheme>(onAppChangeTheme);
     on<SetIsFirstTime>(setIsFirstTime);
     on<AppChangeAuth>(onAppChangeAuth);
+    on<RefreshTokenEvent>(onRefreshToken);
   }
 
   static AppState onInit() {
@@ -47,6 +48,11 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
 
   FutureOr<void> onAppChangeAuth(AppChangeAuth event, Emitter<AppState> emit) {
     emit(state.copyWith(authEntity: event.authEntity));
+  }
+
+  FutureOr<void> onRefreshToken(RefreshTokenEvent event, Emitter<AppState> emit) {
+    final authEntity = state.authEntity.copyWith(accessToken: event.accessToken, refreshToken: event.refreshToken);
+    emit(state.copyWith(authEntity: authEntity));
   }
 
   @override

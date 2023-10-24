@@ -173,20 +173,18 @@ class _ListWorksState extends State<ListWorks> {
                               const SizedBox(width: 8.0),
                             ],
                           ),
-                          skill: post.skills,
-                          labelSkill: true,
                           cost: '${post.salary} VND',
                           duration: post.duration,
                           description: TextMore(
                             post.content,
                             trimMode: TrimMode.Hidden,
-                            trimHiddenMaxLines: 2,
-                            style: themeData.textTheme.displaySmall!.merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
+                            trimHiddenMaxLines: 3,
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              ),
+                            ),
                           ),
-                          progress: post.tasks,
-                          showMore: true,
                         );
                       },
                     ),

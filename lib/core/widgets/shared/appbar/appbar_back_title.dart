@@ -3,19 +3,21 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
-  const AppHeader({super.key, required this.text});
+  const AppHeader({super.key, this.text = ''});
 
   final String text;
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return AppBar(
       centerTitle: true,
       title: Text(
         text,
-        style: Theme.of(context).textTheme.displayMedium,
+        style: themeData.textTheme.displayMedium,
       ),
-      backgroundColor: Colors.white,
-      surfaceTintColor: Colors.white,
+      backgroundColor: themeData.colorScheme.background,
+      surfaceTintColor: themeData.colorScheme.background,
       leading: Padding(
         padding: const EdgeInsets.all(8),
         child: InkWell(

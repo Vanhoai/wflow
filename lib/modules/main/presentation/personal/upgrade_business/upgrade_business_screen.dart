@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
+import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/utils/constants.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/dialog_pick_image.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/widgets/input_group.dart';
@@ -48,9 +49,7 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
+      appBar: const AppHeader(text: 'Upgrade business'),
       body: SingleChildScrollView(
         child: Container(
           padding: const EdgeInsets.only(
@@ -70,7 +69,7 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 4),
               PickImageCard(
                 image: _image,
                 isImage: _isImage,

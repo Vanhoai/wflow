@@ -19,6 +19,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
       margin: const EdgeInsets.symmetric(vertical: 20),
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(top: 2, bottom: 20),
         itemBuilder: (context, index) {
           return JobCard(
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -70,16 +71,6 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                 const SizedBox(width: 8.0),
               ],
             ),
-            skill: const [
-              'Flutter',
-              'Dart',
-              'Firebase',
-              'Dart',
-              'Firebase',
-              'Dart',
-              'Firebase',
-            ],
-            labelSkill: true,
             cost: '1000\$',
             duration: '1 month',
             description: TextMore(
@@ -90,10 +81,6 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                 color: themeData.colorScheme.onBackground,
               )),
             ),
-            progress: const [
-              '1.5 years of experience in Flutter',
-            ],
-            showMore: true,
           );
         },
         separatorBuilder: (context, index) {

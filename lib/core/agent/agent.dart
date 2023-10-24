@@ -1,8 +1,13 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/navigation.dart';
 
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/models/models.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 
 class Agent {
@@ -21,18 +26,36 @@ class Agent {
 
       return handler.next(options);
     }, onError: (DioException exception, handler) async {
-      if (exception.response?.statusCode == 401) {
-        await refreshToken();
-        return handler.resolve(await retry(exception.requestOptions));
-      }
       return handler.next(exception);
+    }, onResponse: (Response<dynamic> response, handler) async {
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      // check status 401 => refresh token
+      if (httpResponse.statusCode == 401) {
+        final String? accessToken = await refreshToken();
+        if (accessToken != null && accessToken.isNotEmpty) {
+          final options = response.requestOptions;
+          options.headers = {
+            ...options.headers,
+            'Authorization': 'Bearer $accessToken',
+          };
+
+          return handler.resolve(await retry(options));
+        } else {
+          exitApp(httpResponse.message);
+        }
+      } else if (httpResponse.statusCode >= 400) {
+        // some thing exception (login another account, ...)
+        exitApp(httpResponse.message);
+      }
+
+      return handler.next(response);
     });
 
     dio.interceptors.add(interceptorsWrapper);
   }
 
   BaseOptions generateOptions() {
-    print(EnvironmentConfiguration.apiBaseUrl);
     BaseOptions opts = BaseOptions();
     opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
     opts.contentType = Headers.jsonContentType;
@@ -42,16 +65,22 @@ class Agent {
     return opts;
   }
 
-  Future<void> refreshToken() async {
-    final refreshToken = await secureStorage.read(AppConstants.refreshTokenKey);
-    final response = await dio.post('/auth/refresh', data: {'refreshToken': refreshToken});
+  Future<String?> refreshToken() async {
+    final refreshToken = instance.get<AppBloc>().state.authEntity.refreshToken;
+    final response = await dio.post('/auth/refresh-token', data: {'refreshToken': refreshToken});
+    final httpResponse = HttpResponse.fromJson(response.data);
+    if (httpResponse.statusCode == 200) {
+      RefreshToken dataRefresh = RefreshToken.fromJson(httpResponse.data);
 
-    if (response.statusCode == 201) {
-      // successfully got the new access token
+      instance
+          .get<AppBloc>()
+          .add(RefreshTokenEvent(accessToken: dataRefresh.accessToken, refreshToken: dataRefresh.refreshToken));
+
+      return dataRefresh.accessToken;
     } else {
-      // refresh token is wrong so log out user.
-      secureStorage.clear();
+      instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.signInScreen);
     }
+    return null;
   }
 
   Future<Response<dynamic>> retry(RequestOptions requestOptions) async {
@@ -64,6 +93,26 @@ class Agent {
       data: requestOptions.data,
       queryParameters: requestOptions.queryParameters,
       options: options,
+    );
+  }
+
+  void exitApp(String message) {
+    showCupertinoDialog(
+      context: instance.get<NavigationService>().navigatorKey.currentContext!,
+      builder: (context) {
+        return CupertinoAlertDialog(
+          title: const Text('Notification', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
+          content: Text(message),
+          actions: [
+            CupertinoDialogAction(
+              child: const Text('OK'),
+              onPressed: () {
+                instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.signInScreen);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
 }

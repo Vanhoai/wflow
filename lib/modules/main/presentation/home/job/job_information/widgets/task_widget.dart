@@ -4,7 +4,7 @@ const String _kProgress = '\u2022';
 
 class TaskWidget extends StatelessWidget {
   final List<String> tasks;
-  const TaskWidget({required this.tasks,super.key});
+  const TaskWidget({required this.tasks, super.key});
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -17,9 +17,13 @@ class TaskWidget extends StatelessWidget {
           Text(
             '# Task',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
             )),
+          ),
+          const SizedBox(
+            height: 13,
           ),
           ListView.separated(
             shrinkWrap: true,
@@ -51,7 +55,8 @@ class TaskWidget extends StatelessWidget {
               );
             },
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 20),
           ),
         ],
       ),

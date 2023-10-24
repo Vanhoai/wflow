@@ -17,7 +17,6 @@ class JobInformationBloc
 
   FutureOr<void> getJobInformation(
       GetJobInformationEvent event, Emitter<JobInformationState> emit) async {
-    print("hihi");
     emit(state.copyWith(isLoading: true));
     final response = await postUseCase.getPostId(event.id);
     response.fold((PostEntity left) {

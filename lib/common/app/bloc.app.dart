@@ -64,8 +64,10 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     emit(state.copyWith(authEntity: event.authEntity));
   }
 
-  FutureOr<void> onRefreshToken(RefreshTokenEvent event, Emitter<AppState> emit) {
-    final authEntity = state.authEntity.copyWith(accessToken: event.accessToken, refreshToken: event.refreshToken);
+  FutureOr<void> onRefreshToken(
+      RefreshTokenEvent event, Emitter<AppState> emit) {
+    final authEntity = state.authEntity.copyWith(
+        accessToken: event.accessToken, refreshToken: event.refreshToken);
     emit(state.copyWith(authEntity: authEntity));
   }
 

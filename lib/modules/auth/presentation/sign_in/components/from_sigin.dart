@@ -29,8 +29,8 @@ class _FormState extends State<FormSignIn> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
-    emailController = TextEditingController(text: 'admin251223@gmail.com');
-    passwordController = TextEditingController(text: 'admin');
+    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
+    passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
 
@@ -43,8 +43,7 @@ class _FormState extends State<FormSignIn> {
 
   Future<void> listener(BuildContext context, SignInState state) async {
     if (state is SignInSuccess) {
-      Navigator.of(context)
-          .pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
     } else if (state is SignInFailure) {
       await showCupertinoDialog(
         context: context,
@@ -88,9 +87,7 @@ class _FormState extends State<FormSignIn> {
               TextFieldFrom(
                 label: 'Tài khoản',
                 controller: emailController,
-                onChange: (val) => context
-                    .read<SignInBloc>()
-                    .add(OnChangeEmailEvent(email: val)),
+                onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
                 placeholder: 'Nhập Email/Số điện thoại',
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
@@ -98,15 +95,12 @@ class _FormState extends State<FormSignIn> {
                   size: 24,
                 ),
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.only(
-                      bottom: 16, top: 16, right: 17, left: 18),
+                  padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
                   child: SvgPicture.asset(AppConstants.checkFill,
                       fit: BoxFit.cover,
                       colorFilter: state.regex
-                          ? const ColorFilter.mode(
-                              Colors.green, BlendMode.srcIn)
-                          : const ColorFilter.mode(
-                              Colors.black38, BlendMode.srcIn)),
+                          ? const ColorFilter.mode(Colors.green, BlendMode.srcIn)
+                          : const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
                 ),
               ),
               TextFieldFrom(
@@ -133,15 +127,12 @@ class _FormState extends State<FormSignIn> {
                             width: 22,
                             height: 22,
                             decoration: BoxDecoration(
-                              border:
-                                  Border.all(width: 1, color: Colors.black26),
+                              border: Border.all(width: 1, color: Colors.black26),
                               borderRadius: BorderRadius.circular(6.0),
-                              color:
-                                  state.isRemember ? Colors.blue : Colors.white,
+                              color: state.isRemember ? Colors.blue : Colors.white,
                             ),
                             child: SvgPicture.asset(AppConstants.checkOutLine)),
-                        onTap: () => context.read<SignInBloc>().add(
-                            RememberPassEvent(isRemember: !state.isRemember)),
+                        onTap: () => context.read<SignInBloc>().add(RememberPassEvent(isRemember: !state.isRemember)),
                       ),
                       const Padding(padding: EdgeInsets.only(left: 9)),
                       Text(
@@ -153,8 +144,7 @@ class _FormState extends State<FormSignIn> {
                   InkWell(
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 5, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       child: Text(
                         'Quên mật khẩu',
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -198,8 +188,7 @@ class _FormState extends State<FormSignIn> {
                               onTap: () => print('hello'),
                               borderRadius: BorderRadius.circular(8),
                               splashColor: AppColors.blueColor,
-                              child: SvgPicture.asset(
-                                  height: 50, AppConstants.bionic),
+                              child: SvgPicture.asset(height: 50, AppConstants.bionic),
                             )
                           ],
                         ));

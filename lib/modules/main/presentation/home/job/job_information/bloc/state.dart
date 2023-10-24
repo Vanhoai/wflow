@@ -15,14 +15,11 @@ class JobInformationState extends Equatable {
 
 class GetJobInformationSuccessState extends JobInformationState {
   final PostEntity postEntity;
-  const GetJobInformationSuccessState(
-      {required this.postEntity, required super.isLoading});
+  const GetJobInformationSuccessState({required this.postEntity, required super.isLoading});
   @override
-  GetJobInformationSuccessState copyWith(
-      {PostEntity? postEntity, bool? isLoading}) {
+  GetJobInformationSuccessState copyWith({PostEntity? postEntity, bool? isLoading}) {
     return GetJobInformationSuccessState(
-        postEntity: postEntity ?? this.postEntity,
-        isLoading: isLoading ?? super.isLoading);
+        postEntity: postEntity ?? this.postEntity, isLoading: isLoading ?? super.isLoading);
   }
 
   @override

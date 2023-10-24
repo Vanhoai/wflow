@@ -33,7 +33,8 @@ class UserEntity extends Equatable {
     this.role,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
 
@@ -68,5 +69,18 @@ class UserEntity extends Equatable {
   }
 
   @override
-  List<Object?> get props => [id, state, email, phone, avatar, age, name, dob, address, isVerify, identifyCode, role];
+  List<Object?> get props => [
+        id,
+        state,
+        email,
+        phone,
+        avatar,
+        age,
+        name,
+        dob,
+        address,
+        isVerify,
+        identifyCode,
+        role
+      ];
 }

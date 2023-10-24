@@ -12,6 +12,7 @@ class PostEntity extends Equatable {
   final String content;
   final String duration;
   final String salary;
+  final num business;
   final num creatorId;
   final String creatorName;
   final String creatorAvatar;
@@ -28,6 +29,7 @@ class PostEntity extends Equatable {
     required this.content,
     required this.duration,
     required this.salary,
+    required this.business,
     required this.creatorId,
     required this.creatorName,
     required this.creatorAvatar,
@@ -50,6 +52,7 @@ class PostEntity extends Equatable {
       content: 'content',
       duration: 'duration',
       salary: 'salary',
+      business: 0,
       creatorId: 1,
       creatorName: 'creatorName',
       creatorAvatar: 'creatorAvatar',
@@ -66,6 +69,7 @@ class PostEntity extends Equatable {
     String? content,
     String? duration,
     String? salary,
+    num? business,
     num? creatorId,
     String? creatorName,
     String? creatorAvatar,
@@ -82,6 +86,7 @@ class PostEntity extends Equatable {
       content: content ?? this.content,
       duration: duration ?? this.duration,
       salary: salary ?? this.salary,
+      business: business ?? this.business,
       creatorId: creatorId ?? this.creatorId,
       creatorName: creatorName ?? this.creatorName,
       creatorAvatar: creatorAvatar ?? this.creatorAvatar,
@@ -101,6 +106,7 @@ class PostEntity extends Equatable {
         content,
         duration,
         salary,
+        business,
         creatorId,
         creatorName,
         creatorAvatar,

@@ -16,8 +16,12 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
+import 'package:wflow/modules/main/data/cv/cv_services.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
+import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 
@@ -45,7 +49,10 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<PostService>(() => PostServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<PostRepository>(() => PostRepositoryImpl(postService: instance.get<PostService>()));
   instance.registerLazySingleton<PostUseCase>(() => PostUseCaseImpl(postRepository: instance.get<PostRepository>()));
-
+  //CV
+  instance.registerLazySingleton<CVService>(() => CVServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<CVRepository>(() => CVRepositoryImpl(cvService: instance.get<CVService>()));
+  instance.registerLazySingleton<CVUseCase>(() => CVUseCaseImpl(cvRepository: instance.get<CVRepository>()));
   //Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));

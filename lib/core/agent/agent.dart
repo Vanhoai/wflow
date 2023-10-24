@@ -45,7 +45,7 @@ class Agent {
           exitApp(httpResponse.message);
         }
       } else if (httpResponse.statusCode >= 400) {
-        // some thing exception (login another account, ...)
+        // some thing exception (login another device, ...)
         exitApp(httpResponse.message);
       }
 

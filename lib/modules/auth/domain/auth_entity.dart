@@ -50,6 +50,7 @@ class User extends Equatable {
   final String phone;
   final bool isVerify;
   final String avatar;
+  final num business;
 
   const User({
     required this.id,
@@ -61,6 +62,7 @@ class User extends Equatable {
     required this.phone,
     required this.isVerify,
     required this.avatar,
+    required this.business,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -77,6 +79,7 @@ class User extends Equatable {
     String? phone,
     bool? isVerify,
     String? avatar,
+    num? business,
   }) {
     return User(
       id: id ?? this.id,
@@ -88,9 +91,10 @@ class User extends Equatable {
       phone: phone ?? this.phone,
       isVerify: isVerify ?? this.isVerify,
       avatar: avatar ?? this.avatar,
+      business: business ?? this.business,
     );
   }
 
   @override
-  List<Object?> get props => [id, name, role, age, address, email, phone, isVerify, avatar];
+  List<Object?> get props => [id, name, role, age, address, email, phone, isVerify, avatar, business];
 }

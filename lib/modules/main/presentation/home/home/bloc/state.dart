@@ -11,7 +11,7 @@ class HomeState extends Equatable {
     required this.recentJobs,
     required this.hotJobs,
     required this.categories,
-    this.categorySelected = 'All',
+    this.categorySelected = '',
     this.isLoading = false,
   });
 

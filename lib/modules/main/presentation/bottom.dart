@@ -8,7 +8,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/videocall/bloc/bloc.dart';
 import 'package:wflow/common/videocall/bloc/event.dart';
 import 'package:wflow/common/videocall/bloc/state.dart';
@@ -65,6 +67,15 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
+    Future<void> redirectFlash() async {
+      int role = instance.get<AppBloc>().state.authEntity.user.role;
+      if (role == 2) {
+        instance.get<NavigationService>().pushNamed(RouteKeys.companyScreen);
+      } else {
+        instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
+      }
+    }
+
     return BlocListener(
       listener: (context, state) {
         if (state is CallInComing) {
@@ -104,9 +115,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
                   child: FloatingActionButton(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     isExtended: true,
-                    onPressed: () => setState(() {
-                      currentIndex = 2;
-                    }),
+                    onPressed: redirectFlash,
                     child: SvgPicture.asset(
                       AppConstants.flash,
                       height: 24,

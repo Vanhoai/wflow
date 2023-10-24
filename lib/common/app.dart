@@ -5,6 +5,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/navigation.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
@@ -86,6 +87,7 @@ class _AppState extends State<App> {
                       // ErrorWidget.builder = (errorDetails) => error;
                       // return child!;
                     },
+                    navigatorKey: instance.get<NavigationService>().navigatorKey,
                     supportedLocales: localization.supportedLocales,
                     localizationsDelegates: localization.localizationsDelegates,
                     debugShowCheckedModeBanner: false,

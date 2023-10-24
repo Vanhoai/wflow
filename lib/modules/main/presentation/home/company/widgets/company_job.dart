@@ -19,6 +19,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
       margin: const EdgeInsets.symmetric(vertical: 20),
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.only(top: 2, bottom: 20),
         itemBuilder: (context, index) {
           return JobCard(
             margin: const EdgeInsets.symmetric(horizontal: 20),

@@ -29,9 +29,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final hotJobs = future[1] as List<PostEntity>;
     final categories = future[2] as List<CategoryEntity>;
 
-    await Future.delayed(const Duration(seconds: 2));
-
-    emit(state.copyWith(recentJobs: recentJobs, hotJobs: hotJobs, categories: categories, isLoading: false));
+    emit(
+      state.copyWith(
+        recentJobs: recentJobs,
+        hotJobs: hotJobs,
+        categories: categories,
+        isLoading: false,
+        categorySelected: categories.first.name,
+      ),
+    );
   }
 
   FutureOr onSelectCategory(OnSelectCategoryEvent event, Emitter<HomeState> emit) async {

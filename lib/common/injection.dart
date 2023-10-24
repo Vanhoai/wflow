@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/utils/secure.util.dart';
@@ -53,6 +54,7 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
+  instance.registerSingleton<NavigationService>(NavigationService());
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

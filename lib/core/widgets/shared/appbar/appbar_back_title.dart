@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
-  const AppHeader({super.key, required this.text});
+  const AppHeader({super.key, this.text = ''});
 
   final String text;
   @override

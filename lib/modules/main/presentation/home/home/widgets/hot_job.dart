@@ -5,7 +5,7 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:wflow/modules/main/presentation/home/home/widgets/shimmer_hot_job.dart';
 
 class HowJobListWidget extends StatefulWidget {
   const HowJobListWidget({super.key, required this.scrollController});
@@ -33,142 +33,15 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
               builder: (context, constraints) {
                 return Visibility(
                   visible: !state.isLoading,
-                  replacement: Shimmer.fromColors(
-                    baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                    highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
-                    child: ListView.builder(
-                      itemCount: 5,
-                      padding: const EdgeInsets.only(left: 20.0),
-                      scrollDirection: Axis.horizontal,
-                      shrinkWrap: true,
-                      itemBuilder: (context, index) {
-                        return Container(
-                          height: constraints.maxHeight,
-                          width: constraints.maxWidth * 0.8,
-                          margin: const EdgeInsets.only(right: 20),
-                          padding: const EdgeInsets.all(12),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(8.0),
-                            border: Border.all(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.8),
-                              width: 1,
-                            ),
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.stretch,
-                            children: [
-                              Row(
-                                children: [
-                                  const CircleAvatar(
-                                    backgroundColor: Colors.white,
-                                    radius: 32,
-                                  ),
-                                  const SizedBox(width: 12),
-                                  Expanded(
-                                    child: Column(
-                                      children: [
-                                        Container(
-                                          height: 20,
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius: BorderRadius.circular(4.0),
-                                          ),
-                                        ),
-                                        const SizedBox(height: 8),
-                                        Container(
-                                          height: 20,
-                                          decoration: BoxDecoration(
-                                            borderRadius: BorderRadius.circular(4.0),
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4.0),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Container(
-                                    height: 20,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Container(
-                                    height: 20,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Expanded(
-                                    child: Container(
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4.0),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 8),
-                              Row(
-                                children: [
-                                  Expanded(
-                                    child: Container(
-                                      height: 20,
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4.0),
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Container(
-                                    height: 20,
-                                    width: 80,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(4.0),
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                              const SizedBox(height: 20),
-                              Expanded(
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    color: Colors.white,
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        );
-                      },
+                  replacement: ShimmerHotJob(
+                    height: constraints.maxHeight,
+                    width: constraints.maxWidth * 0.8,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8.0),
+                      border: Border.all(
+                        color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                        width: 2,
+                      ),
                     ),
                   ),
                   child: ListView.separated(

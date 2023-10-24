@@ -1381,6 +1381,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.1.0"
+  retrofit:
+    dependency: transitive
+    description:
+      name: retrofit
+      sha256: "04ed77c82cadb655bb9357e8d0cb9da72ff704749a2d0cfe6540dd1f1f7ca4b9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.0.3"
+  retrofit_generator:
+    dependency: "direct dev"
+    description:
+      name: retrofit_generator
+      sha256: "9499eb46b3657a62192ddbc208ff7e6c6b768b19e83c1ee6f6b119c864b99690"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.8"
   rxdart:
     dependency: transitive
     description:
@@ -1477,14 +1493,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.4"
-  shimmer:
-    dependency: "direct main"
-    description:
-      name: shimmer
-      sha256: "5f88c883a22e9f9f299e5ba0e4f7e6054857224976a5d9f839d4ebdc94a14ac9"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.0.0"
   sky_engine:
     dependency: transitive
     description: flutter

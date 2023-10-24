@@ -33,3 +33,10 @@ class AppChangeAuth extends AppEvent {
   @override
   List<Object?> get props => [authEntity];
 }
+
+class RefreshTokenEvent extends AppEvent {
+  final String accessToken;
+  final String refreshToken;
+
+  RefreshTokenEvent({required this.accessToken, required this.refreshToken});
+}

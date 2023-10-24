@@ -1,6 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/custom/custom.dart';
 
 class HeaderAvatarCompanyWidget extends StatefulWidget {
   const HeaderAvatarCompanyWidget({super.key});
@@ -10,67 +9,61 @@ class HeaderAvatarCompanyWidget extends StatefulWidget {
 }
 
 class _HeaderAvatarCompanyWidgetState extends State<HeaderAvatarCompanyWidget> {
+  final List<String> members = [
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+    'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      height: 260,
-      child: Stack(
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 20),
+      child: Column(
         children: [
-          ClipRRect(
-            child: SizedBox(
-              height: 220,
-              width: MediaQuery.of(context).size.width,
-              child: Image.network(
+          const ClipRRect(
+            child: CircleAvatar(
+              radius: 60,
+              backgroundImage: CachedNetworkImageProvider(
                 'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                fit: BoxFit.cover,
               ),
             ),
           ),
-          Positioned(
-            bottom: 0,
-            left: 10,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const CircleAvatar(
-                  radius: 40,
-                  backgroundColor: Colors.white,
-                  child: CircleAvatar(
-                    radius: 38,
-                    backgroundImage: NetworkImage(
-                      'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+          const SizedBox(height: 12),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              Text(
+                'company@gmail.com',
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
+              Text(
+                '25 member',
+                style: Theme.of(context).textTheme.labelMedium,
+              ),
+              const SizedBox(height: 8),
+              Row(
+                children: members.asMap().entries.map((e) {
+                  final key = e.key * -1.0;
+
+                  return Container(
+                    transform: Matrix4.translationValues(12 * key, 0, 0),
+                    child: const CircleAvatar(
+                      radius: 16,
+                      backgroundImage: CachedNetworkImageProvider(
+                        'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
+                      ),
                     ),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        PrimaryButton(
-                          label: 'Add',
-                          onPressed: () {},
-                          width: 85,
-                          height: 30,
-                        ),
-                        const SizedBox(width: 10),
-                        PrimaryButton(
-                          label: 'Chat',
-                          onPressed: () => Navigator.of(context).pushNamed(RouteKeys.chatBusinessScreen),
-                          width: 85,
-                          height: 30,
-                        ),
-                      ],
-                    )
-                  ],
-                ),
-              ],
-            ),
+                  );
+                }).toList(),
+              ),
+            ],
           ),
         ],
       ),

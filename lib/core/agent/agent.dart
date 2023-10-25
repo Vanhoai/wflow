@@ -57,7 +57,7 @@ class Agent {
 
   BaseOptions generateOptions() {
     BaseOptions opts = BaseOptions();
-    opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
+    opts.baseUrl = 'https://f354-2405-4802-9197-5730-36bc-87b3-3372-ff37.ngrok.io/api';
     opts.contentType = Headers.jsonContentType;
     opts.connectTimeout = const Duration(seconds: 4);
     opts.receiveTimeout = const Duration(seconds: 4);

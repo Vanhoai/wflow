@@ -67,6 +67,23 @@ class UserEntity extends Equatable {
     );
   }
 
+  factory UserEntity.createEmpty() {
+    return const UserEntity(
+      id: null,
+      state: null,
+      email: null,
+      phone: null,
+      avatar: null,
+      age: null,
+      name: null,
+      dob: null,
+      address: null,
+      isVerify: null,
+      identifyCode: null,
+      role: null,
+    );
+  }
+
   @override
   List<Object?> get props => [id, state, email, phone, avatar, age, name, dob, address, isVerify, identifyCode, role];
 }

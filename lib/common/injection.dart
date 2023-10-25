@@ -16,10 +16,15 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/main/data/company/company_repository_impl.dart';
+import 'package:wflow/modules/main/data/company/company_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/domain/company/company_repository.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/company_bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -55,6 +60,14 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
   instance.registerSingleton<NavigationService>(NavigationService());
+
+  // COMPANY
+  instance.registerLazySingleton<CompanyService>(() => CompanyServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<CompanyRepository>(
+      () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
+  instance.registerLazySingleton<CompanyUseCase>(
+      () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()));
+  instance.registerLazySingleton<CompanyBloc>(() => CompanyBloc(companyUseCase: instance.get<CompanyUseCase>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

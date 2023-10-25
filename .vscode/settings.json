@@ -3,12 +3,14 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "cSpell.words": [
     "Animatable",
+    "appbar",
     "ARGB",
     "cupertino",
     "dartz",
     "flipperkit",
     "pdfviewer",
     "syncfusion",
+    "usecase",
     "vsync",
     "wflow"
   ]

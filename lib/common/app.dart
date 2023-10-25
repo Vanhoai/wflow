@@ -94,7 +94,8 @@ class _AppState extends State<App> {
                     title: EnvironmentConfiguration.appHeading,
                     theme: themeData,
                     darkTheme: themeDataDark,
-                    themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                    themeMode:
+                        parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
                     initialRoute:
                         instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,

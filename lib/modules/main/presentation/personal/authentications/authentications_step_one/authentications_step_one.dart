@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -37,19 +36,20 @@ class AuthStepOneScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     height: 213,
                     decoration: BoxDecoration(color: AppColors.fade, borderRadius: BorderRadius.circular(8)),
-                    child: false
-                        ? Image(
-                            loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
-                              if (loadingProgress == null) return child;
-                              return const Center(
-                                  child: Loading(
-                                height: 24,
-                                width: 24,
-                              ));
-                            },
-                            fit: BoxFit.cover,
-                            image: FileImage(File('')))
-                        : null,
+                    child: null,
+                    // child: false
+                    //     ? Image(
+                    //         loadingBuilder: (BuildContext context, Widget child, ImageChunkEvent? loadingProgress) {
+                    //           if (loadingProgress == null) return child;
+                    //           return const Center(
+                    //               child: Loading(
+                    //             height: 24,
+                    //             width: 24,
+                    //           ));
+                    //         },
+                    //         fit: BoxFit.cover,
+                    //         image: FileImage(File('')))
+                    //     : null,
                   ),
                   Container(
                     margin: const EdgeInsets.symmetric(vertical: 13),
@@ -105,12 +105,14 @@ class AuthStepOneScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.center,
                     child: InkWell(
-                      borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                      borderRadius:
+                          const BorderRadius.all(Radius.circular(4.0)),
                       onTap: () {
                         print('Lấy hình');
                       },
                       child: Ink(
-                        padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
+                        padding: const EdgeInsets.only(
+                            top: 4, bottom: 4, left: 7, right: 13),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           color: AppColors.primary.withAlpha(30),
@@ -122,7 +124,8 @@ class AuthStepOneScreen extends StatelessWidget {
                               AppConstants.camera,
                               height: 20,
                               width: 20,
-                              colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
+                              colorFilter: const ColorFilter.mode(
+                                  AppColors.primary, BlendMode.srcIn),
                             ),
                             const SizedBox(
                               width: 10,
@@ -143,14 +146,18 @@ class AuthStepOneScreen extends StatelessWidget {
                       minimumSize: const Size(double.infinity, 50),
                       backgroundColor: Theme.of(context).primaryColor,
                       foregroundColor: Theme.of(context).colorScheme.onPrimary,
-                      disabledBackgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      disabledBackgroundColor:
+                          Theme.of(context).primaryColor.withOpacity(0.5),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(8)),
                       animationDuration: const Duration(milliseconds: 300),
                     ),
                     onPressed: () {
-                      Navigator.of(context).pushNamed(RouteKeys.auStepTwoScreen);
+                      Navigator.of(context)
+                          .pushNamed(RouteKeys.auStepTwoScreen);
                     },
-                    child: const Text('Tiếp tục', style: TextStyle(color: Colors.white, fontSize: 16)),
+                    child: const Text('Tiếp tục',
+                        style: TextStyle(color: Colors.white, fontSize: 16)),
                   ),
                   const SizedBox(
                     height: 24,

@@ -227,19 +227,12 @@ class _BoxChatState extends State<BoxChat> {
   }
 
   Future<void> _getImage() async {
-    const mul = false;
-    var result = await Navigator.of(context).pushNamed(RouteKeys.photoScreen, arguments: mul);
-    if (mul) {
-      result as List<File>;
-      if (context.mounted) {
-        BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
-      }
-    } else {
-      result as File;
-      List<File> list = [result];
-      if (context.mounted) {
-        BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: list));
-      }
+    var result = await Navigator.of(context)
+        .pushNamed(RouteKeys.photoScreen, arguments: true);
+    result as List<File>;
+    if (context.mounted) {
+      BlocProvider.of<MainChatBloc>(context)
+          .add(SendFilesEvent(id: '', type: 'type', files: result));
     }
   }
 }

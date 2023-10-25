@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 const String _kProgress = '\u2022';
 
 class TaskWidget extends StatelessWidget {
-  const TaskWidget({super.key});
-
+  final List<String> tasks;
+  const TaskWidget({required this.tasks, super.key});
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -17,14 +17,18 @@ class TaskWidget extends StatelessWidget {
           Text(
             '# Task',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              color:
+                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
             )),
+          ),
+          const SizedBox(
+            height: 13,
           ),
           ListView.separated(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: 3,
+            itemCount: tasks.length,
             itemBuilder: (BuildContext context, int index) {
               return Row(
                 children: [
@@ -38,7 +42,7 @@ class TaskWidget extends StatelessWidget {
                   ),
                   Expanded(
                     child: Text(
-                      'Config entity for study english website',
+                      tasks[index],
                       style: themeData.textTheme.displayLarge!.merge(
                         TextStyle(
                           color: Theme.of(context).colorScheme.onBackground,
@@ -51,7 +55,8 @@ class TaskWidget extends StatelessWidget {
               );
             },
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+            separatorBuilder: (BuildContext context, int index) =>
+                const SizedBox(height: 20),
           ),
         ],
       ),

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class DescWidget extends StatelessWidget {
-  const DescWidget({super.key});
+  final String description;
+  const DescWidget({required this.description,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class DescWidget extends StatelessWidget {
           ),
           const SizedBox(height: 13.0),
           Text(
-            'Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make',
+            description,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,

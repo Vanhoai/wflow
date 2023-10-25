@@ -87,7 +87,8 @@ class _AppState extends State<App> {
                       // ErrorWidget.builder = (errorDetails) => error;
                       // return child!;
                     },
-                    navigatorKey: instance.get<NavigationService>().navigatorKey,
+                    navigatorKey:
+                        instance.get<NavigationService>().navigatorKey,
                     supportedLocales: localization.supportedLocales,
                     localizationsDelegates: localization.localizationsDelegates,
                     debugShowCheckedModeBanner: false,

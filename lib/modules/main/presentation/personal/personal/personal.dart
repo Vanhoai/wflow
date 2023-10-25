@@ -59,7 +59,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: const Text('Settings'),
             ),
             CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.signInScreen, (route) => false),
+              onPressed: () => Navigator.of(context).pushNamedAndRemoveUntil(
+                  RouteKeys.signInScreen, (route) => false),
               isDestructiveAction: true,
               child: const Text('Logout'),
             ),

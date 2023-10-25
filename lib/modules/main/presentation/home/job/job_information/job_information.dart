@@ -304,7 +304,10 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         padding: const EdgeInsets.all(20),
                                         child: PrimaryButton(
                                           label: 'View Candidate',
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushNamed(RouteKeys.candidateListScreen, arguments: widget.work);
+                                          },
                                         ),
                                       );
                                     } else {

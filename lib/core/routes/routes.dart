@@ -78,7 +78,11 @@ class AppRoutes {
         final work = settings.arguments as num;
         return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
-        return MaterialPageRoute(builder: (_) => const CandidateListScreen());
+        final post = settings.arguments as num;
+        return MaterialPageRoute(
+            builder: (_) => CandidateListScreen(
+                  post: post,
+                ));
       case RouteKeys.createContractScreen:
         return MaterialPageRoute(builder: (_) => const CreateContractScreen());
       case RouteKeys.reviewContractScreen:

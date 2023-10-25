@@ -8,8 +8,7 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
-
-import 'components/from_sigin.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/components/form_signin.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});

@@ -4,7 +4,8 @@ import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
 class CandidateListScreen extends StatefulWidget {
-  const CandidateListScreen({super.key});
+  final num post;
+  const CandidateListScreen({required this.post, super.key});
 
   @override
   State<CandidateListScreen> createState() => _CandidateListScreenState();

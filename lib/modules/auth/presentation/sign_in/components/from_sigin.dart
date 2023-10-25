@@ -29,8 +29,8 @@ class _FormState extends State<FormSignIn> {
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
   @override
   void initState() {
-    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
-    passwordController = TextEditingController(text: 'admin');
+    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
+    passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
 

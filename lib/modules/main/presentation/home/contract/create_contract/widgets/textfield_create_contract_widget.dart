@@ -29,10 +29,10 @@ class _TextFieldCreateContractWidgetState extends State<TextFieldCreateContractW
       scrollPhysics: const BouncingScrollPhysics(),
       keyboardType: TextInputType.multiline,
       textInputAction: TextInputAction.next,
-      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+      style: themeData.textTheme.displayMedium!.merge(TextStyle(
         color: Colors.black.withOpacity(0.5),
       )),
-      minLines: widget.maxLines, //Normal textInputField will be displayed
+      minLines: widget.maxLines,
       maxLines: widget.maxLines,
       textCapitalization: TextCapitalization.sentences,
       keyboardAppearance: Brightness.light,
@@ -42,11 +42,11 @@ class _TextFieldCreateContractWidgetState extends State<TextFieldCreateContractW
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,
         ),
-        fillColor: Colors.grey[200],
+        fillColor: Colors.grey[100],
         filled: true,
         isDense: true,
         hintText: widget.hintText,
-        hintStyle: themeData.textTheme.displayLarge!.merge(TextStyle(
+        hintStyle: themeData.textTheme.displayMedium!.merge(TextStyle(
           color: Colors.black.withOpacity(0.5),
         )),
         suffixIcon: widget.suffixIcon,

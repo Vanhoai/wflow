@@ -19,7 +19,7 @@ class _TaskCreateContractWidgetState extends State<TaskCreateContractWidget> {
           thickness: 1,
         ),
         indicatorTheme: const IndicatorThemeData(
-          size: 20,
+          size: 12,
           color: Colors.green,
         ),
       ),

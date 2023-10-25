@@ -21,7 +21,7 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocBuilder<HomeBloc, HomeState>(
-      buildWhen: (cur, prev) => cur != prev,
+      buildWhen: (cur, prev) => cur.isLoading != prev.isLoading || cur.categorySelected != prev.categorySelected,
       builder: (context, state) {
         return SliverToBoxAdapter(
           child: ConstrainedBox(

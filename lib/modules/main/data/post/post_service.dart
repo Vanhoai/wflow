@@ -5,7 +5,7 @@ import 'package:wflow/modules/main/data/post/models/request/get_post_with_catego
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 
 abstract class PostService {
-  Future<List<PostEntity>> getRecentJob();
+  Future<List<PostEntity>> getRecentJob(String category);
   Future<List<PostEntity>> getHotJob();
   Future<List<CategoryEntity>> getPostCategories();
   Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
@@ -17,9 +17,11 @@ class PostServiceImpl implements PostService {
   PostServiceImpl({required this.agent});
 
   @override
-  Future<List<PostEntity>> getRecentJob() async {
+  Future<List<PostEntity>> getRecentJob(String category) async {
     try {
-      final response = await agent.dio.get('/post/recent-jobs');
+      final response = await agent.dio.get('/post/recent-jobs', queryParameters: {
+        'category': category,
+      });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {

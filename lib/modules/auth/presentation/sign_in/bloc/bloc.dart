@@ -45,7 +45,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
-    final String? deviceToken = await FirebaseService.getDeviceToken();
+    final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
     if (deviceToken == null || deviceToken.isEmpty) {
       emit(const SignInFailure(message: "Can't get device token"));
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -69,7 +69,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   }
 
   FutureOr<void> signInWithGoogle(SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
-    String idToken = await FirebaseService.signInWithGoogle();
+    String idToken = await FirebaseAuthService.signInWithGoogle();
     if (idToken.isNotEmpty) {
       print('IDToken: $idToken');
     }

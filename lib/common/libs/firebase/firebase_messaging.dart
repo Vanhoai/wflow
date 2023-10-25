@@ -1,35 +1,6 @@
-import 'dart:async';
+part of 'firebase.dart';
 
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:wflow/firebase_options.dart';
-
-late final FirebaseApp firebaseApp;
-late final FirebaseAuth firebaseAuth;
-late final FirebaseMessaging firebaseMessaging;
-
-late final AndroidNotificationChannel channel;
-late final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
-
-class FirebaseService {
-  static Future<void> initialFirebase() async {
-    firebaseApp = await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-    firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
-    firebaseMessaging = FirebaseMessaging.instance;
-    channel = const AndroidNotificationChannel('WFlow', 'WFlow');
-    flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-        ?.createNotificationChannel(channel);
-    await setupLocalPushNotification();
-    await registerNotification();
-  }
-
+class FirebaseMessagingService {
   static Future<void> registerNotification() async {
     NotificationSettings notificationSettings = await firebaseMessaging.requestPermission(
       alert: true,
@@ -79,26 +50,6 @@ class FirebaseService {
     }
   }
 
-  static Future<String> signInWithGoogle() async {
-    await GoogleSignIn().signOut();
-    final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
-    final GoogleSignInAuthentication? googleAuth = await googleUser?.authentication;
-    final credential = GoogleAuthProvider.credential(
-      accessToken: googleAuth?.accessToken,
-      idToken: googleAuth?.idToken,
-    );
-
-    UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
-    return await userCredential.user!.getIdToken() ?? '';
-  }
-
-  static Future<String?> getDeviceToken() async {
-    final String? token = await firebaseMessaging.getToken();
-    return token;
-  }
-
-  static Future<void> signInWithPhoneNumber() async {}
-
   static Future<void> setupLocalPushNotification() async {
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('@mipmap/ic_launcher');
@@ -132,5 +83,10 @@ class FirebaseService {
       body,
       notificationDetails,
     );
+  }
+
+  static Future<String?> getDeviceToken() async {
+    final String? token = await firebaseMessaging.getToken();
+    return token;
   }
 }

@@ -5,7 +5,7 @@ import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 
 abstract class PostUseCase {
-  Future<List<PostEntity>> getRecentJobs();
+  Future<List<PostEntity>> getRecentJobs(String category);
   Future<List<PostEntity>> getHotJobs();
   Future<List<CategoryEntity>> getPostCategories();
   Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
@@ -22,8 +22,8 @@ class PostUseCaseImpl implements PostUseCase {
   }
 
   @override
-  Future<List<PostEntity>> getRecentJobs() async {
-    return await postRepository.getRecentJobs();
+  Future<List<PostEntity>> getRecentJobs(String category) async {
+    return await postRepository.getRecentJobs(category);
   }
 
   @override

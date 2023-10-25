@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
+import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/shimmer_hot_job.dart';
 
 class HowJobListWidget extends StatefulWidget {
   const HowJobListWidget({super.key, required this.scrollController});
@@ -28,12 +28,13 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 280),
         child: BlocBuilder<HomeBloc, HomeState>(
+          buildWhen: (previous, current) => previous.isLoading != current.isLoading,
           builder: (context, state) {
             return LayoutBuilder(
               builder: (context, constraints) {
                 return Visibility(
                   visible: !state.isLoading,
-                  replacement: ShimmerHotJob(
+                  replacement: ShimmerWork(
                     height: constraints.maxHeight,
                     width: constraints.maxWidth * 0.8,
                     decoration: BoxDecoration(

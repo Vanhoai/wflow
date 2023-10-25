@@ -70,7 +70,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
     Future<void> redirectFlash() async {
       int role = instance.get<AppBloc>().state.authEntity.user.role;
       if (role == 2) {
-        instance.get<NavigationService>().pushNamed(RouteKeys.companyScreen);
+        instance.get<NavigationService>().pushNamed(RouteKeys.createContractScreen);
       } else {
         instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
       }

@@ -10,11 +10,13 @@ import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/job/job_information/bloc/state.dart';
+import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/select_cv_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
 import 'package:timeago/timeago.dart' as timeAgo;
-import 'bloc/bloc.dart';
-import 'bloc/event.dart';
+
+import 'bloc/job_information_bloc/bloc.dart';
+import 'bloc/job_information_bloc/event.dart';
+import 'bloc/job_information_bloc/state.dart';
 
 class JobInformationScreen extends StatefulWidget {
   const JobInformationScreen({super.key, required this.work});
@@ -47,6 +49,15 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
 
   void navigateToCandidateList() {
     Navigator.of(context).pushNamed(RouteKeys.candidateListScreen);
+  }
+
+  _showSelectCV(BuildContext context, String idPost) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return const SelectCVWidget();
+      },
+    );
   }
 
   @override
@@ -241,7 +252,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                             child: PrimaryButton(
                                               label: 'Apply',
                                               onPressed: () {
-                                                Navigator.of(context).pushNamed(RouteKeys.candidateListScreen);
+                                                _showSelectCV(context, widget.work.toString());
                                               },
                                             ),
                                           );

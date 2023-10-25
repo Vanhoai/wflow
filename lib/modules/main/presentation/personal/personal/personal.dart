@@ -43,7 +43,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
             CupertinoActionSheetAction(
               onPressed: () {
                 Navigator.pop(context);
-                Navigator.of(context).pushNamed(RouteKeys.upgradeBusinessScreen);
+                Navigator.of(context)
+                    .pushNamed(RouteKeys.upgradeBusinessScreen);
               },
               child: const Text('Upgrade'),
             ),
@@ -59,7 +60,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
               child: const Text('Contracts'),
             ),
             CupertinoActionSheetAction(
-              onPressed: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+              onPressed: () =>
+                  Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
               child: const Text('Notification'),
             ),
             CupertinoActionSheetAction(

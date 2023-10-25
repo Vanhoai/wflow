@@ -10,9 +10,6 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
-import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
-import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
-import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -87,8 +84,8 @@ class _AppState extends State<App> {
                     themeMode:
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: RouteKeys.notificationScreen,
-                    home: const NotificationScreen(),
+                    initialRoute: RouteKeys.bottomScreen,
+                    home: const IntroScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

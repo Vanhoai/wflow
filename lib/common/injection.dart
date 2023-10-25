@@ -28,7 +28,6 @@ import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/job/job_information/bloc/job_information_bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 

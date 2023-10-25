@@ -8,14 +8,12 @@ class WorkCard extends StatefulWidget {
     required this.company,
     required this.content,
     required this.image,
-    required this.skills,
   });
 
   final String position;
   final String company;
   final String content;
   final String image;
-  final List<String> skills;
 
   @override
   State<WorkCard> createState() => _WorkCardState();
@@ -55,13 +53,7 @@ class _WorkCardState extends State<WorkCard> {
             ),
             Padding(
               padding: const EdgeInsets.only(left: 20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _buildContent(widget.content),
-                  _buildSkills(widget.skills),
-                ],
-              ),
+              child: _buildContent(widget.content),
             )
           ],
         ),
@@ -113,28 +105,7 @@ class _WorkCardState extends State<WorkCard> {
       child: Text(
         content,
         style: const TextStyle(overflow: TextOverflow.ellipsis),
-        maxLines: 2,
-      ),
-    );
-  }
-
-  Widget _buildSkills(List<String> skills) {
-    String strSkills = '';
-
-    for (var element in skills) {
-      strSkills += '$element ';
-    }
-
-    return SizedBox(
-      child: Text(
-        strSkills,
-        style: const TextStyle(
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
-          color: Colors.green,
-          overflow: TextOverflow.ellipsis,
-        ),
-        maxLines: 1,
+        maxLines: 3,
       ),
     );
   }

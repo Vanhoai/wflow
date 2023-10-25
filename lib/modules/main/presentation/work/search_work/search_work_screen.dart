@@ -89,7 +89,6 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                 company: foundPosts[index]['company'],
                 content: foundPosts[index]['content'],
                 image: foundPosts[index]['image'],
-                skills: foundPosts[index]['skills'],
               ),
               itemCount: foundPosts.length,
             ),

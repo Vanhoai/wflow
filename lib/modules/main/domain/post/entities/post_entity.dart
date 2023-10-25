@@ -39,27 +39,27 @@ class PostEntity extends Equatable {
     required this.tasks,
   });
 
-  factory PostEntity.fromJson(Map<String, dynamic> json) =>
-      _$PostEntityFromJson(json);
+  factory PostEntity.fromJson(Map<String, dynamic> json) => _$PostEntityFromJson(json);
 
   Map<String, dynamic> toJson() => _$PostEntityToJson(this);
 
   factory PostEntity.empty() => const PostEntity(
-      id: 0,
-      updatedAt: '',
-      position: '',
-      title: 'title',
-      content: 'content',
-      duration: 'duration',
-      salary: 'salary',
-      business: 0,
-      creatorId: 1,
-      creatorName: 'creatorName',
-      creatorAvatar: 'creatorAvatar',
-      companyName: 'companyName',
-      companyLogo: 'companyLogo',
-      skills: [],
-      tasks: []);
+        id: 0,
+        updatedAt: '',
+        position: '',
+        title: 'title',
+        content: 'content',
+        duration: 'duration',
+        salary: 'salary',
+        business: 0,
+        creatorId: 1,
+        creatorName: 'creatorName',
+        creatorAvatar: 'creatorAvatar',
+        companyName: 'companyName',
+        companyLogo: 'companyLogo',
+        skills: [],
+        tasks: [],
+      );
 
   PostEntity copyWith({
     num? id,

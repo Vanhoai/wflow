@@ -56,7 +56,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     response.fold(
       (AuthEntity left) {
-        instance.get<AppBloc>().add(AppChangeAuth(authEntity: left));
+        instance.get<AppBloc>().add(AppChangeAuth(authEntity: left, role: left.user.role));
         emit(SignInSuccess());
       },
       (Failure right) {

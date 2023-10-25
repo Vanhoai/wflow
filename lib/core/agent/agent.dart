@@ -28,6 +28,10 @@ class Agent {
     }, onError: (DioException exception, handler) async {
       return handler.next(exception);
     }, onResponse: (Response<dynamic> response, handler) async {
+      if (response.statusCode! >= 500) {
+        exitApp('Some thing error, please try again later');
+      }
+
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       // check status 401 => refresh token

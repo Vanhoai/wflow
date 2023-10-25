@@ -21,6 +21,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final categories = await postUseCase.getPostCategories();
 
+    print('categories  ${categories.first.name}');
+
     final future = await Future.wait([
       postUseCase.getHotJobs(),
       postUseCase.getRecentJobs(categories.first.name),

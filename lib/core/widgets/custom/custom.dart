@@ -7,3 +7,4 @@ export 'switch/switch.dart';
 export 'text_more/text_more.dart';
 export 'slider_range/slider_range.dart';
 export 'circular_percent/circular_percent.dart';
+export 'text_gradient/text_gradient.dart';

@@ -15,8 +15,8 @@ class RecentJobListWidget extends StatefulWidget {
 }
 
 class _RecentJobListWidgetState extends State<RecentJobListWidget> {
-  void pressCard() {
-    Navigator.pushNamed(context, RouteKeys.jobInformationScreen);
+  void pressCard(num work) {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen, arguments: work);
   }
 
   @override
@@ -59,7 +59,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
 
                 return JobCard(
                   margin: const EdgeInsets.symmetric(horizontal: 20),
-                  cardPressed: pressCard,
+                  cardPressed: () => pressCard(job.id),
                   boxDecoration: BoxDecoration(
                     color: themeData.colorScheme.background,
                     borderRadius: BorderRadius.circular(8.0),

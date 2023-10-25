@@ -1,10 +1,8 @@
-import 'dart:ui';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/contract/create_contract/widgets/widget.dart';
+import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class CreateContractScreen extends StatefulWidget {
   const CreateContractScreen({super.key});

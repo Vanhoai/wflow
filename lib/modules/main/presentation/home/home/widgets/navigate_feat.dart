@@ -32,6 +32,9 @@ final List<Map<String, dynamic>> staticMenuSelection = [
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   void navigateTo(int index) {
     switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed(RouteKeys.developScreen);
+        break;
       default:
         Navigator.of(context).pushNamed(RouteKeys.companyScreen);
     }
@@ -88,11 +91,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                         Text(
                           staticMenuSelection[index]['title'],
                           style: Theme.of(context).textTheme.labelMedium!.merge(
-                                TextStyle(
-                                  color: Theme.of(context).textTheme.labelMedium!.color!.withOpacity(0.5),
-                                  fontWeight: FontWeight.w400,
-                                  fontSize: 14,
-                                ),
+                                const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
                               ),
                         ),
                       ],

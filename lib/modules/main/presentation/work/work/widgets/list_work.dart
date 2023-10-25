@@ -1,11 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/work/work/bloc/bloc.dart';
 
 class ListWorks extends StatefulWidget {
@@ -24,6 +23,10 @@ class _ListWorksState extends State<ListWorks> {
     super.dispose();
   }
 
+  void pressCard(num work) {
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen, arguments: work);
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -35,27 +38,7 @@ class _ListWorksState extends State<ListWorks> {
     });
 
     return BlocConsumer<WorkBloc, WorkState>(
-      listener: (context, state) {
-        if (state.messageNotification.isNotEmpty) {
-          showCupertinoDialog(
-            context: context,
-            builder: (context) {
-              return CupertinoAlertDialog(
-                content: Text(state.messageNotification),
-                title: const Text('Notification'),
-                actions: [
-                  CupertinoDialogAction(
-                    child: const Text('OK'),
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ],
-              );
-            },
-          );
-        }
-      },
+      listener: (context, state) {},
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
         return Expanded(
@@ -74,6 +57,7 @@ class _ListWorksState extends State<ListWorks> {
                 height: 40,
                 child: Visibility(
                   child: ListView.separated(
+                    cacheExtent: 100,
                     physics: const BouncingScrollPhysics(),
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     scrollDirection: Axis.horizontal,
@@ -116,22 +100,6 @@ class _ListWorksState extends State<ListWorks> {
                   },
                   child: SizedBox(
                     child: Visibility(
-                      visible: !state.isLoading,
-                      replacement: ShimmerWork(
-                        physics: const NeverScrollableScrollPhysics(),
-                        height: 280,
-                        width: double.infinity,
-                        scrollDirection: Axis.vertical,
-                        padding: EdgeInsets.zero,
-                        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.8),
-                            width: 1,
-                          ),
-                        ),
-                      ),
                       child: ListView.separated(
                         controller: _scrollController,
                         itemCount: state.posts.length,
@@ -144,6 +112,7 @@ class _ListWorksState extends State<ListWorks> {
                           final post = state.posts[index];
 
                           return JobCard(
+                            cardPressed: () => pressCard(post.id),
                             margin: const EdgeInsets.symmetric(horizontal: 20.0),
                             boxDecoration: BoxDecoration(
                               color: themeData.colorScheme.background,

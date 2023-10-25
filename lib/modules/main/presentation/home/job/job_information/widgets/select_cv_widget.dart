@@ -12,7 +12,8 @@ import 'package:wflow/modules/main/presentation/home/job/job_information/bloc/se
 import 'package:wflow/modules/main/presentation/home/job/job_information/bloc/select_cv_bloc/state.dart';
 
 class SelectCVWidget extends StatefulWidget {
-  const SelectCVWidget({super.key});
+  final num work;
+  const SelectCVWidget({required this.work, super.key});
 
   @override
   State<StatefulWidget> createState() => _SelectCVWidgetState();
@@ -35,86 +36,95 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.5,
             child: Visibility(
-              visible: !state.isLoading,
-              replacement: const Loading(),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Expanded(
-                      child: ListView.builder(
-                    itemCount: state.cvEntities.length,
-                    itemBuilder: (context, index) {
-                      return _cv(context, state.cvEntities[index], state.selectID);
-                    },
-                  )),
-                  Container(
-                    margin: const EdgeInsets.only(top: 10),
-                    child: Row(
+                visible: !state.isLoading,
+                replacement: const Loading(),
+                child: LayoutBuilder(
+                  builder: (context, constraints) {
+                    if (state.cvEntities.isEmpty) {
+                      return Center(
+                        child: Text('Bạn chưa có CV nào', style: Theme.of(context).textTheme.bodyLarge),
+                      );
+                    }
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                                border: Border.all(color: Theme.of(context).primaryColor)),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.pop(context);
-                                },
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                            child: ListView.builder(
+                          itemCount: state.cvEntities.length,
+                          itemBuilder: (context, index) {
+                            return _cv(context, state.cvEntities[index], state.selectID);
+                          },
+                        )),
+                        Container(
+                          margin: const EdgeInsets.only(top: 10),
+                          child: Row(
+                            children: [
+                              Expanded(
                                 child: Container(
-                                  height: 45,
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    'Cancel',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        color: Theme.of(context).primaryColor,
-                                        fontWeight: FontWeight.w400),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                      border: Border.all(color: Theme.of(context).primaryColor)),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context);
+                                      },
+                                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                      child: Container(
+                                        height: 45,
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          'Cancel',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 16,
+                                              color: Theme.of(context).primaryColor,
+                                              fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 20,
-                        ),
-                        Expanded(
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Theme.of(context).primaryColor,
-                              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-                            ),
-                            child: Material(
-                              color: Colors.transparent,
-                              child: InkWell(
-                                onTap: () {
-                                  print('hihi');
-                                },
-                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Expanded(
                                 child: Container(
-                                  height: 45,
-                                  alignment: Alignment.center,
-                                  child: const Text(
-                                    'Send CV',
-                                    textAlign: TextAlign.center,
-                                    style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                                  decoration: BoxDecoration(
+                                    color: Theme.of(context).primaryColor,
+                                    borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                  ),
+                                  child: Material(
+                                    color: Colors.transparent,
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.pop(context, state.selectID);
+                                      },
+                                      borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                      child: Container(
+                                        height: 45,
+                                        alignment: Alignment.center,
+                                        child: const Text(
+                                          'Send CV',
+                                          textAlign: TextAlign.center,
+                                          style:
+                                              TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
+                              )
+                            ],
                           ),
                         )
                       ],
-                    ),
-                  )
-                ],
-              ),
-            ),
+                    );
+                  },
+                )),
           );
         },
       ),

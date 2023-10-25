@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +10,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
+import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/select_cv_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
@@ -51,23 +53,66 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
     Navigator.of(context).pushNamed(RouteKeys.candidateListScreen);
   }
 
-  _showSelectCV(BuildContext context, String idPost) {
-    return showModalBottomSheet(
+  _showSelectCV(BuildContext context, num idPost) async {
+    var result = await showModalBottomSheet(
       context: context,
       builder: (context) {
-        return const SelectCVWidget();
+        return SelectCVWidget(work: idPost);
       },
     );
+    if (result != null && context.mounted) {
+      BlocProvider.of<JobInformationBloc>(context).add(ApplyPostEvent(post: widget.work, cv: (result as int)));
+    }
+  }
+
+  Future<void> listener(BuildContext context, JobInformationState state) async {
+    if (state is ApplyPostState) {
+      print("apply post");
+
+      await showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(
+              'Notification',
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium,
+            ),
+            content: Text(state.message),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Center(
+                      child: Text('OK'),
+                    )
+                  ],
+                ),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider(
-        create: (_) => JobInformationBloc(postUseCase: instance.get<PostUseCase>())
+        create: (_) => JobInformationBloc(
+            postUseCase: instance.get<PostUseCase>(), contractUseCase: instance.get<ContractUseCase>())
           ..add(GetJobInformationEvent(id: widget.work.toString())),
-        child: BlocBuilder<JobInformationBloc, JobInformationState>(
+        child: BlocConsumer<JobInformationBloc, JobInformationState>(
+          listenWhen: (previous, current) => previous != current,
+          buildWhen: (previous, current) => previous != current,
+          listener: listener,
           builder: (context, state) {
+            print("rebuild");
             var title = 'Information';
             if (state is GetJobInformationSuccessState) {
               title = state.postEntity.position;
@@ -252,7 +297,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                             child: PrimaryButton(
                                               label: 'Apply',
                                               onPressed: () {
-                                                _showSelectCV(context, widget.work.toString());
+                                                _showSelectCV(context, widget.work);
                                               },
                                             ),
                                           );

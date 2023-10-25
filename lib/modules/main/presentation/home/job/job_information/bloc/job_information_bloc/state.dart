@@ -13,6 +13,10 @@ class JobInformationState extends Equatable {
   List<Object?> get props => [isLoading];
 }
 
+class GetJobInformationFailureState extends JobInformationState {
+  const GetJobInformationFailureState({super.isLoading = false});
+}
+
 class GetJobInformationSuccessState extends JobInformationState {
   final PostEntity postEntity;
   const GetJobInformationSuccessState({required this.postEntity, required super.isLoading});
@@ -26,6 +30,9 @@ class GetJobInformationSuccessState extends JobInformationState {
   List<Object?> get props => [postEntity, isLoading];
 }
 
-class GetJobInformationFailureState extends JobInformationState {
-  const GetJobInformationFailureState({super.isLoading = false});
+class ApplyPostState extends GetJobInformationSuccessState {
+  final String message;
+  const ApplyPostState({required this.message, required super.postEntity, required super.isLoading});
+  @override
+  List<Object?> get props => [message, postEntity, isLoading];
 }

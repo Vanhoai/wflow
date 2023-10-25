@@ -23,6 +23,7 @@ import 'package:wflow/modules/main/presentation/personal/security/security.dart'
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
 import 'package:wflow/modules/main/presentation/work/task/task.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 
@@ -55,15 +56,18 @@ class AppRoutes {
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => CreateAccountScreen(createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
+          builder: (_) => CreateAccountScreen(
+              createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
-        return MaterialPageRoute(builder: (_) => const CandidateContractScreen());
+        return MaterialPageRoute(
+            builder: (_) => const CandidateContractScreen());
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
-        return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
+        return MaterialPageRoute(
+            builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
         return MaterialPageRoute(builder: (_) => const CandidateListScreen());
       case RouteKeys.createContractScreen:
@@ -96,6 +100,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
         return MaterialPageRoute(builder: (_) => const CompanyScreen());
+      case RouteKeys.searchWorkScreen:
+        return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

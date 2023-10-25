@@ -19,7 +19,8 @@ class _HeaderBarWidgetState extends State<HeaderBarWidget> {
     return AppBarWithLogo(
       actions: [
         InkWell(
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+          onTap: () =>
+              Navigator.of(context).pushNamed(RouteKeys.searchWorkScreen),
           child: SvgPicture.asset(
             AppConstants.search,
             width: 28,
@@ -32,7 +33,8 @@ class _HeaderBarWidgetState extends State<HeaderBarWidget> {
         ),
         const SizedBox(width: 12),
         InkWell(
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+          onTap: () =>
+              Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
           child: SvgPicture.asset(
             AppConstants.ic_notification,
             width: 28,

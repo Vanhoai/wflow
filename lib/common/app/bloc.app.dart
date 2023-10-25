@@ -28,7 +28,18 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
         accessToken: '',
         refreshToken: '',
         isSignIn: false,
-        user: User(id: 0, name: '', role: 0, age: 0, address: '', email: '', phone: '', isVerify: false, avatar: ''),
+        user: User(
+          id: 0,
+          name: '',
+          role: 0,
+          age: 0,
+          address: '',
+          email: '',
+          phone: '',
+          isVerify: false,
+          avatar: '',
+          business: 0,
+        ),
       ),
     );
   }

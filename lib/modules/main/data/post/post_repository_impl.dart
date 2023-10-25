@@ -20,9 +20,9 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<List<PostEntity>> getRecentJobs() async {
+  Future<List<PostEntity>> getRecentJobs(String category) async {
     try {
-      final posts = await postService.getRecentJob();
+      final posts = await postService.getRecentJob(category);
       return posts;
     } catch (exception) {
       return [];

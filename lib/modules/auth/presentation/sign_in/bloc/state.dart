@@ -10,10 +10,11 @@ class SignInState extends Equatable {
 
   SignInState copyWith({String? email, String? password, bool? regex, bool? isRemember}) {
     return SignInState(
-        email: email ?? this.email,
-        password: password ?? this.password,
-        regex: regex ?? this.regex,
-        isRemember: isRemember ?? this.isRemember);
+      email: email ?? this.email,
+      password: password ?? this.password,
+      regex: regex ?? this.regex,
+      isRemember: isRemember ?? this.isRemember,
+    );
   }
 
   @override

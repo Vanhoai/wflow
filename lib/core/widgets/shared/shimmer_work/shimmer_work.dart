@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 
-class ShimmerHotJob extends StatelessWidget {
-  const ShimmerHotJob({
+class ShimmerWork extends StatelessWidget {
+  const ShimmerWork({
     super.key,
     required this.height,
     required this.width,

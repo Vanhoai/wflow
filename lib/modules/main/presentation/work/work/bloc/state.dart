@@ -6,6 +6,7 @@ class WorkState extends Equatable {
   final Meta meta;
   final String categorySelected;
   final String messageNotification;
+  final bool isLoading;
 
   const WorkState({
     required this.categories,
@@ -13,6 +14,7 @@ class WorkState extends Equatable {
     this.categorySelected = 'All',
     this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
     this.messageNotification = '',
+    this.isLoading = false,
   });
 
   WorkState copyWith({
@@ -21,6 +23,7 @@ class WorkState extends Equatable {
     Meta? meta,
     String? categorySelected,
     String? messageNotification,
+    bool? isLoading,
   }) {
     return WorkState(
       categories: categories ?? this.categories,
@@ -28,9 +31,10 @@ class WorkState extends Equatable {
       meta: meta ?? this.meta,
       categorySelected: categorySelected ?? this.categorySelected,
       messageNotification: messageNotification ?? this.messageNotification,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object> get props => [categories, categorySelected, meta, posts, messageNotification];
+  List<Object> get props => [categories, categorySelected, meta, posts, messageNotification, isLoading];
 }

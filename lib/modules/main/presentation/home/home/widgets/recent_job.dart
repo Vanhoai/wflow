@@ -4,8 +4,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
+import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/home/home/widgets/shimmer_hot_job.dart';
 
 class RecentJobListWidget extends StatefulWidget {
   const RecentJobListWidget({super.key});
@@ -23,13 +23,17 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocBuilder<HomeBloc, HomeState>(
+      buildWhen: (previous, current) =>
+          previous.isLoading != current.isLoading ||
+          previous.loadingCategory != current.loadingCategory ||
+          previous.categorySelected != current.categorySelected,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.symmetric(vertical: 20),
           sliver: Visibility(
-            visible: !state.isLoading,
+            visible: !state.isLoading && !state.loadingCategory,
             replacement: SliverToBoxAdapter(
-              child: ShimmerHotJob(
+              child: ShimmerWork(
                 physics: const NeverScrollableScrollPhysics(),
                 height: 280,
                 width: double.infinity,

@@ -19,15 +19,15 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr onInit(HomeInitialEvent event, Emitter<HomeState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final categories = await postUseCase.getPostCategories();
+
     final future = await Future.wait([
-      postUseCase.getRecentJobs(),
       postUseCase.getHotJobs(),
-      postUseCase.getPostCategories(),
+      postUseCase.getRecentJobs(categories.first.name),
     ]);
 
-    final recentJobs = future[0] as List<PostEntity>;
-    final hotJobs = future[1] as List<PostEntity>;
-    final categories = future[2] as List<CategoryEntity>;
+    final hotJobs = future[0];
+    final recentJobs = future[1];
 
     emit(
       state.copyWith(
@@ -41,6 +41,10 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr onSelectCategory(OnSelectCategoryEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(categorySelected: event.category));
+    emit(state.copyWith(categorySelected: event.category, loadingCategory: true));
+    final posts = await postUseCase.getRecentJobs(event.category);
+    emit(state.copyWith(recentJobs: posts));
+
+    emit(state.copyWith(loadingCategory: false));
   }
 }

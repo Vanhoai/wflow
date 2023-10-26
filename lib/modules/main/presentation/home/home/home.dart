@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -83,17 +82,9 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTapTitle: () {},
                       leadingBadge: true,
                       actions: [
-                        InkWell(
+                        HeaderIcon(
+                          icon: AppConstants.ic_notification,
                           onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
-                          child: SvgPicture.asset(
-                            AppConstants.ic_notification,
-                            width: 28,
-                            height: 28,
-                            colorFilter: ColorFilter.mode(
-                              themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
-                              BlendMode.srcIn,
-                            ),
-                          ),
                         ),
                       ],
                     );

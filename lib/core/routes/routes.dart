@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/shared/develop/develop.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 
 // auth
 import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
@@ -19,6 +18,7 @@ import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
+import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
 
 // work
 import 'package:wflow/modules/main/presentation/work/task/task.dart';
@@ -38,6 +38,7 @@ import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrad
 // other
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/core/widgets/shared/develop/develop.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -56,10 +57,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
         final args = settings.arguments as bool;
-        return MaterialPageRoute(
-            builder: (_) => PhotoScreen(
-                  multiple: args,
-                ));
+        return MaterialPageRoute(builder: (_) => PhotoScreen(multiple: args));
       case RouteKeys.callScreen:
         final args = settings.arguments as ArgumentsCall;
         return MaterialPageRoute(
@@ -117,6 +115,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const UpPostScreen());
       case RouteKeys.developScreen:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
+      case RouteKeys.applyScreen:
+        return MaterialPageRoute(builder: (_) => const ApplyScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

@@ -7,8 +7,9 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
-import 'package:wflow/modules/auth/presentation/sign_in/components/form_signin.dart';
+import 'components/form_signin.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -23,15 +24,15 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
-      create: (_) => SignInBloc(authUseCase: instance.get<AuthUseCase>()),
+      create: (_) => SignInBloc(authUseCase: instance.get<AuthUseCase>())..add(SignInCheckRememberEvent()),
       lazy: true,
-      child: SafeArea(
-        child: Listener(
-          onPointerDown: (PointerDownEvent event) {
-            FocusManager.instance.primaryFocus?.unfocus();
-          },
-          child: Scaffold(
-            body: SingleChildScrollView(
+      child: Listener(
+        onPointerDown: (PointerDownEvent event) {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: Scaffold(
+          body: SafeArea(
+            child: SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
@@ -39,16 +40,17 @@ class _SignInScreenState extends State<SignInScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      margin: const EdgeInsets.only(top: 30),
+                      margin: const EdgeInsets.only(top: 12),
                       child: SvgPicture.asset(
-                        AppConstants.app,
-                        semanticsLabel: 'Logo',
+                        AppConstants.icLogo,
+                        height: 80,
+                        width: 80,
                       ),
                     ),
                     Container(
                       padding: const EdgeInsets.only(top: 17, bottom: 20),
                       child: Text(
-                        'Đăng nhập',
+                        'Sign in to your account',
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
@@ -59,7 +61,6 @@ class _SignInScreenState extends State<SignInScreen> {
                         alignment: Alignment.center,
                         children: [
                           Container(
-                            margin: const EdgeInsets.symmetric(horizontal: 66),
                             height: 1,
                             width: double.infinity,
                             color: Colors.black26,
@@ -68,7 +69,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             color: Colors.white,
                             child: Text(
-                              'Hoặc',
+                              'or',
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
                           )
@@ -98,7 +99,7 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'Đăng nhập với Google',
+                                    'Sign in with Google',
                                     style: Theme.of(context).textTheme.displayMedium,
                                   ),
                                 )
@@ -119,7 +120,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Bạn chưa có tài khoản? ',
+                            'You don\'t have an account?',
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
                           InkWell(
@@ -128,7 +129,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(2),
                               child: Text(
-                                'Đăng ký',
+                                'Sign Up',
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayMedium!

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 
@@ -10,33 +12,48 @@ class NavigateFeatWidget extends StatefulWidget {
   State<NavigateFeatWidget> createState() => _NavigateFeatWidgetState();
 }
 
-final List<Map<String, dynamic>> staticMenuSelection = [
-  {
-    'title': 'Balance',
-    'icon': AppConstants.ic_balance,
-  },
-  {
-    'title': 'Reputation',
-    'icon': AppConstants.ic_reputation,
-  },
-  {
-    'title': 'Business',
-    'icon': AppConstants.ic_business,
-  },
-  {
-    'title': 'More',
-    'icon': AppConstants.ic_more,
-  }
-];
-
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
+  late final List<Map<String, dynamic>> staticMenuSelection;
+
+  @override
+  void initState() {
+    staticMenuSelection = [
+      {
+        'title': 'Balance',
+        'icon': AppConstants.ic_balance,
+      },
+      {
+        'title': 'Reputation',
+        'icon': AppConstants.ic_reputation,
+      },
+      {
+        'title': instance.get<AppBloc>().state.role == 1 ? 'Apply' : 'Business',
+        'icon': instance.get<AppBloc>().state.role == 1 ? AppConstants.apply : AppConstants.ic_business,
+      },
+      {
+        'title': 'More',
+        'icon': AppConstants.ic_more,
+      }
+    ];
+    super.initState();
+  }
+
   void navigateTo(int index) {
     switch (index) {
       case 0:
         Navigator.of(context).pushNamed(RouteKeys.developScreen);
         break;
+      case 2:
+        final role = instance.get<AppBloc>().state.role;
+        if (role == 1) {
+          Navigator.of(context).pushNamed(RouteKeys.applyScreen);
+        } else {
+          Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+        }
+        break;
       default:
-        Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+        Navigator.of(context).pushNamed(RouteKeys.developScreen);
+        break;
     }
   }
 

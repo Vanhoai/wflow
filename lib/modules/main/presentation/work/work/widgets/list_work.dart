@@ -99,85 +99,83 @@ class _ListWorksState extends State<ListWorks> {
                     context.read<WorkBloc>().add(RefreshEvent());
                   },
                   child: SizedBox(
-                    child: Visibility(
-                      child: ListView.separated(
-                        controller: _scrollController,
-                        itemCount: state.posts.length,
-                        physics: const BouncingScrollPhysics(),
-                        padding: const EdgeInsets.only(bottom: 20, top: 2),
-                        separatorBuilder: (context, index) {
-                          return const SizedBox(height: 16.0);
-                        },
-                        itemBuilder: (context, index) {
-                          final post = state.posts[index];
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      itemCount: state.posts.length,
+                      physics: const BouncingScrollPhysics(),
+                      padding: const EdgeInsets.only(bottom: 20, top: 2),
+                      separatorBuilder: (context, index) {
+                        return const SizedBox(height: 16.0);
+                      },
+                      itemBuilder: (context, index) {
+                        final post = state.posts[index];
 
-                          return JobCard(
-                            cardPressed: () => pressCard(post.id),
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                            boxDecoration: BoxDecoration(
-                              color: themeData.colorScheme.background,
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                                BoxShadow(
-                                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
+                        return JobCard(
+                          cardPressed: () => pressCard(post.id),
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          boxDecoration: BoxDecoration(
+                            color: themeData.colorScheme.background,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.all(12),
+                          header: Header(
+                            leadingPhotoUrl: post.companyLogo,
+                            title: Text(
+                              post.position,
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
                             ),
-                            padding: const EdgeInsets.all(12),
-                            header: Header(
-                              leadingPhotoUrl: post.companyLogo,
-                              title: Text(
-                                post.position,
-                                style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              onTapTitle: () {},
-                              onTapLeading: () {},
-                              subtitle: Text(
-                                post.companyName,
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              leadingSize: 30,
-                              actions: [
-                                InkWell(
-                                  child: SvgPicture.asset(
-                                    AppConstants.bookmark,
-                                    height: 24,
-                                    width: 24,
-                                    colorFilter: ColorFilter.mode(
-                                      themeData.colorScheme.onBackground.withOpacity(0.5),
-                                      BlendMode.srcIn,
-                                    ),
+                            onTapTitle: () {},
+                            onTapLeading: () {},
+                            subtitle: Text(
+                              post.companyName,
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
+                            ),
+                            leadingSize: 30,
+                            actions: [
+                              InkWell(
+                                child: SvgPicture.asset(
+                                  AppConstants.bookmark,
+                                  height: 24,
+                                  width: 24,
+                                  colorFilter: ColorFilter.mode(
+                                    themeData.colorScheme.onBackground.withOpacity(0.5),
+                                    BlendMode.srcIn,
                                   ),
                                 ),
-                                const SizedBox(width: 8.0),
-                              ],
-                            ),
-                            cost: '${post.salary} VND',
-                            duration: post.duration,
-                            description: TextMore(
-                              post.content,
-                              trimMode: TrimMode.Hidden,
-                              trimHiddenMaxLines: 3,
-                              style: themeData.textTheme.displayMedium!.merge(
-                                TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                            ],
+                          ),
+                          cost: '${post.salary} VND',
+                          duration: post.duration,
+                          description: TextMore(
+                            post.content,
+                            trimMode: TrimMode.Hidden,
+                            trimHiddenMaxLines: 3,
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
                               ),
                             ),
-                          );
-                        },
-                      ),
+                          ),
+                        );
+                      },
                     ),
                   ),
                 ),

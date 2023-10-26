@@ -7,6 +7,7 @@ class AppConstants {
   static const String bottomWork = '${bottomIconPath}ic.work.svg';
   static const String bottomMessage = '${bottomIconPath}ic.message.svg';
   static const String bottomExtended = '${bottomIconPath}ic.extended.svg';
+
   //path for common icon
   static const String commonIconPath = 'assets/icons/common/';
   static const String app = '${commonIconPath}ic.app.svg';
@@ -39,6 +40,7 @@ class AppConstants {
   static const String add = '${commonIconPath}ic.add.svg';
   static const String back = '${commonIconPath}ic.back.svg';
   static const String flash = '${commonIconPath}ic.flash.svg';
+  static const String apply = '${commonIconPath}ic.apply.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';
@@ -70,6 +72,8 @@ class AppConstants {
 
   // storage key
   static const String keySecureStorage = '@com.flow';
+  static const String usernameKey = '$keySecureStorage@USERNAME';
+  static const String passwordKey = '$keySecureStorage@PASSWORD';
   static const String accessTokenKey = '$keySecureStorage@ACCESS_TOKEN';
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
   static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';

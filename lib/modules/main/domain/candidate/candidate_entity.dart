@@ -6,7 +6,7 @@ part 'candidate_entity.g.dart';
 
 @JsonSerializable()
 class CandidateEntity extends Equatable {
-  final num id;
+  final int id;
   final CVEntity cv;
   final Worker worker;
 
@@ -16,7 +16,7 @@ class CandidateEntity extends Equatable {
 
   Map<String, dynamic> toJson() => _$CandidateEntityToJson(this);
 
-  CandidateEntity copyWith({num? id, CVEntity? cv, Worker? worker}) {
+  CandidateEntity copyWith({int? id, CVEntity? cv, Worker? worker}) {
     return CandidateEntity(id: id ?? this.id, cv: cv ?? this.cv, worker: worker ?? this.worker);
   }
 
@@ -35,7 +35,7 @@ class Worker extends Equatable {
   final String phone;
   final bool isVerify;
   final String avatar;
-  final num business;
+  final String business;
   final String state;
   final String createdAt;
   final num dob;
@@ -72,7 +72,7 @@ class Worker extends Equatable {
       String? phone,
       bool? isVerify,
       String? avatar,
-      num? business,
+      String? business,
       String? state,
       String? createdAt,
       num? dob,

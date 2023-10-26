@@ -1,26 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/modules/main/domain/candidate/candidate_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
 const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8d6f09dd6320855f.jpg';
 
 class CandidateItemWidget extends StatefulWidget {
-  const CandidateItemWidget({
-    super.key,
-    this.onTapLeading,
-    this.leadingPhotoUrl = IMAGE_PHOTO,
-    this.onTapName,
-    this.onTapCv,
-    this.onTapChat,
-    this.onTap,
-  });
+  const CandidateItemWidget(
+      {super.key,
+      this.onTapLeading,
+      this.onTapName,
+      this.onTapCv,
+      this.onTapChat,
+      this.onTap,
+      required this.candidateEntity});
 
   final double leadingSize = 50;
-  final String leadingPhotoUrl;
   final VoidCallback? onTapLeading;
   final VoidCallback? onTapName;
-  final VoidCallback? onTapCv;
-  final VoidCallback? onTapChat;
   final VoidCallback? onTap;
+  final VoidCallback? onTapChat;
+  final VoidCallback? onTapCv;
+  final CandidateEntity candidateEntity;
 
   @override
   State<CandidateItemWidget> createState() => _CandidateItemWidgetState();
@@ -45,7 +45,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                   borderRadius: BorderRadius.circular(99),
                   clipBehavior: Clip.antiAlias,
                   child: Image.network(
-                    widget.leadingPhotoUrl,
+                    widget.candidateEntity.worker.avatar,
                     width: widget.leadingSize,
                     height: widget.leadingSize,
                     fit: BoxFit.cover,
@@ -74,7 +74,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                   InkWell(
                     onTap: widget.onTapName,
                     child: Text(
-                      'Tran Van Hoai',
+                      widget.candidateEntity.worker.name,
                       style: themeData.textTheme.displayLarge!.merge(TextStyle(
                         color: themeData.colorScheme.onBackground,
                       )),
@@ -84,7 +84,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                   ),
                   const SizedBox(height: 10),
                   CandidateCvItemWidget(
-                    cvName: 'React_Native_Developer',
+                    cvName: widget.candidateEntity.cv.content,
                     onTap: widget.onTapCv,
                   ),
                 ],

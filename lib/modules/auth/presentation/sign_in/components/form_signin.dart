@@ -85,10 +85,10 @@ class _FormState extends State<FormSignIn> {
           child: Column(
             children: [
               TextFieldFrom(
-                label: 'Tài khoản',
+                label: 'Email or phone number',
                 controller: emailController,
                 onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
-                placeholder: 'Nhập Email/Số điện thoại',
+                placeholder: 'Enter email or phone number',
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
                   Icons.account_circle,
@@ -105,8 +105,8 @@ class _FormState extends State<FormSignIn> {
               ),
               TextFieldFrom(
                 controller: passwordController,
-                label: 'Mật khẩu',
-                placeholder: 'Nhập mật khẩu',
+                label: 'Password',
+                placeholder: 'Enter your password',
                 prefixIcon: const Icon(
                   Icons.lock,
                   size: 24,
@@ -118,35 +118,37 @@ class _FormState extends State<FormSignIn> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  //checkbox
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      InkWell(
-                        child: Container(
-                            width: 22,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              border: Border.all(width: 1, color: Colors.black26),
-                              borderRadius: BorderRadius.circular(6.0),
-                              color: state.isRemember ? Colors.blue : Colors.white,
-                            ),
-                            child: SvgPicture.asset(AppConstants.checkOutLine)),
-                        onTap: () => context.read<SignInBloc>().add(RememberPassEvent(isRemember: !state.isRemember)),
-                      ),
-                      const Padding(padding: EdgeInsets.only(left: 9)),
-                      Text(
-                        'Lưu đăng nhập?',
-                        style: Theme.of(context).textTheme.bodyLarge,
-                      )
-                    ],
+                  InkWell(
+                    onTap: () => context.read<SignInBloc>().add(RememberPassEvent(isRemember: !state.isRemember)),
+                    borderRadius: BorderRadius.circular(4),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          width: 22,
+                          height: 22,
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                            border: Border.all(width: 1, color: Colors.black26),
+                            borderRadius: BorderRadius.circular(6.0),
+                            color: state.isRemember ? Colors.blue : Colors.white,
+                          ),
+                          child: SvgPicture.asset(AppConstants.checkOutLine, height: 12, width: 12),
+                        ),
+                        const Padding(padding: EdgeInsets.only(left: 8)),
+                        Text(
+                          'Remember me',
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        )
+                      ],
+                    ),
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       child: Text(
-                        'Quên mật khẩu',
+                        'Forgot password ?',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -163,16 +165,16 @@ class _FormState extends State<FormSignIn> {
                       listenWhen: (preState, state) => preState != state,
                       listener: listener,
                       child: PrimaryButton(
-                        onPressed: () {
-                          context.read<SignInBloc>().add(
-                                SignInSubmittedEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                ),
-                              );
-                        },
-                        label: 'Đăng nhập',
-                      ),
+                          onPressed: () {
+                            context.read<SignInBloc>().add(
+                                  SignInSubmittedEvent(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    isRemember: state.isRemember,
+                                  ),
+                                );
+                          },
+                          label: 'Sign In'),
                     ),
                   ),
                   BlocBuilder<SecurityBloc, SecurityState>(
@@ -185,7 +187,6 @@ class _FormState extends State<FormSignIn> {
                               width: 10,
                             ),
                             InkWell(
-                              onTap: () => print('hello'),
                               borderRadius: BorderRadius.circular(8),
                               splashColor: AppColors.blueColor,
                               child: SvgPicture.asset(height: 50, AppConstants.bionic),

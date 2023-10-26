@@ -5,7 +5,9 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
@@ -22,6 +24,19 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<SignInSubmittedEvent>(signInSubmitted);
     on<RememberPassEvent>(rememberPass);
     on<SignInWithGoogleEvent>(signInWithGoogle);
+    on<SignInCheckRememberEvent>(onSignInCheckRemember);
+  }
+
+  FutureOr<void> onSignInCheckRemember(SignInCheckRememberEvent event, Emitter<SignInState> emit) async {
+    final rememberMe = instance.get<AppBloc>().state.rememberMe;
+    if (rememberMe) {
+      final username = await instance.get<SecureStorage>().read(AppConstants.usernameKey);
+      final password = await instance.get<SecureStorage>().read(AppConstants.passwordKey);
+
+      if (username != null && password != null) {
+        await signIn(username, password, emit);
+      }
+    }
   }
 
   FutureOr<void> onChangeEmail(OnChangeEmailEvent event, Emitter<SignInState> emit) {
@@ -42,21 +57,23 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(isRemember: event.isRemember));
   }
 
-  FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
+  Future<void> signIn(String username, String password, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-
     final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
     if (deviceToken == null || deviceToken.isEmpty) {
       emit(const SignInFailure(message: "Can't get device token"));
+      emit(const SignInState());
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
     }
 
-    final response = await authUseCase
-        .signIn(AuthNormalRequest(username: event.email, password: event.password, deviceToken: deviceToken!));
+    final response =
+        await authUseCase.signIn(AuthNormalRequest(username: username, password: password, deviceToken: deviceToken!));
 
     response.fold(
       (AuthEntity left) {
-        instance.get<AppBloc>().add(AppChangeAuth(authEntity: left, role: left.user.role));
+        instance
+            .get<AppBloc>()
+            .add(AppChangeAuth(authEntity: left, role: left.user.role, rememberMe: state.isRemember));
         emit(SignInSuccess());
       },
       (Failure right) {
@@ -64,14 +81,22 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         emit(const SignInState());
       },
     );
-
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
+    await signIn(event.email, event.password, emit);
+    if (event.isRemember) {
+      instance.get<SecureStorage>().write(AppConstants.usernameKey, event.email);
+      instance.get<SecureStorage>().write(AppConstants.passwordKey, event.password);
+    } else {
+      instance.get<SecureStorage>().delete(AppConstants.usernameKey);
+      instance.get<SecureStorage>().delete(AppConstants.passwordKey);
+    }
   }
 
   FutureOr<void> signInWithGoogle(SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
     String idToken = await FirebaseAuthService.signInWithGoogle();
-    if (idToken.isNotEmpty) {
-      print('IDToken: $idToken');
-    }
+    if (idToken.isNotEmpty) {}
   }
 }

@@ -20,8 +20,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
 
   static AppState onInit() {
     if (sharedPreferences.containsKey('AppBloc')) {
-      return AppState.fromJson(
-          jsonDecode(sharedPreferences.getString('AppBloc')!));
+      return AppState.fromJson(jsonDecode(sharedPreferences.getString('AppBloc')!));
     }
 
     return const AppState(
@@ -45,14 +44,12 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     );
   }
 
-  FutureOr<void> onAppChangeLanguage(
-      AppChangeLanguage event, Emitter<AppState> emit) async {
+  FutureOr<void> onAppChangeLanguage(AppChangeLanguage event, Emitter<AppState> emit) async {
     localization.translate(event.languageCode);
     emit(state.copyWith(languageCode: event.languageCode));
   }
 
-  FutureOr<void> onAppChangeTheme(
-      AppChangeTheme event, Emitter<AppState> emit) {
+  FutureOr<void> onAppChangeTheme(AppChangeTheme event, Emitter<AppState> emit) {
     emit(state.copyWith(isDarkMode: event.isDarkMode));
   }
 
@@ -61,13 +58,15 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   }
 
   FutureOr<void> onAppChangeAuth(AppChangeAuth event, Emitter<AppState> emit) {
-    emit(state.copyWith(authEntity: event.authEntity));
+    emit(state.copyWith(
+      authEntity: event.authEntity,
+      role: event.role,
+      rememberMe: event.rememberMe,
+    ));
   }
 
-  FutureOr<void> onRefreshToken(
-      RefreshTokenEvent event, Emitter<AppState> emit) {
-    final authEntity = state.authEntity.copyWith(
-        accessToken: event.accessToken, refreshToken: event.refreshToken);
+  FutureOr<void> onRefreshToken(RefreshTokenEvent event, Emitter<AppState> emit) {
+    final authEntity = state.authEntity.copyWith(accessToken: event.accessToken, refreshToken: event.refreshToken);
     emit(state.copyWith(authEntity: authEntity));
   }
 

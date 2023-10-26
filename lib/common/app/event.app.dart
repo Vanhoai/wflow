@@ -28,11 +28,12 @@ class SetIsFirstTime extends AppEvent {}
 class AppChangeAuth extends AppEvent {
   final AuthEntity authEntity;
   final num role;
+  final bool rememberMe;
 
-  AppChangeAuth({required this.authEntity, this.role = 0});
+  AppChangeAuth({required this.authEntity, this.role = 0, this.rememberMe = false});
 
   @override
-  List<Object?> get props => [authEntity, role];
+  List<Object?> get props => [authEntity, role, rememberMe];
 }
 
 class RefreshTokenEvent extends AppEvent {

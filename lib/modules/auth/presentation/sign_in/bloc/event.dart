@@ -24,11 +24,12 @@ class OnChangePasswordEvent extends SignInEvent {
 class SignInSubmittedEvent extends SignInEvent {
   final String email;
   final String password;
+  final bool isRemember;
 
-  SignInSubmittedEvent({required this.email, required this.password});
+  SignInSubmittedEvent({required this.email, required this.password, required this.isRemember});
 
   @override
-  List<Object?> get props => [email, password];
+  List<Object?> get props => [email, password, isRemember];
 }
 
 class RememberPassEvent extends SignInEvent {
@@ -38,6 +39,8 @@ class RememberPassEvent extends SignInEvent {
   @override
   List<Object?> get props => [isRemember];
 }
+
+class SignInCheckRememberEvent extends SignInEvent {}
 
 class SignInWithBiometrics extends SignInEvent {}
 

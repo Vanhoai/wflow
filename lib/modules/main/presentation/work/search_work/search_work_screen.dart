@@ -1,5 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/presentation/work/search_work/utils/constants.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/bloc/event.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/bloc/state.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/widgets/search_work_bar.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/widgets/work_card.dart';
 
@@ -13,6 +20,7 @@ class SearchWorkScreen extends StatefulWidget {
 class _SearchWorkScreenState extends State<SearchWorkScreen> {
   late final TextEditingController _controller;
   late bool _isHiddenSuffixIcon;
+  Timer? _debounce;
 
   @override
   void initState() {
@@ -24,42 +32,29 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
   @override
   void dispose() {
     _controller.dispose();
+    _debounce?.cancel();
     super.dispose();
   }
 
-  void _onChangedSearch(String value) {
-    List<Map<String, dynamic>> result = [];
+  void _onChangedSearch(String value, BuildContext context) {
+    if (_debounce?.isActive ?? false) _debounce?.cancel();
 
-    if (value.isEmpty) {
-      result = posts;
-    } else {
-      result = posts
-          .where((post) => post['position']
-              .toString()
-              .toLowerCase()
-              .contains(value.toLowerCase()))
-          .toList();
-    }
-
-    setState(() {
-      _isHiddenSuffixIcon = value.isEmpty;
-      foundPosts = result;
+    _debounce = Timer(const Duration(milliseconds: 200), () {
+      BlocProvider.of<SearchWorkBloc>(context)
+          .add(ChangedSearchWorkEvent(txtSearch: value));
     });
   }
 
-  void _onClearSearch() {
-    setState(() {
-      _isHiddenSuffixIcon = true;
-      foundPosts = posts;
-      _controller.clear();
-    });
-  }
+  void _onClearSearch() {}
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
+    return BlocProvider(
+      create: (_) => SearchWorkBloc(postUseCase: instance.get<PostUseCase>()),
+      child: Scaffold(
+        appBar: _buildAppBar(),
+        body: _buildBody(),
+      ),
     );
   }
 
@@ -70,31 +65,36 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
   }
 
   Widget _buildBody() {
-    return SizedBox(
-      width: double.infinity,
-      height: double.infinity,
-      child: Column(
-        children: <Widget>[
-          SearchWorkBar(
-            controller: _controller,
-            isHiddenSuffixIcon: _isHiddenSuffixIcon,
-            onChangedSearch: (value) => _onChangedSearch(value),
-            onClearSearch: () => _onClearSearch(),
-          ),
-          Expanded(
-            child: ListView.builder(
-              physics: const BouncingScrollPhysics(),
-              itemBuilder: (context, index) => WorkCard(
-                position: foundPosts[index]['position'],
-                company: foundPosts[index]['company'],
-                content: foundPosts[index]['content'],
-                image: foundPosts[index]['image'],
+    return BlocBuilder<SearchWorkBloc, SearchWorkState>(
+      builder: (context, state) {
+        return SizedBox(
+          width: double.infinity,
+          height: double.infinity,
+          child: Column(
+            children: <Widget>[
+              SearchWorkBar(
+                controller: _controller,
+                isHiddenSuffixIcon: _isHiddenSuffixIcon,
+                onChangedSearch: (value) => _onChangedSearch(value, context),
+                onClearSearch: () => _onClearSearch(),
               ),
-              itemCount: foundPosts.length,
-            ),
-          )
-        ],
-      ),
+              Expanded(
+                child: ListView.builder(
+                  physics: const BouncingScrollPhysics(),
+                  itemBuilder: (context, index) => WorkCard(
+                    position: state.postsData[index].position,
+                    company: state.postsData[index].companyName,
+                    content: state.postsData[index].content,
+                    image: state.postsData[index].companyLogo,
+                    onTap: () => {},
+                  ),
+                  itemCount: state.postsData.length,
+                ),
+              )
+            ],
+          ),
+        );
+      },
     );
   }
 }

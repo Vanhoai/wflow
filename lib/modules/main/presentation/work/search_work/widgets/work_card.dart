@@ -8,12 +8,14 @@ class WorkCard extends StatefulWidget {
     required this.company,
     required this.content,
     required this.image,
+    required this.onTap,
   });
 
   final String position;
   final String company;
   final String content;
   final String image;
+  final void Function()? onTap;
 
   @override
   State<WorkCard> createState() => _WorkCardState();
@@ -23,7 +25,7 @@ class _WorkCardState extends State<WorkCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () => {},
+      onTap: widget.onTap,
       child: Ink(
         padding: const EdgeInsets.only(
           left: AppSize.paddingScreenDefault,
@@ -51,10 +53,7 @@ class _WorkCardState extends State<WorkCard> {
                 ),
               ],
             ),
-            Padding(
-              padding: const EdgeInsets.only(left: 20),
-              child: _buildContent(widget.content),
-            )
+            _buildContent(widget.content)
           ],
         ),
       ),

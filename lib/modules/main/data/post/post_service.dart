@@ -2,13 +2,16 @@ import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/entities/category/category_entity.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
+import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 
 abstract class PostService {
   Future<List<PostEntity>> getRecentJob();
   Future<List<PostEntity>> getHotJob();
   Future<List<CategoryEntity>> getPostCategories();
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request);
+  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
 }
 
 class PostServiceImpl implements PostService {
@@ -80,7 +83,8 @@ class PostServiceImpl implements PostService {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request) async {
     try {
       final response = await agent.dio.get(
         '/post/finds-by-category',
@@ -91,12 +95,14 @@ class PostServiceImpl implements PostService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }
 
-      List<PostEntity> posts = httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
+      List<PostEntity> posts =
+          httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -104,6 +110,29 @@ class PostServiceImpl implements PostService {
         data: posts,
       );
     } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+    try {
+      final response = await agent.dio.get(
+          '/post/find-and-filter?page=${getWorkModel.page}&pageSize=${getWorkModel.pageSize}&search=${getWorkModel.search}');
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      List<PostEntity> posts = [];
+      httpResponse.data.forEach((post) {
+        posts.add(PostEntity.fromJson(post));
+      });
+
+      return posts;
+    } catch (exception) {
+      print('error $exception');
       throw ServerException(message: exception.toString());
     }
   }

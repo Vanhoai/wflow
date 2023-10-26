@@ -93,10 +93,10 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       address: '',
       collaborators: [],
       id: 0,
-      createdAt: '',
-      updatedAt: '',
-      deletedAt: '',
       logo: '',
+      createdAt: DateTime.now(),
+      updatedAt: null,
+      deletedAt: null,
     );
   }
 

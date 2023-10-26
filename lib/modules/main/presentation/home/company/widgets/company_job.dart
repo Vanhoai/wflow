@@ -16,10 +16,10 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
     final ThemeData themeData = Theme.of(context);
 
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.only(bottom: 20, top: 10),
       child: ListView.separated(
         physics: const BouncingScrollPhysics(),
-        padding: const EdgeInsets.only(top: 2, bottom: 20),
+        padding: const EdgeInsets.only(bottom: 20),
         itemBuilder: (context, index) {
           return JobCard(
             margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -47,7 +47,6 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                   color: themeData.colorScheme.onBackground,
                 )),
               ),
-              onTapTitle: () {},
               onTapLeading: () {},
               subtitle: Text(
                 'hoai',

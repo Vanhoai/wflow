@@ -9,6 +9,7 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
@@ -96,6 +97,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
         return MaterialPageRoute(builder: (_) => const CompanyScreen());
+      case RouteKeys.balanceScreen:
+        return MaterialPageRoute(builder: (_) => const BalanceScreen());
       default:
         return MaterialPageRoute(builder: (_) => Container());
     }

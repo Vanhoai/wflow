@@ -8,13 +8,13 @@ class BaseEntity {
   final int id;
 
   @EpochDateTimeConverter()
-  final String createdAt;
+  final DateTime? createdAt;
 
   @EpochDateTimeConverter()
-  final String updatedAt;
+  final DateTime? updatedAt;
 
   @EpochDateTimeConverter()
-  final String? deletedAt;
+  final DateTime? deletedAt;
 
   const BaseEntity({
     required this.id,
@@ -28,22 +28,12 @@ class BaseEntity {
   Map<String, dynamic> toJson() => _$BaseEntityToJson(this);
 }
 
-class EpochDateTimeConverter implements JsonConverter<dynamic, dynamic> {
+class EpochDateTimeConverter implements JsonConverter<DateTime, String> {
   const EpochDateTimeConverter();
 
   @override
-  dynamic fromJson(dynamic json) {
-    if (json is int) {
-      return DateTime.fromMillisecondsSinceEpoch(json);
-    }
-    return json;
-  }
+  DateTime fromJson(String json) => DateTime.fromMillisecondsSinceEpoch(int.tryParse(json) ?? 0);
 
   @override
-  dynamic toJson(dynamic object) {
-    if (object is DateTime) {
-      return object.millisecondsSinceEpoch;
-    }
-    return object;
-  }
+  String toJson(DateTime object) => object.millisecondsSinceEpoch.toString();
 }

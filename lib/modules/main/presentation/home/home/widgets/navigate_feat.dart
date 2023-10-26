@@ -32,8 +32,18 @@ final List<Map<String, dynamic>> staticMenuSelection = [
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   void navigateTo(int index) {
     switch (index) {
-      default:
+      case 0:
+        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
+        break;
+      case 1:
+        break;
+      case 2:
         Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+        break;
+      case 3:
+        break;
+      default:
+        break;
     }
   }
 

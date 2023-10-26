@@ -7,7 +7,6 @@ class Header extends StatefulWidget {
     required this.title,
     required this.subtitle,
     this.decoration,
-    this.onTapTitle,
     this.leadingSize = 30,
     this.leadingPhotoUrl = '',
     this.leadingBadge = false,
@@ -15,7 +14,6 @@ class Header extends StatefulWidget {
     this.actions = const [],
   });
   final Widget title;
-  final VoidCallback? onTapTitle;
   final VoidCallback? onTapLeading;
   final Widget subtitle;
   final double leadingSize;

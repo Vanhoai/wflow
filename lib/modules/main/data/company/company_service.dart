@@ -1,4 +1,3 @@
-import 'package:dartz/dartz.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
@@ -10,8 +9,8 @@ class CompanyPath {
 }
 
 abstract class CompanyService {
-  Future<Either<Failure, CompanyModel>> getCompanyById(int id);
-  Future<Either<Failure, CompanyModel>> myCompany();
+  Future<CompanyModel> getCompanyById(int id);
+  Future<CompanyModel> myCompany();
 }
 
 class CompanyServiceImpl implements CompanyService {
@@ -20,32 +19,32 @@ class CompanyServiceImpl implements CompanyService {
   CompanyServiceImpl({required this.agent});
 
   @override
-  Future<Either<Failure, CompanyModel>> getCompanyById(int id) async {
+  Future<CompanyModel> getCompanyById(int id) async {
     try {
       final response = await agent.dio.get(CompanyPath.getCompanyById + id.toString());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (response.statusCode == 200) {
-        return Right(CompanyModel.fromJson(httpResponse.data));
+        return CompanyModel.fromJson(httpResponse.data);
       } else {
-        return Left(CommonFailure(message: httpResponse.message));
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
-      return const Left(ServerFailure());
+      return throw const ServerFailure();
     }
   }
 
   @override
-  Future<Either<Failure, CompanyModel>> myCompany() async {
+  Future<CompanyModel> myCompany() async {
     try {
       final response = await agent.dio.get(CompanyPath.myCompany);
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (response.statusCode == 200) {
-        return Right(CompanyModel.fromJson(httpResponse.data));
+        return CompanyModel.fromJson(httpResponse.data);
       } else {
-        return Left(CommonFailure(message: httpResponse.message));
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
-      return const Left(ServerFailure());
+      return throw const ServerFailure();
     }
   }
 }

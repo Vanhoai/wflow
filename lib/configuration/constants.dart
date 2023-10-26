@@ -48,14 +48,16 @@ class AppConstants {
   static const String introductionCash = '${introductionPath}plash.cash.svg';
   static const String introductionTask = '${introductionPath}plash.task.svg';
 
-  static const String ic_balance = 'assets/icons/balance.svg';
-  static const String ic_reputation = 'assets/icons/reputation.svg';
-  static const String ic_business = 'assets/icons/business.svg';
-  static const String ic_more = 'assets/icons/more.svg';
-  static const String ic_notification = 'assets/icons/notification.svg';
-  static const String ic_search = 'assets/icons/search.svg';
-  static const String ic_filter = 'assets/icons/filter.svg';
-  static const String icLogo = 'assets/icons/logo.svg';
+  static const String ic_balance = '${commonIconPath}ic.balance.svg';
+  static const String ic_reputation = '${commonIconPath}ic.reputation.svg';
+  static const String ic_business = '${commonIconPath}ic.business.svg';
+  static const String ic_more = '${commonIconPath}ic.morev2.svg';
+  static const String ic_notification = '${commonIconPath}ic.notification.svg';
+  static const String ic_search = '${commonIconPath}ic.searchv2.svg';
+  static const String ic_filter = '${commonIconPath}ic.filter.svg';
+  static const String ic_logo = '${commonIconPath}ic.logo.svg';
+  static const String ic_mastercard = '${commonIconPath}ic.mastercard.svg';
+  static const String ic_balancew = '${commonIconPath}ic.balancew.svg';
 
   //image
   static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';

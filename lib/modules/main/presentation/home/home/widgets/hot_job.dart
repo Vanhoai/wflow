@@ -101,7 +101,6 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                                 ),
                               ),
                             ),
-                            onTapTitle: () {},
                             onTapLeading: () {},
                             leadingSize: 32,
                             actions: [

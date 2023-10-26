@@ -1,44 +1,68 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wflow/modules/main/domain/base/base_entity.dart';
 
 part 'user_entity.g.dart';
 
 @JsonSerializable()
-class UserEntity extends Equatable {
-  final num? id;
-  final String? state;
-  final String? email;
-  final String? phone;
-  final String? avatar;
-  final num? age;
-  final String? name;
-  final num? dob;
-  final String? address;
-  final bool? isVerify;
-  final String? identifyCode;
-  final int? role;
+class UserEntity extends BaseEntity with EquatableMixin {
+  @JsonKey(name: 'state', defaultValue: '')
+  final String state;
+
+  @JsonKey(name: 'email', defaultValue: '')
+  final String email;
+
+  @JsonKey(name: 'phone', defaultValue: '')
+  final String phone;
+
+  @JsonKey(name: 'avatar', defaultValue: '')
+  final String avatar;
+
+  @JsonKey(name: 'age', defaultValue: 0)
+  final num age;
+
+  @JsonKey(name: 'name', defaultValue: '')
+  final String name;
+
+  @JsonKey(name: 'dob', defaultValue: 0)
+  final num dob;
+
+  @JsonKey(name: 'address', defaultValue: '')
+  final String address;
+
+  @JsonKey(name: 'isVerify', defaultValue: false)
+  final bool isVerify;
+
+  @JsonKey(name: 'identifyCode', defaultValue: '')
+  final String identifyCode;
+
+  @JsonKey(name: 'role', defaultValue: 0)
+  final int role;
 
   const UserEntity({
-    this.id,
-    this.state,
-    this.email,
-    this.phone,
-    this.avatar,
-    this.age,
-    this.name,
-    this.dob,
-    this.address,
-    this.isVerify,
-    this.identifyCode,
-    this.role,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.deletedAt,
+    required this.address,
+    required this.age,
+    required this.avatar,
+    required this.dob,
+    required this.email,
+    required this.identifyCode,
+    required this.isVerify,
+    required this.name,
+    required this.phone,
+    required this.role,
+    required this.state,
   });
 
   factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
 
   UserEntity copyWith({
-    num? id,
     String? state,
     String? email,
     String? phone,
@@ -52,7 +76,10 @@ class UserEntity extends Equatable {
     int? role,
   }) {
     return UserEntity(
-      id: id ?? this.id,
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
       state: state ?? this.state,
       email: email ?? this.email,
       phone: phone ?? this.phone,
@@ -68,22 +95,38 @@ class UserEntity extends Equatable {
   }
 
   factory UserEntity.createEmpty() {
-    return const UserEntity(
-      id: null,
-      state: null,
-      email: null,
-      phone: null,
-      avatar: null,
-      age: null,
-      name: null,
-      dob: null,
-      address: null,
-      isVerify: null,
-      identifyCode: null,
-      role: null,
+    return UserEntity(
+      id: 0,
+      state: '',
+      email: '',
+      phone: '',
+      avatar: '',
+      age: 0,
+      name: '',
+      dob: 0,
+      address: '',
+      isVerify: false,
+      identifyCode: '',
+      role: 0,
+      createdAt: DateTime.now(),
+      updatedAt: null,
+      deletedAt: null,
     );
   }
 
   @override
-  List<Object?> get props => [id, state, email, phone, avatar, age, name, dob, address, isVerify, identifyCode, role];
+  List<Object?> get props => [
+        id,
+        state,
+        email,
+        phone,
+        avatar,
+        age,
+        name,
+        dob,
+        address,
+        isVerify,
+        identifyCode,
+        role,
+      ];
 }

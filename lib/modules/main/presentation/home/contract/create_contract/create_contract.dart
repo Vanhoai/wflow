@@ -144,7 +144,6 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                             )),
                           ),
                           onTapLeading: () {},
-                          onTapTitle: () {},
                           leadingBadge: false,
                         ),
                         const SizedBox(height: 80),

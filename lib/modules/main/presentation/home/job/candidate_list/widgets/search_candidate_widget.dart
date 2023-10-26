@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/configuration/constants.dart';
 
 class SearchCandidateWidget extends StatefulWidget {
   const SearchCandidateWidget({super.key, this.onClear, this.textEditingController});
@@ -35,7 +36,7 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SvgPicture.asset(
-            'assets/icons/search.svg',
+            AppConstants.search,
             fit: BoxFit.cover,
             width: 20,
             height: 20,

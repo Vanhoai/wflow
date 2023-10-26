@@ -94,7 +94,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         )),
                       ),
                       onTapLeading: () {},
-                      onTapTitle: () {},
                       leadingBadge: false,
                       actions: [
                         Column(
@@ -163,7 +162,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         )),
                       ),
                       onTapLeading: () {},
-                      onTapTitle: () {},
                       leadingBadge: false,
                     ),
                   ),

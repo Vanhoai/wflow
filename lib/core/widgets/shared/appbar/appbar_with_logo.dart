@@ -19,7 +19,7 @@ class AppBarWithLogo extends StatelessWidget {
           Row(
             children: [
               SvgPicture.asset(
-                AppConstants.icLogo,
+                AppConstants.ic_logo,
                 height: 40,
                 width: 40,
               ),

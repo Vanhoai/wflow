@@ -86,7 +86,6 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                         color: themeData.colorScheme.onBackground,
                       )),
                     ),
-                    onTapTitle: () {},
                     onTapLeading: () {},
                     subtitle: Text(
                       job.companyName,

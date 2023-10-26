@@ -170,7 +170,6 @@ class _ListWorksState extends State<ListWorks> {
                                   color: themeData.colorScheme.onBackground,
                                 )),
                               ),
-                              onTapTitle: () {},
                               onTapLeading: () {},
                               subtitle: Text(
                                 post.companyName,

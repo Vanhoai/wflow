@@ -93,9 +93,9 @@ class CompanyModel extends BaseEntity with EquatableMixin {
       address: '',
       collaborators: [],
       id: 0,
-      createdAt: '',
-      updatedAt: '',
-      deletedAt: '',
+      createdAt: DateTime.now(),
+      updatedAt: null,
+      deletedAt: null,
       logo: '',
     );
   }

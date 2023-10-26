@@ -80,7 +80,6 @@ class _HomeScreenState extends State<HomeScreen> {
                         )),
                       ),
                       onTapLeading: () {},
-                      onTapTitle: () {},
                       leadingBadge: true,
                       actions: [
                         InkWell(

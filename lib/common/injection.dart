@@ -24,7 +24,7 @@ import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -67,7 +67,9 @@ Future<void> initAppInjection() async {
       () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
   instance.registerLazySingleton<CompanyUseCase>(
       () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()));
-  instance.registerLazySingleton<CompanyBloc>(() => CompanyBloc(companyUseCase: instance.get<CompanyUseCase>()));
+
+  // BLOC OF COMPANY
+  instance.registerLazySingleton<MyCompanyBloc>(() => MyCompanyBloc(companyUseCase: instance.get<CompanyUseCase>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;
@@ -85,7 +87,6 @@ class AppBlocObserver extends BlocObserver {
     printer: PrettyPrinter(
       methodCount: 2, // Number of method calls to be displayed
       errorMethodCount: 8, // Number of method calls if stacktrace is provided
-      lineLength: 120, // Width of the output
       colors: true, // Colorful log messages
       printEmojis: true, // Print an emoji for each log message
       printTime: true, // Should each log print contain a timestamp
@@ -93,12 +94,6 @@ class AppBlocObserver extends BlocObserver {
     level: Level.verbose,
     filter: ProductionFilter(),
   );
-
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-    logger.d('onEvent -- bloc: ${bloc.runtimeType}, event: $event');
-  }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {

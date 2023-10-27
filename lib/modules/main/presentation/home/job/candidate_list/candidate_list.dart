@@ -34,8 +34,8 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
     super.dispose();
   }
 
-  void navigateCandidateContract(BuildContext context) {
-    Navigator.of(context).pushNamed(RouteKeys.candidateContractScreen);
+  void navigateCandidateContract(BuildContext context, String candidate) {
+    Navigator.of(context).pushNamed(RouteKeys.candidateContractScreen, arguments: candidate);
   }
 
   @override
@@ -55,100 +55,88 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
             }
           });
           return CommonScaffold(
-            body: NestedScrollView(
-              controller: _scrollController,
-              physics: const AlwaysScrollableScrollPhysics(),
-              headerSliverBuilder: (context, innerBoxIsScrolled) {
-                return [
-                  SliverAppBar(
-                    automaticallyImplyLeading: true,
-                    leading: IconButton(
-                      icon: const Icon(Icons.arrow_back_ios),
-                      onPressed: () => Navigator.pop(context, false),
-                    ),
-                    backgroundColor: themeData.colorScheme.background,
-                    surfaceTintColor: Colors.transparent,
-                    title: Text(
-                      'Candidates',
-                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                        color: themeData.colorScheme.onBackground,
-                        fontSize: 18,
-                      )),
-                    ),
-                    centerTitle: true,
-                    pinned: true,
-                  ),
-                  const SliverPadding(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    sliver: SliverToBoxAdapter(
-                      child: SearchCandidateWidget(),
-                    ),
-                  ),
-                ];
+            appBar: AppBar(
+              automaticallyImplyLeading: true,
+              leading: IconButton(
+                icon: const Icon(Icons.arrow_back_ios),
+                onPressed: () => Navigator.pop(context, false),
+              ),
+              backgroundColor: themeData.colorScheme.background,
+              surfaceTintColor: Colors.transparent,
+              title: Text(
+                'Candidates',
+                style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                  color: themeData.colorScheme.onBackground,
+                  fontSize: 18,
+                )),
+              ),
+              centerTitle: true,
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async {
+                context.read<CandidateListBloc>().add(GetCandidateAppliedListEvent(post: widget.post));
               },
-              body: RefreshIndicator(
-                onRefresh: () async {
-                  context.read<CandidateListBloc>().add(GetCandidateAppliedListEvent(post: widget.post));
-                },
-                child: Column(
-                  children: [
-                    Expanded(
-                      child: Visibility(
-                        visible: !state.isLoading,
-                        replacement: const Loading(),
-                        child: LayoutBuilder(
-                          builder: (context, constraints) {
-                            if (state is GetCandidateAppliedListSuccess) {
-                              if (state.candidateEntities.isEmpty) {
-                                return Center(
-                                  child: Text('No candidates have applied yet',
-                                      style: Theme.of(context).textTheme.bodyLarge),
-                                );
-                              }
-                              return ListView.builder(
-                                itemCount: state.candidateEntities.length,
-                                itemBuilder: (context, index) {
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                    child: CandidateItemWidget(
-                                      candidateEntity: state.candidateEntities[index],
-                                      onTapLeading: () {
-                                        navigateCandidateContract(context);
-                                      },
-                                      onTapChat: () {},
-                                      onTapCv: () {
-                                        print('hihi');
-                                      },
-                                      onTapName: () {},
-                                    ),
-                                  );
-                                },
+              child: Column(
+                children: [
+                  const Padding(
+                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20), child: SearchCandidateWidget()),
+                  Expanded(
+                    child: Visibility(
+                      visible: !state.isLoading,
+                      replacement: const Loading(),
+                      child: LayoutBuilder(
+                        builder: (context, constraints) {
+                          if (state is GetCandidateAppliedListSuccess) {
+                            if (state.candidateEntities.isEmpty) {
+                              return Center(
+                                child: Text('No candidates have applied yet',
+                                    style: Theme.of(context).textTheme.bodyLarge),
                               );
-                            } else {
-                              return const SizedBox();
                             }
-                          },
-                        ),
+                            return ListView.builder(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: state.candidateEntities.length,
+                              itemBuilder: (context, index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                                  child: CandidateItemWidget(
+                                    candidateEntity: state.candidateEntities[index],
+                                    onTap: () {
+                                      navigateCandidateContract(context, state.candidateEntities[index].id.toString());
+                                    },
+                                    onTapChat: () {},
+                                    onTapCv: () {
+                                      print('hihi');
+                                    },
+                                    onTapName: () {},
+                                  ),
+                                );
+                              },
+                            );
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
                       ),
                     ),
-                    Builder(
-                      builder: (context) {
-                        if (state is GetCandidateAppliedListSuccess) {
-                          return Visibility(
-                            visible: state.loadMore,
-                            child: SizedBox(
-                              width: MediaQuery.of(context).size.width,
-                              height: 40,
-                              child: const Loading(),
-                            ),
-                          );
-                        } else {
-                          return const SizedBox();
-                        }
-                      },
-                    )
-                  ],
-                ),
+                  ),
+                  Builder(
+                    builder: (context) {
+                      if (state is GetCandidateAppliedListSuccess) {
+                        return Visibility(
+                          visible: state.loadMore,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            child: const Loading(),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  )
+                ],
               ),
             ),
           );

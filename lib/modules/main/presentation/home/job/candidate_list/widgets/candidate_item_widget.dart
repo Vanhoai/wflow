@@ -84,7 +84,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                   ),
                   const SizedBox(height: 10),
                   CandidateCvItemWidget(
-                    cvName: widget.candidateEntity.cv.content,
+                    cvName: widget.candidateEntity.cv.url,
                     onTap: widget.onTapCv,
                   ),
                 ],

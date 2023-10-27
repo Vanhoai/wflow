@@ -32,6 +32,7 @@ import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -83,6 +84,8 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
   instance.registerSingleton<NavigationService>(NavigationService());
+  //Authen bloc
+  instance.registerLazySingleton<AuthenticationsBloc>(() => AuthenticationsBloc());
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

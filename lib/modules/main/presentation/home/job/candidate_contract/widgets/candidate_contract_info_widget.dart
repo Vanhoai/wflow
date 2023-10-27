@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CandidateContractInfoWidget extends StatelessWidget {
-  const CandidateContractInfoWidget({super.key});
+  const CandidateContractInfoWidget({required this.candidateName, required this.introduction, super.key});
+  final String candidateName;
+  final String introduction;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
             )),
           ),
           Text(
-            'Trần Văn Hoài',
+            candidateName,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,
@@ -35,7 +37,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
             )),
           ),
           Text(
-            'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged',
+            introduction,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,

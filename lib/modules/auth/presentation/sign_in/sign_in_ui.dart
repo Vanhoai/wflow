@@ -42,7 +42,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Container(
                       margin: const EdgeInsets.only(top: 12),
                       child: SvgPicture.asset(
-                        AppConstants.icLogo,
+                        AppConstants.ic_logo,
                         height: 80,
                         width: 80,
                       ),

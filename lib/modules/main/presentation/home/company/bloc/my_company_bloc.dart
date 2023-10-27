@@ -32,15 +32,14 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
   }
 
   Future onGetMyCompany(GetMyCompanyEvent companyMyGetEvent, Emitter<MyCompanyState> emit) async {
-    instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
     emit(state.copyWith(isLoadingCompany: companyMyGetEvent.isLoading, message: companyMyGetEvent.message));
     final Either<CompanyEntity, Failure> result = await companyUseCase.myCompany();
     result.fold((CompanyEntity l) {
       emit(state.copyWith(companyEntity: l, isLoadingCompany: false, message: 'Load company success'));
     }, (Failure r) {
+      // handle error
       emit(state.copyWith(isLoadingCompany: false, message: r.message));
     });
-    instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future onGetMyMemberCompany(GetMyMemberCompanyEvent getMyMemberCompanyEvent, Emitter<MyCompanyState> emit) async {
@@ -49,7 +48,10 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     final Either<List<UserEntity>, Failure> result = await companyUseCase.myCompanyMember(query[0], query[1]);
     result.fold(
       (List<UserEntity> l) => emit(state.copyWith(listUser: l, isLoadingMember: false, message: 'Load member success')),
-      (Failure r) => emit(state.copyWith(isLoadingMember: false, message: r.message)),
+      (Failure r) {
+        // handle error
+        emit(state.copyWith(isLoadingMember: false, message: r.message));
+      },
     );
   }
 
@@ -59,7 +61,10 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     final Either<List<PostEntity>, Failure> result = await companyUseCase.myCompanyJob(query[0], query[1]);
     result.fold(
       (List<PostEntity> l) => emit(state.copyWith(listPost: l, isLoadingPost: false, message: 'Load job success')),
-      (Failure r) => emit(state.copyWith(isLoadingPost: false, message: r.message)),
+      (Failure r) {
+        // handle error
+        emit(state.copyWith(isLoadingPost: false, message: r.message));
+      },
     );
   }
 }

@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
@@ -16,6 +17,8 @@ class CompanyScreen extends StatefulWidget {
 class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
   late final TabController _tabController;
 
+  List<bool> isFirstLoad = [false, false, false];
+
   @override
   void initState() {
     super.initState();
@@ -33,11 +36,15 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
         appBar: const AppHeader(),
         isSafe: true,
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
-          listener: (context, state) {},
+          listener: (context, state) {
+            if (state.message.isNotEmpty) {
+              print(state.message);
+            }
+          },
           buildWhen: (previous, current) =>
               previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
           listenWhen: (previous, current) =>
-              previous.companyEntity != current.companyEntity && current.companyEntity.id != 0,
+              previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
           builder: (context, state) => Visibility(
             visible: !state.isLoadingCompany,
             replacement: ShimmerWork(
@@ -67,12 +74,12 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                   indicatorSize: TabBarIndicatorSize.label,
                   indicatorColor: themeData.colorScheme.primary,
                   isScrollable: true,
-                  indicator: CircleTabIndicator(color: themeData.colorScheme.primary, radius: 4, height: 6),
                   tabAlignment: TabAlignment.center,
                   splashFactory: NoSplash.splashFactory,
                   overlayColor: const MaterialStatePropertyAll(Colors.transparent),
                   dividerColor: Colors.transparent,
                   splashBorderRadius: BorderRadius.zero,
+                  dragStartBehavior: DragStartBehavior.start,
                   onTap: (index) {
                     final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
                     switch (index) {
@@ -80,14 +87,20 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                         _tabController.animateTo(0, curve: Curves.easeIn, duration: const Duration(milliseconds: 300));
                         break;
                       case 1:
-                        bloc.add(const GetMyPostCompanyEvent(
-                            isLoading: true, message: 'Start load post', page: 1, pageSize: 10));
+                        if (isFirstLoad[1] == false) {
+                          bloc.add(const GetMyPostCompanyEvent(
+                              isLoading: true, message: 'Start load post', page: 1, pageSize: 10));
+                          isFirstLoad[1] = true;
+                        }
                         _tabController.animateTo(1,
                             curve: Curves.decelerate, duration: const Duration(milliseconds: 300));
                         break;
                       case 2:
-                        bloc.add(const GetMyMemberCompanyEvent(
-                            isLoading: true, message: 'Start load member', page: 1, pageSize: 10));
+                        if (isFirstLoad[2] == false) {
+                          bloc.add(const GetMyMemberCompanyEvent(
+                              isLoading: true, message: 'Start load member', page: 1, pageSize: 10));
+                          isFirstLoad[2] = true;
+                        }
                         _tabController.animateTo(2, curve: Curves.easeOut, duration: const Duration(milliseconds: 300));
                         break;
                       default:

@@ -59,15 +59,14 @@ class _HeaderAvatarCompanyWidgetState extends State<HeaderAvatarCompanyWidget> {
                     ),
                     const SizedBox(height: 8),
                     Row(
-                      children: members.asMap().entries.map((e) {
+                      children: state.companyEntity.collaborators.asMap().entries.map((e) {
                         final key = e.key * -1.0;
+                        print(e.value);
                         return Container(
                           transform: Matrix4.translationValues(12 * key, 0, 0),
-                          child: const CircleAvatar(
+                          child: CircleAvatar(
                             radius: 16,
-                            backgroundImage: CachedNetworkImageProvider(
-                              'https://images.pexels.com/photos/9663326/pexels-photo-9663326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
-                            ),
+                            backgroundImage: CachedNetworkImageProvider(e.toString()),
                           ),
                         );
                       }).toList(),

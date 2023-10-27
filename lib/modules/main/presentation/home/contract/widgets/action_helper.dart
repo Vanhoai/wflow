@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
-class ActionCreateContractWidget extends StatefulWidget {
-  const ActionCreateContractWidget({super.key});
+class ActionHelper extends StatefulWidget {
+  const ActionHelper({super.key});
 
   @override
-  State<ActionCreateContractWidget> createState() => _ActionCreateContractWidgetState();
+  State<ActionHelper> createState() => _ActionHelperState();
 }
 
-class _ActionCreateContractWidgetState extends State<ActionCreateContractWidget> {
+class _ActionHelperState extends State<ActionHelper> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);

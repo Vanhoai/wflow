@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/widgets/shared/shared.dart';
 
 class ApplyScreen extends StatefulWidget {
   const ApplyScreen({super.key});
@@ -10,6 +11,10 @@ class ApplyScreen extends StatefulWidget {
 class _ApplyScreenState extends State<ApplyScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return CommonScaffold(
+      isSafe: true,
+      appBar: const AppHeader(text: 'Applied'),
+      body: Container(),
+    );
   }
 }

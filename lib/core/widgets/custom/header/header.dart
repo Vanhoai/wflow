@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -48,7 +49,7 @@ class _HeaderState extends State<Header> {
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                backgroundImage: NetworkImage(
+                backgroundImage: CachedNetworkImageProvider(
                   widget.leadingPhotoUrl,
                 ),
                 radius: widget.leadingSize,

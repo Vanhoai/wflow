@@ -26,10 +26,10 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
 
   @override
   void dispose() {
-    super.dispose();
     _titleController.dispose();
     _descriptionController.dispose();
     _budgetController.dispose();
+    super.dispose();
   }
 
   @override
@@ -68,7 +68,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                           )),
                         ),
                         const SizedBox(height: 10),
-                        TextFieldCreateContractWidget(
+                        TextFieldHelper(
                           controller: _titleController,
                           maxLines: 5,
                           minLines: 3,
@@ -82,7 +82,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                           )),
                         ),
                         const SizedBox(height: 10),
-                        TextFieldCreateContractWidget(
+                        TextFieldHelper(
                           controller: _descriptionController,
                           maxLines: 5,
                           minLines: 3,
@@ -98,7 +98,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        TextFieldCreateContractWidget(
+                        TextFieldHelper(
                           controller: _budgetController,
                           maxLines: 1,
                           minLines: 1,
@@ -115,7 +115,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                         const SizedBox(height: 10),
                         const TaskCreateContractWidget(),
                         const SizedBox(height: 16),
-                        const ActionCreateContractWidget(),
+                        const ActionHelper(),
                         const SizedBox(height: 30),
                         Text(
                           'Candidate',

@@ -11,6 +11,7 @@ class PrimaryButton extends StatefulWidget {
     this.marginVertical = 0,
     this.height = 50,
     this.width = double.infinity,
+    this.labelStyle = const TextStyle(color: Colors.white, fontSize: 16),
   });
 
   final String label;
@@ -20,6 +21,7 @@ class PrimaryButton extends StatefulWidget {
   final double width;
   final Function onPressed;
   final bool isLoading;
+  final TextStyle labelStyle;
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -47,7 +49,7 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               elevation: 4,
             ),
             onPressed: widget.isLoading ? null : () => widget.onPressed(),
-            child: Text(widget.label, style: const TextStyle(color: Colors.white, fontSize: 16)),
+            child: Text(widget.label, style: widget.labelStyle),
           ),
           if (widget.isLoading)
             const Positioned(

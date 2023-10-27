@@ -32,4 +32,5 @@ class RouteKeys {
   static const String upPostScreen = '/up_post_screen';
   static const String developScreen = '/develop_screen';
   static const String applyScreen = '/apply_screen';
+  static const String balanceScreen = '/balance_screen';
 }

@@ -12,7 +12,7 @@ import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 
 // bottom
 import 'package:wflow/modules/main/presentation/bottom.dart';
-// home
+import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
@@ -121,6 +121,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
       case RouteKeys.applyScreen:
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
+      case RouteKeys.balanceScreen:
+        return MaterialPageRoute(builder: (_) => const BalanceScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

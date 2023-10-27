@@ -1,6 +1,7 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+const String IMAGE_URL = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
 
 class Header extends StatefulWidget {
   const Header({
@@ -8,7 +9,6 @@ class Header extends StatefulWidget {
     required this.title,
     required this.subtitle,
     this.decoration,
-    this.onTapTitle,
     this.leadingSize = 30,
     this.leadingPhotoUrl = '',
     this.leadingBadge = false,
@@ -16,7 +16,6 @@ class Header extends StatefulWidget {
     this.actions = const [],
   });
   final Widget title;
-  final VoidCallback? onTapTitle;
   final VoidCallback? onTapLeading;
   final Widget subtitle;
   final double leadingSize;
@@ -49,8 +48,8 @@ class _HeaderState extends State<Header> {
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
-                backgroundImage: CachedNetworkImageProvider(
-                  widget.leadingPhotoUrl,
+                backgroundImage: NetworkImage(
+                  widget.leadingPhotoUrl == '' ? IMAGE_URL : widget.leadingPhotoUrl,
                 ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {

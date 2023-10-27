@@ -30,6 +30,10 @@ import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
+import 'package:wflow/modules/main/data/company/company_repository_impl.dart';
+import 'package:wflow/modules/main/data/company/company_service.dart';
+import 'package:wflow/modules/main/domain/company/company_repository.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
@@ -87,6 +91,13 @@ Future<void> initAppInjection() async {
   //Authen bloc
   instance.registerLazySingleton<AuthenticationsBloc>(() => AuthenticationsBloc());
 
+  // COMPANY
+  instance.registerLazySingleton<CompanyService>(() => CompanyServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<CompanyRepository>(
+      () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
+  instance.registerLazySingleton<CompanyUseCase>(
+      () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()));
+
   // ! FOR DEBUG ONLY
   bool isDebug = false;
   assert(() {
@@ -103,7 +114,6 @@ class AppBlocObserver extends BlocObserver {
     printer: PrettyPrinter(
       methodCount: 2, // Number of method calls to be displayed
       errorMethodCount: 8, // Number of method calls if stacktrace is provided
-      lineLength: 120, // Width of the output
       colors: true, // Colorful log messages
       printEmojis: true, // Print an emoji for each log message
       printTime: true, // Should each log print contain a timestamp
@@ -111,12 +121,6 @@ class AppBlocObserver extends BlocObserver {
     level: Level.verbose,
     filter: ProductionFilter(),
   );
-
-  @override
-  void onEvent(Bloc bloc, Object? event) {
-    super.onEvent(bloc, event);
-    logger.d('onEvent -- bloc: ${bloc.runtimeType}, event: $event');
-  }
 
   @override
   void onTransition(Bloc bloc, Transition transition) {

@@ -2,10 +2,10 @@ import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:wflow/modules/main/domain/base/base_entity.dart';
 
-part 'user_entity.g.dart';
+part 'user_model.g.dart';
 
 @JsonSerializable()
-class UserEntity extends BaseEntity with EquatableMixin {
+class UserModel extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'avatar', defaultValue: '')
   final String avatar;
 
@@ -42,7 +42,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'role', defaultValue: 0)
   final int role;
 
-  const UserEntity({
+  const UserModel({
     required super.id,
     required super.createdAt,
     required super.updatedAt,
@@ -61,12 +61,12 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.business,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
 
   @override
-  Map<String, dynamic> toJson() => _$UserEntityToJson(this);
+  Map<String, dynamic> toJson() => _$UserModelToJson(this);
 
-  UserEntity copyWith({
+  UserModel copyWith({
     String? state,
     String? email,
     String? phone,
@@ -80,7 +80,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
     int? role,
     int? business,
   }) {
-    return UserEntity(
+    return UserModel(
       id: id,
       createdAt: createdAt,
       updatedAt: updatedAt,
@@ -100,8 +100,8 @@ class UserEntity extends BaseEntity with EquatableMixin {
     );
   }
 
-  factory UserEntity.createEmpty() {
-    return UserEntity(
+  factory UserModel.createEmpty() {
+    return UserModel(
       id: 0,
       state: '',
       email: '',

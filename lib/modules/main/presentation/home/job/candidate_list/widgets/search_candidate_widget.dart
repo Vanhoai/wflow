@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
+import 'package:wflow/configuration/constants.dart';
 
 class SearchCandidateWidget extends StatefulWidget {
   const SearchCandidateWidget({super.key, this.onClear});
@@ -49,7 +50,7 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
         prefixIcon: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: SvgPicture.asset(
-            'assets/icons/search.svg',
+            AppConstants.search,
             fit: BoxFit.cover,
             width: 20,
             height: 20,

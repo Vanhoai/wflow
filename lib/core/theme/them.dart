@@ -5,31 +5,37 @@ const TextTheme textTheme = TextTheme(
   displaySmall: TextStyle(
     fontSize: 12,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   displayMedium: TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   displayLarge: TextStyle(
     fontSize: 20,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   labelSmall: TextStyle(
     fontSize: 12,
+    overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.5,
   ),
   labelMedium: TextStyle(
     fontSize: 14,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   labelLarge: TextStyle(
     fontSize: 16,
     fontWeight: FontWeight.w400,
+    overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
 );

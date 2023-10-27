@@ -195,7 +195,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         )),
                                       ),
                                       onTapLeading: () {},
-                                      onTapTitle: () {},
                                       leadingPhotoUrl: state.postEntity.companyLogo,
                                       leadingBadge: false,
                                       actions: [
@@ -267,7 +266,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       ),
                                       leadingPhotoUrl: state.postEntity.creatorAvatar,
                                       onTapLeading: () {},
-                                      onTapTitle: () {},
                                       leadingBadge: false,
                                     ),
                                   ),

@@ -11,6 +11,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
 
@@ -99,8 +100,8 @@ class _AppState extends State<App> {
                     themeMode:
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute: RouteKeys.searchWorkScreen,
-                    home: const SearchWorkScreen(),
+                    initialRoute: RouteKeys.introScreen,
+                    home: const IntroScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

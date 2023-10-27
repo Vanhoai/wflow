@@ -33,4 +33,5 @@ class RouteKeys {
   static const String developScreen = '/develop_screen';
   static const String applyScreen = '/apply_screen';
   static const String balanceScreen = '/balance_screen';
+  static const String searchWorkScreen = '/search_work_screen';
 }

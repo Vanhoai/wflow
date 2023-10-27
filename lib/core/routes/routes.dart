@@ -39,6 +39,7 @@ import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrad
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -123,6 +124,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
       case RouteKeys.balanceScreen:
         return MaterialPageRoute(builder: (_) => const BalanceScreen());
+      case RouteKeys.searchWorkScreen:
+        return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

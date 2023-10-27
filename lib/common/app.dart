@@ -11,7 +11,9 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
+import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -87,7 +89,8 @@ class _AppState extends State<App> {
                       // ErrorWidget.builder = (errorDetails) => error;
                       // return child!;
                     },
-                    navigatorKey: instance.get<NavigationService>().navigatorKey,
+                    navigatorKey:
+                        instance.get<NavigationService>().navigatorKey,
                     supportedLocales: localization.supportedLocales,
                     localizationsDelegates: localization.localizationsDelegates,
                     debugShowCheckedModeBanner: false,
@@ -97,9 +100,8 @@ class _AppState extends State<App> {
                     themeMode:
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
-                    initialRoute:
-                        instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
-                    home: const HomeScreen(),
+                    initialRoute: RouteKeys.introScreen,
+                    home: const IntroScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

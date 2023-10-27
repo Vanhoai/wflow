@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
 
 class CompanyInformationWidget extends StatefulWidget {
@@ -18,10 +17,8 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         icon,
-        const SizedBox(width: 4),
-        Flexible(
-          child: Text(title.toString(), style: themeData.textTheme.displayMedium),
-        ),
+        const SizedBox(width: 6),
+        Flexible(child: Text(title.toString(), style: themeData.textTheme.displayMedium)),
       ],
     );
   }
@@ -30,8 +27,8 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocBuilder<MyCompanyBloc, MyCompanyState>(
-      bloc: instance.call<MyCompanyBloc>(),
-      buildWhen: (previous, current) => true,
+      buildWhen: (previous, current) =>
+          previous.isLoadingCompany != current.isLoadingCompany || previous.companyEntity != current.companyEntity,
       builder: (context, state) {
         return Container(
           margin: const EdgeInsets.only(bottom: 20, top: 10, left: 20, right: 20),
@@ -41,7 +38,7 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               _buildTextWithIcon(
-                title: state.companyEntity.address,
+                title: context.watch<MyCompanyBloc>().state.companyEntity.address,
                 icon: const Icon(Icons.location_on, shadows: [
                   BoxShadow(
                     color: Colors.black12,
@@ -53,7 +50,7 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
               ),
               const SizedBox(height: 2),
               _buildTextWithIcon(
-                title: state.companyEntity.email,
+                title: context.watch<MyCompanyBloc>().state.companyEntity.email,
                 icon: const Icon(
                   Icons.email,
                   shadows: [
@@ -68,7 +65,7 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
               ),
               const SizedBox(height: 2),
               _buildTextWithIcon(
-                title: state.companyEntity.phone,
+                title: context.watch<MyCompanyBloc>().state.companyEntity.phone,
                 icon: const Icon(
                   Icons.phone,
                   shadows: [
@@ -83,7 +80,7 @@ class _CompanyInformationWidgetState extends State<CompanyInformationWidget> {
               ),
               const SizedBox(height: 2),
               _buildTextWithIcon(
-                title: state.companyEntity.createdAt.toString(),
+                title: context.watch<MyCompanyBloc>().state.companyEntity.createdAt.toString(),
                 icon: const Icon(
                   Icons.access_time_filled_sharp,
                   shadows: [

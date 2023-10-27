@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
 
@@ -17,56 +19,110 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
   @override
   void initState() {
     super.initState();
-    instance.call<MyCompanyBloc>().add(const GetMyCompanyEvent());
     _tabController = TabController(length: 3, vsync: this);
-  }
-
-  @override
-  void dispose() {
-    instance.call<MyCompanyBloc>().add(const MyCompanyEvent());
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return CommonScaffold(
-      appBar: const AppHeader(),
-      isSafe: true,
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const HeaderAvatarCompanyWidget(),
-          TabBar(
-            controller: _tabController,
-            labelColor: themeData.colorScheme.primary,
-            unselectedLabelColor: themeData.colorScheme.onBackground,
-            indicatorSize: TabBarIndicatorSize.label,
-            indicatorColor: themeData.colorScheme.primary,
-            isScrollable: true,
-            indicator: CircleTabIndicator(color: themeData.colorScheme.primary, radius: 4),
-            tabAlignment: TabAlignment.center,
-            splashFactory: NoSplash.splashFactory,
-            overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-            dividerColor: Colors.transparent,
-            splashBorderRadius: BorderRadius.zero,
-            tabs: const [
-              Tab(child: Text('Information')),
-              Tab(child: Text('Posts(20)')),
-              Tab(child: Text('Members(20)')),
-            ],
-          ),
-          Expanded(
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                CompanyInformationWidget(),
-                CompanyJobPostWidget(),
-                CompanyMemberWidget(),
+    return BlocProvider<MyCompanyBloc>(
+      create: (context) => MyCompanyBloc(companyUseCase: instance.call<CompanyUseCase>())
+        ..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
+      lazy: true,
+      child: CommonScaffold(
+        appBar: const AppHeader(),
+        isSafe: true,
+        body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
+          listener: (context, state) {},
+          buildWhen: (previous, current) =>
+              previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
+          listenWhen: (previous, current) =>
+              previous.companyEntity != current.companyEntity && current.companyEntity.id != 0,
+          builder: (context, state) => Visibility(
+            visible: !state.isLoadingCompany,
+            replacement: ShimmerWork(
+              physics: const NeverScrollableScrollPhysics(),
+              height: 280,
+              width: double.infinity,
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.zero,
+              itemCount: 1,
+              margin: const EdgeInsets.only(bottom: 20, top: 10, left: 20, right: 20),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const HeaderAvatarCompanyWidget(),
+                TabBar(
+                  controller: _tabController,
+                  labelColor: themeData.colorScheme.primary,
+                  unselectedLabelColor: themeData.colorScheme.onBackground,
+                  indicatorSize: TabBarIndicatorSize.label,
+                  indicatorColor: themeData.colorScheme.primary,
+                  isScrollable: true,
+                  indicator: CircleTabIndicator(color: themeData.colorScheme.primary, radius: 4, height: 6),
+                  tabAlignment: TabAlignment.center,
+                  splashFactory: NoSplash.splashFactory,
+                  overlayColor: const MaterialStatePropertyAll(Colors.transparent),
+                  dividerColor: Colors.transparent,
+                  splashBorderRadius: BorderRadius.zero,
+                  onTap: (index) {
+                    final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                    switch (index) {
+                      case 0:
+                        _tabController.animateTo(0, curve: Curves.easeIn, duration: const Duration(milliseconds: 300));
+                        break;
+                      case 1:
+                        bloc.add(const GetMyPostCompanyEvent(
+                            isLoading: true, message: 'Start load post', page: 1, pageSize: 10));
+                        _tabController.animateTo(1,
+                            curve: Curves.decelerate, duration: const Duration(milliseconds: 300));
+                        break;
+                      case 2:
+                        bloc.add(const GetMyMemberCompanyEvent(
+                            isLoading: true, message: 'Start load member', page: 1, pageSize: 10));
+                        _tabController.animateTo(2, curve: Curves.easeOut, duration: const Duration(milliseconds: 300));
+                        break;
+                      default:
+                        _tabController.animateTo(0);
+                    }
+                  },
+                  tabs: [
+                    Tab(
+                      child: Text('Information',
+                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                    ),
+                    Tab(
+                      child: Text('Posts(${state.companyEntity.posts.toString()})',
+                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                    ),
+                    Tab(
+                      child: Text('Members(${state.companyEntity.members.toString()})',
+                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: TabBarView(
+                    controller: _tabController,
+                    children: const [
+                      CompanyInformationWidget(),
+                      CompanyJobPostWidget(),
+                      CompanyMemberWidget(),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),
-        ],
+        ),
       ),
     );
   }

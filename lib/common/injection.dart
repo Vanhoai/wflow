@@ -24,7 +24,6 @@ import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -67,9 +66,6 @@ Future<void> initAppInjection() async {
       () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
   instance.registerLazySingleton<CompanyUseCase>(
       () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()));
-
-  // BLOC OF COMPANY
-  instance.registerLazySingleton<MyCompanyBloc>(() => MyCompanyBloc(companyUseCase: instance.get<CompanyUseCase>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

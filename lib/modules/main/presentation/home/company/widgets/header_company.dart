@@ -1,7 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/circular_avatar_touch/circular_avatar_touch.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
 
@@ -28,7 +27,8 @@ class _HeaderAvatarCompanyWidgetState extends State<HeaderAvatarCompanyWidget> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocBuilder<MyCompanyBloc, MyCompanyState>(
-      bloc: instance.call<MyCompanyBloc>(),
+      buildWhen: (previous, current) =>
+          previous.isLoadingCompany != current.isLoadingCompany || previous.companyEntity != current.companyEntity,
       builder: (context, state) {
         return Container(
           margin: const EdgeInsets.symmetric(horizontal: 20),
@@ -42,7 +42,7 @@ class _HeaderAvatarCompanyWidgetState extends State<HeaderAvatarCompanyWidget> {
                 height: 60,
                 width: 60,
                 onTap: () {},
-                imageUrl: state.companyEntity.logo,
+                imageUrl: state.companyEntity.logo == '' ? null : state.companyEntity.logo,
               ),
               const SizedBox(width: 8),
               Expanded(

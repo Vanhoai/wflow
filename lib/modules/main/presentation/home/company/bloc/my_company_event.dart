@@ -8,35 +8,42 @@ class MyCompanyEvent extends Equatable {
 }
 
 class GetMyCompanyEvent extends MyCompanyEvent {
-  const GetMyCompanyEvent();
-
-  @override
-  List<Object> get props => [];
-}
-
-class GetMyCompanyEventSuccess extends MyCompanyEvent {
-  final CompanyEntity companyEntity;
   final bool isLoading;
   final String message;
-  const GetMyCompanyEventSuccess({
-    required this.companyEntity,
+  const GetMyCompanyEvent({required this.isLoading, required this.message});
+
+  @override
+  List<Object> get props => [isLoading, message];
+}
+
+class GetMyMemberCompanyEvent extends MyCompanyEvent {
+  final bool isLoading;
+  final String message;
+  final int page;
+  final int pageSize;
+  const GetMyMemberCompanyEvent({
+    required this.page,
+    required this.pageSize,
     required this.isLoading,
     required this.message,
   });
 
   @override
-  List<Object> get props => [companyEntity, message, isLoading];
+  List<Object> get props => [isLoading, page, pageSize, message];
 }
 
-class GetMyCompanyEventFailure extends MyCompanyEvent {
-  final CompanyEntity companyEntity;
+class GetMyPostCompanyEvent extends MyCompanyEvent {
   final bool isLoading;
   final String message;
-  const GetMyCompanyEventFailure({
-    required this.companyEntity,
+  final int page;
+  final int pageSize;
+  const GetMyPostCompanyEvent({
+    required this.page,
+    required this.pageSize,
     required this.isLoading,
     required this.message,
   });
+
   @override
-  List<Object> get props => [companyEntity, message, isLoading];
+  List<Object> get props => [isLoading, page, pageSize, message];
 }

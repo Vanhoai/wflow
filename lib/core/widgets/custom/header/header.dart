@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
+const String IMAGE_URL = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
+
 class Header extends StatefulWidget {
   const Header({
     super.key,
@@ -47,7 +49,7 @@ class _HeaderState extends State<Header> {
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                 backgroundImage: NetworkImage(
-                  widget.leadingPhotoUrl,
+                  widget.leadingPhotoUrl == '' ? IMAGE_URL : widget.leadingPhotoUrl,
                 ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {

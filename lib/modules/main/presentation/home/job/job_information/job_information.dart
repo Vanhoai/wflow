@@ -184,7 +184,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 padding: const EdgeInsets.all(20),
                 child: PrimaryButton(
                   label: 'View Candidate',
-                  onPressed: () {},
+                  onPressed: () {
+                    navigateToCandidateList();
+                  },
                 ),
               ),
             )

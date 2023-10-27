@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 // ignore: constant_identifier_names
-const String IMAGE_URL = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
+const String FakeImage = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
 
 class CircularAvatarTouch extends StatelessWidget {
   const CircularAvatarTouch({
@@ -33,13 +33,11 @@ class CircularAvatarTouch extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(99),
             child: CachedNetworkImage(
-              imageUrl: imageUrl ?? IMAGE_URL,
+              imageUrl: imageUrl ?? FakeImage,
               width: width ?? 48,
               height: height ?? 48,
               placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) {
-                return const Icon(Icons.error);
-              },
+              errorWidget: (context, url, error) => const Center(child: CircularProgressIndicator()),
               filterQuality: FilterQuality.high,
               fadeInCurve: Curves.easeIn,
               fadeInDuration: const Duration(milliseconds: 500),

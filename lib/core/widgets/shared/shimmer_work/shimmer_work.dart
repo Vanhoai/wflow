@@ -11,6 +11,7 @@ class ShimmerWork extends StatelessWidget {
     this.padding = const EdgeInsets.only(left: 20.0),
     this.physics = const BouncingScrollPhysics(),
     required this.decoration,
+    this.itemCount = 5,
   });
 
   final double height;
@@ -20,6 +21,7 @@ class ShimmerWork extends StatelessWidget {
   final EdgeInsetsGeometry padding;
   final ScrollPhysics physics;
   final Decoration decoration;
+  final int? itemCount;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +32,7 @@ class ShimmerWork extends StatelessWidget {
       highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
       child: ListView.builder(
         physics: physics,
-        itemCount: 5,
+        itemCount: itemCount,
         padding: padding,
         scrollDirection: scrollDirection,
         shrinkWrap: true,

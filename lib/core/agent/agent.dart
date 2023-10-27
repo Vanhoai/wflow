@@ -57,7 +57,7 @@ class Agent {
 
   BaseOptions generateOptions() {
     BaseOptions opts = BaseOptions();
-    opts.baseUrl = 'http://192.168.1.10:4000/api';
+    opts.baseUrl = 'http://10.0.1.30:4000/api';
     opts.contentType = Headers.jsonContentType;
     opts.connectTimeout = const Duration(seconds: 4);
     opts.receiveTimeout = const Duration(seconds: 4);

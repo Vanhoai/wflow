@@ -3,8 +3,11 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 
+import 'contract_entity.dart';
+
 abstract class ContractUseCase {
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request);
+  Future<Either<ContractEntity, Failure>> candidateAppliedDetail(String id);
 }
 
 class ContractUseCaseImpl implements ContractUseCase {
@@ -15,5 +18,10 @@ class ContractUseCaseImpl implements ContractUseCase {
   @override
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request) async {
     return await contactRepository.applyPost(request);
+  }
+
+  @override
+  Future<Either<ContractEntity, Failure>> candidateAppliedDetail(String id) async {
+    return await contactRepository.candidateAppliedDetail(id);
   }
 }

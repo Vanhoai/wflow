@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 
 class CandidateCVWidget extends StatefulWidget {
-  const CandidateCVWidget({super.key, required this.pdfViewerController});
-
+  const CandidateCVWidget({super.key, required this.pdfViewerController, required this.cv});
+  final String cv;
   final PdfViewerController pdfViewerController;
 
   @override
@@ -35,7 +35,7 @@ class _CandidateCVWidgetState extends State<CandidateCVWidget> {
           height: 530,
           child: Scaffold(
             body: SfPdfViewer.network(
-              'https://cdn.syncfusion.com/content/PDFViewer/flutter-succinctly.pdf',
+              widget.cv,
               pageLayoutMode: PdfPageLayoutMode.single,
               scrollDirection: PdfScrollDirection.horizontal,
               controller: widget.pdfViewerController,

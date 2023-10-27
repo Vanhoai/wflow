@@ -9,7 +9,6 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
-
 import 'components/form_signin.dart';
 
 class SignInScreen extends StatefulWidget {

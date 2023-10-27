@@ -304,7 +304,10 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         padding: const EdgeInsets.all(20),
                                         child: PrimaryButton(
                                           label: 'View Candidate',
-                                          onPressed: () {},
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pushNamed(RouteKeys.candidateListScreen, arguments: widget.work);
+                                          },
                                         ),
                                       );
                                     } else {
@@ -316,7 +319,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         );
                       } else if (state is GetJobInformationFailureState) {
                         return Center(
-                          child: Text('Không tìm thấy nội dung', style: Theme.of(context).textTheme.bodyLarge),
+                          child: Text('No Information', style: Theme.of(context).textTheme.bodyLarge),
                         );
                       } else {
                         return const SizedBox();

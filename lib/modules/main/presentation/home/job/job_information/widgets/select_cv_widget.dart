@@ -156,40 +156,35 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
             const SizedBox(width: 5),
             Expanded(
               child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                Text(
+                  cvEntity.title,
+                  style: themeData.textTheme.displaySmall!.merge(
+                    TextStyle(
+                      color: themeData.colorScheme.onBackground,
+                      fontSize: 14,
+                    ),
+                  ),
+                ),
                 Builder(
                   builder: (context) {
-                    final String content = cvEntity.title;
+                    final String content = cvEntity.url;
                     if (content.length > 25) {
                       return Text(
                         '${content.substring(0, 19)}...pdf',
-                        style: themeData.textTheme.displaySmall!.merge(
-                          TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                            fontSize: 14,
-                          ),
-                        ),
+                        style: themeData.textTheme.displaySmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       );
                     } else {
                       return Text(
                         content,
-                        style: themeData.textTheme.displaySmall!.merge(
-                          TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                            fontSize: 14,
-                          ),
-                        ),
+                        style: themeData.textTheme.displaySmall,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                       );
                     }
                   },
                 ),
-                Text(
-                  cvEntity.content,
-                  style: themeData.textTheme.displaySmall,
-                )
               ]),
             ),
             Container(

@@ -71,12 +71,20 @@ class AppRoutes {
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
-        return MaterialPageRoute(builder: (_) => const CandidateContractScreen());
+        final candidate = settings.arguments as String;
+        return MaterialPageRoute(
+            builder: (_) => CandidateContractScreen(
+                  candidate: candidate,
+                ));
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
         return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
-        return MaterialPageRoute(builder: (_) => const CandidateListScreen());
+        final post = settings.arguments as num;
+        return MaterialPageRoute(
+            builder: (_) => CandidateListScreen(
+                  post: post,
+                ));
       case RouteKeys.createContractScreen:
         return MaterialPageRoute(builder: (_) => const CreateContractScreen());
       case RouteKeys.reviewContractScreen:

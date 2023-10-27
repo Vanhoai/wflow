@@ -16,9 +16,9 @@ class _HeaderBarWidgetState extends State<HeaderBarWidget> {
   Widget build(BuildContext context) {
     return AppBarWithLogo(
       actions: [
-        const HeaderIcon(
+        HeaderIcon(
           icon: AppConstants.search,
-          // onTap: () => Navigator.of(context).pushNamed(RouteKeys.searchScreen),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.searchWorkScreen),
         ),
         const SizedBox(width: 12),
         HeaderIcon(

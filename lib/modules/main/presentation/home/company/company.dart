@@ -33,7 +33,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
         ..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
       lazy: true,
       child: CommonScaffold(
-        appBar: const AppHeader(),
+        appBar: const AppHeader(text: 'Company'),
         isSafe: true,
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
           listener: (context, state) {
@@ -84,24 +84,47 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                     final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
                     switch (index) {
                       case 0:
-                        _tabController.animateTo(0, curve: Curves.easeIn, duration: const Duration(milliseconds: 300));
+                        _tabController.animateTo(
+                          0,
+                          curve: Curves.easeIn,
+                          duration: const Duration(milliseconds: 300),
+                        );
                         break;
                       case 1:
                         if (isFirstLoad[1] == false) {
-                          bloc.add(const GetMyPostCompanyEvent(
-                              isLoading: true, message: 'Start load post', page: 1, pageSize: 10));
+                          bloc.add(
+                            const GetMyPostCompanyEvent(
+                              isLoading: true,
+                              message: 'Start load post',
+                              page: 1,
+                              pageSize: 10,
+                            ),
+                          );
                           isFirstLoad[1] = true;
                         }
-                        _tabController.animateTo(1,
-                            curve: Curves.decelerate, duration: const Duration(milliseconds: 300));
+                        _tabController.animateTo(
+                          1,
+                          curve: Curves.decelerate,
+                          duration: const Duration(milliseconds: 300),
+                        );
                         break;
                       case 2:
                         if (isFirstLoad[2] == false) {
-                          bloc.add(const GetMyMemberCompanyEvent(
-                              isLoading: true, message: 'Start load member', page: 1, pageSize: 10));
+                          bloc.add(
+                            const GetMyMemberCompanyEvent(
+                              isLoading: true,
+                              message: 'Start load member',
+                              page: 1,
+                              pageSize: 10,
+                            ),
+                          );
                           isFirstLoad[2] = true;
                         }
-                        _tabController.animateTo(2, curve: Curves.easeOut, duration: const Duration(milliseconds: 300));
+                        _tabController.animateTo(
+                          2,
+                          curve: Curves.easeOut,
+                          duration: const Duration(milliseconds: 300),
+                        );
                         break;
                       default:
                         _tabController.animateTo(0);
@@ -109,16 +132,22 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                   },
                   tabs: [
                     Tab(
-                      child: Text('Information',
-                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                      child: Text(
+                        'Information',
+                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
+                      ),
                     ),
                     Tab(
-                      child: Text('Posts(${state.companyEntity.posts.toString()})',
-                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                      child: Text(
+                        'Posts (${state.companyEntity.posts.toString()})',
+                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
+                      ),
                     ),
                     Tab(
-                      child: Text('Members(${state.companyEntity.members.toString()})',
-                          style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary)),
+                      child: Text(
+                        'Members (${state.companyEntity.members.toString()})',
+                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
+                      ),
                     ),
                   ],
                 ),

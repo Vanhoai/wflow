@@ -42,10 +42,3 @@ run:
 	@echo "Running app..."
 	@flutter run --debug
 	@echo "App is running..."
-	
-# run-reset:
-# 	@echo "Removing app ...."
-# 	@adb uninstall com.flow.wflow
-# 	@echo "App was remove"
-# 	@flutter run 
-# 	@echo "App is running..."

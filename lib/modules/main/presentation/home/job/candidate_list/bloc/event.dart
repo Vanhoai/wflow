@@ -14,18 +14,15 @@ class GetCandidateAppliedListEvent extends CandidateListEvent {
 }
 
 class GetCandidateAppliedListMoreEvent extends CandidateListEvent {
-  final num post;
-
-  GetCandidateAppliedListMoreEvent({required this.post});
+  GetCandidateAppliedListMoreEvent();
   @override
-  List<Object?> get props => [post];
+  List<Object?> get props => [];
 }
 
 class GetCandidateAppliedSearchEvent extends CandidateListEvent {
-  final num post;
   final String search;
 
-  GetCandidateAppliedSearchEvent({required this.post, required this.search});
+  GetCandidateAppliedSearchEvent({required this.search});
   @override
-  List<Object?> get props => [post, search];
+  List<Object?> get props => [search];
 }

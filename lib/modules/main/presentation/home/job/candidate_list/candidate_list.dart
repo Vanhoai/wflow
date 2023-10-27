@@ -19,28 +19,19 @@ class CandidateListScreen extends StatefulWidget {
 }
 
 class _CandidateListScreenState extends State<CandidateListScreen> {
-  late TextEditingController _searchController;
   late ScrollController _scrollController;
-  final String _searchText = '';
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    _searchController = TextEditingController(text: _searchText);
     _scrollController = ScrollController();
-
-    _searchController.addListener(() {
-      print(_searchController.text);
-    });
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     _scrollController.dispose();
-    _searchController.dispose();
+    super.dispose();
   }
 
   void navigateCandidateContract(BuildContext context) {
@@ -50,60 +41,56 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return CommonScaffold(
-      hideKeyboardWhenTouchOutside: true,
-      body: BlocProvider(
-        create: (_) => CandidateListBloc(candidateUseCase: instance.get<CandidateUseCase>())
-          ..add(GetCandidateAppliedListEvent(post: widget.post)),
-        lazy: true,
-        child: BlocBuilder<CandidateListBloc, CandidateListState>(
-          builder: (context, state) {
-            _scrollController.addListener(() {
-              if (state.meta.currentPage >= state.meta.totalPage) return;
-              print('current : ' + state.meta.currentPage.toString() + " total: " + state.meta.totalPage.toString());
-              if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-                print('loadmore');
-                context.read<CandidateListBloc>().add(GetCandidateAppliedListMoreEvent(post: widget.post));
-              }
-            });
-            return RefreshIndicator(
-              onRefresh: () async {
-                Future.delayed(const Duration(seconds: 1));
+    return BlocProvider(
+      create: (_) => CandidateListBloc(candidateUseCase: instance.get<CandidateUseCase>())
+        ..add(GetCandidateAppliedListEvent(post: widget.post)),
+      child: BlocBuilder<CandidateListBloc, CandidateListState>(
+        builder: (context, state) {
+          _scrollController.addListener(() {
+            if (state.meta.currentPage >= state.meta.totalPage) return;
+            print('current : ' + state.meta.currentPage.toString() + " total: " + state.meta.totalPage.toString());
+            if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+              print('loadmore');
+              context.read<CandidateListBloc>().add(GetCandidateAppliedListMoreEvent());
+            }
+          });
+          return CommonScaffold(
+            body: NestedScrollView(
+              controller: _scrollController,
+              physics: const AlwaysScrollableScrollPhysics(),
+              headerSliverBuilder: (context, innerBoxIsScrolled) {
+                return [
+                  SliverAppBar(
+                    automaticallyImplyLeading: true,
+                    leading: IconButton(
+                      icon: const Icon(Icons.arrow_back_ios),
+                      onPressed: () => Navigator.pop(context, false),
+                    ),
+                    backgroundColor: themeData.colorScheme.background,
+                    surfaceTintColor: Colors.transparent,
+                    title: Text(
+                      'Candidates',
+                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                        fontSize: 18,
+                      )),
+                    ),
+                    centerTitle: true,
+                    pinned: true,
+                  ),
+                  const SliverPadding(
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: SearchCandidateWidget(),
+                    ),
+                  ),
+                ];
               },
-              child: NestedScrollView(
-                controller: _scrollController,
-                physics: const ScrollPhysics(parent: PageScrollPhysics()),
-                headerSliverBuilder: (context, innerBoxIsScrolled) {
-                  return [
-                    SliverAppBar(
-                      automaticallyImplyLeading: true,
-                      leading: IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () => Navigator.pop(context, false),
-                      ),
-                      backgroundColor: themeData.colorScheme.background,
-                      surfaceTintColor: Colors.transparent,
-                      title: Text(
-                        'Candidates',
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground,
-                          fontSize: 18,
-                        )),
-                      ),
-                      centerTitle: true,
-                      pinned: true,
-                    ),
-                    SliverPadding(
-                      padding: const EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                      sliver: SliverToBoxAdapter(
-                        child: SearchCandidateWidget(
-                          textEditingController: _searchController,
-                        ),
-                      ),
-                    ),
-                  ];
+              body: RefreshIndicator(
+                onRefresh: () async {
+                  context.read<CandidateListBloc>().add(GetCandidateAppliedListEvent(post: widget.post));
                 },
-                body: Column(
+                child: Column(
                   children: [
                     Expanded(
                       child: Visibility(
@@ -163,9 +150,9 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                   ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

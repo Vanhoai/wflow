@@ -6,11 +6,13 @@ class CandidateListState extends Equatable {
   final bool isLoading;
   final Meta meta;
   final String search;
+  final num post;
 
   const CandidateListState(
       {this.isLoading = false,
       this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
-      this.search = ''});
+      this.search = '',
+      this.post = 0});
 
   CandidateListState copyWith({bool? isLoading}) {
     return CandidateListState(isLoading: isLoading ?? this.isLoading);
@@ -28,19 +30,26 @@ class GetCandidateAppliedListSuccess extends CandidateListState {
       required super.meta,
       required super.isLoading,
       required this.loadMore,
-      required super.search});
+      required super.search,
+      required super.post});
 
   @override
   GetCandidateAppliedListSuccess copyWith(
-      {List<CandidateEntity>? candidateEntities, bool? loadMore, bool? isLoading, Meta? meta, String? search}) {
+      {List<CandidateEntity>? candidateEntities,
+      bool? loadMore,
+      bool? isLoading,
+      Meta? meta,
+      String? search,
+      num? post}) {
     return GetCandidateAppliedListSuccess(
         candidateEntities: candidateEntities ?? this.candidateEntities,
         meta: meta ?? super.meta,
         isLoading: isLoading ?? super.isLoading,
         loadMore: loadMore ?? this.loadMore,
-        search: search ?? super.search);
+        search: search ?? super.search,
+        post: post ?? super.post);
   }
 
   @override
-  List<Object?> get props => [candidateEntities, meta, isLoading, loadMore];
+  List<Object?> get props => [candidateEntities, meta, isLoading, loadMore, post];
 }

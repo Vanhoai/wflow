@@ -1,32 +1,46 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
 
 class SearchCandidateWidget extends StatefulWidget {
-  const SearchCandidateWidget({super.key, this.onClear, this.textEditingController});
+  const SearchCandidateWidget({super.key, this.onClear});
 
   final Function()? onClear;
-  final TextEditingController? textEditingController;
 
   @override
   State<SearchCandidateWidget> createState() => _SearchCandidateWidgetState();
 }
 
 class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
+  final TextEditingController textEditingController = TextEditingController();
+  Timer? _debounce;
   @override
   void dispose() {
+    textEditingController.dispose();
+    _debounce?.cancel();
     super.dispose();
-    widget.textEditingController?.dispose();
   }
 
   void clearInputSearch() {
-    widget.textEditingController?.clear();
+    textEditingController.clear();
+    context.read<CandidateListBloc>().add(GetCandidateAppliedSearchEvent(search: ''));
   }
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return TextField(
-      controller: widget.textEditingController,
+      controller: textEditingController,
+      onChanged: (value) {
+        if (_debounce?.isActive ?? false) _debounce!.cancel();
+        _debounce = Timer(const Duration(milliseconds: 500), () {
+          context.read<CandidateListBloc>().add(GetCandidateAppliedSearchEvent(search: value));
+        });
+      },
       decoration: InputDecoration(
         hintText: 'Enter here',
         hintStyle: const TextStyle(

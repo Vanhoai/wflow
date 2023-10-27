@@ -38,7 +38,7 @@ class Worker extends Equatable {
   final String business;
   final String state;
   final String createdAt;
-  final num dob;
+  final String dob;
   final String identifyCode;
 
   const Worker({
@@ -75,7 +75,7 @@ class Worker extends Equatable {
       String? business,
       String? state,
       String? createdAt,
-      num? dob,
+      String? dob,
       String? identifyCode}) {
     return Worker(
         id: id ?? this.id,

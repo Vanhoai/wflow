@@ -16,7 +16,6 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
 
   FutureOr<void> getCandidateAppliedList(GetCandidateAppliedListEvent event, Emitter<CandidateListState> emit) async {
     emit(state.copyWith(isLoading: true));
-    await Future.delayed(const Duration(seconds: 2));
     final candidateList = await candidateUseCase.getCandidateApplied(
         event.post, GetCandidateApplied(page: 1, pageSize: 10, search: state.search));
 
@@ -25,20 +24,20 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
         meta: candidateList.meta,
         isLoading: false,
         loadMore: false,
-        search: state.search));
+        search: state.search,
+        post: event.post));
   }
 
   FutureOr<void> getCandidateAppliedListMore(
       GetCandidateAppliedListMoreEvent event, Emitter<CandidateListState> emit) async {
     if (state is GetCandidateAppliedListSuccess) {
       emit((state as GetCandidateAppliedListSuccess).copyWith(loadMore: true));
-      await Future.delayed(const Duration(seconds: 2));
       if (state.meta.currentPage >= state.meta.totalPage) {
         emit((state as GetCandidateAppliedListSuccess).copyWith(loadMore: false));
         return;
       }
       final candidateList = await candidateUseCase.getCandidateApplied(
-          event.post, GetCandidateApplied(page: state.meta.currentPage + 1, pageSize: 10, search: state.search));
+          state.post, GetCandidateApplied(page: state.meta.currentPage + 1, pageSize: 10, search: state.search));
       emit((state as GetCandidateAppliedListSuccess).copyWith(
           loadMore: false,
           candidateEntities: [...(state as GetCandidateAppliedListSuccess).candidateEntities, ...candidateList.data],
@@ -46,5 +45,18 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
     }
   }
 
-  FutureOr<void> getCandidateAppliedSearch(GetCandidateAppliedSearchEvent event, Emitter<CandidateListState> emit) {}
+  FutureOr<void> getCandidateAppliedSearch(
+      GetCandidateAppliedSearchEvent event, Emitter<CandidateListState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final candidateList = await candidateUseCase.getCandidateApplied(
+        state.post, GetCandidateApplied(page: 1, pageSize: 10, search: event.search));
+
+    emit(GetCandidateAppliedListSuccess(
+        candidateEntities: candidateList.data,
+        meta: candidateList.meta,
+        isLoading: false,
+        loadMore: false,
+        search: event.search,
+        post: state.post));
+  }
 }

@@ -32,7 +32,6 @@ import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -68,9 +67,7 @@ Future<void> initAppInjection() async {
       () => CandidateRepositoryImpl(candidateService: instance.get<CandidateService>()));
   instance.registerLazySingleton<CandidateUseCase>(
       () => CandidateUseCaseImpl(candidateRepository: instance.get<CandidateRepository>()));
-  //Candidate Bloc
-  instance.registerLazySingleton<CandidateListBloc>(
-      () => CandidateListBloc(candidateUseCase: instance.get<CandidateUseCase>()));
+
   //Contact
   instance.registerLazySingleton<ContractService>(() => ContractServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<ContractRepository>(

@@ -48,6 +48,9 @@ final themeData = ThemeData(
     primary: AppColors.primary,
   ),
   fontFamily: 'SF-Pro-Display',
+  dividerTheme: const DividerThemeData(
+    color: AppColors.primary,
+  ),
 );
 
 final themeDataDark = ThemeData(
@@ -59,4 +62,7 @@ final themeDataDark = ThemeData(
     secondary: AppColors.primary,
   ),
   fontFamily: 'SF-Pro-Display',
+  dividerTheme: const DividerThemeData(
+    color: AppColors.primary,
+  ),
 );

@@ -7,3 +7,4 @@ export 'appbar/appbar_with_logo.dart';
 export 'textfield/text_field_from.dart';
 export 'textfield/text_field_verification.dart';
 export 'keyboard/emoji.dart';
+export 'appbar/appbar_center_widget.dart';

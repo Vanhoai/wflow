@@ -34,7 +34,8 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
     return ConstrainedBox(
       constraints: const BoxConstraints(maxHeight: 280),
       child: BlocBuilder<MyCompanyBloc, MyCompanyState>(
-        buildWhen: (previous, current) => previous.isLoadingPost != current.isLoadingPost,
+        buildWhen: (previous, current) =>
+            previous.isLoadingPost != current.isLoadingPost || previous.listPost != current.listPost,
         builder: (context, state) {
           return LayoutBuilder(
             builder: (context, constraints) {

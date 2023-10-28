@@ -1,10 +1,16 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/widgets/company_about.dart';
+import 'package:wflow/modules/main/presentation/home/company/widgets/company_location.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
 
 class CompanyScreen extends StatefulWidget {
@@ -17,12 +23,25 @@ class CompanyScreen extends StatefulWidget {
 class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
   late final TabController _tabController;
 
+  final List<String> _tabs = [
+    'Home',
+    'About',
+    'Posts',
+    'Members',
+    'Location',
+  ];
+
   List<bool> isFirstLoad = [false, false, false];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 3, vsync: this);
+    _tabController = TabController(
+      length: 5,
+      vsync: this,
+      initialIndex: 0,
+      animationDuration: const Duration(milliseconds: 300),
+    );
   }
 
   @override
@@ -33,137 +52,162 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
         ..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
       lazy: true,
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Company'),
-        isSafe: true,
+        appBar: AppBarCenterWidget(
+          center: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                'Company',
+                style:
+                    themeData.textTheme.displayLarge!.copyWith(fontWeight: FontWeight.bold, color: AppColors.textColor),
+              ),
+            ],
+          ),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: SvgPicture.asset(
+                AppConstants.ic_more,
+                height: 24.h,
+                width: 24.w,
+                colorFilter: ColorFilter.mode(themeData.colorScheme.primary, BlendMode.srcIn),
+              ),
+            ),
+          ],
+        ),
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
-          listener: (context, state) {
-            if (state.message.isNotEmpty) {
-              print(state.message);
-            }
-          },
+          listener: (context, state) {},
           buildWhen: (previous, current) =>
               previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
           listenWhen: (previous, current) =>
               previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
-          builder: (context, state) => Visibility(
-            visible: !state.isLoadingCompany,
-            replacement: ShimmerWork(
-              physics: const NeverScrollableScrollPhysics(),
-              height: 280,
-              width: double.infinity,
-              scrollDirection: Axis.vertical,
-              padding: EdgeInsets.zero,
-              itemCount: 1,
-              margin: const EdgeInsets.only(bottom: 20, top: 10, left: 20, right: 20),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: themeData.colorScheme.onBackground.withOpacity(0.8),
-                  width: 1,
+          builder: (context, state) {
+            final companyEntity = state.companyEntity;
+            return Visibility(
+              visible: !state.isLoadingCompany,
+              replacement: ShimmerWork(
+                physics: const NeverScrollableScrollPhysics(),
+                height: 280.h,
+                width: double.infinity,
+                scrollDirection: Axis.vertical,
+                padding: EdgeInsets.zero,
+                itemCount: 1,
+                margin: EdgeInsets.only(bottom: 20.h, top: 10.h, left: 20.w, right: 20.w),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20.r),
                 ),
               ),
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const HeaderAvatarCompanyWidget(),
-                TabBar(
-                  controller: _tabController,
-                  labelColor: themeData.colorScheme.primary,
-                  unselectedLabelColor: themeData.colorScheme.onBackground,
-                  indicatorSize: TabBarIndicatorSize.label,
-                  indicatorColor: themeData.colorScheme.primary,
-                  isScrollable: true,
-                  tabAlignment: TabAlignment.center,
-                  splashFactory: NoSplash.splashFactory,
-                  overlayColor: const MaterialStatePropertyAll(Colors.transparent),
-                  dividerColor: Colors.transparent,
-                  splashBorderRadius: BorderRadius.zero,
-                  dragStartBehavior: DragStartBehavior.start,
-                  onTap: (index) {
-                    final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
-                    switch (index) {
-                      case 0:
-                        _tabController.animateTo(
-                          0,
-                          curve: Curves.easeIn,
-                          duration: const Duration(milliseconds: 300),
-                        );
-                        break;
-                      case 1:
-                        if (isFirstLoad[1] == false) {
-                          bloc.add(
-                            const GetMyPostCompanyEvent(
-                              isLoading: true,
-                              message: 'Start load post',
-                              page: 1,
-                              pageSize: 10,
-                            ),
-                          );
-                          isFirstLoad[1] = true;
-                        }
-                        _tabController.animateTo(
-                          1,
-                          curve: Curves.decelerate,
-                          duration: const Duration(milliseconds: 300),
-                        );
-                        break;
-                      case 2:
-                        if (isFirstLoad[2] == false) {
-                          bloc.add(
-                            const GetMyMemberCompanyEvent(
-                              isLoading: true,
-                              message: 'Start load member',
-                              page: 1,
-                              pageSize: 10,
-                            ),
-                          );
-                          isFirstLoad[2] = true;
-                        }
-                        _tabController.animateTo(
-                          2,
-                          curve: Curves.easeOut,
-                          duration: const Duration(milliseconds: 300),
-                        );
-                        break;
-                      default:
-                        _tabController.animateTo(0);
-                    }
-                  },
-                  tabs: [
-                    Tab(
-                      child: Text(
-                        'Information',
-                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
+              child: Column(
+                children: [
+                  Card(
+                    shape: LinearBorder.none,
+                    color: AppColors.fade,
+                    surfaceTintColor: Colors.transparent,
+                    elevation: 0,
+                    child: Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              CircularAvatarTouch(
+                                height: 60.h,
+                                width: 60.r,
+                                onTap: () {},
+                                imageUrl: companyEntity.logo == '' ? null : companyEntity.logo,
+                              ),
+                              10.verticalSpace,
+                              Text(
+                                companyEntity.name,
+                                style: themeData.textTheme.displayLarge!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                  color: AppColors.textColor,
+                                  fontSize: 26.sp,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                       ),
                     ),
-                    Tab(
-                      child: Text(
-                        'Posts (${state.companyEntity.posts.toString()})',
-                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
-                      ),
-                    ),
-                    Tab(
-                      child: Text(
-                        'Members (${state.companyEntity.members.toString()})',
-                        style: themeData.textTheme.bodyMedium!.copyWith(color: themeData.colorScheme.primary),
-                      ),
-                    ),
-                  ],
-                ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: const [
-                      CompanyInformationWidget(),
-                      CompanyJobPostWidget(),
-                      CompanyMemberWidget(),
-                    ],
                   ),
-                ),
-              ],
-            ),
-          ),
+                  TabBar(
+                      controller: _tabController,
+                      labelColor: themeData.colorScheme.primary,
+                      unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
+                        color: AppColors.textColor,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14.sp,
+                      ),
+                      labelStyle: themeData.textTheme.displaySmall!.copyWith(
+                        color: themeData.colorScheme.primary,
+                        fontWeight: FontWeight.normal,
+                        fontSize: 14.sp,
+                      ),
+                      unselectedLabelColor: themeData.colorScheme.onBackground,
+                      indicatorSize: TabBarIndicatorSize.tab,
+                      tabAlignment: TabAlignment.start,
+                      splashFactory: NoSplash.splashFactory,
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      indicatorWeight: 1,
+                      isScrollable: true,
+                      onTap: (index) {
+                        final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                        switch (index) {
+                          case 1:
+                            if (isFirstLoad[1] == false) {
+                              bloc.add(
+                                const GetMyPostCompanyEvent(
+                                    isLoading: true, message: 'Start load post', page: 1, pageSize: 10),
+                              );
+                              isFirstLoad[1] = true;
+                            }
+                            _tabController.animateTo(1, curve: Curves.decelerate);
+                            break;
+                          case 2:
+                            if (isFirstLoad[2] == false) {
+                              bloc.add(
+                                const GetMyMemberCompanyEvent(
+                                    isLoading: true, message: 'Start load member', page: 1, pageSize: 10),
+                              );
+                              isFirstLoad[2] = true;
+                            }
+                            _tabController.animateTo(2, curve: Curves.easeOut);
+                            break;
+                          case 3:
+                            _tabController.animateTo(3, curve: Curves.easeOut);
+                            break;
+                          case 4:
+                            _tabController.animateTo(4, curve: Curves.easeOut);
+                            break;
+                          default:
+                            _tabController.animateTo(0, curve: Curves.easeOut);
+                        }
+                      },
+                      tabs: _tabs.map((e) => Tab(child: Text(e))).toList()),
+                  Expanded(
+                    child: TabBarView(
+                      controller: _tabController,
+                      children: const [
+                        CompanyHomeWidget(),
+                        CompanyAboutWidget(),
+                        CompanyJobPostWidget(),
+                        CompanyMemberWidget(),
+                        CompanyLocationWidget(),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
         ),
       ),
     );

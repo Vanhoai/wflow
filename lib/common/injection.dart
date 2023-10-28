@@ -16,8 +16,6 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
-import 'package:wflow/modules/main/data/candidate/candidate_repository_impl.dart';
-import 'package:wflow/modules/main/data/candidate/candidate_service.dart';
 import 'package:wflow/modules/main/data/category/category_repository_impl.dart';
 import 'package:wflow/modules/main/data/category/category_service.dart';
 import 'package:wflow/modules/main/data/contract/contract_repository_impl.dart';
@@ -26,8 +24,6 @@ import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
-import 'package:wflow/modules/main/domain/candidate/candidate_repository.dart';
-import 'package:wflow/modules/main/domain/candidate/candidate_usecase.dart';
 import 'package:wflow/modules/main/domain/category/category_repository.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
@@ -71,15 +67,6 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<CVRepository>(() => CVRepositoryImpl(cvService: instance.get<CVService>()));
   instance.registerLazySingleton<CVUseCase>(() => CVUseCaseImpl(cvRepository: instance.get<CVRepository>()));
 
-  // Candidate
-  instance.registerLazySingleton<CandidateService>(() => CandidateServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<CandidateRepository>(
-    () => CandidateRepositoryImpl(candidateService: instance.get<CandidateService>()),
-  );
-  instance.registerLazySingleton<CandidateUseCase>(
-    () => CandidateUseCaseImpl(candidateRepository: instance.get<CandidateRepository>()),
-  );
-
   // Company
   instance.registerLazySingleton<CompanyService>(
     () => CompanyServiceImpl(agent: instance.get<Agent>()),
@@ -103,6 +90,7 @@ Future<void> initAppInjection() async {
   );
 
   // Contact
+  //Contact
   instance.registerLazySingleton<ContractService>(() => ContractServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<ContractRepository>(
       () => ContractRepositoryImpl(contactService: instance.get<ContractService>()));

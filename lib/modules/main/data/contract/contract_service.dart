@@ -5,6 +5,7 @@ import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_entity.dart';
 
 abstract class ContractService {
+  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> applyPost(ApplyPostRequest request);
   Future<ContractEntity> candidateAppliedDetail(String id);
 }
@@ -39,6 +40,35 @@ class ContractServiceImpl implements ContractService {
       return ContractEntity.fromJson(httpResponse.data);
     } catch (exception) {
       print('errorr');
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, request) async {
+    try {
+      final response = await agent.dio.get(
+        '/contract/candidate-applied/$id',
+        queryParameters: {
+          'page': request.page,
+          'pageSize': request.pageSize,
+          'search': request.search,
+        },
+      );
+
+      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      List<CandidateEntity> posts = httpResponse.data.map((e) => CandidateEntity.fromJson(e)).toList();
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: posts,
+      );
+    } catch (exception) {
       throw ServerException(message: exception.toString());
     }
   }

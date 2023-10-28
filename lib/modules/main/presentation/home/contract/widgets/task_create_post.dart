@@ -37,7 +37,7 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
           ),
           actions: [
             PrimaryButton(
-              height: 50,
+              height: 40,
               label: 'OK',
               onPressed: () {
                 parentContext.read<UpPostBloc>().add(EditTaskEvent(index, taskController.text));

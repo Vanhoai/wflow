@@ -1,9 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/domain/category/category_usecase.dart';
+import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/contract/up_post/skill_category.dart';
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class UpPostScreen extends StatefulWidget {
@@ -39,7 +43,10 @@ class _UpPostScreenState extends State<UpPostScreen> {
     final ThemeData themeData = Theme.of(context);
 
     return BlocProvider(
-      create: (_) => UpPostBloc(),
+      create: (_) => UpPostBloc(
+        categoryUseCase: instance.get<CategoryUseCase>(),
+        contractUseCase: instance.get<ContractUseCase>(),
+      )..add(UpPostInitialEvent()),
       child: CommonScaffold(
         appBar: const AppHeader(text: 'Up Post'),
         hideKeyboardWhenTouchOutside: true,
@@ -91,6 +98,8 @@ class _UpPostScreenState extends State<UpPostScreen> {
                             minLines: 3,
                             hintText: 'Enter basic description for project',
                           ),
+                          const SizedBox(height: 20),
+                          const SkillAndCategory(),
                           const SizedBox(height: 20),
                           Text(
                             'Budget',

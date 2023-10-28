@@ -1,13 +1,11 @@
 import 'package:flutter/material.dart';
 
-class ActionHelper extends StatefulWidget {
-  const ActionHelper({super.key});
+class ActionHelper extends StatelessWidget {
+  const ActionHelper({super.key, required this.onUpload, required this.onWatchVideo});
 
-  @override
-  State<ActionHelper> createState() => _ActionHelperState();
-}
+  final Function() onUpload;
+  final Function() onWatchVideo;
 
-class _ActionHelperState extends State<ActionHelper> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -71,16 +69,16 @@ class _ActionHelperState extends State<ActionHelper> {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Watch demo',
-                    style:
-                        TextStyle(color: themeData.colorScheme.onBackground, fontSize: 12, fontWeight: FontWeight.w600),
-                  ),
-                  RotatedBox(
-                    quarterTurns: 2,
-                    child: Icon(
-                      Icons.arrow_back_ios_new,
-                      color: themeData.colorScheme.onBackground,
+                    'Watch Video',
+                    style: themeData.textTheme.displayMedium!.merge(
+                      const TextStyle(
+                        color: Color.fromRGBO(27, 118, 255, 1),
+                        fontSize: 16,
+                      ),
                     ),
+                  ),
+                  const RotatedBox(
+                    quarterTurns: 2,
                   ),
                 ],
               ),

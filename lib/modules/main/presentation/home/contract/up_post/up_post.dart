@@ -43,101 +43,105 @@ class _UpPostScreenState extends State<UpPostScreen> {
       child: CommonScaffold(
         appBar: const AppHeader(text: 'Up Post'),
         hideKeyboardWhenTouchOutside: true,
-        body: Stack(
-          children: [
-            CustomScrollView(
-              clipBehavior: Clip.none,
-              cacheExtent: 1000,
-              dragStartBehavior: DragStartBehavior.start,
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-              shrinkWrap: true,
-              physics: const BouncingScrollPhysics(),
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Title',
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                          )),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFieldHelper(
-                          controller: _titleController,
-                          maxLines: 2,
-                          minLines: 1,
-                          hintText: 'Enter project title',
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'Describe',
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                          )),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFieldHelper(
-                          controller: _descriptionController,
-                          maxLines: 5,
-                          minLines: 3,
-                          hintText: 'Enter basic description for project',
-                        ),
-                        const SizedBox(height: 20),
-                        Text(
-                          'Budget',
-                          style: themeData.textTheme.displayMedium!.merge(
-                            TextStyle(
+        body: SizedBox(
+          height: MediaQuery.of(context).size.height,
+          width: MediaQuery.of(context).size.width,
+          child: Stack(
+            children: [
+              CustomScrollView(
+                clipBehavior: Clip.none,
+                cacheExtent: 1000,
+                dragStartBehavior: DragStartBehavior.start,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                shrinkWrap: true,
+                physics: const BouncingScrollPhysics(),
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Title',
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
                               color: themeData.colorScheme.onBackground,
+                            )),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFieldHelper(
+                            controller: _titleController,
+                            maxLines: 2,
+                            minLines: 1,
+                            hintText: 'Enter project title',
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Describe',
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                              color: themeData.colorScheme.onBackground,
+                            )),
+                          ),
+                          const SizedBox(height: 8),
+                          TextFieldHelper(
+                            controller: _descriptionController,
+                            maxLines: 5,
+                            minLines: 3,
+                            hintText: 'Enter basic description for project',
+                          ),
+                          const SizedBox(height: 20),
+                          Text(
+                            'Budget',
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              ),
                             ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        TextFieldHelper(
-                          controller: _budgetController,
-                          maxLines: 1,
-                          minLines: 1,
-                          hintText: 'Enter budget for project',
-                          keyboardType: TextInputType.number,
-                          suffixIcon: const Icon(Icons.attach_money_sharp),
-                        ),
-                        const SizedBox(height: 20),
-                        const TaskCreatePost(),
-                        const SizedBox(height: 20),
-                        const ActionHelper(),
-                        const SizedBox(height: 80),
-                      ],
+                          const SizedBox(height: 8),
+                          TextFieldHelper(
+                            controller: _budgetController,
+                            maxLines: 1,
+                            minLines: 1,
+                            hintText: 'Enter budget for project',
+                            keyboardType: TextInputType.number,
+                            suffixIcon: const Icon(Icons.attach_money_sharp),
+                          ),
+                          const SizedBox(height: 20),
+                          const TaskCreatePost(),
+                          const SizedBox(height: 20),
+                          ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                          const SizedBox(height: 80),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              Visibility(
+                visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+                child: Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: themeData.colorScheme.background,
+                    ),
+                    child: PrimaryButton(
+                      label: 'Create',
+                      onPressed: () {},
+                      width: double.infinity,
                     ),
                   ),
                 ),
-              ],
-            ),
-            Visibility(
-              visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-              child: Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
-                  clipBehavior: Clip.hardEdge,
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    color: themeData.colorScheme.background,
-                  ),
-                  child: PrimaryButton(
-                    label: 'Create',
-                    onPressed: () {},
-                    width: double.infinity,
-                  ),
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

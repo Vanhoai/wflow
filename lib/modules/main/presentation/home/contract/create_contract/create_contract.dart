@@ -115,7 +115,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                         const SizedBox(height: 10),
                         const TaskCreateContractWidget(),
                         const SizedBox(height: 16),
-                        const ActionHelper(),
+                        ActionHelper(onUpload: () {}, onWatchVideo: () {}),
                         const SizedBox(height: 30),
                         Text(
                           'Candidate',

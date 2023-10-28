@@ -41,9 +41,6 @@ class FirebaseMessagingService {
             ),
           );
         }
-
-        // If `onMessage` is triggered with a notification, construct our own
-        // local notification to show to users using the created channel.
       });
     } else {
       print('User declined or has not accepted permission');

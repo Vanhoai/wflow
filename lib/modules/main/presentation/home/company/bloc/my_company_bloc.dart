@@ -3,8 +3,6 @@ import 'dart:async';
 import 'package:dartz/dartz.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
@@ -18,14 +16,16 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
   final CompanyUseCase companyUseCase;
 
   MyCompanyBloc({required this.companyUseCase})
-      : super(MyCompanyState(
-          companyEntity: CompanyEntity.createEmpty(),
-          listUser: const [],
-          isLoadingCompany: false,
-          isLoadingMember: false,
-          isLoadingPost: false,
-          message: '',
-        )) {
+      : super(
+          MyCompanyState(
+            companyEntity: CompanyEntity.createEmpty(),
+            listUser: const [],
+            isLoadingCompany: false,
+            isLoadingMember: false,
+            isLoadingPost: false,
+            message: '',
+          ),
+        ) {
     on<GetMyCompanyEvent>(onGetMyCompany);
     on<GetMyMemberCompanyEvent>(onGetMyMemberCompany);
     on<GetMyPostCompanyEvent>(onGetMyJobCompany);

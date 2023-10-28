@@ -17,7 +17,11 @@ class CandidateEntity extends Equatable {
   Map<String, dynamic> toJson() => _$CandidateEntityToJson(this);
 
   CandidateEntity copyWith({int? id, CVEntity? cv, Worker? worker}) {
-    return CandidateEntity(id: id ?? this.id, cv: cv ?? this.cv, worker: worker ?? this.worker);
+    return CandidateEntity(
+      id: id ?? this.id,
+      cv: cv ?? this.cv,
+      worker: worker ?? this.worker,
+    );
   }
 
   @override
@@ -62,39 +66,55 @@ class Worker extends Equatable {
 
   Map<String, dynamic> toJson() => _$WorkerToJson(this);
 
-  Worker copyWith(
-      {int? id,
-      String? name,
-      int? role,
-      int? age,
-      String? address,
-      String? email,
-      String? phone,
-      bool? isVerify,
-      String? avatar,
-      String? business,
-      String? state,
-      String? createdAt,
-      String? dob,
-      String? identifyCode}) {
+  Worker copyWith({
+    int? id,
+    String? name,
+    int? role,
+    int? age,
+    String? address,
+    String? email,
+    String? phone,
+    bool? isVerify,
+    String? avatar,
+    String? business,
+    String? state,
+    String? createdAt,
+    String? dob,
+    String? identifyCode,
+  }) {
     return Worker(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        role: role ?? this.role,
-        age: age ?? this.age,
-        address: address ?? this.address,
-        email: email ?? this.email,
-        phone: phone ?? this.phone,
-        isVerify: isVerify ?? this.isVerify,
-        avatar: avatar ?? this.avatar,
-        business: business ?? this.business,
-        state: state ?? this.state,
-        dob: dob ?? this.dob,
-        createdAt: createdAt ?? this.createdAt,
-        identifyCode: identifyCode ?? this.identifyCode);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      role: role ?? this.role,
+      age: age ?? this.age,
+      address: address ?? this.address,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      isVerify: isVerify ?? this.isVerify,
+      avatar: avatar ?? this.avatar,
+      business: business ?? this.business,
+      state: state ?? this.state,
+      dob: dob ?? this.dob,
+      createdAt: createdAt ?? this.createdAt,
+      identifyCode: identifyCode ?? this.identifyCode,
+    );
   }
 
   @override
-  List<Object?> get props =>
-      [id, name, role, age, address, email, phone, isVerify, avatar, business, state, dob, createdAt, identifyCode];
+  List<Object?> get props => [
+        id,
+        name,
+        role,
+        age,
+        address,
+        email,
+        phone,
+        isVerify,
+        avatar,
+        business,
+        state,
+        dob,
+        createdAt,
+        identifyCode,
+      ];
 }

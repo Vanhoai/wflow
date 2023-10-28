@@ -8,6 +8,7 @@ import 'package:wflow/modules/main/domain/user/user_entity.dart';
 
 class CompanyRepositoryImpl extends CompanyRepository {
   final CompanyService companyService;
+
   CompanyRepositoryImpl({required this.companyService});
 
   @override

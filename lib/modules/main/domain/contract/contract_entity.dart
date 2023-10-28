@@ -16,17 +16,18 @@ class ContractEntity extends Equatable {
   final Worker worker;
   final Business business;
 
-  const ContractEntity(
-      {required this.cv,
-      required this.id,
-      required this.title,
-      required this.content,
-      required this.introduction,
-      required this.salary,
-      required this.businessSigned,
-      required this.workerSigned,
-      required this.worker,
-      required this.business});
+  const ContractEntity({
+    required this.cv,
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.introduction,
+    required this.salary,
+    required this.businessSigned,
+    required this.workerSigned,
+    required this.worker,
+    required this.business,
+  });
 
   factory ContractEntity.fromJson(Map<String, dynamic> json) => _$ContractEntityFromJson(json);
 
@@ -44,16 +45,17 @@ class ContractEntity extends Equatable {
       Worker? worker,
       Business? business}) {
     return ContractEntity(
-        cv: cv ?? this.cv,
-        id: id ?? this.id,
-        title: title ?? this.title,
-        content: content ?? this.content,
-        introduction: introduction ?? this.introduction,
-        salary: salary ?? this.salary,
-        businessSigned: businessSigned ?? this.businessSigned,
-        workerSigned: workerSigned ?? this.workerSigned,
-        worker: worker ?? this.worker,
-        business: business ?? this.business);
+      cv: cv ?? this.cv,
+      id: id ?? this.id,
+      title: title ?? this.title,
+      content: content ?? this.content,
+      introduction: introduction ?? this.introduction,
+      salary: salary ?? this.salary,
+      businessSigned: businessSigned ?? this.businessSigned,
+      workerSigned: workerSigned ?? this.workerSigned,
+      worker: worker ?? this.worker,
+      business: business ?? this.business,
+    );
   }
 
   @override
@@ -72,37 +74,40 @@ class Business extends Equatable {
   final num totalContracts;
   final num totalPosts;
 
-  const Business(
-      {required this.id,
-      required this.email,
-      required this.phone,
-      required this.name,
-      required this.address,
-      required this.totalCollaborators,
-      required this.totalContracts,
-      required this.totalPosts});
+  const Business({
+    required this.id,
+    required this.email,
+    required this.phone,
+    required this.name,
+    required this.address,
+    required this.totalCollaborators,
+    required this.totalContracts,
+    required this.totalPosts,
+  });
 
   factory Business.fromJson(Map<String, dynamic> json) => _$BusinessFromJson(json);
 
   Map<String, dynamic> toJson() => _$BusinessToJson(this);
-  Business copyWith(
-      {num? id,
-      String? email,
-      String? phone,
-      String? name,
-      String? address,
-      num? totalCollaborators,
-      num? totalContracts,
-      num? totalPosts}) {
+  Business copyWith({
+    num? id,
+    String? email,
+    String? phone,
+    String? name,
+    String? address,
+    num? totalCollaborators,
+    num? totalContracts,
+    num? totalPosts,
+  }) {
     return Business(
-        id: id ?? this.id,
-        email: email ?? this.email,
-        phone: phone ?? this.phone,
-        name: name ?? this.name,
-        address: address ?? this.address,
-        totalCollaborators: totalCollaborators ?? this.totalCollaborators,
-        totalContracts: totalContracts ?? this.totalContracts,
-        totalPosts: totalPosts ?? this.totalPosts);
+      id: id ?? this.id,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      name: name ?? this.name,
+      address: address ?? this.address,
+      totalCollaborators: totalCollaborators ?? this.totalCollaborators,
+      totalContracts: totalContracts ?? this.totalContracts,
+      totalPosts: totalPosts ?? this.totalPosts,
+    );
   }
 
   @override
@@ -147,39 +152,55 @@ class Worker extends Equatable {
 
   Map<String, dynamic> toJson() => _$WorkerToJson(this);
 
-  Worker copyWith(
-      {int? id,
-      String? name,
-      int? role,
-      int? age,
-      String? address,
-      String? email,
-      String? phone,
-      bool? isVerify,
-      String? avatar,
-      String? business,
-      String? state,
-      String? createdAt,
-      String? dob,
-      String? identifyCode}) {
+  Worker copyWith({
+    int? id,
+    String? name,
+    int? role,
+    int? age,
+    String? address,
+    String? email,
+    String? phone,
+    bool? isVerify,
+    String? avatar,
+    String? business,
+    String? state,
+    String? createdAt,
+    String? dob,
+    String? identifyCode,
+  }) {
     return Worker(
-        id: id ?? this.id,
-        name: name ?? this.name,
-        role: role ?? this.role,
-        age: age ?? this.age,
-        address: address ?? this.address,
-        email: email ?? this.email,
-        phone: phone ?? this.phone,
-        isVerify: isVerify ?? this.isVerify,
-        avatar: avatar ?? this.avatar,
-        business: business ?? this.business,
-        state: state ?? this.state,
-        dob: dob ?? this.dob,
-        createdAt: createdAt ?? this.createdAt,
-        identifyCode: identifyCode ?? this.identifyCode);
+      id: id ?? this.id,
+      name: name ?? this.name,
+      role: role ?? this.role,
+      age: age ?? this.age,
+      address: address ?? this.address,
+      email: email ?? this.email,
+      phone: phone ?? this.phone,
+      isVerify: isVerify ?? this.isVerify,
+      avatar: avatar ?? this.avatar,
+      business: business ?? this.business,
+      state: state ?? this.state,
+      dob: dob ?? this.dob,
+      createdAt: createdAt ?? this.createdAt,
+      identifyCode: identifyCode ?? this.identifyCode,
+    );
   }
 
   @override
-  List<Object?> get props =>
-      [id, name, role, age, address, email, phone, isVerify, avatar, business, state, dob, createdAt, identifyCode];
+  List<Object?> get props => [
+        id,
+        name,
+        role,
+        age,
+        address,
+        email,
+        phone,
+        isVerify,
+        avatar,
+        business,
+        state,
+        dob,
+        createdAt,
+        identifyCode,
+      ];
 }

@@ -15,7 +15,7 @@ class TaskCreatePost extends StatefulWidget {
 class _TaskCreatePostState extends State<TaskCreatePost> {
   final TextEditingController taskController = TextEditingController();
 
-  Future<void> enterTaskForPost(int index) async {
+  void onTapTask(int index, BuildContext parentContext) {
     showDialog(
       context: context,
       builder: (context) {
@@ -40,6 +40,8 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
               height: 50,
               label: 'OK',
               onPressed: () {
+                parentContext.read<UpPostBloc>().add(EditTaskEvent(index, taskController.text));
+                taskController.clear();
                 Navigator.of(context).pop();
               },
             ),
@@ -58,22 +60,22 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return BlocBuilder<UpPostBloc, UpPostState>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Task',
-                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.colorScheme.onBackground,
-                  )),
-                ),
-                InkWell(
-                  onTap: () => context.read<UpPostBloc>().add(UpPostAddTaskEvent('Simple task')),
+            Text(
+              'Task',
+              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                color: themeData.colorScheme.onBackground,
+              )),
+            ),
+            BlocBuilder<UpPostBloc, UpPostState>(
+              builder: (context, state) {
+                return InkWell(
+                  onTap: () => context.read<UpPostBloc>().add(UpPostAddTaskEvent()),
                   child: Text(
                     'Add Task',
                     style: themeData.textTheme.displayMedium!.merge(
@@ -82,11 +84,15 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-            FixedTimeline.tileBuilder(
+                );
+              },
+            )
+          ],
+        ),
+        const SizedBox(height: 8),
+        BlocBuilder<UpPostBloc, UpPostState>(
+          builder: (context, state) {
+            return FixedTimeline.tileBuilder(
               mainAxisSize: MainAxisSize.min,
               theme: TimelineThemeData(
                 connectorTheme: const ConnectorThemeData(
@@ -131,46 +137,57 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
                             color: AppColors.borderColor,
                           ),
                         ),
-                        Expanded(
-                          child: InkWell(
-                            onTap: () => enterTaskForPost(index),
-                            borderRadius: BorderRadius.circular(8),
-                            child: Container(
-                              height: 60,
-                              padding: const EdgeInsets.symmetric(horizontal: 12),
-                              decoration: BoxDecoration(
+                        BlocBuilder<UpPostBloc, UpPostState>(
+                          builder: (context, state) {
+                            return Expanded(
+                              child: InkWell(
+                                onTap: () => {
+                                  taskController.text = state.tasks[index],
+                                  onTapTask(index, context),
+                                },
                                 borderRadius: BorderRadius.circular(8),
-                                color: themeData.colorScheme.background,
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: AppColors.borderColor,
-                                    blurRadius: 4,
-                                    offset: Offset(0, 2),
+                                child: Container(
+                                  height: 60,
+                                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: themeData.colorScheme.background,
+                                    boxShadow: const [
+                                      BoxShadow(
+                                        color: AppColors.borderColor,
+                                        blurRadius: 4,
+                                        offset: Offset(0, 2),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                              alignment: Alignment.centerLeft,
-                              child: Text(
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                state.tasks[index],
-                                style: themeData.textTheme.displayMedium!.merge(
-                                  const TextStyle(
-                                    color: AppColors.textColor,
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    state.tasks[index],
+                                    style: themeData.textTheme.displayMedium!.merge(
+                                      const TextStyle(
+                                        color: AppColors.textColor,
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ),
-                            ),
-                          ),
-                        ),
+                            );
+                          },
+                        )
                       ],
                     ),
                   );
                 },
               ),
-            ),
-            const SizedBox(height: 12),
-            InkWell(
+            );
+          },
+        ),
+        const SizedBox(height: 12),
+        BlocBuilder<UpPostBloc, UpPostState>(
+          builder: (context, state) {
+            return InkWell(
               onTap: () => context.read<UpPostBloc>().add(RemoveLastTaskEvent()),
               child: Text(
                 'Remove Task',
@@ -180,10 +197,10 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
                   ),
                 ),
               ),
-            ),
-          ],
-        );
-      },
+            );
+          },
+        )
+      ],
     );
   }
 }

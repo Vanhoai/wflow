@@ -2,11 +2,7 @@ part of 'bloc.dart';
 
 abstract class UpPostEvent {}
 
-class UpPostAddTaskEvent extends UpPostEvent {
-  final String task;
-
-  UpPostAddTaskEvent(this.task);
-}
+class UpPostAddTaskEvent extends UpPostEvent {}
 
 class EditTaskEvent extends UpPostEvent {
   final int index;

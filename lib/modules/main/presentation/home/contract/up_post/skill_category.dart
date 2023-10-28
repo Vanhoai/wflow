@@ -11,6 +11,24 @@ class SkillAndCategory extends StatefulWidget {
 }
 
 class _SkillAndCategoryState extends State<SkillAndCategory> {
+  void addSkill() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container();
+      },
+    );
+  }
+
+  void addCategory() {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -31,9 +49,10 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => addSkill(),
+                  borderRadius: BorderRadius.circular(4),
                   child: Text(
-                    'Add More',
+                    'Add',
                     style: themeData.textTheme.displayMedium!.merge(
                       TextStyle(
                         color: themeData.colorScheme.primary,
@@ -53,7 +72,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                 color: const Color.fromARGB(31, 167, 167, 167),
               ),
               child: ListView.separated(
-                itemCount: state.skills.length,
+                itemCount: state.skillSelected.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 3),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
@@ -66,7 +85,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                     child: Row(
                       children: [
                         Text(
-                          state.skills[index].name,
+                          state.skillSelected[index].name,
                           style: themeData.textTheme.labelMedium!.merge(
                             const TextStyle(color: Colors.white),
                           ),
@@ -100,9 +119,10 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {},
+                  onTap: () => addCategory(),
+                  borderRadius: BorderRadius.circular(4),
                   child: Text(
-                    'Add More',
+                    'Add',
                     style: themeData.textTheme.displayMedium!.merge(
                       TextStyle(
                         color: themeData.colorScheme.primary,
@@ -122,7 +142,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                 color: const Color.fromARGB(31, 167, 167, 167),
               ),
               child: ListView.separated(
-                itemCount: state.categories.length,
+                itemCount: state.categorySelected.length,
                 separatorBuilder: (context, index) => const SizedBox(width: 3),
                 scrollDirection: Axis.horizontal,
                 itemBuilder: (context, index) {
@@ -135,7 +155,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                     child: Row(
                       children: [
                         Text(
-                          state.categories[index].name,
+                          state.categorySelected[index].name,
                           style: themeData.textTheme.labelMedium!.merge(
                             const TextStyle(color: Colors.white),
                           ),

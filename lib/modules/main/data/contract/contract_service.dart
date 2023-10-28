@@ -12,7 +12,6 @@ abstract class ContractService {
 
 class ContractServiceImpl implements ContractService {
   final Agent agent;
-
   ContractServiceImpl({required this.agent});
 
   @override
@@ -20,10 +19,8 @@ class ContractServiceImpl implements ContractService {
     try {
       final response = await agent.dio.post('/contract/apply-post', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-
       return httpResponse.message;
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }
@@ -33,13 +30,11 @@ class ContractServiceImpl implements ContractService {
     try {
       final response = await agent.dio.get('/contract/candidate-applied-detail/$id');
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }
       return ContractEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }

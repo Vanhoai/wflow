@@ -1,30 +1,25 @@
-
-
-
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
-class Camera extends StatefulWidget{
+
+class Camera extends StatefulWidget {
   const Camera({super.key});
 
   @override
   State<StatefulWidget> createState() {
     return _StateCamera();
   }
-
-
 }
 
 //Đang lỗi
-class _StateCamera extends State<Camera>{
+class _StateCamera extends State<Camera> {
   late List<CameraDescription> _cameras;
   late CameraController controller;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     init();
     controller = CameraController(_cameras[0], ResolutionPreset.max);
@@ -40,14 +35,17 @@ class _StateCamera extends State<Camera>{
             requestPermissions();
             break;
           default:
-          // Handle other errors here.
+            // Handle other errors here.
             break;
         }
-      }});
+      }
+    });
   }
-  FutureOr<void> init() async{
+
+  FutureOr<void> init() async {
     _cameras = await availableCameras();
   }
+
   @override
   void dispose() {
     controller.dispose();
@@ -73,6 +71,7 @@ class _StateCamera extends State<Camera>{
       }
     });
   }
+
   @override
   Widget build(BuildContext context) {
     if (!controller.value.isInitialized) {
@@ -82,5 +81,4 @@ class _StateCamera extends State<Camera>{
       child: CameraPreview(controller),
     );
   }
-
 }

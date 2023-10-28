@@ -4,7 +4,7 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/domain/candidate/candidate_usecase.dart';
+import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/state.dart';
@@ -42,13 +42,12 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider(
-      create: (_) => CandidateListBloc(candidateUseCase: instance.get<CandidateUseCase>())
+      create: (_) => CandidateListBloc(contractUseCase: instance.get<ContractUseCase>())
         ..add(GetCandidateAppliedListEvent(post: widget.post)),
       child: BlocBuilder<CandidateListBloc, CandidateListState>(
         builder: (context, state) {
           _scrollController.addListener(() {
             if (state.meta.currentPage >= state.meta.totalPage) return;
-            print('current : ' + state.meta.currentPage.toString() + " total: " + state.meta.totalPage.toString());
             if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
               print('loadmore');
               context.read<CandidateListBloc>().add(GetCandidateAppliedListMoreEvent());

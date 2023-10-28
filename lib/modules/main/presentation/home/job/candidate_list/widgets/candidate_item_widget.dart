@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wflow/modules/main/domain/candidate/candidate_entity.dart';
+import 'package:wflow/modules/main/domain/contract/contract_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
 const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8d6f09dd6320855f.jpg';
@@ -119,25 +119,6 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                         style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                IconButton(
-                  onPressed: () {},
-                  icon: RotatedBox(
-                    quarterTurns: 2,
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                      size: 20,
-                    ),
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    minimumSize: MaterialStateProperty.all(Size.zero),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ],

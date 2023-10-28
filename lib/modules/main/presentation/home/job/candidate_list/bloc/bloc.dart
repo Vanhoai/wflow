@@ -1,14 +1,14 @@
 import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
-import 'package:wflow/modules/main/data/candidate/model/request_model.dart';
-import 'package:wflow/modules/main/domain/candidate/candidate_usecase.dart';
+import 'package:wflow/modules/main/data/contract/model/request_model.dart';
+import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/state.dart';
 
 class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
-  final CandidateUseCase candidateUseCase;
-  CandidateListBloc({required this.candidateUseCase}) : super(const CandidateListState()) {
+  final ContractUseCase contractUseCase;
+  CandidateListBloc({required this.contractUseCase}) : super(const CandidateListState()) {
     on<GetCandidateAppliedListEvent>(getCandidateAppliedList);
     on<GetCandidateAppliedListMoreEvent>(getCandidateAppliedListMore);
     on<GetCandidateAppliedSearchEvent>(getCandidateAppliedSearch);
@@ -16,7 +16,7 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
 
   FutureOr<void> getCandidateAppliedList(GetCandidateAppliedListEvent event, Emitter<CandidateListState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final candidateList = await candidateUseCase.getCandidateApplied(
+    final candidateList = await contractUseCase.getCandidateApplied(
         event.post, GetCandidateApplied(page: 1, pageSize: 10, search: state.search));
 
     emit(GetCandidateAppliedListSuccess(
@@ -36,7 +36,7 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
         emit((state as GetCandidateAppliedListSuccess).copyWith(loadMore: false));
         return;
       }
-      final candidateList = await candidateUseCase.getCandidateApplied(
+      final candidateList = await contractUseCase.getCandidateApplied(
           state.post, GetCandidateApplied(page: state.meta.currentPage + 1, pageSize: 10, search: state.search));
       emit((state as GetCandidateAppliedListSuccess).copyWith(
           loadMore: false,
@@ -48,7 +48,7 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
   FutureOr<void> getCandidateAppliedSearch(
       GetCandidateAppliedSearchEvent event, Emitter<CandidateListState> emit) async {
     emit(state.copyWith(isLoading: true));
-    final candidateList = await candidateUseCase.getCandidateApplied(
+    final candidateList = await contractUseCase.getCandidateApplied(
         state.post, GetCandidateApplied(page: 1, pageSize: 10, search: event.search));
 
     emit(GetCandidateAppliedListSuccess(

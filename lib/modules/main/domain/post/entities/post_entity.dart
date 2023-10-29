@@ -1,29 +1,58 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wflow/modules/main/domain/base/base_entity.dart';
 
 part 'post_entity.g.dart';
 
 @JsonSerializable()
-class PostEntity extends Equatable {
-  final num id;
-  final String updatedAt;
+class PostEntity extends BaseEntity with EquatableMixin {
+  @JsonKey(name: 'position', defaultValue: '')
   final String position;
+
+  @JsonKey(name: 'title', defaultValue: '')
   final String title;
+
+  @JsonKey(name: 'content', defaultValue: '')
   final String content;
+
+  @JsonKey(name: 'duration', defaultValue: '')
   final String duration;
+
+  @JsonKey(name: 'salary', defaultValue: '')
   final String salary;
+
+  @JsonKey(name: 'numberApplied', defaultValue: 0)
+  final num numberApplied;
+
+  @JsonKey(name: 'business', defaultValue: 0)
   final num business;
+
+  @JsonKey(name: 'creatorId', defaultValue: 0)
   final num creatorId;
+
+  @JsonKey(name: 'creatorName', defaultValue: '')
   final String creatorName;
+
+  @JsonKey(name: 'creatorAvatar', defaultValue: '')
   final String creatorAvatar;
+
+  @JsonKey(name: 'companyName', defaultValue: '')
   final String companyName;
+
+  @JsonKey(name: 'companyLogo', defaultValue: '')
   final String companyLogo;
+
+  @JsonKey(name: 'skills', defaultValue: [])
   final List<String> skills;
+
+  @JsonKey(name: 'tasks', defaultValue: [])
   final List<String> tasks;
 
   const PostEntity({
-    required this.id,
-    required this.updatedAt,
+    required super.id,
+    required super.updatedAt,
+    required super.createdAt,
+    required super.deletedAt,
     required this.position,
     required this.title,
     required this.content,
@@ -37,33 +66,36 @@ class PostEntity extends Equatable {
     required this.companyLogo,
     required this.skills,
     required this.tasks,
+    required this.numberApplied,
   });
 
   factory PostEntity.fromJson(Map<String, dynamic> json) => _$PostEntityFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$PostEntityToJson(this);
 
-  factory PostEntity.empty() => const PostEntity(
+  factory PostEntity.createEmpty() => PostEntity(
         id: 0,
-        updatedAt: '',
+        updatedAt: null,
+        createdAt: DateTime.now(),
+        deletedAt: null,
         position: '',
-        title: 'title',
-        content: 'content',
-        duration: 'duration',
-        salary: 'salary',
+        title: '',
+        content: '',
+        duration: '',
+        salary: '',
         business: 0,
-        creatorId: 1,
-        creatorName: 'creatorName',
-        creatorAvatar: 'creatorAvatar',
-        companyName: 'companyName',
-        companyLogo: 'companyLogo',
+        creatorId: 0,
+        creatorName: '',
+        creatorAvatar: '',
+        companyName: '',
+        companyLogo: '',
         skills: [],
         tasks: [],
+        numberApplied: 0,
       );
 
   PostEntity copyWith({
-    num? id,
-    String? updatedAt,
     String? position,
     String? title,
     String? content,
@@ -77,10 +109,13 @@ class PostEntity extends Equatable {
     String? companyLogo,
     List<String>? skills,
     List<String>? tasks,
+    num? numberApplied,
   }) {
     return PostEntity(
-      id: id ?? this.id,
-      updatedAt: updatedAt ?? this.updatedAt,
+      id: id,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      deletedAt: deletedAt,
       position: position ?? this.position,
       title: title ?? this.title,
       content: content ?? this.content,
@@ -94,6 +129,7 @@ class PostEntity extends Equatable {
       companyLogo: companyLogo ?? this.companyLogo,
       skills: skills ?? this.skills,
       tasks: tasks ?? this.tasks,
+      numberApplied: numberApplied ?? this.numberApplied,
     );
   }
 

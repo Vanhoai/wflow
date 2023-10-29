@@ -8,7 +8,7 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/company_about.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/company_location.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
@@ -93,8 +93,8 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                 width: double.infinity,
                 scrollDirection: Axis.vertical,
                 padding: EdgeInsets.zero,
-                itemCount: 1,
-                margin: EdgeInsets.only(bottom: 20.h, top: 10.h, left: 20.w, right: 20.w),
+                itemCount: 2,
+                margin: EdgeInsets.only(bottom: 20.h, top: 10.h, left: 10.w, right: 10.w),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20.r),
                 ),
@@ -162,6 +162,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                         final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
                         switch (index) {
                           case 1:
+                            _tabController.animateTo(1, curve: Curves.decelerate);
+                            break;
+                          case 2:
                             if (isFirstLoad[1] == false) {
                               bloc.add(
                                 const GetMyPostCompanyEvent(
@@ -169,9 +172,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                               );
                               isFirstLoad[1] = true;
                             }
-                            _tabController.animateTo(1, curve: Curves.decelerate);
+                            _tabController.animateTo(2, curve: Curves.easeOut);
                             break;
-                          case 2:
+                          case 3:
                             if (isFirstLoad[2] == false) {
                               bloc.add(
                                 const GetMyMemberCompanyEvent(
@@ -179,9 +182,6 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                               );
                               isFirstLoad[2] = true;
                             }
-                            _tabController.animateTo(2, curve: Curves.easeOut);
-                            break;
-                          case 3:
                             _tabController.animateTo(3, curve: Curves.easeOut);
                             break;
                           case 4:

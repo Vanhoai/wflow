@@ -18,24 +18,28 @@ import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/main/data/candidate/candidate_repository_impl.dart';
 import 'package:wflow/modules/main/data/candidate/candidate_service.dart';
+import 'package:wflow/modules/main/data/company/company_repository_impl.dart';
+import 'package:wflow/modules/main/data/company/company_service.dart';
 import 'package:wflow/modules/main/data/contract/contract_repository_impl.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
+import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/candidate/candidate_repository.dart';
 import 'package:wflow/modules/main/domain/candidate/candidate_usecase.dart';
+import 'package:wflow/modules/main/domain/company/company_repository.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
-import 'package:wflow/modules/main/data/company/company_repository_impl.dart';
-import 'package:wflow/modules/main/data/company/company_service.dart';
-import 'package:wflow/modules/main/domain/company/company_repository.dart';
-import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/user/user_repository.dart';
+import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
@@ -97,6 +101,11 @@ Future<void> initAppInjection() async {
       () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
   instance.registerLazySingleton<CompanyUseCase>(
       () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()));
+
+  // USER
+  instance.registerLazySingleton<UserService>(() => UserServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userService: instance.get<UserService>()));
+  instance.registerLazySingleton<UserUseCase>(() => UserUseCaseImpl(userRepository: instance.get<UserRepository>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

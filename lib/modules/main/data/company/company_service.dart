@@ -1,9 +1,9 @@
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
-import 'package:wflow/modules/main/data/models/company_model.dart';
-import 'package:wflow/modules/main/data/models/post_model.dart';
-import 'package:wflow/modules/main/data/models/user_model.dart';
+import 'package:wflow/modules/main/data/company/company_model.dart';
+import 'package:wflow/modules/main/data/post/models/post_model.dart';
+import 'package:wflow/modules/main/data/user/models/user_model.dart';
 
 class CompanyPath {
   static const String getCompanyById = '/business/find/';

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
 class CompanyHomeWidget extends StatefulWidget {
   const CompanyHomeWidget({super.key});

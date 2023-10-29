@@ -5,7 +5,7 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
 class CompanyJobPostWidget extends StatefulWidget {
   const CompanyJobPostWidget({super.key});
@@ -47,7 +47,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                   width: double.infinity,
                   scrollDirection: Axis.vertical,
                   padding: EdgeInsets.zero,
-                  margin: const EdgeInsets.only(bottom: 10, left: 20, right: 20, top: 10),
+                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
@@ -62,9 +62,10 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
                   itemCount: state.listPost.length,
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   itemBuilder: (context, index) {
                     final job = state.listPost[index];
+
                     return Container(
                       padding: const EdgeInsets.symmetric(vertical: 10.0),
                       child: JobCard(

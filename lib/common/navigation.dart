@@ -19,8 +19,8 @@ class NavigationService {
     return navigatorKey.currentState!.pushReplacementNamed(routeName, arguments: arguments);
   }
 
-  Future<dynamic> pop() async {
-    return navigatorKey.currentState!.pop();
+  Future<dynamic> pop({int? numberPop}) async {
+    return navigatorKey.currentState!.pop(numberPop);
   }
 
   Future<dynamic> canPop() async {

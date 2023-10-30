@@ -89,7 +89,9 @@ class AppRoutes {
                 ));
       case RouteKeys.createContractScreen:
         final contract = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => CreateContractScreen(contract: contract));
+        return MaterialPageRoute(
+          builder: (_) => CreateContractScreen(contract: contract),
+        );
       case RouteKeys.reviewContractScreen:
         return MaterialPageRoute(builder: (_) => const ReviewContractScreen());
       case RouteKeys.viewContractScreen:

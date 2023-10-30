@@ -26,6 +26,8 @@ import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
+import 'package:wflow/modules/main/data/task/task_service.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_repository.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_usecase.dart';
 import 'package:wflow/modules/main/domain/category/category_repository.dart';
@@ -40,6 +42,8 @@ import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/task/task_repository.dart';
+import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
 import 'videocall/bloc/bloc.dart';
 
@@ -93,22 +97,26 @@ Future<void> initAppInjection() async {
     () => CategoryUseCaseImpl(categoryRepository: instance.get<CategoryRepository>()),
   );
 
-  // Contact
-  //Contact
+  // Contract
   instance.registerLazySingleton<ContractService>(() => ContractServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<ContractRepository>(
       () => ContractRepositoryImpl(contactService: instance.get<ContractService>()));
   instance.registerLazySingleton<ContractUseCase>(
       () => ContractUseCaseImpl(contactRepository: instance.get<ContractRepository>()));
 
-  //Authentication
+  // Task
+  instance.registerLazySingleton<TaskService>(() => TaskServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(taskService: instance.get<TaskService>()));
+  instance.registerLazySingleton<TaskUseCase>(() => TaskUseCaseImpl(taskRepository: instance.get<TaskRepository>()));
+
+  // Authentication
   instance.registerLazySingleton<AuthenticationService>(() => AuthenticationServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<AuthenticationRepository>(
       () => AuthenticationRepositoryImpl(authenticationService: instance.get<AuthenticationService>()));
   instance.registerLazySingleton<AuthenticationUseCase>(
       () => AuthenticationUseCaseImpl(authenticationRepository: instance.get<AuthenticationRepository>()));
 
-  //Authen bloc
+  // Authen bloc
   instance.registerLazySingleton<AuthenticationsBloc>(
       () => AuthenticationsBloc(authenticationUseCase: instance.get<AuthenticationUseCase>()));
   // Video call connect bloc

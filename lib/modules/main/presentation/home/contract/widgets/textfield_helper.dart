@@ -9,6 +9,7 @@ class TextFieldHelper extends StatelessWidget {
     this.minLines = 1,
     this.suffixIcon,
     this.keyboardType,
+    this.validator,
   });
 
   final TextEditingController controller;
@@ -17,12 +18,14 @@ class TextFieldHelper extends StatelessWidget {
   final String hintText;
   final Icon? suffixIcon;
   final TextInputType? keyboardType;
+  final String Function(String?)? validator;
 
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
     return TextFormField(
+      validator: validator,
       controller: controller,
       scrollPhysics: const BouncingScrollPhysics(),
       keyboardType: keyboardType,

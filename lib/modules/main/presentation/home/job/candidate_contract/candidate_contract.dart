@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -91,6 +92,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                                       ),
                                     ),
                                   ),
+                                  const SliverToBoxAdapter(child: SizedBox(height: 100)),
                                 ],
                               );
                             } else if (state is GetCandidateDetailFailureState) {
@@ -122,9 +124,9 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                     right: 0,
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: const BoxDecoration(
-                        color: Colors.amber,
-                        borderRadius: BorderRadius.only(
+                      decoration: BoxDecoration(
+                        color: themeData.colorScheme.background,
+                        borderRadius: const BorderRadius.only(
                           topLeft: Radius.circular(8),
                           topRight: Radius.circular(8),
                         ),

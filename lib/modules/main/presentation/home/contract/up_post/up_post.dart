@@ -8,6 +8,7 @@ import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/skill_category.dart';
+import 'package:wflow/modules/main/presentation/home/contract/up_post/task_create_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class UpPostScreen extends StatefulWidget {

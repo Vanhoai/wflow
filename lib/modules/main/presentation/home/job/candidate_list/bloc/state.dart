@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:wflow/core/models/models.dart';
-import 'package:wflow/modules/main/domain/contract/contract_entity.dart';
+import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 
 class CandidateListState extends Equatable {
   final bool isLoading;

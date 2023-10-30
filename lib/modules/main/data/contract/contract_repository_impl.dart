@@ -3,8 +3,9 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
-import 'package:wflow/modules/main/domain/contract/contract_entity.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
+import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
+import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
 
 class ContractRepositoryImpl implements ContractRepository {
   final ContractService contactService;

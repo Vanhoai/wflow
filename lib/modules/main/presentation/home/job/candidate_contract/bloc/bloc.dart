@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/modules/main/domain/contract/contract_entity.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
+import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_contract/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_contract/bloc/state.dart';
 

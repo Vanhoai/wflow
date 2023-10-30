@@ -2,52 +2,143 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/navigation.dart';
+import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
+import 'package:wflow/modules/main/data/task/models/create_task_model.dart';
+import 'package:wflow/modules/main/data/task/models/update_task_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
+import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
+import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
+import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> {
   final ContractUseCase contractUseCase;
+  final TaskUseCase taskUseCase;
 
-  CreateContractBloc({required this.contractUseCase}) : super(const CreateContractState()) {
+  CreateContractBloc({
+    required this.contractUseCase,
+    required this.taskUseCase,
+  }) : super(
+          CreateContractState(
+            tasks: const [],
+            contractEntity: ContractEntity.empty(),
+          ),
+        ) {
     on<CreateContractInitEvent>(onInit);
     on<AddTaskCreateContractEvent>(onAddTask);
     on<RemoveLastTaskCreateContractEvent>(onRemoveLastTask);
     on<UpdateTaskCreateContractEvent>(onUpdateTask);
+    on<CreateNewContractEvent>(onCreateNewContractEvent);
   }
 
-  FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {}
-
-  void onAddTask(AddTaskCreateContractEvent event, Emitter<CreateContractState> emit) {
-    emit(state.copyWith(
-      tasks: [
-        ...state.tasks,
-        const TaskCreateContractModel(
-          endTime: 0,
-          startTime: 0,
-          title: 'Simple task',
-          content: '',
-        )
-      ],
-    ));
+  FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {
+    final response = await contractUseCase.candidateAppliedDetail(event.contract);
+    response.fold(
+      (ContractEntity contractEntity) {
+        print('Tasks: ${contractEntity.tasks.length}');
+        emit(state.copyWith(
+          contractEntity: contractEntity,
+          initSuccess: true,
+          tasks: contractEntity.tasks,
+        ));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+        instance.get<NavigationService>().pop();
+      },
+    );
   }
 
-  void onRemoveLastTask(RemoveLastTaskCreateContractEvent event, Emitter<CreateContractState> emit) {
-    if (state.tasks.isNotEmpty) {
-      emit(state.copyWith(tasks: state.tasks.sublist(0, state.tasks.length - 1)));
-    }
+  void onAddTask(AddTaskCreateContractEvent event, Emitter<CreateContractState> emit) async {
+    final response = await taskUseCase.addTaskToContract(
+      CreateTaskModel(
+        contract: state.contractEntity.id,
+        title: 'Simple Task',
+        content: '',
+        startTime: 0,
+        endTime: 0,
+      ),
+    );
+
+    response.fold(
+      (TaskEntity taskEntity) {
+        final List<TaskEntity> tasks = [...state.tasks];
+        tasks.add(taskEntity);
+        emit(state.copyWith(tasks: tasks));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
+    );
   }
 
-  void onUpdateTask(UpdateTaskCreateContractEvent event, Emitter<CreateContractState> emit) {
-    final tasks = state.tasks;
-    tasks[event.index] = tasks[event.index].copyWith(
+  void onRemoveLastTask(RemoveLastTaskCreateContractEvent event, Emitter<CreateContractState> emit) async {
+    final response = await taskUseCase.deleteTaskInContract(state.tasks.last.id.toString());
+
+    response.fold(
+      (String message) {
+        emit(state.copyWith(tasks: state.tasks.sublist(0, state.tasks.length - 1)));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
+    );
+  }
+
+  void onUpdateTask(UpdateTaskCreateContractEvent event, Emitter<CreateContractState> emit) async {
+    final response = await taskUseCase.updateTaskInContract(UpdateTaskModel(
+      id: event.id,
       title: event.title,
       content: event.content,
       startTime: event.startTime,
       endTime: event.endTime,
+    ));
+
+    response.fold(
+      (TaskEntity taskEntity) {
+        final List<TaskEntity> tasks = [...state.tasks];
+        tasks[event.index] = taskEntity;
+        emit(state.copyWith(tasks: tasks));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
     );
-    emit(state.copyWith(tasks: tasks));
+  }
+
+  FutureOr<void> onCreateNewContractEvent(CreateNewContractEvent event, Emitter<CreateContractState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    final response = await contractUseCase.createContract(
+      CreateContractModel(
+        contract: event.contract,
+        title: event.title,
+        content: event.description,
+        salary: event.budget,
+      ),
+    );
+
+    response.fold(
+      (String message) {
+        AlertUtils.showMessage(
+          'Create Contract',
+          message,
+          callback: () {
+            instance.get<NavigationService>().pop(numberPop: 2);
+          },
+        );
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

@@ -32,6 +32,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
     final ThemeData themeData = Theme.of(context);
     return InkWell(
       onTap: widget.onTap,
+      borderRadius: BorderRadius.circular(8),
       child: SizedBox(
         width: MediaQuery.of(context).size.width,
         child: Row(

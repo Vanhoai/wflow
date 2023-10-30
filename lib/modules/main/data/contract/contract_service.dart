@@ -8,11 +8,11 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> applyPost(ApplyPostRequest request);
   Future<ContractEntity> candidateAppliedDetail(String id);
+  Future<String> createContract(CreateContractModel request);
 }
 
 class ContractServiceImpl implements ContractService {
   final Agent agent;
-
   ContractServiceImpl({required this.agent});
 
   @override
@@ -20,10 +20,8 @@ class ContractServiceImpl implements ContractService {
     try {
       final response = await agent.dio.post('/contract/apply-post', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-
       return httpResponse.message;
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }
@@ -33,13 +31,11 @@ class ContractServiceImpl implements ContractService {
     try {
       final response = await agent.dio.get('/contract/candidate-applied-detail/$id');
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }
       return ContractEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }
@@ -68,6 +64,25 @@ class ContractServiceImpl implements ContractService {
         meta: httpResponse.meta,
         data: posts,
       );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> createContract(CreateContractModel request) async {
+    try {
+      final response = await agent.dio.put(
+        '/add-tasks-update-contract',
+        data: request.toJson(),
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.message;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

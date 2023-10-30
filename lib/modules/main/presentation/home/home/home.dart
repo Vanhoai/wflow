@@ -7,6 +7,7 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
@@ -44,7 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
     final ThemeData themeData = Theme.of(context);
 
     return BlocProvider(
-      create: (_) => HomeBloc(postUseCase: instance.get<PostUseCase>())..add(HomeInitialEvent()),
+      create: (_) => HomeBloc(
+        postUseCase: instance.get<PostUseCase>(),
+        categoryUseCase: instance.get<CategoryUseCase>(),
+      )..add(HomeInitialEvent()),
       child: CommonScaffold(
         isSafe: true,
         body: CustomScrollView(

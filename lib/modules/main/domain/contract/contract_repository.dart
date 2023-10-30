@@ -8,4 +8,5 @@ abstract class ContractRepository {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request);
   Future<Either<ContractEntity, Failure>> candidateAppliedDetail(String id);
+  Future<Either<String, Failure>> createContract(CreateContractModel request);
 }

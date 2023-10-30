@@ -2,7 +2,8 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/core/entities/category/category_entity.dart';
+import 'package:wflow/modules/main/domain/category/category_usecase.dart';
+import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 
@@ -11,7 +12,12 @@ part 'state.dart';
 
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PostUseCase postUseCase;
-  HomeBloc({required this.postUseCase}) : super(const HomeState(recentJobs: [], hotJobs: [], categories: [])) {
+  final CategoryUseCase categoryUseCase;
+
+  HomeBloc({
+    required this.postUseCase,
+    required this.categoryUseCase,
+  }) : super(const HomeState(recentJobs: [], hotJobs: [], categories: [])) {
     on<HomeInitialEvent>(onInit);
     on<OnSelectCategoryEvent>(onSelectCategory);
   }
@@ -19,7 +25,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   FutureOr onInit(HomeInitialEvent event, Emitter<HomeState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    final categories = await postUseCase.getPostCategories();
+    final categories = await categoryUseCase.getPostCategory();
 
     print('categories  ${categories.first.name}');
 

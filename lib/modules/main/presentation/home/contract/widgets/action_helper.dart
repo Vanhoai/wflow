@@ -42,8 +42,9 @@ class ActionHelper extends StatelessWidget {
                     style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
                   ),
                   Icon(
-                    Icons.upload,
+                    Icons.upload_rounded,
                     color: Colors.white,
+                    size: 20,
                   ),
                 ],
               ),

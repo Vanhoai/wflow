@@ -39,4 +39,14 @@ class ContractRepositoryImpl implements ContractRepository {
       return HttpResponseWithPagination.empty();
     }
   }
+
+  @override
+  Future<Either<String, Failure>> createContract(CreateContractModel request) async {
+    try {
+      final response = await contactService.createContract(request);
+      return Left(response);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
 }

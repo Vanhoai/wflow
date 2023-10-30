@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/entities/category/category_entity.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
@@ -27,16 +26,6 @@ class PostRepositoryImpl implements PostRepository {
     try {
       final posts = await postService.getRecentJob(category);
       return posts;
-    } catch (exception) {
-      return [];
-    }
-  }
-
-  @override
-  Future<List<CategoryEntity>> getPostCategories() async {
-    try {
-      final categories = await postService.getPostCategories();
-      return categories;
     } catch (exception) {
       return [];
     }

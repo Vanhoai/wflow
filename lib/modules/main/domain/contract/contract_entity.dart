@@ -141,17 +141,16 @@ class Business extends Equatable {
 
 @JsonSerializable()
 class Worker extends Equatable {
-  final int id;
+  final num id;
   final String name;
-  final int role;
-  final int age;
+  final num role;
+  final num age;
   final String address;
   final String email;
   final String phone;
   final bool isVerify;
   final String avatar;
-  final String business;
-  final String state;
+  final num business;
   final String createdAt;
   final String dob;
   final String identifyCode;
@@ -167,7 +166,6 @@ class Worker extends Equatable {
     required this.isVerify,
     required this.avatar,
     required this.business,
-    required this.state,
     required this.createdAt,
     required this.dob,
     required this.identifyCode,
@@ -178,17 +176,16 @@ class Worker extends Equatable {
   Map<String, dynamic> toJson() => _$WorkerToJson(this);
 
   Worker copyWith({
-    int? id,
+    num? id,
     String? name,
-    int? role,
-    int? age,
+    num? role,
+    num? age,
     String? address,
     String? email,
     String? phone,
     bool? isVerify,
     String? avatar,
-    String? business,
-    String? state,
+    num? business,
     String? createdAt,
     String? dob,
     String? identifyCode,
@@ -204,7 +201,6 @@ class Worker extends Equatable {
       isVerify: isVerify ?? this.isVerify,
       avatar: avatar ?? this.avatar,
       business: business ?? this.business,
-      state: state ?? this.state,
       dob: dob ?? this.dob,
       createdAt: createdAt ?? this.createdAt,
       identifyCode: identifyCode ?? this.identifyCode,
@@ -223,7 +219,6 @@ class Worker extends Equatable {
         isVerify,
         avatar,
         business,
-        state,
         dob,
         createdAt,
         identifyCode,

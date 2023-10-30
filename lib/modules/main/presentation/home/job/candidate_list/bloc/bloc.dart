@@ -8,7 +8,9 @@ import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/sta
 
 class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
   final ContractUseCase contractUseCase;
-  CandidateListBloc({required this.contractUseCase}) : super(const CandidateListState()) {
+  CandidateListBloc({
+    required this.contractUseCase,
+  }) : super(const CandidateListState()) {
     on<GetCandidateAppliedListEvent>(getCandidateAppliedList);
     on<GetCandidateAppliedListMoreEvent>(getCandidateAppliedListMore);
     on<GetCandidateAppliedSearchEvent>(getCandidateAppliedSearch);
@@ -20,12 +22,13 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
         event.post, GetCandidateApplied(page: 1, pageSize: 10, search: state.search));
 
     emit(GetCandidateAppliedListSuccess(
-        candidateEntities: candidateList.data,
-        meta: candidateList.meta,
-        isLoading: false,
-        loadMore: false,
-        search: state.search,
-        post: event.post));
+      candidateEntities: candidateList.data,
+      meta: candidateList.meta,
+      isLoading: false,
+      loadMore: false,
+      search: state.search,
+      post: event.post,
+    ));
   }
 
   FutureOr<void> getCandidateAppliedListMore(

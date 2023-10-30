@@ -25,13 +25,14 @@ class CandidateListState extends Equatable {
 class GetCandidateAppliedListSuccess extends CandidateListState {
   final List<CandidateEntity> candidateEntities;
   final bool loadMore;
-  const GetCandidateAppliedListSuccess(
-      {required this.candidateEntities,
-      required super.meta,
-      required super.isLoading,
-      required this.loadMore,
-      required super.search,
-      required super.post});
+  const GetCandidateAppliedListSuccess({
+    required this.candidateEntities,
+    required super.meta,
+    required super.isLoading,
+    required this.loadMore,
+    required super.search,
+    required super.post,
+  });
 
   @override
   GetCandidateAppliedListSuccess copyWith(

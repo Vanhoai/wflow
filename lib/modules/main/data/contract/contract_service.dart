@@ -8,6 +8,7 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> applyPost(ApplyPostRequest request);
   Future<ContractEntity> candidateAppliedDetail(String id);
+  Future<String> createContract(CreateContractModel request);
 }
 
 class ContractServiceImpl implements ContractService {
@@ -63,6 +64,25 @@ class ContractServiceImpl implements ContractService {
         meta: httpResponse.meta,
         data: posts,
       );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> createContract(CreateContractModel request) async {
+    try {
+      final response = await agent.dio.put(
+        '/add-tasks-update-contract',
+        data: request.toJson(),
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.message;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

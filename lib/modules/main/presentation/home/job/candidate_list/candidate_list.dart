@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
@@ -23,7 +22,6 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _scrollController = ScrollController();
   }
@@ -32,10 +30,6 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
   void dispose() {
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void navigateCandidateContract(BuildContext context, String candidate) {
-    Navigator.of(context).pushNamed(RouteKeys.candidateContractScreen, arguments: candidate);
   }
 
   @override
@@ -49,7 +43,6 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
           _scrollController.addListener(() {
             if (state.meta.currentPage >= state.meta.totalPage) return;
             if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
-              print('loadmore');
               context.read<CandidateListBloc>().add(GetCandidateAppliedListMoreEvent());
             }
           });
@@ -100,13 +93,12 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                   padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                                   child: CandidateItemWidget(
                                     candidateEntity: state.candidateEntities[index],
-                                    onTap: () {
-                                      navigateCandidateContract(context, state.candidateEntities[index].id.toString());
-                                    },
+                                    onTap: () => Navigator.of(context).pushNamed(
+                                      RouteKeys.candidateContractScreen,
+                                      arguments: state.candidateEntities[index].id.toString(),
+                                    ),
                                     onTapChat: () {},
-                                    onTapCv: () {
-                                      print('hihi');
-                                    },
+                                    onTapCv: () {},
                                     onTapName: () {},
                                   ),
                                 );

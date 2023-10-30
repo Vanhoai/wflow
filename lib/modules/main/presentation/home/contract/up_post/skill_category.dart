@@ -141,10 +141,6 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                   textSeparators: const [' ', ','],
                   letterCase: LetterCase.normal,
                   validator: (String tag) {
-                    if (!state.skills.map((e) => e.name).contains(tag)) {
-                      return "Skill doesn't exist";
-                    }
-
                     return null;
                   },
                   inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {

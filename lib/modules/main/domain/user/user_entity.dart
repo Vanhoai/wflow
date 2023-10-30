@@ -12,9 +12,6 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'business', defaultValue: 0)
   final int business;
 
-  @JsonKey(name: 'state', defaultValue: '')
-  final String state;
-
   @JsonKey(name: 'email', defaultValue: '')
   final String email;
 
@@ -57,7 +54,6 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.name,
     required this.phone,
     required this.role,
-    required this.state,
     required this.business,
   });
 
@@ -85,7 +81,6 @@ class UserEntity extends BaseEntity with EquatableMixin {
       createdAt: createdAt,
       updatedAt: updatedAt,
       deletedAt: deletedAt,
-      state: state ?? this.state,
       email: email ?? this.email,
       phone: phone ?? this.phone,
       avatar: avatar ?? this.avatar,
@@ -103,7 +98,6 @@ class UserEntity extends BaseEntity with EquatableMixin {
   factory UserEntity.createEmpty() {
     return UserEntity(
       id: 0,
-      state: '',
       email: '',
       phone: '',
       avatar: '',
@@ -124,7 +118,6 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @override
   List<Object?> get props => [
         id,
-        state,
         email,
         phone,
         avatar,

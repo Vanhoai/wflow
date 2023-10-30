@@ -121,9 +121,6 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<Time>(() => Time());
   instance.registerSingleton<NavigationService>(NavigationService());
 
-  // Auth bloc
-  instance.registerLazySingleton<AuthenticationsBloc>(() => AuthenticationsBloc());
-
   // ! FOR DEBUG ONLY
   bool isDebug = false;
   assert(() {

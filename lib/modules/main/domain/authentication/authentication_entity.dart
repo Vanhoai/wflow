@@ -29,9 +29,9 @@ class FrontID extends Equatable {
   const FrontID(
       {required this.id, required this.name, required this.dob, required this.overall_score, required this.type});
 
-  factory FrontID.fromJson(Map<String, dynamic> json) => _$FontIDFromJson(json);
+  factory FrontID.fromJson(Map<String, dynamic> json) => _$FrontIDFromJson(json);
 
-  Map<String, dynamic> toJson() => _$FontIDToJson(this);
+  Map<String, dynamic> toJson() => _$FrontIDToJson(this);
 
   @override
   List<Object?> get props => [id, name, dob, overall_score, type];

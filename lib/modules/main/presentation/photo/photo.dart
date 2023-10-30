@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/photo/component/detail_page.dart';
@@ -12,8 +13,8 @@ import 'component/image_item_widget.dart';
 import 'component/send_photo.dart';
 
 class PhotoScreen extends StatefulWidget {
-  final bool multiple;
-  const PhotoScreen({Key? key, required this.multiple}) : super(key: key);
+  final ArgumentsPhoto argumentsPhoto;
+  const PhotoScreen({Key? key, required this.argumentsPhoto}) : super(key: key);
 
   @override
   _PhotoScreenState createState() => _PhotoScreenState();
@@ -21,6 +22,7 @@ class PhotoScreen extends StatefulWidget {
 
 class _PhotoScreenState extends State<PhotoScreen> {
   /// Customize your own filter options.
+
   final FilterOptionGroup _filterOptionGroup = FilterOptionGroup(
     imageOption: const FilterOption(
       sizeConstraint: SizeConstraint(ignoreSize: true),
@@ -56,6 +58,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
     // Obtain assets using the path entity.
     final List<AssetPathEntity> paths = await PhotoManager.getAssetPathList(
       onlyAll: true,
+      type: widget.argumentsPhoto.onlyImage ? RequestType.image : RequestType.common,
       filterOption: _filterOptionGroup,
     );
     if (!mounted) {
@@ -132,7 +135,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
             key: ValueKey<int>(index),
             entity: entity,
             onTap: () {
-              if (widget.multiple) {
+              if (widget.argumentsPhoto.multiple) {
                 Navigator.of(context).push(MaterialPageRoute(builder: (_) => DetailPage(entity: entity)));
               } else {
                 context.read<PhotoBloc>().add(SendPhotoEvent(entity: entity));
@@ -158,7 +161,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
     return SafeArea(
       child: BlocProvider(
         lazy: true,
-        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.multiple)),
+        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.argumentsPhoto.multiple)),
         child: Scaffold(
             appBar: const AppHeader(text: 'Chọn ảnh'),
             body: Column(

@@ -8,11 +8,11 @@ class AuthenticationsEvent extends Equatable {
 }
 
 class StepOneEvent extends AuthenticationsEvent {
-  final File fontID;
+  final File frontID;
 
-  StepOneEvent({required this.fontID});
+  StepOneEvent({required this.frontID});
   @override
-  List<Object?> get props => [fontID];
+  List<Object?> get props => [frontID];
 }
 
 class StepTwoEvent extends AuthenticationsEvent {
@@ -30,5 +30,7 @@ class StepThreeEvent extends AuthenticationsEvent {
   @override
   List<Object?> get props => [face];
 }
+
+class FaceMatchEvent extends AuthenticationsEvent {}
 
 class CleanData extends AuthenticationsEvent {}

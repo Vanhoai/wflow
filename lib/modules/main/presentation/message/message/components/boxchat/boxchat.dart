@@ -4,10 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:wflow/configuration/configuration.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/keyboard/emoji.dart';
-import 'package:wflow/modules/main/presentation/camera/camera.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
@@ -115,13 +115,7 @@ class _BoxChatState extends State<BoxChat> {
                               margin: const EdgeInsets.only(right: 10),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(50),
-                                onTap: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) {
-                                      return const Camera();
-                                    },
-                                  ));
-                                },
+                                onTap: () {},
                                 child: Padding(
                                   padding: const EdgeInsets.all(4),
                                   child: SvgPicture.asset(
@@ -228,11 +222,10 @@ class _BoxChatState extends State<BoxChat> {
 
   Future<void> _getImage() async {
     var result = await Navigator.of(context)
-        .pushNamed(RouteKeys.photoScreen, arguments: true);
+        .pushNamed(RouteKeys.photoScreen, arguments: ArgumentsPhoto(multiple: true, onlyImage: false));
     result as List<File>;
     if (context.mounted) {
-      BlocProvider.of<MainChatBloc>(context)
-          .add(SendFilesEvent(id: '', type: 'type', files: result));
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
     }
   }
 }

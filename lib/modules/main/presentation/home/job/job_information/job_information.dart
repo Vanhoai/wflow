@@ -292,7 +292,11 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         child: PrimaryButton(
                                           label: 'Apply',
                                           onPressed: () {
-                                            _showSelectCV(context, widget.work);
+                                            if (instance.get<AppBloc>().state.authEntity.user.isVerify) {
+                                              _showSelectCV(context, widget.work);
+                                            } else {
+                                              Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
+                                            }
                                           },
                                         ),
                                       );

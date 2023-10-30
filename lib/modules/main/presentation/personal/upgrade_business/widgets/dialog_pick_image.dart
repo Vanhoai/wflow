@@ -19,8 +19,7 @@ class _DialogPickImageState extends State<DialogPickImage> {
 
   @override
   void initState() {
-    _roundedRectangleBorder =
-        RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
+    _roundedRectangleBorder = RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
     super.initState();
   }
 

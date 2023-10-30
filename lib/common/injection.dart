@@ -16,12 +16,16 @@ import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/main/data/authentication/authentication_repository_impl.dart';
+import 'package:wflow/modules/main/data/authentication/authentication_service.dart';
 import 'package:wflow/modules/main/data/contract/contract_repository_impl.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/domain/authentication/authentication_repository.dart';
+import 'package:wflow/modules/main/domain/authentication/authentication_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
@@ -68,6 +72,17 @@ Future<void> initAppInjection() async {
       () => ContractRepositoryImpl(contactService: instance.get<ContractService>()));
   instance.registerLazySingleton<ContractUseCase>(
       () => ContractUseCaseImpl(contactRepository: instance.get<ContractRepository>()));
+
+  //Authentication
+  instance.registerLazySingleton<AuthenticationService>(() => AuthenticationServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<AuthenticationRepository>(
+      () => AuthenticationRepositoryImpl(authenticationService: instance.get<AuthenticationService>()));
+  instance.registerLazySingleton<AuthenticationUseCase>(
+      () => AuthenticationUseCaseImpl(authenticationRepository: instance.get<AuthenticationRepository>()));
+
+  //Authen bloc
+  instance.registerLazySingleton<AuthenticationsBloc>(
+      () => AuthenticationsBloc(authenticationUseCase: instance.get<AuthenticationUseCase>()));
   //Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
@@ -77,8 +92,6 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
   instance.registerSingleton<NavigationService>(NavigationService());
-  //Authen bloc
-  instance.registerLazySingleton<AuthenticationsBloc>(() => AuthenticationsBloc());
 
   // COMPANY
   instance.registerLazySingleton<CompanyService>(() => CompanyServiceImpl(agent: instance.get<Agent>()));

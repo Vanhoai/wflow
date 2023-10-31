@@ -1,4 +1,4 @@
-part of 'my_company_bloc.dart';
+part of 'bloc.dart';
 
 class MyCompanyEvent extends Equatable {
   const MyCompanyEvent();

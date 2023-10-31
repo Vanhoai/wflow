@@ -1,4 +1,4 @@
-part of 'my_company_bloc.dart';
+part of 'bloc.dart';
 
 class MyCompanyState extends Equatable {
   final List<UserEntity> listUser;

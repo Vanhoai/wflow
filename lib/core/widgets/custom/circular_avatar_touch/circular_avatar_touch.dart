@@ -1,6 +1,8 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/core/theme/colors.dart';
 
 // ignore: constant_identifier_names
 const String FakeImage = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
@@ -29,10 +31,10 @@ class CircularAvatarTouch extends StatelessWidget {
               color: Colors.grey.withOpacity(0.5),
               width: 1,
             ),
-            borderRadius: BorderRadius.circular(99),
+            borderRadius: BorderRadius.circular(99.r),
           ),
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(99),
+            borderRadius: BorderRadius.circular(99.r),
             child: CachedNetworkImage(
               imageUrl: imageUrl ?? FakeImage,
               width: width ?? 48,
@@ -55,7 +57,7 @@ class CircularAvatarTouch extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               borderRadius: BorderRadius.circular(99),
-              highlightColor: Colors.grey,
+              highlightColor: AppColors.purpleColor.withOpacity(0.1),
             ),
           ),
         )

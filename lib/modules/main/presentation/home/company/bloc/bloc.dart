@@ -9,8 +9,8 @@ import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/user/user_entity.dart';
 
-part 'my_company_event.dart';
-part 'my_company_state.dart';
+part 'event.dart';
+part 'state.dart';
 
 class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
   final CompanyUseCase companyUseCase;
@@ -62,6 +62,7 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     result.fold(
       (List<PostEntity> l) => emit(state.copyWith(listPost: l, isLoadingPost: false, message: 'Load job success')),
       (Failure r) {
+        print(r);
         // handle error
         emit(state.copyWith(isLoadingPost: false, message: r.message));
       },

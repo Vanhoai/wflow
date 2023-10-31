@@ -7,6 +7,7 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -14,7 +15,6 @@ import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/select_cv_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
-import 'package:timeago/timeago.dart' as timeAgo;
 
 import 'bloc/job_information_bloc/bloc.dart';
 import 'bloc/job_information_bloc/event.dart';
@@ -169,7 +169,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (state is GetJobInformationSuccessState) {
-                        final date = DateTime.fromMillisecondsSinceEpoch((int.parse(state.postEntity.updatedAt)));
+                        // final date = DateTime.fromMillisecondsSinceEpoch((int.parse(state.postEntity.updatedAt)));
                         return Stack(
                           children: [
                             CustomScrollView(
@@ -207,7 +207,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                               width: 20,
                                               height: 20,
                                             ),
-                                            Text(timeAgo.format(date),
+                                            Text(Time().getDayMonthYear(state.postEntity.createdAt.toString()),
                                                 style: themeData.textTheme.displayMedium!
                                                     .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],

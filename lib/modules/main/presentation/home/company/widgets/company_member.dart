@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shimmer_work/shimmer_work.dart';
-import 'package:wflow/modules/main/presentation/home/company/bloc/my_company_bloc.dart';
+import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
 class CompanyMemberWidget extends StatefulWidget {
   const CompanyMemberWidget({super.key});
@@ -39,7 +39,7 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
             scrollDirection: Axis.vertical,
             padding: EdgeInsets.zero,
             itemCount: 1,
-            margin: const EdgeInsets.only(bottom: 20, top: 10, left: 20, right: 20),
+            margin: const EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8),
               border: Border.all(
@@ -57,7 +57,7 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
                 final phone = context.watch<MyCompanyBloc>().state.listUser[index].phone;
                 final img = context.watch<MyCompanyBloc>().state.listUser[index].avatar;
                 return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
                   child: Header(
                     title: Flexible(
                       child: InkWell(

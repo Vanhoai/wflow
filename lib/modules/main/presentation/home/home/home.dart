@@ -124,8 +124,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SelectionListWidget(scrollController: _selectionScrollController),
             const RecentJobListWidget(),
           ],
-          clipBehavior: Clip.none,
-          cacheExtent: 1000,
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           physics: const BouncingScrollPhysics(),

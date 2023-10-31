@@ -75,7 +75,7 @@ class ContractServiceImpl implements ContractService {
   Future<String> createContract(CreateContractModel request) async {
     try {
       final response = await agent.dio.put(
-        '/add-tasks-update-contract',
+        '/contract/update-contract',
         data: request.toJson(),
       );
 

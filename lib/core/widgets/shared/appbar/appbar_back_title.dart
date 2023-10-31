@@ -3,9 +3,11 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
-  const AppHeader({super.key, this.text = ''});
+  const AppHeader({super.key, this.text = '', this.onBack});
 
+  final Function? onBack;
   final String text;
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -22,6 +24,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.all(8),
         child: InkWell(
           onTap: () {
+            if (onBack != null) {
+              onBack!();
+            }
             Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(50),

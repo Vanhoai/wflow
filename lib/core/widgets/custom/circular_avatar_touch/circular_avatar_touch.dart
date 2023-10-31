@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 // ignore: constant_identifier_names
@@ -36,8 +37,8 @@ class CircularAvatarTouch extends StatelessWidget {
               imageUrl: imageUrl ?? FakeImage,
               width: width ?? 48,
               height: height ?? 48,
-              placeholder: (context, url) => const Center(child: CircularProgressIndicator()),
-              errorWidget: (context, url, error) => const Center(child: CircularProgressIndicator()),
+              placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
+              errorWidget: (context, url, error) => const Center(child: CupertinoActivityIndicator()),
               filterQuality: FilterQuality.high,
               fadeInCurve: Curves.easeIn,
               fadeInDuration: const Duration(milliseconds: 500),

@@ -27,7 +27,7 @@ class NavigationService {
     return navigatorKey.currentState!.canPop();
   }
 
-  Future<dynamic> popUntil(String routeName) async {
-    return navigatorKey.currentState!.popUntil(ModalRoute.withName(routeName));
+  Future<dynamic> popUntil(int numPop) async {
+    return navigatorKey.currentState!.popUntil((_) => numPop-- <= 0);
   }
 }

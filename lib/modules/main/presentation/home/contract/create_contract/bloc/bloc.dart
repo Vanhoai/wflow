@@ -127,10 +127,10 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     response.fold(
       (String message) {
         AlertUtils.showMessage(
-          'Create Contract',
+          'Update Contract',
           message,
           callback: () {
-            instance.get<NavigationService>().pop(numberPop: 2);
+            instance.get<NavigationService>().popUntil(2);
           },
         );
       },

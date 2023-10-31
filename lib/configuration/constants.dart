@@ -41,6 +41,7 @@ class AppConstants {
   static const String back = '${commonIconPath}ic.back.svg';
   static const String flash = '${commonIconPath}ic.flash.svg';
   static const String apply = '${commonIconPath}ic.apply.svg';
+  static const String close = '${commonIconPath}ic.close.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';

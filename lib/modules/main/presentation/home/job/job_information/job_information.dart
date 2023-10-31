@@ -280,43 +280,46 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                               physics: const BouncingScrollPhysics(),
                             ),
                             Positioned(
-                                bottom: 0,
-                                left: 0,
-                                right: 0,
-                                child: LayoutBuilder(
-                                  builder: (context, constraints) {
-                                    if (isUser) {
-                                      return Container(
-                                        color: Colors.white,
-                                        padding: const EdgeInsets.all(20),
-                                        child: PrimaryButton(
-                                          label: 'Apply',
-                                          onPressed: () {
-                                            if (instance.get<AppBloc>().state.authEntity.user.isVerify) {
-                                              _showSelectCV(context, widget.work);
-                                            } else {
-                                              Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
-                                            }
-                                          },
-                                        ),
-                                      );
-                                    } else if (isYourBusiness) {
-                                      return Container(
-                                        color: Colors.white,
-                                        padding: const EdgeInsets.all(20),
-                                        child: PrimaryButton(
-                                          label: 'View Candidate',
-                                          onPressed: () {
-                                            Navigator.of(context)
-                                                .pushNamed(RouteKeys.candidateListScreen, arguments: widget.work);
-                                          },
-                                        ),
-                                      );
-                                    } else {
-                                      return const SizedBox();
-                                    }
-                                  },
-                                ))
+                              bottom: 0,
+                              left: 0,
+                              right: 0,
+                              child: LayoutBuilder(
+                                builder: (context, constraints) {
+                                  if (isUser) {
+                                    return Container(
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.all(20),
+                                      child: PrimaryButton(
+                                        label: 'Apply',
+                                        onPressed: () {
+                                          if (instance.get<AppBloc>().state.authEntity.user.isVerify) {
+                                            _showSelectCV(context, widget.work);
+                                          } else {
+                                            Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
+                                          }
+                                        },
+                                      ),
+                                    );
+                                  } else if (isYourBusiness) {
+                                    return Container(
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.all(20),
+                                      child: PrimaryButton(
+                                        label: 'View Candidate',
+                                        onPressed: () {
+                                          Navigator.of(context).pushNamed(
+                                            RouteKeys.candidateListScreen,
+                                            arguments: widget.work,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  } else {
+                                    return const SizedBox();
+                                  }
+                                },
+                              ),
+                            )
                           ],
                         );
                       } else if (state is GetJobInformationFailureState) {

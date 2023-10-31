@@ -1,3 +1,5 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
@@ -45,11 +47,13 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(99),
                   clipBehavior: Clip.antiAlias,
-                  child: Image.network(
-                    widget.candidateEntity.worker.avatar,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.candidateEntity.worker.avatar,
                     width: widget.leadingSize,
                     height: widget.leadingSize,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => const CupertinoActivityIndicator(),
+                    filterQuality: FilterQuality.high,
                   ),
                 ),
                 Positioned.fill(
@@ -65,7 +69,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                 ),
               ],
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -76,14 +80,14 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                     onTap: widget.onTapName,
                     child: Text(
                       widget.candidateEntity.worker.name,
-                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
                         color: themeData.colorScheme.onBackground,
                       )),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
                   CandidateCvItemWidget(
                     cvName: widget.candidateEntity.cv.url,
                     onTap: widget.onTapCv,
@@ -91,7 +95,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                 ],
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 20),
             Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

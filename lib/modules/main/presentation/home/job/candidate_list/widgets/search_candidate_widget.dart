@@ -18,7 +18,9 @@ class SearchCandidateWidget extends StatefulWidget {
 
 class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
   final TextEditingController textEditingController = TextEditingController();
+
   Timer? _debounce;
+
   @override
   void dispose() {
     textEditingController.dispose();
@@ -52,8 +54,9 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
           child: SvgPicture.asset(
             AppConstants.search,
             fit: BoxFit.cover,
-            width: 20,
-            height: 20,
+            width: 24,
+            height: 24,
+            colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
           ),
         ),
         prefixIconConstraints: const BoxConstraints(
@@ -61,33 +64,43 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
           minHeight: 20,
         ),
         border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: themeData.colorScheme.onBackground.withOpacity(0.3),
-              width: 1,
-            )),
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: themeData.colorScheme.onBackground.withOpacity(0.3),
+            width: 1,
+          ),
+        ),
         filled: true,
         fillColor: themeData.colorScheme.background,
         enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(10),
-            borderSide: BorderSide(
-              color: themeData.colorScheme.onBackground.withOpacity(0.3),
-            )),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        isDense: true,
-        contentPadding: const EdgeInsets.symmetric(vertical: 16),
-        suffixIcon: IconButton(
-          onPressed: clearInputSearch,
-          icon: SvgPicture.asset(
-            'assets/icons/close.svg',
-            fit: BoxFit.cover,
-            width: 20,
-            height: 20,
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: themeData.colorScheme.onBackground.withOpacity(0.3),
           ),
         ),
-        counterText: '',
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(8),
+          borderSide: BorderSide(
+            color: themeData.colorScheme.onBackground.withOpacity(0.3),
+          ),
+        ),
+        isDense: true,
+        contentPadding: const EdgeInsets.symmetric(vertical: 12),
+        suffixIcon: Visibility(
+          visible: textEditingController.text.isNotEmpty,
+          child: InkWell(
+            onTap: clearInputSearch,
+            child: Container(
+              padding: const EdgeInsets.all(12),
+              child: SvgPicture.asset(
+                AppConstants.close,
+                fit: BoxFit.cover,
+                width: 24,
+                height: 24,
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

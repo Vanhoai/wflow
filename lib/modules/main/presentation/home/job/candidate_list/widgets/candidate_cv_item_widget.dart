@@ -16,8 +16,7 @@ class _CandidateCvItemWidgetState extends State<CandidateCvItemWidget> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return Container(
-      height: 25,
-      width: 200,
+      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(4),
         border: Border.all(
@@ -40,25 +39,13 @@ class _CandidateCvItemWidgetState extends State<CandidateCvItemWidget> {
                 height: 10,
               ),
             ),
-            const SizedBox(width: 5),
+            const SizedBox(width: 8),
             Builder(
               builder: (context) {
                 final String content = widget.cvName;
 
-                if (content.length > 25) {
-                  return Text(
-                    '${content.substring(0, 19)}...pdf',
-                    style: themeData.textTheme.displaySmall!.merge(
-                      TextStyle(
-                        color: themeData.colorScheme.onBackground,
-                        fontSize: 10,
-                      ),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  );
-                } else {
-                  return Text(
+                return Expanded(
+                  child: Text(
                     content,
                     style: themeData.textTheme.displaySmall!.merge(
                       TextStyle(
@@ -68,8 +55,8 @@ class _CandidateCvItemWidgetState extends State<CandidateCvItemWidget> {
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                  );
-                }
+                  ),
+                );
               },
             )
           ],

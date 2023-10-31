@@ -73,149 +73,161 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
       child: CommonScaffold(
         appBar: const AppHeader(text: 'Create Contract'),
         hideKeyboardWhenTouchOutside: true,
-        body: Stack(
-          children: [
-            RefreshIndicator(
-              onRefresh: () async {
-                Future.delayed(const Duration(seconds: 1));
-              },
-              child: CustomScrollView(
-                clipBehavior: Clip.none,
-                cacheExtent: 1000,
-                dragStartBehavior: DragStartBehavior.start,
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-                shrinkWrap: true,
-                physics: const BouncingScrollPhysics(),
-                slivers: [
-                  BlocConsumer<CreateContractBloc, CreateContractState>(
-                    listener: (context, state) {
-                      if (state.initSuccess) {
-                        titleController.text = state.contractEntity.title;
-                        descriptionController.text = state.contractEntity.content;
-                        budgetController.text = state.contractEntity.salary;
-                      }
-                    },
-                    builder: (context, state) {
-                      return SliverToBoxAdapter(
-                        child: Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Title',
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFieldHelper(
-                                controller: titleController,
-                                maxLines: 2,
-                                minLines: 1,
-                                hintText: 'Enter project title',
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Describe',
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFieldHelper(
-                                controller: descriptionController,
-                                maxLines: 5,
-                                minLines: 3,
-                                hintText: 'Enter description (optional)',
-                              ),
-                              const SizedBox(height: 20),
-                              Text(
-                                'Budget',
-                                style: themeData.textTheme.displayMedium!.merge(
-                                  TextStyle(
+        body: SizedBox(
+          height: double.infinity,
+          width: double.infinity,
+          child: Stack(
+            children: [
+              RefreshIndicator(
+                onRefresh: () async {
+                  Future.delayed(const Duration(seconds: 1));
+                },
+                child: CustomScrollView(
+                  clipBehavior: Clip.none,
+                  cacheExtent: 1000,
+                  dragStartBehavior: DragStartBehavior.start,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                  shrinkWrap: true,
+                  physics: const BouncingScrollPhysics(),
+                  slivers: [
+                    BlocConsumer<CreateContractBloc, CreateContractState>(
+                      listener: (context, state) {
+                        if (state.initSuccess) {
+                          titleController.text = state.contractEntity.title;
+                          descriptionController.text = state.contractEntity.content;
+                          budgetController.text = state.contractEntity.salary;
+                        }
+                      },
+                      builder: (context, state) {
+                        return SliverToBoxAdapter(
+                          child: Padding(
+                            padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'Title',
+                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                     color: themeData.colorScheme.onBackground,
+                                  )),
+                                ),
+                                const SizedBox(height: 8),
+                                TextFieldHelper(
+                                  controller: titleController,
+                                  maxLines: 2,
+                                  minLines: 1,
+                                  hintText: 'Enter project title',
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Describe',
+                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  )),
+                                ),
+                                const SizedBox(height: 8),
+                                TextFieldHelper(
+                                  controller: descriptionController,
+                                  maxLines: 5,
+                                  minLines: 3,
+                                  hintText: 'Enter description (optional)',
+                                ),
+                                const SizedBox(height: 20),
+                                Text(
+                                  'Budget',
+                                  style: themeData.textTheme.displayMedium!.merge(
+                                    TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFieldHelper(
-                                controller: budgetController,
-                                maxLines: 1,
-                                minLines: 1,
-                                hintText: 'Enter budget for project',
-                              ),
-                              const SizedBox(height: 20),
-                              const TaskCreateContract(),
-                              const SizedBox(height: 16),
-                              ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                              const SizedBox(height: 30),
-                              Text(
-                                'Candidate',
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              const SizedBox(height: 10),
-                              Header(
-                                title: Text(
-                                  'Trần Văn Hoài',
-                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
+                                const SizedBox(height: 8),
+                                TextFieldHelper(
+                                  controller: budgetController,
                                   maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                  minLines: 1,
+                                  hintText: 'Enter budget for project',
                                 ),
-                                subtitle: Text(
-                                  'hoaitvps22068@fpt.edu.vn',
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
+                                const SizedBox(height: 20),
+                                const TaskCreateContract(),
+                                const SizedBox(height: 16),
+                                ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                                const SizedBox(height: 30),
+                                Text(
+                                  'Candidate',
                                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                     color: themeData.colorScheme.onBackground,
                                   )),
                                 ),
-                                onTapLeading: () {},
-                                leadingBadge: false,
-                              ),
-                              const SizedBox(height: 80),
-                            ],
+                                const SizedBox(height: 10),
+                                Header(
+                                  title: Text(
+                                    'Trần Văn Hoài',
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  subtitle: Text(
+                                    'hoaitvps22068@fpt.edu.vn',
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                  ),
+                                  onTapLeading: () {},
+                                  leadingBadge: false,
+                                ),
+                                const SizedBox(height: 80),
+                              ],
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                  )
-                ],
+                        );
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-            Visibility(
-              visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-              child: Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: Container(
+              Visibility(
+                visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+                child: Positioned(
+                  bottom: 0,
+                  left: 0,
+                  right: 0,
+                  child: Container(
                     clipBehavior: Clip.hardEdge,
                     padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: themeData.colorScheme.background,
-                    ),
+                    decoration: const BoxDecoration(),
                     child: BlocBuilder<CreateContractBloc, CreateContractState>(
                       builder: (context, state) {
                         return PrimaryButton(
                           label: 'Create',
                           onPressed: () {
                             final bool isValid = validator();
-                            if (isValid) {}
+                            if (isValid) {
+                              context.read<CreateContractBloc>().add(
+                                    CreateNewContractEvent(
+                                      contract: int.parse(widget.contract),
+                                      title: titleController.text,
+                                      description: descriptionController.text,
+                                      budget: num.parse(budgetController.text),
+                                    ),
+                                  );
+                            }
                           },
                           width: double.infinity,
                         );
                       },
-                    )),
+                    ),
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

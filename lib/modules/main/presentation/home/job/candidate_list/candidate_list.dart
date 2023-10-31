@@ -34,7 +34,6 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
     return BlocProvider(
       create: (_) => CandidateListBloc(contractUseCase: instance.get<ContractUseCase>())
         ..add(GetCandidateAppliedListEvent(post: widget.post)),
@@ -47,23 +46,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
             }
           });
           return CommonScaffold(
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              leading: IconButton(
-                icon: const Icon(Icons.arrow_back_ios),
-                onPressed: () => Navigator.pop(context, false),
-              ),
-              backgroundColor: themeData.colorScheme.background,
-              surfaceTintColor: Colors.transparent,
-              title: Text(
-                'Candidates',
-                style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                  color: themeData.colorScheme.onBackground,
-                  fontSize: 18,
-                )),
-              ),
-              centerTitle: true,
-            ),
+            appBar: const AppHeader(text: 'Candidates'),
             body: RefreshIndicator(
               onRefresh: () async {
                 context.read<CandidateListBloc>().add(GetCandidateAppliedListEvent(post: widget.post));
@@ -71,7 +54,9 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
               child: Column(
                 children: [
                   const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20), child: SearchCandidateWidget()),
+                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
+                    child: SearchCandidateWidget(),
+                  ),
                   Expanded(
                     child: Visibility(
                       visible: !state.isLoading,
@@ -81,26 +66,27 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                           if (state is GetCandidateAppliedListSuccess) {
                             if (state.candidateEntities.isEmpty) {
                               return Center(
-                                child: Text('No candidates have applied yet',
-                                    style: Theme.of(context).textTheme.bodyLarge),
+                                child: Text(
+                                  'No candidates have applied yet',
+                                  style: Theme.of(context).textTheme.bodyLarge,
+                                ),
                               );
                             }
-                            return ListView.builder(
+                            return ListView.separated(
+                              padding: const EdgeInsets.all(20),
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.candidateEntities.length,
+                              separatorBuilder: (context, index) => const SizedBox(height: 20),
                               itemBuilder: (context, index) {
-                                return Padding(
-                                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                                  child: CandidateItemWidget(
-                                    candidateEntity: state.candidateEntities[index],
-                                    onTap: () => Navigator.of(context).pushNamed(
-                                      RouteKeys.candidateContractScreen,
-                                      arguments: state.candidateEntities[index].id.toString(),
-                                    ),
-                                    onTapChat: () {},
-                                    onTapCv: () {},
-                                    onTapName: () {},
+                                return CandidateItemWidget(
+                                  candidateEntity: state.candidateEntities[index],
+                                  onTap: () => Navigator.of(context).pushNamed(
+                                    RouteKeys.candidateContractScreen,
+                                    arguments: state.candidateEntities[index].id.toString(),
                                   ),
+                                  onTapChat: () {},
+                                  onTapCv: () {},
+                                  onTapName: () {},
                                 );
                               },
                             );

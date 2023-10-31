@@ -72,11 +72,10 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                 ),
                               );
                             }
-                            return ListView.separated(
+                            return ListView.builder(
                               padding: const EdgeInsets.all(20),
                               physics: const BouncingScrollPhysics(),
                               itemCount: state.candidateEntities.length,
-                              separatorBuilder: (context, index) => const SizedBox(height: 20),
                               itemBuilder: (context, index) {
                                 return CandidateItemWidget(
                                   candidateEntity: state.candidateEntities[index],

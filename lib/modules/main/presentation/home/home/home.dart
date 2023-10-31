@@ -9,6 +9,7 @@ import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
@@ -48,6 +49,7 @@ class _HomeScreenState extends State<HomeScreen> {
       create: (_) => HomeBloc(
         postUseCase: instance.get<PostUseCase>(),
         categoryUseCase: instance.get<CategoryUseCase>(),
+        userUseCase: instance.get<UserUseCase>(),
       )..add(HomeInitialEvent()),
       child: CommonScaffold(
         isSafe: true,
@@ -59,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: BlocBuilder<AppBloc, AppState>(
                   bloc: instance.get<AppBloc>(),
                   builder: (context, state) {
-                    final name = state.authEntity.user.name;
-                    final email = state.authEntity.user.email;
+                    final name = state.userEntity.name;
+                    final email = state.userEntity.email;
 
                     return Header(
-                      leadingPhotoUrl: state.authEntity.user.avatar,
+                      leadingPhotoUrl: state.userEntity.avatar,
                       title: Text(
                         'Hi $name 👋🏻',
                         style: themeData.textTheme.displayLarge!.merge(TextStyle(

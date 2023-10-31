@@ -18,7 +18,6 @@ class AuthRepositoryImpl implements AuthRepository {
         accessToken: authResponse.accessToken,
         refreshToken: authResponse.refreshToken,
         isSignIn: true,
-        user: authResponse.user,
       );
 
       return Left(authEntity);

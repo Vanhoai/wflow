@@ -9,6 +9,7 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
+import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'components/form_signin.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -24,7 +25,10 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
-      create: (_) => SignInBloc(authUseCase: instance.get<AuthUseCase>())..add(SignInCheckRememberEvent()),
+      create: (_) => SignInBloc(
+        authUseCase: instance.get<AuthUseCase>(),
+        userUseCase: instance.get<UserUseCase>(),
+      )..add(SignInCheckRememberEvent()),
       lazy: true,
       child: Listener(
         onPointerDown: (PointerDownEvent event) {

@@ -40,7 +40,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
     _skillScrollController = ScrollController(
       initialScrollOffset: 0.0,
     );
-    isUser = instance.get<AppBloc>().state.authEntity.user.role == 1;
+    isUser = instance.get<AppBloc>().state.role == 1;
   }
 
   void callBackSetChoiceValue(int value) {
@@ -113,7 +113,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
           var title = 'Information';
           if (state is GetJobInformationSuccessState) {
             title = state.postEntity.position;
-            isYourBusiness = instance.get<AppBloc>().state.authEntity.user.business == state.postEntity.business;
+            isYourBusiness = instance.get<AppBloc>().state.userEntity.business == state.postEntity.business;
           }
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
@@ -292,7 +292,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       child: PrimaryButton(
                                         label: 'Apply',
                                         onPressed: () {
-                                          if (instance.get<AppBloc>().state.authEntity.user.isVerify) {
+                                          if (instance.get<AppBloc>().state.userEntity.isVerify) {
                                             _showSelectCV(context, widget.work);
                                           } else {
                                             Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);

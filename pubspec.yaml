@@ -58,6 +58,7 @@ dependencies:
   timeago: ^3.5.0
   textfield_tags: ^2.0.2
   flutter_screenutil: ^5.9.0
+  dart_jsonwebtoken: ^2.12.0
 
 dev_dependencies:
   flutter_test:

@@ -57,7 +57,7 @@ class _RequireSkillState extends State<RequireSkill> {
                     labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                     visualDensity: VisualDensity.compact,
                     labelStyle: themeData.textTheme.displayLarge!.copyWith(
-                      color: themeData.textTheme.displayMedium!.color,
+                      color: Colors.black,
                     ),
                     color: MaterialStatePropertyAll(themeData.colorScheme.background),
                     elevation: 3,

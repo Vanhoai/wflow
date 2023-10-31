@@ -4,7 +4,7 @@ import 'package:wflow/modules/main/data/company/company_service.dart';
 import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
-import 'package:wflow/modules/main/domain/user/user_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 class CompanyRepositoryImpl extends CompanyRepository {
   final CompanyService companyService;

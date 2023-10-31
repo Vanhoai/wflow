@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/modules/main/domain/user/user_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 
 part 'event.dart';
@@ -28,8 +28,14 @@ class PersonalBloc extends Bloc<PersonalEvent, PersonalState> {
   }
 
   void onSignOut(SignOutEvent signOutEvent, Emitter<PersonalState> emit) {
-    emit(state.copyWith(
-        isSignOut: true, message: 'Sign out successfully', userEntity: UserEntity.createEmpty(), isLoading: false));
+    emit(
+      state.copyWith(
+        isSignOut: true,
+        message: 'Sign out successfully',
+        userEntity: UserEntity.createEmpty(),
+        isLoading: false,
+      ),
+    );
   }
 
   FutureOr onGetPersonalInformation(

@@ -4,6 +4,7 @@ class AppState extends Equatable {
   final bool isDarkMode;
   final String languageCode;
   final AuthEntity authEntity;
+  final UserEntity userEntity;
   final bool isFirstTime;
   final bool rememberMe;
   final num role;
@@ -15,6 +16,7 @@ class AppState extends Equatable {
     this.isFirstTime = true,
     this.role = 1,
     this.rememberMe = false,
+    required this.userEntity,
   });
 
   AppState copyWith({
@@ -24,6 +26,7 @@ class AppState extends Equatable {
     bool? isFirstTime,
     num? role,
     bool? rememberMe,
+    UserEntity? userEntity,
   }) {
     return AppState(
       isDarkMode: isDarkMode ?? this.isDarkMode,
@@ -32,6 +35,7 @@ class AppState extends Equatable {
       isFirstTime: isFirstTime ?? this.isFirstTime,
       role: role ?? this.role,
       rememberMe: rememberMe ?? this.rememberMe,
+      userEntity: userEntity ?? this.userEntity,
     );
   }
 
@@ -43,6 +47,7 @@ class AppState extends Equatable {
       isFirstTime: json['isFirstTime'],
       role: json['role'],
       rememberMe: json['rememberMe'],
+      userEntity: UserEntity.fromJson(json['userEntity']),
     );
   }
 
@@ -54,9 +59,18 @@ class AppState extends Equatable {
       'isFirstTime': isFirstTime,
       'role': role,
       'rememberMe': rememberMe,
+      'userEntity': userEntity,
     };
   }
 
   @override
-  List<Object?> get props => [isDarkMode, languageCode, isFirstTime, authEntity, role, rememberMe];
+  List<Object?> get props => [
+        isDarkMode,
+        languageCode,
+        isFirstTime,
+        authEntity,
+        role,
+        rememberMe,
+        userEntity,
+      ];
 }

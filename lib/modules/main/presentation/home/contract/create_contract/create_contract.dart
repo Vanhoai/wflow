@@ -201,7 +201,9 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     padding: const EdgeInsets.all(20),
-                    decoration: const BoxDecoration(),
+                    decoration: BoxDecoration(
+                      color: themeData.colorScheme.background,
+                    ),
                     child: BlocBuilder<CreateContractBloc, CreateContractState>(
                       builder: (context, state) {
                         return PrimaryButton(

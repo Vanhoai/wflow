@@ -26,8 +26,8 @@ class _BalanceScreenState extends State<BalanceScreen> {
           mainAxisSize: MainAxisSize.max,
           children: [
             Container(
-              width: 350,
               height: 230,
+              margin: const EdgeInsets.symmetric(horizontal: 20),
               decoration: BoxDecoration(
                 gradient: const LinearGradient(
                   colors: [

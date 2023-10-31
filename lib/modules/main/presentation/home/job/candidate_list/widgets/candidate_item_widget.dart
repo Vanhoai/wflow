@@ -35,7 +35,8 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
     return InkWell(
       onTap: widget.onTap,
       borderRadius: BorderRadius.circular(8),
-      child: SizedBox(
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
         width: MediaQuery.of(context).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,

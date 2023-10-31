@@ -41,7 +41,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   void navigateTo(int index) {
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed(RouteKeys.developScreen);
+        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
         break;
       case 2:
         final role = instance.get<AppBloc>().state.role;

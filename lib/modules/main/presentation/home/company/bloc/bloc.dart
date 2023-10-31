@@ -7,7 +7,7 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
-import 'package:wflow/modules/main/domain/user/user_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 part 'event.dart';
 part 'state.dart';

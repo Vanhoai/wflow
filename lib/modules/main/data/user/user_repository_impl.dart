@@ -2,7 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
-import 'package:wflow/modules/main/domain/user/user_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {

@@ -5,20 +5,27 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
+import 'package:wflow/modules/main/domain/user/user_usecase.dart';
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 import 'event.dart';
 import 'state.dart';
 
 class SignInBloc extends Bloc<SignInEvent, SignInState> {
   final AuthUseCase authUseCase;
+  final UserUseCase userUseCase;
 
-  SignInBloc({required this.authUseCase}) : super(const SignInState()) {
+  SignInBloc({
+    required this.authUseCase,
+    required this.userUseCase,
+  }) : super(const SignInState()) {
     on<OnChangeEmailEvent>(onChangeEmail);
     on<OnChangePasswordEvent>(onChangePassword);
     on<SignInSubmittedEvent>(signInSubmitted);
@@ -57,6 +64,12 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(isRemember: event.isRemember));
   }
 
+  num verifyAccessToken(String accessToken) {
+    final jwt = JWT.verify(accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+    final role = jwt.payload['role'];
+    return role;
+  }
+
   Future<void> signIn(String username, String password, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
@@ -70,10 +83,15 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         await authUseCase.signIn(AuthNormalRequest(username: username, password: password, deviceToken: deviceToken!));
 
     response.fold(
-      (AuthEntity left) {
-        instance
-            .get<AppBloc>()
-            .add(AppChangeAuth(authEntity: left, role: left.user.role, rememberMe: state.isRemember));
+      (AuthEntity authEntity) async {
+        final role = verifyAccessToken(authEntity.accessToken);
+        instance.get<AppBloc>().add(
+              AppChangeAuth(
+                authEntity: authEntity,
+                rememberMe: state.isRemember,
+                role: role,
+              ),
+            );
         emit(SignInSuccess());
       },
       (Failure right) {
@@ -83,6 +101,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     );
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
+
+  Future<void> getUserProfile(AuthEntity authEntity, Emitter<SignInState> emit) async {}
 
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
     await signIn(event.email, event.password, emit);

@@ -70,7 +70,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     Future<void> redirectFlash() async {
-      int role = instance.get<AppBloc>().state.authEntity.user.role;
+      int role = instance.get<AppBloc>().state.role.toInt();
       if (role == 2) {
         instance.get<NavigationService>().pushNamed(RouteKeys.upPostScreen);
       } else {

@@ -34,12 +34,14 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   late ScrollController _skillScrollController;
   late bool isUser;
   bool isYourBusiness = false;
+
   @override
   void initState() {
     super.initState();
     _skillScrollController = ScrollController(
       initialScrollOffset: 0.0,
     );
+
     isUser = instance.get<AppBloc>().state.role == 1;
   }
 

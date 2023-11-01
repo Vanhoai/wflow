@@ -18,7 +18,7 @@ class SearchCandidateWidget extends StatefulWidget {
 
 class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
   final TextEditingController textEditingController = TextEditingController();
-
+  bool clearIcon = false;
   Timer? _debounce;
 
   @override
@@ -30,7 +30,20 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
 
   void clearInputSearch() {
     textEditingController.clear();
+    setState(() {
+      clearIcon = false;
+    });
     context.read<CandidateListBloc>().add(GetCandidateAppliedSearchEvent(search: ''));
+  }
+
+  void _onChanged(String value) {
+    setState(() {
+      clearIcon = value.isEmpty;
+    });
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      context.read<CandidateListBloc>().add(GetCandidateAppliedSearchEvent(search: value));
+    });
   }
 
   @override
@@ -38,27 +51,24 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
     final ThemeData themeData = Theme.of(context);
     return TextField(
       controller: textEditingController,
-      onChanged: (value) {
-        if (_debounce?.isActive ?? false) _debounce!.cancel();
-        _debounce = Timer(const Duration(milliseconds: 500), () {
-          context.read<CandidateListBloc>().add(GetCandidateAppliedSearchEvent(search: value));
-        });
-      },
+      onChanged: _onChanged,
       decoration: InputDecoration(
         hintText: 'Enter here',
         hintStyle: const TextStyle(
           color: Colors.grey,
         ),
-        prefixIcon: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
-          child: SvgPicture.asset(
-            AppConstants.search,
-            fit: BoxFit.cover,
-            width: 24,
-            height: 24,
-            colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
-          ),
-        ),
+        prefixIcon: clearIcon
+            ? Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: SvgPicture.asset(
+                  AppConstants.search,
+                  fit: BoxFit.cover,
+                  width: 24,
+                  height: 24,
+                  colorFilter: const ColorFilter.mode(Colors.grey, BlendMode.srcIn),
+                ),
+              )
+            : const SizedBox(),
         prefixIconConstraints: const BoxConstraints(
           minWidth: 20,
           minHeight: 20,

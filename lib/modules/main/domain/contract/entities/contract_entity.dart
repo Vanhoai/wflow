@@ -12,6 +12,7 @@ class ContractEntity extends Equatable {
   final num id;
   final String title;
   final String content;
+  final dynamic state;
   final String introduction;
   final String salary;
   final bool businessSigned;
@@ -25,6 +26,7 @@ class ContractEntity extends Equatable {
     required this.id,
     required this.title,
     required this.content,
+    required this.state,
     required this.introduction,
     required this.salary,
     required this.businessSigned,
@@ -43,6 +45,7 @@ class ContractEntity extends Equatable {
     num? id,
     String? title,
     String? content,
+    dynamic state,
     String? introduction,
     String? salary,
     bool? workerSigned,
@@ -56,6 +59,7 @@ class ContractEntity extends Equatable {
       id: id ?? this.id,
       title: title ?? this.title,
       content: content ?? this.content,
+      state: state ?? this.state,
       introduction: introduction ?? this.introduction,
       salary: salary ?? this.salary,
       businessSigned: businessSigned ?? this.businessSigned,
@@ -72,6 +76,7 @@ class ContractEntity extends Equatable {
       id: 0,
       title: '',
       content: '',
+      state: '',
       introduction: '',
       salary: '',
       businessSigned: false,
@@ -96,10 +101,19 @@ class ContractEntity extends Equatable {
         email: '',
         phone: '',
         name: '',
+        logo: '',
         address: '',
         totalCollaborators: 0,
         totalContracts: 0,
         totalPosts: 0,
+        background: '',
+        createdAt: '',
+        deletedAt: '',
+        latitude: 0,
+        longitude: 0,
+        overview: '',
+        state: '',
+        updatedAt: '',
       ),
       tasks: [],
     );
@@ -111,6 +125,7 @@ class ContractEntity extends Equatable {
         id,
         title,
         content,
+        state,
         introduction,
         salary,
         businessSigned,

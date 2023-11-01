@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/size.dart';
+import 'package:wflow/core/theme/them.dart';
 
 class ContractCard extends StatefulWidget {
   const ContractCard({
@@ -36,15 +37,11 @@ class _ContractCardState extends State<ContractCard> {
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                child: Row(children: <Widget>[
-                  _buildAvatar(),
-                  SizedBox(
-                    width: ((MediaQuery.sizeOf(context).width) / 100) * 3.06,
-                  ),
-                  _buildContent(),
-                ]),
+              _buildAvatar(),
+              SizedBox(
+                width: ((MediaQuery.sizeOf(context).width) / 100) * 3.06,
               ),
+              Expanded(child: _buildContent()),
             ],
           ),
         ),
@@ -71,29 +68,29 @@ class _ContractCardState extends State<ContractCard> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: ((MediaQuery.sizeOf(context).width) / 100) * 73.97,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: Text(
                   widget.name,
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
-                    color: Colors.black,
-                  ),
+                  style: themeData.textTheme.bodyMedium,
+                  overflow: TextOverflow.ellipsis,
                 ),
-                Text(
-                  widget.status,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.normal,
-                    color: Color(0XFF4CAF50),
-                  ),
+              ),
+              SizedBox(
+                width: ((MediaQuery.sizeOf(context).width) / 100) * 3.06,
+              ),
+              Text(
+                widget.status,
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
+                  color: Color(0XFF4CAF50),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
           SizedBox(
             width: ((MediaQuery.sizeOf(context).width) / 100) * 68.87,

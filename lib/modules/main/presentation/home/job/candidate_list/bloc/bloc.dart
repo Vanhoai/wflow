@@ -17,7 +17,9 @@ class CandidateListBloc extends Bloc<CandidateListEvent, CandidateListState> {
   }
 
   FutureOr<void> getCandidateAppliedList(GetCandidateAppliedListEvent event, Emitter<CandidateListState> emit) async {
-    emit(state.copyWith(isLoading: true));
+    if (state is! GetCandidateAppliedListSuccess) {
+      emit(state.copyWith(isLoading: true));
+    }
     final candidateList = await contractUseCase.getCandidateApplied(
         event.post, GetCandidateApplied(page: 1, pageSize: 10, search: state.search));
 

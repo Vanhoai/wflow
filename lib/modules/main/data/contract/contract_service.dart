@@ -10,6 +10,7 @@ abstract class ContractService {
   Future<String> applyPost(ApplyPostRequest request);
   Future<ContractEntity> candidateAppliedDetail(String id);
   Future<String> createContract(CreateContractModel request);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request);
 }
 
 class ContractServiceImpl implements ContractService {
@@ -85,6 +86,35 @@ class ContractServiceImpl implements ContractService {
       }
 
       return httpResponse.message;
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request) async {
+    try {
+      final response = await agent.dio.get(
+        '/contract/find-contract-accepted-of-user',
+        queryParameters: {
+          'page': request.page,
+          'pageSize': request.pageSize,
+          'search': request.search,
+        },
+      );
+
+      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: contracts,
+      );
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

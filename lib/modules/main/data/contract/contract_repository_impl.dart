@@ -50,4 +50,14 @@ class ContractRepositoryImpl implements ContractRepository {
       return const Right(ServerFailure());
     }
   }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request) async {
+    try {
+      final response = await contactService.findContractAcceptedOfUser(request);
+      return response;
+    } catch (exception) {
+      return HttpResponseWithPagination.empty();
+    }
+  }
 }

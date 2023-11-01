@@ -1,28 +1,59 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/bloc/event.dart';
 
 class SearchContract extends StatefulWidget {
   const SearchContract({
     super.key,
-    required this.controller,
-    required this.isHiddenSuffixIcon,
-    required this.onChangedSearch,
-    required this.onClearSearch,
   });
-
-  final TextEditingController controller;
-  final bool isHiddenSuffixIcon;
-  final void Function(String) onChangedSearch;
-  final void Function() onClearSearch;
 
   @override
   State<SearchContract> createState() => _SearchContractState();
 }
 
 class _SearchContractState extends State<SearchContract> {
+  late TextEditingController _controller;
+  late bool _isHiddenSuffixIcon;
+  Timer? _debounce;
+  @override
+  void initState() {
+    super.initState();
+    _controller = TextEditingController();
+    _isHiddenSuffixIcon = true;
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    _debounce?.cancel();
+    super.dispose();
+  }
+
+  void clearInputSearch() {
+    _controller.clear();
+    setState(() {
+      _isHiddenSuffixIcon = true;
+    });
+    context.read<ContractListBloc>().add(GetListContractSearchEvent(search: ''));
+  }
+
+  void _onChanged(String value) {
+    setState(() {
+      _isHiddenSuffixIcon = value.isEmpty;
+    });
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 500), () {
+      context.read<ContractListBloc>().add(GetListContractSearchEvent(search: value));
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -42,8 +73,8 @@ class _SearchContractState extends State<SearchContract> {
       width: double.infinity,
       height: 50,
       child: TextField(
-        controller: widget.controller,
-        onChanged: widget.onChangedSearch,
+        controller: _controller,
+        onChanged: _onChanged,
         decoration: InputDecoration(
           hintText: 'Search',
           hintStyle: const TextStyle(
@@ -89,13 +120,13 @@ class _SearchContractState extends State<SearchContract> {
     return Align(
       widthFactor: 1,
       heightFactor: 1,
-      child: widget.isHiddenSuffixIcon
+      child: _isHiddenSuffixIcon
           ? const SizedBox(
               width: 0,
               height: 0,
             )
           : InkWell(
-              onTap: widget.onClearSearch,
+              onTap: clearInputSearch,
               child: Container(
                 width: 20,
                 height: 20,

@@ -46,6 +46,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
             }
           });
           return CommonScaffold(
+            hideKeyboardWhenTouchOutside: true,
             appBar: const AppHeader(text: 'Candidates'),
             body: RefreshIndicator(
               onRefresh: () async {

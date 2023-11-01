@@ -8,3 +8,4 @@ export 'textfield/text_field_from.dart';
 export 'textfield/text_field_verification.dart';
 export 'keyboard/emoji.dart';
 export 'appbar/appbar_center_widget.dart';
+export 'search_bar/search_bar.dart';

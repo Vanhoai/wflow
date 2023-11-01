@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
@@ -50,7 +52,6 @@ class _PersonalScreenState extends State<PersonalScreen> {
             previous.isSignOut != current.isSignOut || previous.userEntity != current.userEntity,
         builder: (context, state) {
           final PersonalBloc personalBloc = BlocProvider.of<PersonalBloc>(context);
-
           return CommonScaffold(
             isSafe: true,
             body: Visibility(
@@ -70,11 +71,14 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             value: personalBloc,
                             child: CupertinoActionSheet(
                               actions: [
-                                CupertinoActionSheetAction(
-                                  onPressed: () => Navigator.of(context)
-                                    ..pop(context)
-                                    ..pushNamed(RouteKeys.upgradeBusinessScreen),
-                                  child: const Text('Upgrade'),
+                                Visibility(
+                                  visible: instance.get<AppBloc>().state.role == RoleEnum.user.index + 1,
+                                  child: CupertinoActionSheetAction(
+                                    onPressed: () => Navigator.of(context)
+                                      ..pop(context)
+                                      ..pushNamed(RouteKeys.upgradeBusinessScreen),
+                                    child: const Text('Upgrade'),
+                                  ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () => Navigator.of(context)

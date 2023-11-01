@@ -13,4 +13,8 @@ class Debounce {
     if (timer?.isActive ?? false) timer?.cancel();
     timer = Timer(duration, voidCallback);
   }
+
+  void cancel() {
+    timer?.cancel();
+  }
 }

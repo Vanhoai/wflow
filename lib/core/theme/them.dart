@@ -1,39 +1,40 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/core/theme/colors.dart';
 
-const TextTheme textTheme = TextTheme(
+TextTheme textTheme = TextTheme(
   displaySmall: TextStyle(
-    fontSize: 12,
+    fontSize: 12.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   displayMedium: TextStyle(
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   displayLarge: TextStyle(
-    fontSize: 20,
+    fontSize: 20.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   labelSmall: TextStyle(
-    fontSize: 12,
+    fontSize: 12.sp,
     overflow: TextOverflow.ellipsis,
     fontWeight: FontWeight.w400,
     letterSpacing: 0.5,
   ),
   labelMedium: TextStyle(
-    fontSize: 14,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   labelLarge: TextStyle(
-    fontSize: 16,
+    fontSize: 16.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,

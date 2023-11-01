@@ -339,7 +339,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                       child: Container(
                         width: MediaQuery.of(context).size.width,
                         height: MediaQuery.of(context).size.height,
-                        color: Colors.black12,
+                        color: Colors.white.withOpacity(0.1),
                         child: const Loading(),
                       ),
                     ),

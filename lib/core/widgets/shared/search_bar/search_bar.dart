@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -39,6 +40,7 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
   @override
   void dispose() {
     editingController.dispose();
+    debounce.cancel();
     super.dispose();
   }
 
@@ -54,15 +56,19 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
           setState(() {});
           onChange(value);
         },
+        onFieldSubmitted: (value) {
+          setState(() {});
+          widget.onSearch?.call(value);
+        },
         keyboardType: TextInputType.text,
         decoration: InputDecoration(
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+          contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           hintText: widget.placeHolder,
           hintStyle: const TextStyle(
             color: Colors.grey,
           ),
           prefixIcon: Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.w),
             child: SvgPicture.asset(
               AppConstants.search,
               colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
@@ -75,9 +81,9 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
                 editingController.clear();
                 widget.onClear?.call();
               },
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(8.r),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(16.w),
                 child: SvgPicture.asset(
                   AppConstants.close,
                   colorFilter: const ColorFilter.mode(AppColors.textGrey, BlendMode.srcIn),
@@ -86,19 +92,19 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
             ),
           ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: Colors.grey,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: Colors.grey,
             ),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
               color: Colors.grey,
             ),

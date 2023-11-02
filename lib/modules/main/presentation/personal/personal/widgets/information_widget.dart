@@ -124,7 +124,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Container(
-                            height: 40.h,
+                            height: 32.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.r),
                             ),
@@ -153,7 +153,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Container(
-                            height: 40.h,
+                            height: 32.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.r),
                             ),
@@ -182,7 +182,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                             borderRadius: BorderRadius.circular(4.r),
                           ),
                           child: Container(
-                            height: 40.h,
+                            height: 32.h,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(4.r),
                             ),

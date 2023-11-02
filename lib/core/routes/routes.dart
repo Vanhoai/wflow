@@ -16,6 +16,7 @@ import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
@@ -130,6 +131,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const BalanceScreen());
       case RouteKeys.searchWorkScreen:
         return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
+      case RouteKeys.contractWaitingSignScreen:
+        return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

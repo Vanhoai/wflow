@@ -33,17 +33,15 @@ class _CandidateCVWidgetState extends State<CandidateCVWidget> {
         SizedBox(
           width: MediaQuery.of(context).size.width,
           height: 530,
-          child: Scaffold(
-            body: SfPdfViewer.network(
-              widget.cv,
-              pageLayoutMode: PdfPageLayoutMode.single,
-              scrollDirection: PdfScrollDirection.horizontal,
-              controller: widget.pdfViewerController,
-              key: _pdfViewerKey,
-              onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
-                print(details.toString());
-              },
-            ),
+          child: SfPdfViewer.network(
+            widget.cv,
+            pageLayoutMode: PdfPageLayoutMode.single,
+            scrollDirection: PdfScrollDirection.horizontal,
+            controller: widget.pdfViewerController,
+            key: _pdfViewerKey,
+            onDocumentLoadFailed: (PdfDocumentLoadFailedDetails details) {
+              print(details.toString());
+            },
           ),
         ),
       ],

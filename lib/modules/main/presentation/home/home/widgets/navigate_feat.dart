@@ -31,7 +31,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': instance.get<AppBloc>().state.role == 1 ? AppConstants.apply : AppConstants.ic_business,
       },
       {
-        'title': 'More',
+        'title': 'Sign',
         'icon': AppConstants.ic_more,
       }
     ];
@@ -50,6 +50,9 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         } else {
           Navigator.of(context).pushNamed(RouteKeys.companyScreen);
         }
+        break;
+      case 3:
+        Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
         break;
       default:
         Navigator.of(context).pushNamed(RouteKeys.developScreen);

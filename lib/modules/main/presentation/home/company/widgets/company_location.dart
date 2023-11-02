@@ -1,12 +1,12 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
@@ -23,13 +23,11 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return CommonScaffold(
-      hideKeyboardWhenTouchOutside: true,
-      isSafe: true,
-      body: BlocBuilder<MyCompanyBloc, MyCompanyState>(
-        builder: (context, state) {
-          final CompanyEntity companyEntity = state.companyEntity;
-          return FutureBuilder(
+    return BlocBuilder<MyCompanyBloc, MyCompanyState>(
+      builder: (context, state) {
+        final CompanyEntity companyEntity = state.companyEntity;
+        return Scaffold(
+          body: FutureBuilder(
             future: locationLib.getCurrentLocation(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
@@ -42,7 +40,7 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                 return GoogleMap(
                   onMapCreated: (controller) => _controller.complete(controller),
                   initialCameraPosition:
-                      CameraPosition(target: LatLng(myLocation.latitude, myLocation.longitude), zoom: 20),
+                      CameraPosition(target: LatLng(companyEntity.latitude, companyEntity.longitude), zoom: 20),
                   myLocationEnabled: true,
                   myLocationButtonEnabled: true,
                   trafficEnabled: true,
@@ -74,11 +72,11 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                 child: CupertinoActivityIndicator(),
               );
             },
-          );
-        },
-        bloc: BlocProvider.of<MyCompanyBloc>(context),
-        buildWhen: (previous, current) => true,
-      ),
+          ),
+        );
+      },
+      bloc: BlocProvider.of<MyCompanyBloc>(context),
+      buildWhen: (previous, current) => true,
     );
   }
 }

@@ -104,6 +104,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   child: const Text('Sign out'),
                                 ),
                               ],
+                              cancelButton: CupertinoActionSheetAction(
+                                onPressed: () {},
+                                child: const Text('Cancel'),
+                              ),
                             ),
                           );
                         },

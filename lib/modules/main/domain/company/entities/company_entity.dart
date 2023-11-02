@@ -20,6 +20,12 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     required this.name,
     required this.address,
     required this.logo,
+    required this.overview,
+    required this.longitude,
+    required this.latitude,
+    required this.totalCollaborators,
+    required this.totalPosts,
+    required this.totalContracts,
   });
 
   @JsonKey(name: 'posts', defaultValue: 0)
@@ -49,6 +55,24 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'collaborators', defaultValue: null)
   final List<String> collaborators;
 
+  @JsonKey(name: 'overview', defaultValue: '')
+  final String overview;
+
+  @JsonKey(name: 'longitude', defaultValue: 0)
+  final double longitude;
+
+  @JsonKey(name: 'latitude', defaultValue: 0)
+  final double latitude;
+
+  @JsonKey(name: 'totalCollaborators', defaultValue: 0)
+  final int totalCollaborators;
+
+  @JsonKey(name: 'totalPosts', defaultValue: 0)
+  final int totalPosts;
+
+  @JsonKey(name: 'totalContracts', defaultValue: 0)
+  final int totalContracts;
+
   factory CompanyEntity.fromJson(Map<String, dynamic> json) => _$CompanyEntityFromJson(json);
 
   @override
@@ -64,6 +88,12 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     String? address,
     String? logo,
     List<String>? collaborators,
+    String? overview,
+    double? longitude,
+    double? latitude,
+    int? totalCollaborators,
+    int? totalPosts,
+    int? totalContracts,
   }) {
     return CompanyEntity(
       id: id,
@@ -79,6 +109,12 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       address: address ?? this.address,
       logo: logo ?? this.logo,
       collaborators: collaborators ?? this.collaborators,
+      overview: overview ?? this.overview,
+      longitude: longitude ?? this.longitude,
+      latitude: latitude ?? this.latitude,
+      totalCollaborators: totalCollaborators ?? this.totalCollaborators,
+      totalPosts: totalPosts ?? this.totalPosts,
+      totalContracts: totalContracts ?? this.totalContracts,
     );
   }
 
@@ -97,6 +133,12 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       createdAt: DateTime.now(),
       updatedAt: null,
       deletedAt: null,
+      overview: '',
+      longitude: 0,
+      latitude: 0,
+      totalCollaborators: 0,
+      totalPosts: 0,
+      totalContracts: 0,
     );
   }
 
@@ -115,5 +157,11 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
         phone,
         name,
         address,
+        overview,
+        longitude,
+        latitude,
+        totalCollaborators,
+        totalPosts,
+        totalContracts,
       ];
 }

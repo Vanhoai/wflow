@@ -10,13 +10,13 @@ TextTheme textTheme = TextTheme(
     letterSpacing: 0.5,
   ),
   displayMedium: TextStyle(
-    fontSize: 16.sp,
+    fontSize: 14.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,
   ),
   displayLarge: TextStyle(
-    fontSize: 20.sp,
+    fontSize: 18.sp,
     fontWeight: FontWeight.w400,
     overflow: TextOverflow.ellipsis,
     letterSpacing: 0.5,

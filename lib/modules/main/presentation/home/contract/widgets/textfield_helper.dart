@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 class TextFieldHelper extends StatelessWidget {
   const TextFieldHelper({
     super.key,
+    this.enabled = true,
     required this.controller,
     this.maxLines = 5,
     this.hintText = '',
@@ -12,6 +13,7 @@ class TextFieldHelper extends StatelessWidget {
     this.validator,
   });
 
+  final bool enabled;
   final TextEditingController controller;
   final int maxLines;
   final int minLines;
@@ -25,6 +27,7 @@ class TextFieldHelper extends StatelessWidget {
     final ThemeData themeData = Theme.of(context);
 
     return TextFormField(
+      enabled: enabled,
       validator: validator,
       controller: controller,
       scrollPhysics: const BouncingScrollPhysics(),

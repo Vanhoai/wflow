@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/utils.dart';
 
 class SharedSearchBar extends StatefulWidget {
@@ -64,8 +65,11 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
           hintText: widget.placeHolder,
-          hintStyle: const TextStyle(
-            color: Colors.grey,
+          hintStyle: themeData.textTheme.bodyMedium?.copyWith(
+            color: AppColors.textGrey,
+          ),
+          labelStyle: themeData.textTheme.bodyMedium?.copyWith(
+            color: AppColors.textGrey,
           ),
           prefixIcon: Padding(
             padding: EdgeInsets.all(12.w),
@@ -94,19 +98,19 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
-              color: Colors.grey,
+              color: AppColors.borderColor,
             ),
           ),
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
-              color: Colors.grey,
+              color: AppColors.borderColor,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(8.r),
             borderSide: const BorderSide(
-              color: Colors.grey,
+              color: AppColors.borderColor,
             ),
           ),
         ),

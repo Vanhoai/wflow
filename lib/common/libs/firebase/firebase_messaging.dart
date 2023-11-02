@@ -86,4 +86,8 @@ class FirebaseMessagingService {
     final String? token = await firebaseMessaging.getToken();
     return token;
   }
+
+  static Future<void> subscribeToTopic(String topic) async {
+    await firebaseMessaging.subscribeToTopic(topic);
+  }
 }

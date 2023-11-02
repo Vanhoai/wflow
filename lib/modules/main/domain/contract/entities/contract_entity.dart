@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:wflow/modules/main/domain/base/base_entity.dart';
 import 'package:wflow/modules/main/domain/contract/entities/models/business.dart';
 import 'package:wflow/modules/main/domain/contract/entities/models/worker.dart';
 import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
@@ -7,9 +8,8 @@ import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
 part 'contract_entity.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class ContractEntity extends Equatable {
+class ContractEntity extends BaseEntity with EquatableMixin {
   final String cv;
-  final num id;
   final String title;
   final String content;
   final dynamic state;
@@ -22,8 +22,11 @@ class ContractEntity extends Equatable {
   final List<TaskEntity> tasks;
 
   const ContractEntity({
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.deletedAt,
     required this.cv,
-    required this.id,
     required this.title,
     required this.content,
     required this.state,
@@ -38,11 +41,15 @@ class ContractEntity extends Equatable {
 
   factory ContractEntity.fromJson(Map<String, dynamic> json) => _$ContractEntityFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$ContractEntityToJson(this);
 
   ContractEntity copyWith({
     String? cv,
-    num? id,
+    int? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? deletedAt,
     String? title,
     String? content,
     dynamic state,
@@ -57,6 +64,9 @@ class ContractEntity extends Equatable {
     return ContractEntity(
       cv: cv ?? this.cv,
       id: id ?? this.id,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      deletedAt: deletedAt ?? this.deletedAt,
       title: title ?? this.title,
       content: content ?? this.content,
       state: state ?? this.state,
@@ -71,9 +81,12 @@ class ContractEntity extends Equatable {
   }
 
   factory ContractEntity.empty() {
-    return const ContractEntity(
+    return ContractEntity(
       cv: '',
       id: 0,
+      createdAt: DateTime.now(),
+      deletedAt: DateTime.now(),
+      updatedAt: DateTime.now(),
       title: '',
       content: '',
       state: '',
@@ -81,7 +94,7 @@ class ContractEntity extends Equatable {
       salary: '',
       businessSigned: false,
       workerSigned: false,
-      worker: Worker(
+      worker: const Worker(
         id: 0,
         name: '',
         role: 0,
@@ -96,7 +109,7 @@ class ContractEntity extends Equatable {
         dob: '',
         identifyCode: '',
       ),
-      business: Business(
+      business: const Business(
         id: 0,
         email: '',
         phone: '',

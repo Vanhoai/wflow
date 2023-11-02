@@ -1,7 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/enum.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/extensions/regex.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -25,12 +29,14 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
   late final TextEditingController titleController;
   late final TextEditingController descriptionController;
   late final TextEditingController budgetController;
+  late final bool isBusiness;
 
   bool validator() {
     if (titleController.text.isEmpty) {
       AlertUtils.showMessage('Notification', 'Please enter title');
       return false;
     }
+
     if (budgetController.text.isEmpty) {
       AlertUtils.showMessage('Notification', 'Something went wrong with budget');
       return false;
@@ -51,6 +57,8 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
     titleController = TextEditingController(text: '');
     descriptionController = TextEditingController(text: '');
     budgetController = TextEditingController(text: '');
+
+    isBusiness = instance.get<AppBloc>().state.role == RoleEnum.business.index + 1;
   }
 
   @override
@@ -115,6 +123,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
+                                  enabled: isBusiness,
                                   controller: titleController,
                                   maxLines: 2,
                                   minLines: 1,
@@ -129,6 +138,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
+                                  enabled: isBusiness,
                                   controller: descriptionController,
                                   maxLines: 5,
                                   minLines: 3,
@@ -145,26 +155,40 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
+                                  enabled: isBusiness,
                                   controller: budgetController,
                                   maxLines: 1,
                                   minLines: 1,
                                   hintText: 'Enter budget for project',
                                 ),
                                 const SizedBox(height: 20),
-                                const TaskCreateContract(),
+                                TaskCreateContract(isBusiness: isBusiness),
                                 const SizedBox(height: 16),
-                                ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                                const SizedBox(height: 30),
-                                Text(
-                                  'Candidate',
-                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
+                                Visibility(
+                                  visible: isBusiness,
+                                  child: ActionHelper(onUpload: () {}, onWatchVideo: () {}),
                                 ),
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 30),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Candidate',
+                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                        color: themeData.colorScheme.onBackground,
+                                      )),
+                                    ),
+                                    Text(
+                                      state.contractEntity.workerSigned ? '🥰️ Accepted' : '😪️ Not Accepted',
+                                      style: themeData.textTheme.displayMedium!,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
                                 Header(
+                                  leadingPhotoUrl: state.contractEntity.worker.avatar,
                                   title: Text(
-                                    'Trần Văn Hoài',
+                                    state.contractEntity.worker.name,
                                     style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                       color: themeData.colorScheme.onBackground,
                                     )),
@@ -172,7 +196,45 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                   subtitle: Text(
-                                    'hoaitvps22068@fpt.edu.vn',
+                                    state.contractEntity.worker.email,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                  ),
+                                  onTapLeading: () {},
+                                  leadingBadge: false,
+                                ),
+                                32.verticalSpace,
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Business',
+                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                        color: themeData.colorScheme.onBackground,
+                                      )),
+                                    ),
+                                    Text(
+                                      state.contractEntity.businessSigned ? '🥰️ Accepted' : '😪️ Not Accepted',
+                                      style: themeData.textTheme.displayMedium!,
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 8),
+                                Header(
+                                  leadingPhotoUrl: state.contractEntity.business.logo,
+                                  title: Text(
+                                    state.contractEntity.business.name,
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  subtitle: Text(
+                                    state.contractEntity.business.email,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: themeData.textTheme.displayMedium!.merge(TextStyle(
@@ -206,22 +268,46 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                     ),
                     child: BlocBuilder<CreateContractBloc, CreateContractState>(
                       builder: (context, state) {
-                        return PrimaryButton(
-                          label: 'Create',
-                          onPressed: () {
-                            final bool isValid = validator();
-                            if (isValid) {
-                              context.read<CreateContractBloc>().add(
-                                    CreateNewContractEvent(
-                                      contract: int.parse(widget.contract),
-                                      title: titleController.text,
-                                      description: descriptionController.text,
-                                      budget: num.parse(budgetController.text),
-                                    ),
-                                  );
+                        return Builder(
+                          builder: (context) {
+                            if (isBusiness) {
+                              if (state.contractEntity.state == ContractStatus.Apply.name) {
+                                return PrimaryButton(
+                                  label: 'Create',
+                                  width: double.infinity,
+                                  onPressed: () {
+                                    final bool isValid = validator();
+                                    if (isValid) {
+                                      context.read<CreateContractBloc>().add(
+                                            CreateNewContractEvent(
+                                              contract: int.parse(widget.contract),
+                                              title: titleController.text,
+                                              description: descriptionController.text,
+                                              budget: num.parse(budgetController.text),
+                                            ),
+                                          );
+                                    }
+                                  },
+                                );
+                              } else {
+                                return PrimaryButton(
+                                  label: 'Accepted',
+                                  width: double.infinity,
+                                  onPressed: () {
+                                    context.read<CreateContractBloc>().add(ContractCreatedBusinessSignEvent());
+                                  },
+                                );
+                              }
+                            } else {
+                              return PrimaryButton(
+                                label: 'Accepted',
+                                width: double.infinity,
+                                onPressed: () {
+                                  context.read<CreateContractBloc>().add(ContractCreatedWorkerSignEvent());
+                                },
+                              );
                             }
                           },
-                          width: double.infinity,
                         );
                       },
                     ),

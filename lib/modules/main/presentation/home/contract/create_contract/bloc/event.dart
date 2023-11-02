@@ -43,3 +43,7 @@ class CreateNewContractEvent extends CreateContractEvent {
     required this.budget,
   });
 }
+
+class ContractCreatedWorkerSignEvent extends CreateContractEvent {}
+
+class ContractCreatedBusinessSignEvent extends CreateContractEvent {}

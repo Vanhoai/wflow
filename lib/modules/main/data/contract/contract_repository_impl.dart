@@ -60,4 +60,34 @@ class ContractRepositoryImpl implements ContractRepository {
       return HttpResponseWithPagination.empty();
     }
   }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request) async {
+    try {
+      final response = await contactService.findContractWaitingSign(request);
+      return response;
+    } catch (exception) {
+      return HttpResponseWithPagination.empty();
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> businessSignContract(int id) async {
+    try {
+      final response = await contactService.businessSignContract(id);
+      return Left(response);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> workerSignContract(int id) async {
+    try {
+      final response = await contactService.workerSignContract(id);
+      return Left(response);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
 }

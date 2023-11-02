@@ -36,6 +36,8 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     on<RemoveLastTaskCreateContractEvent>(onRemoveLastTask);
     on<UpdateTaskCreateContractEvent>(onUpdateTask);
     on<CreateNewContractEvent>(onCreateNewContractEvent);
+    on<ContractCreatedWorkerSignEvent>(onWorkerSign);
+    on<ContractCreatedBusinessSignEvent>(onBusinessSign);
   }
 
   FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {
@@ -129,6 +131,50 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         AlertUtils.showMessage(
           'Update Contract',
           message,
+          callback: () {
+            instance.get<NavigationService>().popUntil(2);
+          },
+        );
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  FutureOr<void> onWorkerSign(ContractCreatedWorkerSignEvent event, Emitter<CreateContractState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await contractUseCase.workerSignContract(state.contractEntity.id);
+    response.fold(
+      (String messages) {
+        AlertUtils.showMessage(
+          'Update Contract',
+          messages,
+          callback: () {
+            instance.get<NavigationService>().popUntil(2);
+          },
+        );
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  FutureOr<void> onBusinessSign(ContractCreatedBusinessSignEvent event, Emitter<CreateContractState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await contractUseCase.businessSignContract(state.contractEntity.id);
+    response.fold(
+      (String messages) {
+        AlertUtils.showMessage(
+          'Update Contract',
+          messages,
           callback: () {
             instance.get<NavigationService>().popUntil(2);
           },

@@ -9,7 +9,9 @@ import 'package:wflow/modules/main/presentation/home/contract/create_contract/bl
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class TaskCreateContract extends StatefulWidget {
-  const TaskCreateContract({super.key});
+  const TaskCreateContract({super.key, required this.isBusiness});
+
+  final bool isBusiness;
 
   @override
   State<TaskCreateContract> createState() => _TaskCreateContractState();
@@ -183,6 +185,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
+                                  enabled: widget.isBusiness,
                                   controller: titleController,
                                   minLines: 1,
                                   maxLines: 1,
@@ -196,6 +199,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
+                                  enabled: widget.isBusiness,
                                   controller: contentController,
                                   minLines: 1,
                                   maxLines: 4,
@@ -209,7 +213,9 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 InkWell(
-                                  onTap: () => showDatePicker(0, setState),
+                                  onTap: () {
+                                    if (widget.isBusiness) showDatePicker(0, setState);
+                                  },
                                   child: Container(
                                     height: 50,
                                     decoration: BoxDecoration(
@@ -235,7 +241,9 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 InkWell(
-                                  onTap: () => showDatePicker(1, setState),
+                                  onTap: () {
+                                    if (widget.isBusiness) showDatePicker(1, setState);
+                                  },
                                   child: Container(
                                     height: 50,
                                     decoration: BoxDecoration(
@@ -256,21 +264,23 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 32),
                                 PrimaryButton(
-                                  label: 'OK',
+                                  label: widget.isBusiness ? 'Update' : 'OK',
                                   onPressed: () {
                                     final bool isValid = validate();
                                     if (isValid) {
-                                      parentContext.read<CreateContractBloc>().add(
-                                            UpdateTaskCreateContractEvent(
-                                              id: id,
-                                              index: index,
-                                              title: titleController.text,
-                                              content: contentController.text,
-                                              startTime:
-                                                  DateTime.parse(startTimeController.text).millisecondsSinceEpoch,
-                                              endTime: DateTime.parse(endTimeController.text).millisecondsSinceEpoch,
-                                            ),
-                                          );
+                                      if (widget.isBusiness) {
+                                        parentContext.read<CreateContractBloc>().add(
+                                              UpdateTaskCreateContractEvent(
+                                                id: id,
+                                                index: index,
+                                                title: titleController.text,
+                                                content: contentController.text,
+                                                startTime:
+                                                    DateTime.parse(startTimeController.text).millisecondsSinceEpoch,
+                                                endTime: DateTime.parse(endTimeController.text).millisecondsSinceEpoch,
+                                              ),
+                                            );
+                                      }
 
                                       // clear controllers
                                       titleController.clear();
@@ -322,21 +332,24 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                 color: themeData.colorScheme.onBackground,
               )),
             ),
-            BlocBuilder<CreateContractBloc, CreateContractState>(
-              builder: (context, state) {
-                return InkWell(
-                  onTap: () => context.read<CreateContractBloc>().add(AddTaskCreateContractEvent()),
-                  child: Text(
-                    'Add Task',
-                    style: themeData.textTheme.displayMedium!.merge(
-                      TextStyle(
-                        color: themeData.colorScheme.primary,
+            Visibility(
+              visible: widget.isBusiness,
+              child: BlocBuilder<CreateContractBloc, CreateContractState>(
+                builder: (context, state) {
+                  return InkWell(
+                    onTap: () => context.read<CreateContractBloc>().add(AddTaskCreateContractEvent()),
+                    child: Text(
+                      'Add Task',
+                      style: themeData.textTheme.displayMedium!.merge(
+                        TextStyle(
+                          color: themeData.colorScheme.primary,
+                        ),
                       ),
                     ),
-                  ),
-                );
-              },
-            )
+                  );
+                },
+              ),
+            ),
           ],
         ),
         const SizedBox(height: 8),
@@ -435,21 +448,24 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
           },
         ),
         const SizedBox(height: 12),
-        BlocBuilder<CreateContractBloc, CreateContractState>(
-          builder: (context, state) {
-            return InkWell(
-              onTap: () => context.read<CreateContractBloc>().add(RemoveLastTaskCreateContractEvent()),
-              child: Text(
-                'Remove Task',
-                style: themeData.textTheme.displayMedium!.merge(
-                  const TextStyle(
-                    color: AppColors.redColor,
+        Visibility(
+          visible: widget.isBusiness,
+          child: BlocBuilder<CreateContractBloc, CreateContractState>(
+            builder: (context, state) {
+              return InkWell(
+                onTap: () => context.read<CreateContractBloc>().add(RemoveLastTaskCreateContractEvent()),
+                child: Text(
+                  'Remove Task',
+                  style: themeData.textTheme.displayMedium!.merge(
+                    const TextStyle(
+                      color: AppColors.redColor,
+                    ),
                   ),
                 ),
-              ),
-            );
-          },
-        )
+              );
+            },
+          ),
+        ),
       ],
     );
   }

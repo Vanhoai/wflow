@@ -38,3 +38,22 @@ class ScrollSearchWorkEvent extends SearchWorkEvent {
   @override
   List<Object?> get props => [];
 }
+
+class RefreshSearchWorkEvent extends SearchWorkEvent {
+  const RefreshSearchWorkEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class LoadMoreSearchWorkEvent extends SearchWorkEvent {
+  final bool isLoadMore;
+  const LoadMoreSearchWorkEvent({this.isLoadMore = false});
+
+  LoadMoreSearchWorkEvent coppyWith({bool? isLoadMore}) {
+    return LoadMoreSearchWorkEvent(isLoadMore: isLoadMore ?? this.isLoadMore);
+  }
+
+  @override
+  List<Object?> get props => [isLoadMore];
+}

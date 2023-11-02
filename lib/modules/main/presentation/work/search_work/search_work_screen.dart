@@ -5,7 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/bloc/event.dart';
@@ -22,8 +22,7 @@ class SearchWorkScreen extends StatefulWidget {
 
 class _SearchWorkScreenState extends State<SearchWorkScreen> {
   late final TextEditingController _controller;
-
-  late bool _isHiddenSuffixIcon;
+  late final ScrollController _scrollController;
   Timer? _debounce;
 
   @override
@@ -41,15 +40,6 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
     super.dispose();
   }
 
-  void _onChangedSearch(String value, BuildContext context) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    _debounce = Timer(const Duration(milliseconds: 200), () {
-      BlocProvider.of<SearchWorkBloc>(context)
-          .add(ChangedSearchWorkEvent(txtSearch: value));
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeData = Theme.of(context);
@@ -63,6 +53,17 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
         appBar: const AppHeader(text: 'Works'),
         body: BlocBuilder<SearchWorkBloc, SearchWorkState>(
           builder: (context, state) {
+            _scrollController.addListener(() {
+              if (_scrollController.position.maxScrollExtent ==
+                      _scrollController.offset &&
+                  !state.isLoadMore) {
+                BlocProvider.of<SearchWorkBloc>(context).add(
+                    LoadMoreSearchWorkEvent(isLoadMore: !state.isLoadMore));
+                BlocProvider.of<SearchWorkBloc>(context)
+                    .add(const ScrollSearchWorkEvent());
+              }
+            });
+
             return SizedBox(
               width: double.infinity,
               height: double.infinity,
@@ -70,87 +71,122 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                 children: <Widget>[
                   SearchWorkBar(
                     controller: _controller,
-                    isHiddenSuffixIcon: _isHiddenSuffixIcon,
-                    onChangedSearch: (value) =>
-                        _onChangedSearch(value, context),
-                    onClearSearch: () {},
+                    isHiddenSuffixIcon: state.isHiddenSuffixIcon,
+                    onChangedSearch: (value) => {
+                      BlocProvider.of<SearchWorkBloc>(context).add(
+                          ChangedIconClearSearchWorkEvent(txtSearch: value)),
+                      if (_debounce?.isActive ?? false) _debounce?.cancel(),
+                      _debounce = Timer(const Duration(milliseconds: 400), () {
+                        BlocProvider.of<SearchWorkBloc>(context)
+                            .add(ChangedSearchWorkEvent(txtSearch: value));
+                      }),
+                    },
+                    onClearSearch: () => {
+                      _controller.clear(),
+                      BlocProvider.of<SearchWorkBloc>(context).add(
+                          const ChangedIconClearSearchWorkEvent(txtSearch: '')),
+                      BlocProvider.of<SearchWorkBloc>(context)
+                          .add(const ChangedSearchWorkEvent(txtSearch: '')),
+                    },
                   ),
                   Expanded(
-                    child: ListView.separated(
-                      padding: const EdgeInsets.only(bottom: 20, top: 4),
-                      separatorBuilder: (context, index) =>
-                          const SizedBox(height: 12),
-                      physics: const BouncingScrollPhysics(),
-                      itemBuilder: (context, index) => JobCard(
-                        margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                        boxDecoration: BoxDecoration(
-                          color: themeData.colorScheme.background,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground
-                                  .withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground
-                                  .withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(12),
-                        header: Header(
-                          leadingPhotoUrl: state.postsData[index].companyLogo,
-                          title: Text(
-                            state.postsData[index].position,
-                            style: themeData.textTheme.displayLarge!
-                                .merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
+                    child: RefreshIndicator(
+                      onRefresh: () async =>
+                          BlocProvider.of<SearchWorkBloc>(context)
+                              .add(const RefreshSearchWorkEvent()),
+                      child: ListView.separated(
+                        controller: _scrollController,
+                        padding: const EdgeInsets.only(bottom: 20, top: 4),
+                        separatorBuilder: (context, index) =>
+                            const SizedBox(height: 12),
+                        physics: const BouncingScrollPhysics(),
+                        itemBuilder: (context, index) => JobCard(
+                          margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                          boxDecoration: BoxDecoration(
+                            color: themeData.colorScheme.background,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground
+                                    .withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground
+                                    .withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
-                          onTapLeading: () {},
-                          subtitle: Text(
-                            state.postsData[index].companyName,
-                            style: themeData.textTheme.displayMedium!
-                                .merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
-                          ),
-                          leadingSize: 30,
-                          actions: [
-                            InkWell(
-                              child: SvgPicture.asset(
-                                AppConstants.bookmark,
-                                height: 24,
-                                width: 24,
-                                colorFilter: ColorFilter.mode(
-                                  themeData.colorScheme.onBackground
-                                      .withOpacity(0.5),
-                                  BlendMode.srcIn,
+                          padding: const EdgeInsets.all(12),
+                          header: Header(
+                            leadingPhotoUrl: state.postsData[index].companyLogo,
+                            title: Text(
+                              state.postsData[index].position,
+                              style: themeData.textTheme.displayLarge!
+                                  .merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
+                            ),
+                            onTapLeading: () {},
+                            subtitle: Text(
+                              state.postsData[index].companyName,
+                              style: themeData.textTheme.displayMedium!
+                                  .merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              )),
+                            ),
+                            leadingSize: 30,
+                            actions: [
+                              InkWell(
+                                child: SvgPicture.asset(
+                                  AppConstants.bookmark,
+                                  height: 24,
+                                  width: 24,
+                                  colorFilter: ColorFilter.mode(
+                                    themeData.colorScheme.onBackground
+                                        .withOpacity(0.5),
+                                    BlendMode.srcIn,
+                                  ),
                                 ),
                               ),
-                            ),
-                            const SizedBox(width: 8.0),
-                          ],
-                        ),
-                        cost: '${state.postsData[index].salary} VND',
-                        duration: state.postsData[index].duration,
-                        description: TextMore(
-                          state.postsData[index].content,
-                          trimMode: TrimMode.Hidden,
-                          trimHiddenMaxLines: 3,
-                          style: themeData.textTheme.displayMedium!.merge(
-                            TextStyle(
-                              color: themeData.colorScheme.onBackground,
+                              const SizedBox(width: 8.0),
+                            ],
+                          ),
+                          cost: '${state.postsData[index].salary} VND',
+                          duration: state.postsData[index].duration,
+                          description: TextMore(
+                            state.postsData[index].content,
+                            trimMode: TrimMode.Hidden,
+                            trimHiddenMaxLines: 3,
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              ),
                             ),
                           ),
                         ),
+                        itemCount: state.postsData.length,
                       ),
-                      itemCount: state.postsData.length,
                     ),
+                  ),
+                  Builder(
+                    builder: (context) {
+                      if (state.isLoadMore) {
+                        return Visibility(
+                          visible: state.isLoadMore,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            child: const Loading(),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
                   )
                 ],
               ),

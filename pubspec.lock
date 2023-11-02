@@ -17,6 +17,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.7"
+  adaptive_number:
+    dependency: transitive
+    description:
+      name: adaptive_number
+      sha256: "3a567544e9b5c9c803006f51140ad544aedc79604fd4f3f2c1380003f97c1d77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.0"
   analyzer:
     dependency: transitive
     description:
@@ -217,46 +225,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.0"
-  camera:
-    dependency: "direct main"
-    description:
-      name: camera
-      sha256: "1f9010f0689774380fbcd7d6b7820a5157e8e97685fa66d619e1d1f58b3fdf93"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.5+5"
-  camera_android:
-    dependency: transitive
-    description:
-      name: camera_android
-      sha256: c978373b41a463c9edda3fea0a06966299f55db63232cd0f0d4efc21a59a0006
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.10.8+12"
-  camera_avfoundation:
-    dependency: transitive
-    description:
-      name: camera_avfoundation
-      sha256: "9495e633cda700717bbe299b0979e6c4a08cee45f298945973dc9cf3e4c1cba5"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.9.13+6"
-  camera_platform_interface:
-    dependency: transitive
-    description:
-      name: camera_platform_interface
-      sha256: "8734d1c682f034bdb12d0d6ff379b0535a9b8e44266b530025bf8266d6a62f28"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.5.2"
-  camera_web:
-    dependency: transitive
-    description:
-      name: camera_web
-      sha256: d4c2c571c7af04f8b10702ca16bb9ed2a26e64534171e8f75c9349b2c004d8f1
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.3.2+3"
   characters:
     dependency: transitive
     description:
@@ -345,6 +313,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.6"
+  dart_jsonwebtoken:
+    dependency: "direct main"
+    description:
+      name: dart_jsonwebtoken
+      sha256: bb4203ac7a4d4b675facc1c569487cb5650648a4ee68da19b6b431d9e9221b3f
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.12.0"
   dart_style:
     dependency: transitive
     description:
@@ -401,6 +377,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.1.2"
+  ed25519_edwards:
+    dependency: transitive
+    description:
+      name: ed25519_edwards
+      sha256: "6ce0112d131327ec6d42beede1e5dfd526069b18ad45dcf654f15074ad9276cd"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1"
   emoji_picker_flutter:
     dependency: "direct main"
     description:
@@ -707,6 +691,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.16"
+  flutter_screenutil:
+    dependency: "direct main"
+    description:
+      name: flutter_screenutil
+      sha256: "8cf100b8e4973dc570b6415a2090b0bfaa8756ad333db46939efc3e774ee100d"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.9.0"
   flutter_secure_storage:
     dependency: "direct main"
     description:
@@ -797,22 +789,6 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  freezed:
-    dependency: "direct dev"
-    description:
-      name: freezed
-      sha256: "21bf2825311de65501d22e563e3d7605dff57fb5e6da982db785ae5372ff018a"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.5"
-  freezed_annotation:
-    dependency: "direct main"
-    description:
-      name: freezed_annotation
-      sha256: c3fd9336eb55a38cc1bbd79ab17573113a8deccd0ecbbf926cca3c62803b5c2d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.4.1"
   frontend_server_client:
     dependency: transitive
     description:
@@ -1715,6 +1691,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.6.0"
+  textfield_tags:
+    dependency: "direct main"
+    description:
+      name: textfield_tags
+      sha256: c1d215f481e7e8da5c79719825e595db4f829bf1ad3fce4c7ce43d340aa72683
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.2"
+  timeago:
+    dependency: "direct main"
+    description:
+      name: timeago
+      sha256: c44b80cbc6b44627c00d76960f2af571f6f50e5dbedef4d9215d455e4335165b
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.6.0"
   timelines:
     dependency: "direct main"
     description:

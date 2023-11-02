@@ -18,6 +18,8 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
     on<ChangedSearchWorkEvent>(onChangedSearchWork);
     on<ChangedIconClearSearchWorkEvent>(onChangedIconClearSearchWork);
     on<ScrollSearchWorkEvent>(onScrollSearchWork);
+    on<RefreshSearchWorkEvent>(onRefreshSearchWork);
+    on<LoadMoreSearchWorkEvent>(onLoadMoreSearchWork);
   }
 
   Future<void> onInitSearchWork(InitSearchWorkEvent event, Emitter emit) async {
@@ -36,7 +38,8 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
     final List<PostEntity> posts =
         await postUseCase.getSearchWorks(getWorkModel);
 
-    emit(state.coppyWith(postsData: posts, txtSearch: event.txtSearch));
+    emit(state.coppyWith(
+        postsData: posts, txtSearch: event.txtSearch, isLoadMore: false));
   }
 
   Future<void> onChangedIconClearSearchWork(
@@ -57,37 +60,65 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
 
     final List<PostEntity> newPosts = [
       ...state.postsData.map((e) => PostEntity(
-          id: e.id,
-          updatedAt: e.updatedAt,
-          position: e.position,
-          title: e.title,
-          content: e.content,
-          duration: e.duration,
-          salary: e.salary,
-          creatorId: e.creatorId,
-          creatorName: e.creatorName,
-          creatorAvatar: e.creatorAvatar,
-          companyName: e.companyName,
-          companyLogo: e.companyLogo,
-          skills: e.skills,
-          tasks: e.tasks)),
+            id: e.id,
+            updatedAt: e.updatedAt,
+            position: e.position,
+            title: e.title,
+            content: e.content,
+            duration: e.duration,
+            salary: e.salary,
+            creatorId: e.creatorId,
+            creatorName: e.creatorName,
+            creatorAvatar: e.creatorAvatar,
+            companyName: e.companyName,
+            companyLogo: e.companyLogo,
+            skills: e.skills,
+            tasks: e.tasks,
+            createdAt: e.createdAt,
+            deletedAt: e.deletedAt,
+            business: e.business,
+            numberApplied: e.numberApplied,
+          )),
       ...posts.map((e) => PostEntity(
-          id: e.id,
-          updatedAt: e.updatedAt,
-          position: e.position,
-          title: e.title,
-          content: e.content,
-          duration: e.duration,
-          salary: e.salary,
-          creatorId: e.creatorId,
-          creatorName: e.creatorName,
-          creatorAvatar: e.creatorAvatar,
-          companyName: e.companyName,
-          companyLogo: e.companyLogo,
-          skills: e.skills,
-          tasks: e.tasks)),
+            id: e.id,
+            updatedAt: e.updatedAt,
+            position: e.position,
+            title: e.title,
+            content: e.content,
+            duration: e.duration,
+            salary: e.salary,
+            creatorId: e.creatorId,
+            creatorName: e.creatorName,
+            creatorAvatar: e.creatorAvatar,
+            companyName: e.companyName,
+            companyLogo: e.companyLogo,
+            skills: e.skills,
+            tasks: e.tasks,
+            createdAt: e.createdAt,
+            deletedAt: e.deletedAt,
+            business: e.business,
+            numberApplied: e.numberApplied,
+          )),
     ];
 
-    emit(state.coppyWith(postsData: newPosts));
+    emit(state.coppyWith(postsData: newPosts, isLoadMore: !state.isLoadMore));
+  }
+
+  Future<void> onRefreshSearchWork(
+      RefreshSearchWorkEvent event, Emitter emit) async {
+    GetWorkModel getWorkModel = GetWorkModel(
+      page: defaultPage,
+      pageSize: defaultPageSize,
+      search: state.txtSearch,
+    );
+    final List<PostEntity> posts =
+        await postUseCase.getSearchWorks(getWorkModel);
+
+    emit(state.coppyWith(postsData: posts, isLoadMore: false));
+  }
+
+  Future<void> onLoadMoreSearchWork(
+      LoadMoreSearchWorkEvent event, Emitter emit) async {
+    emit(state.coppyWith(isLoadMore: event.isLoadMore));
   }
 }

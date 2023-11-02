@@ -64,18 +64,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     emit(state.copyWith(isRemember: event.isRemember));
   }
 
-  Future<void> subscribeToTopic(String topic) async {
-    await FirebaseMessagingService.subscribeToTopic(topic);
-  }
-
   num verifyAccessToken(String accessToken) {
     final jwt = JWT.verify(accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
     final role = jwt.payload['role'];
-
-    if (role != 1) {
-      final topic = jwt.payload['business'];
-      subscribeToTopic(topic);
-    }
     return role;
   }
 

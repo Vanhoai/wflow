@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
@@ -32,21 +33,32 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> getMyProfile() async {
     final response = await userUseCase.myProfile();
+    late int topicBusiness = 0;
+
     response.fold(
       (UserEntity userEntity) {
         final authEntity = instance.get<AppBloc>().state.authEntity;
         instance.get<AppBloc>().add(AppChangeUser(userEntity: userEntity));
         instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: userEntity.role));
+
+        topicBusiness = userEntity.business;
       },
       (Failure failure) {
         AlertUtils.showMessage('Notification', failure.message);
+        return null;
       },
     );
+
+    if (topicBusiness != 0) {
+      await FirebaseMessagingService.subscribeToTopic(topicBusiness.toString());
+      print('Subscribed to topic ${topicBusiness.toString()}');
+    }
   }
 
   FutureOr onInit(HomeInitialEvent event, Emitter<HomeState> emit) async {
     emit(state.copyWith(isLoading: true));
     await getMyProfile();
+
     final categories = await categoryUseCase.getPostCategory();
 
     final future = await Future.wait([

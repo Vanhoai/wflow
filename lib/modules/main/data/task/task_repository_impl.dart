@@ -39,4 +39,14 @@ class TaskRepositoryImpl implements TaskRepository {
       return Right(ServerFailure(message: exception.toString()));
     }
   }
+
+  @override
+  Future<Either<List<TaskEntity>, Failure>> taskInContract(num id) async {
+    try {
+      final response = await taskService.taskInContract(id);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
 }

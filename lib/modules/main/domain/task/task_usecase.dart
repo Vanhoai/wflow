@@ -9,6 +9,7 @@ abstract class TaskUseCase {
   Future<Either<TaskEntity, Failure>> addTaskToContract(CreateTaskModel model);
   Future<Either<TaskEntity, Failure>> updateTaskInContract(UpdateTaskModel model);
   Future<Either<String, Failure>> deleteTaskInContract(String id);
+  Future<Either<List<TaskEntity>, Failure>> taskInContract(num id);
 }
 
 class TaskUseCaseImpl implements TaskUseCase {
@@ -28,5 +29,10 @@ class TaskUseCaseImpl implements TaskUseCase {
   @override
   Future<Either<TaskEntity, Failure>> updateTaskInContract(UpdateTaskModel model) {
     return taskRepository.updateTaskInContract(model);
+  }
+
+  @override
+  Future<Either<List<TaskEntity>, Failure>> taskInContract(num id) {
+    return taskRepository.taskInContract(id);
   }
 }

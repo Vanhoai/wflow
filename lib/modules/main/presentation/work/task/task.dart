@@ -6,13 +6,18 @@ import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/loading/loading.dart';
+import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
+import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
+import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/presentation/work/task/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/work/task/bloc/event.dart';
 
 import 'bloc/state.dart';
 
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({super.key});
-
+  const TaskScreen({required this.idContract, super.key});
+  final num idContract;
   @override
   State<StatefulWidget> createState() {
     return _TaskScreenState();
@@ -22,92 +27,123 @@ class TaskScreen extends StatefulWidget {
 class _TaskScreenState extends State<TaskScreen> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const AppHeader(text: 'Tasks'),
-        body: BlocProvider(
-          lazy: true,
-          create: (context) => TaskBloc(),
-          child: BlocBuilder<TaskBloc, TaskState>(
-            buildWhen: (previous, current) => true,
-            builder: (context, state) {
-              return Container(
-                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                child: Stack(
-                  children: [
-                    Container(
-                      width: 1,
-                      margin: const EdgeInsets.only(left: 11, bottom: 48),
-                      color: AppColors.borderColor.withAlpha(80),
+    return BlocProvider(
+      lazy: true,
+      create: (context) =>
+          TaskBloc(taskUseCase: instance.get<TaskUseCase>())..add(GetTaskEvent(idContract: widget.idContract)),
+      child: BlocBuilder<TaskBloc, TaskState>(
+        buildWhen: (previous, current) => true,
+        builder: (context, state) {
+          return CommonScaffold(
+            appBar: const AppHeader(text: 'Tasks'),
+            body: RefreshIndicator(
+              onRefresh: () async => context.read<TaskBloc>().add(GetTaskEvent(idContract: widget.idContract)),
+              child: Stack(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (state is GetTaskListSuccessState) {
+                        if (state.taskEntities.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No item task',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          );
+                        }
+                        return Container(
+                          margin: const EdgeInsets.only(top: 15, bottom: 15),
+                          padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: state.taskEntities.length,
+                            itemBuilder: (context, index) {
+                              return _task(state.taskEntities[index], context);
+                            },
+                          ),
+                        );
+                      }
+                      return const SizedBox();
+                    },
+                  ),
+                  Positioned(
+                    child: Visibility(
+                      visible: state.isLoading,
+                      child: Container(
+                        width: MediaQuery.of(context).size.width,
+                        height: MediaQuery.of(context).size.height,
+                        color: Colors.white.withOpacity(0.1),
+                        child: const Loading(),
+                      ),
                     ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: state.listTask.length,
-                      itemBuilder: (context, index) {
-                        return _task(state.listTask[index], context);
-                      },
-                    ),
-                  ],
-                ),
-              );
-            },
-          ),
-        ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }
 
-  Widget _task(Task task, BuildContext context) {
-    return Column(
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _boxStatus(task.status),
-            const SizedBox(
-              width: 19,
-            ),
-            Expanded(
-              child: Column(
-                children: [
-                  InkWell(
-                    onTap: () {
-                      _showDetail(task, context);
-                    },
-                    borderRadius: BorderRadius.circular(8),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 19),
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(width: 1, color: AppColors.borderColor.withAlpha(90))),
-                      child: Text(
-                        task.title,
-                        maxLines: 2,
-                        style: Theme.of(context).textTheme.displayMedium,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+  Widget _task(TaskEntity task, BuildContext context) {
+    return Stack(children: [
+      Container(
+        width: 1,
+        height: 110,
+        margin: const EdgeInsets.only(left: 11),
+        color: AppColors.borderColor.withAlpha(80),
+      ),
+      Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              _boxStatus(task.state),
+              const SizedBox(
+                width: 19,
+              ),
+              Expanded(
+                child: InkWell(
+                  onTap: () {
+                    _showDetail(task, context);
+                  },
+                  borderRadius: BorderRadius.circular(8),
+                  child: Container(
+                    width: MediaQuery.of(context).size.width,
+                    padding: const EdgeInsets.symmetric(vertical: 21, horizontal: 19),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(width: 1, color: AppColors.borderColor.withAlpha(90))),
+                    child: Text(
+                      task.title,
+                      maxLines: 2,
+                      style: Theme.of(context).textTheme.displayMedium,
+                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                ],
-              ),
-            )
-          ],
-        ),
-        Container(
-          margin: const EdgeInsets.only(top: 8),
-          alignment: Alignment.centerRight,
-          child: Text(
-            instance.get<Time>().getDayMonthYear(task.end),
-            style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                  color: task.status == 'DONE' ? AppColors.greenColor : AppColors.redColor,
                 ),
+              )
+            ],
           ),
-        ),
-        const SizedBox(
-          height: 20,
-        ),
-      ],
-    );
+          Container(
+            margin: const EdgeInsets.only(top: 8),
+            alignment: Alignment.centerRight,
+            child: Text(
+              instance.get<Time>().getDayMonthYear(task.endTime.toString()),
+              style: Theme.of(context).textTheme.displayMedium!.copyWith(
+                    color: task.state == 'Done' ? AppColors.greenColor : AppColors.redColor,
+                  ),
+            ),
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+        ],
+      ),
+    ]);
   }
 
   Widget _boxStatus(String status) {
@@ -124,11 +160,11 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Widget _iconStatus(String status) {
     switch (status) {
-      case 'DONE':
+      case 'Done':
         return Padding(padding: const EdgeInsets.all(2), child: SvgPicture.asset(AppConstants.checkOutLine));
-      case 'REQUEST':
+      case 'InProgress':
         return Padding(padding: const EdgeInsets.all(0), child: SvgPicture.asset(AppConstants.warning));
-      case 'REJECT':
+      case 'Reject':
         return Padding(padding: const EdgeInsets.all(4), child: SvgPicture.asset(AppConstants.danger));
       default:
         return Padding(padding: const EdgeInsets.all(2), child: SvgPicture.asset(AppConstants.checkOutLine));
@@ -137,20 +173,21 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Color _colorSatus(String status) {
     switch (status) {
-      case 'NONE':
+      case 'Created':
         return Colors.white;
-      case 'DONE':
+      case 'Done':
+      case 'Accepted':
         return AppColors.greenColor;
-      case 'REQUEST':
+      case 'InProgress':
         return Colors.yellow;
-      case 'REJECT':
+      case 'Reject':
         return AppColors.redColor;
       default:
         return Colors.white;
     }
   }
 
-  _showDetail(Task task, BuildContext context) {
+  _showDetail(TaskEntity task, BuildContext context) {
     final ScrollController controller = ScrollController();
     return showModalBottomSheet(
       context: context,
@@ -205,13 +242,13 @@ class _TaskScreenState extends State<TaskScreen> {
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(top: 10),
                 child: Text(
-                  'Deadline: ${instance.get<Time>().getDayMonthYear(task.end)}',
+                  'Deadline: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
                   style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: task.status == 'DONE' ? AppColors.greenColor : AppColors.redColor,
+                        color: task.state == 'DONE' ? AppColors.greenColor : AppColors.redColor,
                       ),
                 ),
               ),
-              _buttonStatus(task.status),
+              _buttonStatus(task.state),
             ],
           ),
         );
@@ -240,24 +277,27 @@ class _TaskScreenState extends State<TaskScreen> {
       child: Row(
         children: [
           Expanded(
-            child: InkWell(
-              onTap: () {
-                print('hihi');
-              },
-              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              child: Ink(
-                height: 45,
-                decoration: const BoxDecoration(
-                  color: AppColors.redColor,
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                ),
-                child: Container(
-                  // min sizes for Material buttons
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Reject',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  border: Border.all(color: Theme.of(context).primaryColor)),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Cancel',
+                      textAlign: TextAlign.center,
+                      style:
+                          TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ),
               ),
@@ -267,24 +307,24 @@ class _TaskScreenState extends State<TaskScreen> {
             width: 20,
           ),
           Expanded(
-            child: InkWell(
-              onTap: () {
-                print('hihi');
-              },
-              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              child: Ink(
-                height: 45,
-                decoration: const BoxDecoration(
-                  color: AppColors.greenColor,
-                  borderRadius: BorderRadius.all(Radius.circular(8.0)),
-                ),
-                child: Container(
-                  // min sizes for Material buttons
-                  alignment: Alignment.center,
-                  child: const Text(
-                    'Done task',
-                    textAlign: TextAlign.center,
-                    style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+              ),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: () {},
+                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                  child: Container(
+                    height: 45,
+                    alignment: Alignment.center,
+                    child: const Text(
+                      'Done',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                    ),
                   ),
                 ),
               ),
@@ -297,23 +337,20 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Widget _buttonReject() {
     return Container(
-      margin: const EdgeInsets.only(top: 10),
-      child: InkWell(
-        onTap: () {
-          print('hihi');
-        },
+      decoration: BoxDecoration(
+        color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-        child: Ink(
-          height: 45,
-          decoration: const BoxDecoration(
-            color: AppColors.greenColor,
-            borderRadius: BorderRadius.all(Radius.circular(8.0)),
-          ),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {},
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
           child: Container(
-            // min sizes for Material buttons
+            height: 45,
             alignment: Alignment.center,
             child: const Text(
-              'Done task',
+              'Done Task',
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
             ),

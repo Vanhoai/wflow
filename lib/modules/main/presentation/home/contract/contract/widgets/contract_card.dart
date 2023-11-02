@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
@@ -42,7 +43,7 @@ class _ContractCardState extends State<ContractCard> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: widget.contractEntity.id),
           child: Container(
             padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
             child: Column(
@@ -119,7 +120,7 @@ class _ContractCardState extends State<ContractCard> {
                       ),
                     ),
                     Text(
-                      Time().getDayMonthYear(DateTime.now().toString()),
+                      instance.get<Time>().getDayMonthYear(DateTime.now().toString()),
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

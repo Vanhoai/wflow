@@ -108,7 +108,11 @@ class AppRoutes {
       case RouteKeys.auStepThreeScreen:
         return MaterialPageRoute(builder: (_) => const AuthStepThreeScreen());
       case RouteKeys.taskScreen:
-        return MaterialPageRoute(builder: (_) => const TaskScreen());
+        final args = settings.arguments as num;
+        return MaterialPageRoute(
+            builder: (_) => TaskScreen(
+                  idContract: args,
+                ));
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:

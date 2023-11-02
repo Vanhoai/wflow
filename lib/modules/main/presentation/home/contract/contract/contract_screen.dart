@@ -74,10 +74,7 @@ class _ContractScreenState extends State<ContractScreen> {
                             controller: _scrollController,
                             itemCount: state.contractEntities.length,
                             itemBuilder: (context, index) => ContractCard(
-                              image: state.contractEntities[index].business.logo,
-                              name: state.contractEntities[index].title,
-                              content: state.contractEntities[index].content,
-                              status: state.contractEntities[index].state,
+                              contractEntity: state.contractEntities[index],
                             ),
                           );
                         } else {

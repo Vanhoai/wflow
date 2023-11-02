@@ -21,28 +21,22 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
   }
 
   static RecordState initState() {
-    return RecordState(
-        isRecord: false, timeRecord: "Nhấn để ghi âm", file: null);
+    return const RecordState(isRecord: false, timeRecord: 'Nhấn để ghi âm', file: null);
   }
 
-  FutureOr<void> handleStartRecord(
-      HandleStartRecordEvent event, Emitter<RecordState> emit) async {
+  FutureOr<void> handleStartRecord(HandleStartRecordEvent event, Emitter<RecordState> emit) async {
     final cache = await cachePath;
     path = '$cache/temp.wav';
     await _recordingSession.openRecorder();
-    await _recordingSession
-        .setSubscriptionDuration(const Duration(milliseconds: 10));
+    await _recordingSession.setSubscriptionDuration(const Duration(milliseconds: 10));
 
     await _recordingSession.startRecorder(
       toFile: path,
       codec: Codec.pcm16WAV,
     );
 
-    await emit
-        .forEach(_recordingSession.onProgress as Stream<RecordingDisposition>,
-            onData: (e) {
-      var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds,
-          isUtc: true);
+    await emit.forEach(_recordingSession.onProgress as Stream<RecordingDisposition>, onData: (e) {
+      var date = DateTime.fromMillisecondsSinceEpoch(e.duration.inMilliseconds, isUtc: true);
       var timeText = DateFormat('mm:ss', 'en_GB').format(date);
       return state.copyWith(
         timeRecord: timeText,
@@ -51,8 +45,7 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
     });
   }
 
-  FutureOr<void> handleStopRecord(
-      HandleStopRecordEvent event, Emitter<RecordState> emit) async {
+  FutureOr<void> handleStopRecord(HandleStopRecordEvent event, Emitter<RecordState> emit) async {
     await _recordingSession.stopRecorder();
     File file = File(path);
     await _recordingSession.closeRecorder();
@@ -74,8 +67,7 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
     return directory.path;
   }
 
-  FutureOr<void> handleRemoveRecord(
-      HandleRemoveRecordEvent event, Emitter<RecordState> emit) async {
+  FutureOr<void> handleRemoveRecord(HandleRemoveRecordEvent event, Emitter<RecordState> emit) async {
     try {
       await state.file?.delete(recursive: true);
     } catch (e) {

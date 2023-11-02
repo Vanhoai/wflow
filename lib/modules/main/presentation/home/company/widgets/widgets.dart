@@ -1,2 +1,5 @@
-export 'header_company.dart';
-export 'company_job.dart';
+export 'company_job_post.dart';
+export 'company_member.dart';
+export 'company_home.dart';
+export 'company_about.dart';
+export 'company_location.dart';

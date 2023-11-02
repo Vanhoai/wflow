@@ -25,13 +25,28 @@ class AppChangeTheme extends AppEvent {
 
 class SetIsFirstTime extends AppEvent {}
 
-class AppChangeAuth extends AppEvent {
-  final AuthEntity authEntity;
+class AppChangeUser extends AppEvent {
+  final UserEntity userEntity;
 
-  AppChangeAuth({required this.authEntity});
+  AppChangeUser({required this.userEntity});
 
   @override
-  List<Object?> get props => [authEntity];
+  List<Object?> get props => [userEntity];
+}
+
+class AppChangeAuth extends AppEvent {
+  final AuthEntity authEntity;
+  final num role;
+  final bool rememberMe;
+
+  AppChangeAuth({
+    required this.authEntity,
+    this.role = 0,
+    this.rememberMe = false,
+  });
+
+  @override
+  List<Object?> get props => [authEntity, role, rememberMe];
 }
 
 class RefreshTokenEvent extends AppEvent {

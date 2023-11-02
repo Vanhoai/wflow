@@ -1,14 +1,15 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
@@ -45,7 +46,11 @@ class _HomeScreenState extends State<HomeScreen> {
     final ThemeData themeData = Theme.of(context);
 
     return BlocProvider(
-      create: (_) => HomeBloc(postUseCase: instance.get<PostUseCase>())..add(HomeInitialEvent()),
+      create: (_) => HomeBloc(
+        postUseCase: instance.get<PostUseCase>(),
+        categoryUseCase: instance.get<CategoryUseCase>(),
+        userUseCase: instance.get<UserUseCase>(),
+      )..add(HomeInitialEvent()),
       child: CommonScaffold(
         isSafe: true,
         body: CustomScrollView(
@@ -56,11 +61,11 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: BlocBuilder<AppBloc, AppState>(
                   bloc: instance.get<AppBloc>(),
                   builder: (context, state) {
-                    final name = state.authEntity.user.name;
-                    final email = state.authEntity.user.email;
+                    final name = state.userEntity.name;
+                    final email = state.userEntity.email;
 
                     return Header(
-                      leadingPhotoUrl: state.authEntity.user.avatar,
+                      leadingPhotoUrl: state.userEntity.avatar,
                       title: Text(
                         'Hi $name 👋🏻',
                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
@@ -80,20 +85,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         )),
                       ),
                       onTapLeading: () {},
-                      onTapTitle: () {},
                       leadingBadge: true,
                       actions: [
-                        InkWell(
+                        HeaderIcon(
+                          icon: AppConstants.ic_notification,
                           onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
-                          child: SvgPicture.asset(
-                            AppConstants.ic_notification,
-                            width: 28,
-                            height: 28,
-                            colorFilter: ColorFilter.mode(
-                              themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
-                              BlendMode.srcIn,
-                            ),
-                          ),
                         ),
                       ],
                     );
@@ -130,8 +126,6 @@ class _HomeScreenState extends State<HomeScreen> {
             SelectionListWidget(scrollController: _selectionScrollController),
             const RecentJobListWidget(),
           ],
-          clipBehavior: Clip.none,
-          cacheExtent: 1000,
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           physics: const BouncingScrollPhysics(),

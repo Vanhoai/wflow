@@ -42,4 +42,3 @@ run:
 	@echo "Running app..."
 	@flutter run --debug
 	@echo "App is running..."
-	

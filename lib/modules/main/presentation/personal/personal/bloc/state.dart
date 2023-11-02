@@ -1,8 +1,36 @@
 part of 'bloc.dart';
 
 class PersonalState extends Equatable {
-  @override
-  List<Object> get props => [];
-}
+  final String message;
+  final bool isLoading;
+  final UserEntity userEntity;
+  final bool isSignOut;
 
-class SignOutSuccess extends PersonalState {}
+  const PersonalState({
+    required this.message,
+    required this.isLoading,
+    required this.userEntity,
+    required this.isSignOut,
+  });
+
+  PersonalState copyWith({
+    String? message,
+    bool? isLoading,
+    UserEntity? userEntity,
+    bool? isSignOut,
+  }) {
+    return PersonalState(
+      message: message ?? this.message,
+      isLoading: isLoading ?? this.isLoading,
+      userEntity: userEntity ?? this.userEntity,
+      isSignOut: isSignOut ?? this.isSignOut,
+    );
+  }
+
+  @override
+  List<Object> get props => [
+        message,
+        isLoading,
+        userEntity,
+      ];
+}

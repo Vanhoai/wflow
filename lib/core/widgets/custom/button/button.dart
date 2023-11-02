@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 
 class PrimaryButton extends StatefulWidget {
@@ -11,6 +12,7 @@ class PrimaryButton extends StatefulWidget {
     this.marginVertical = 0,
     this.height = 50,
     this.width = double.infinity,
+    this.labelStyle = const TextStyle(color: Colors.white, fontSize: 16),
   });
 
   final String label;
@@ -20,6 +22,7 @@ class PrimaryButton extends StatefulWidget {
   final double width;
   final Function onPressed;
   final bool isLoading;
+  final TextStyle labelStyle;
 
   @override
   State<PrimaryButton> createState() => _PrimaryButtonState();
@@ -43,11 +46,11 @@ class _PrimaryButtonState extends State<PrimaryButton> {
               disabledBackgroundColor: Theme.of(context).primaryColor.withOpacity(0.5),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               animationDuration: const Duration(milliseconds: 300),
-              shadowColor: Colors.blue.withOpacity(0.8),
+              shadowColor: AppColors.primary.withOpacity(0.5),
               elevation: 4,
             ),
             onPressed: widget.isLoading ? null : () => widget.onPressed(),
-            child: Text(widget.label, style: const TextStyle(color: Colors.white, fontSize: 16)),
+            child: Text(widget.label, style: widget.labelStyle),
           ),
           if (widget.isLoading)
             const Positioned(

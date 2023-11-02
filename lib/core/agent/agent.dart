@@ -28,6 +28,10 @@ class Agent {
     }, onError: (DioException exception, handler) async {
       return handler.next(exception);
     }, onResponse: (Response<dynamic> response, handler) async {
+      if (response.statusCode! >= 500) {
+        exitApp('Some thing error, please try again later');
+      }
+
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       // check status 401 => refresh token
@@ -44,9 +48,6 @@ class Agent {
         } else {
           exitApp(httpResponse.message);
         }
-      } else if (httpResponse.statusCode >= 400) {
-        // some thing exception (login another device, ...)
-        exitApp(httpResponse.message);
       }
 
       return handler.next(response);
@@ -59,9 +60,9 @@ class Agent {
     BaseOptions opts = BaseOptions();
     opts.baseUrl = EnvironmentConfiguration.apiBaseUrl;
     opts.contentType = Headers.jsonContentType;
-    opts.connectTimeout = const Duration(seconds: 4);
-    opts.receiveTimeout = const Duration(seconds: 4);
-    opts.sendTimeout = const Duration(seconds: 4);
+    opts.connectTimeout = const Duration(seconds: 30);
+    opts.receiveTimeout = const Duration(seconds: 30);
+    opts.sendTimeout = const Duration(seconds: 30);
     return opts;
   }
 

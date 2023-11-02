@@ -29,5 +29,10 @@ class RouteKeys {
   static const String taskScreen = '/task_screen';
   static const String callScreen = '/call_screen';
   static const String companyScreen = '/company_screen';
+  static const String upPostScreen = '/up_post_screen';
+  static const String developScreen = '/develop_screen';
+  static const String applyScreen = '/apply_screen';
+  static const String balanceScreen = '/balance_screen';
   static const String searchWorkScreen = '/search_work_screen';
+  static const String contractWaitingSignScreen = '/contract_waiting_sign_screen';
 }

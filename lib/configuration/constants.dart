@@ -7,6 +7,7 @@ class AppConstants {
   static const String bottomWork = '${bottomIconPath}ic.work.svg';
   static const String bottomMessage = '${bottomIconPath}ic.message.svg';
   static const String bottomExtended = '${bottomIconPath}ic.extended.svg';
+
   //path for common icon
   static const String commonIconPath = 'assets/icons/common/';
   static const String app = '${commonIconPath}ic.app.svg';
@@ -39,6 +40,8 @@ class AppConstants {
   static const String add = '${commonIconPath}ic.add.svg';
   static const String back = '${commonIconPath}ic.back.svg';
   static const String flash = '${commonIconPath}ic.flash.svg';
+  static const String apply = '${commonIconPath}ic.apply.svg';
+  static const String close = '${commonIconPath}ic.close.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';
@@ -48,20 +51,27 @@ class AppConstants {
   static const String introductionCash = '${introductionPath}plash.cash.svg';
   static const String introductionTask = '${introductionPath}plash.task.svg';
 
-  static const String ic_balance = 'assets/icons/balance.svg';
-  static const String ic_reputation = 'assets/icons/reputation.svg';
-  static const String ic_business = 'assets/icons/business.svg';
-  static const String ic_more = 'assets/icons/more.svg';
-  static const String ic_notification = 'assets/icons/notification.svg';
-  static const String ic_search = 'assets/icons/search.svg';
-  static const String ic_filter = 'assets/icons/filter.svg';
-  static const String icLogo = 'assets/icons/logo.svg';
+  static const String ic_balance = '${commonIconPath}ic.balance.svg';
+  static const String ic_reputation = '${commonIconPath}ic.reputation.svg';
+  static const String ic_business = '${commonIconPath}ic.business.svg';
+  static const String ic_more = '${commonIconPath}ic.morev2.svg';
+  static const String ic_notification = '${commonIconPath}ic.notification.svg';
+  static const String ic_search = '${commonIconPath}ic.searchv2.svg';
+  static const String ic_filter = '${commonIconPath}ic.filter.svg';
+  static const String ic_logo = '${commonIconPath}ic.logo.svg';
+  static const String ic_mastercard = '${commonIconPath}ic.mastercard.svg';
+  static const String ic_balancew = '${commonIconPath}ic.balancew.svg';
+  static const String ic_edit = '${commonIconPath}ic.edit.svg';
+  static const String ic_work = '${commonIconPath}ic.work.svg';
+  static const String ic_clock = '${commonIconPath}ic.clock.svg';
+  static const String ic_money = '${commonIconPath}ic.money.svg';
 
   //image
   static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';
 
   // path for lottie animation
   static const String lottiePath = 'assets/anim/';
+  static const String developAnim = '${lottiePath}develop_anim.json';
 
   // languages
   static const String pathVN = 'assets/languages/vn.json';
@@ -69,6 +79,8 @@ class AppConstants {
 
   // storage key
   static const String keySecureStorage = '@com.flow';
+  static const String usernameKey = '$keySecureStorage@USERNAME';
+  static const String passwordKey = '$keySecureStorage@PASSWORD';
   static const String accessTokenKey = '$keySecureStorage@ACCESS_TOKEN';
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
   static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';

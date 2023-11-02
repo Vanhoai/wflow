@@ -19,15 +19,15 @@ class NavigationService {
     return navigatorKey.currentState!.pushReplacementNamed(routeName, arguments: arguments);
   }
 
-  Future<dynamic> pop() async {
-    return navigatorKey.currentState!.pop();
+  Future<dynamic> pop({int? numberPop}) async {
+    return navigatorKey.currentState!.pop(numberPop);
   }
 
   Future<dynamic> canPop() async {
     return navigatorKey.currentState!.canPop();
   }
 
-  Future<dynamic> popUntil(String routeName) async {
-    return navigatorKey.currentState!.popUntil(ModalRoute.withName(routeName));
+  Future<dynamic> popUntil(int numPop) async {
+    return navigatorKey.currentState!.popUntil((_) => numPop-- <= 0);
   }
 }

@@ -1,5 +1,3 @@
-// ignore_for_file: deprecated_member_use
-
 import 'dart:async';
 
 import 'package:device_info_plus/device_info_plus.dart';
@@ -17,6 +15,7 @@ import 'package:wflow/common/videocall/bloc/state.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
@@ -37,9 +36,12 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   Widget _bottomTabBar(String icon, bool isActive) {
     return SvgPicture.asset(
       icon,
-      color: isActive ? Colors.blueAccent : Colors.blueGrey,
       height: 24,
       width: 24,
+      colorFilter: ColorFilter.mode(
+        isActive ? AppColors.primary : AppColors.fadeText,
+        BlendMode.srcIn,
+      ),
     );
   }
 
@@ -68,9 +70,9 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     Future<void> redirectFlash() async {
-      int role = instance.get<AppBloc>().state.authEntity.user.role;
+      int role = instance.get<AppBloc>().state.role.toInt();
       if (role == 2) {
-        instance.get<NavigationService>().pushNamed(RouteKeys.companyScreen);
+        instance.get<NavigationService>().pushNamed(RouteKeys.upPostScreen);
       } else {
         instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
       }
@@ -121,7 +123,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
                       height: 24,
                       width: 24,
                       colorFilter: const ColorFilter.mode(
-                        Color.fromARGB(255, 40, 114, 250),
+                        AppColors.primary,
                         BlendMode.srcIn,
                       ),
                     ),

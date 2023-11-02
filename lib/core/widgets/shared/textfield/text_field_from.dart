@@ -13,6 +13,7 @@ class TextFieldFrom extends StatefulWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.isPassword = false,
+    this.contentPadding = const EdgeInsets.symmetric(vertical: 16),
   });
 
   final Function(String val)? onChange;
@@ -24,6 +25,7 @@ class TextFieldFrom extends StatefulWidget {
   final TextInputAction? textInputAction;
   final TextEditingController? controller;
   final TextInputType? keyboardType;
+  final EdgeInsetsGeometry? contentPadding;
 
   @override
   State<StatefulWidget> createState() {
@@ -75,7 +77,7 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
             suffixIcon: _isPassword(),
             suffixIconColor: _focusIconColor(),
             hintText: widget.placeholder,
-            contentPadding: const EdgeInsets.symmetric(vertical: 16),
+            contentPadding: widget.contentPadding,
             hintStyle: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.fadeText),
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(8)),

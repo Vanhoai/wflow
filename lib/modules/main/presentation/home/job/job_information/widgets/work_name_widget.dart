@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class WorkNameWidget extends StatelessWidget {
-  const WorkNameWidget({super.key});
+  final String workName;
+  const WorkNameWidget({required this.workName,super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,7 @@ class WorkNameWidget extends StatelessWidget {
           ),
           const SizedBox(height: 13.0),
           Text(
-            'Mobile developer (Flutter / React Native)',
+            workName,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,

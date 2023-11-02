@@ -2,9 +2,10 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/core/entities/category/category_entity.dart';
 import 'package:wflow/core/models/models.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
+import 'package:wflow/modules/main/domain/category/category_usecase.dart';
+import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 
@@ -13,8 +14,12 @@ part 'state.dart';
 
 class WorkBloc extends Bloc<WorkEvent, WorkState> {
   final PostUseCase postUseCase;
+  final CategoryUseCase categoryUseCase;
 
-  WorkBloc({required this.postUseCase}) : super(const WorkState(categories: [], posts: [])) {
+  WorkBloc({
+    required this.postUseCase,
+    required this.categoryUseCase,
+  }) : super(const WorkState(categories: [], posts: [])) {
     on<WorkInitialEvent>(onInitial);
     on<OnSelectCategoryEvent>(onSelectCategory);
     on<RefreshEvent>(onRefresh);
@@ -33,33 +38,47 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
   }
 
   FutureOr<void> onInitial(WorkInitialEvent event, Emitter<WorkState> emit) async {
-    final categories = await postUseCase.getPostCategories();
+    emit(state.copyWith(isLoading: true));
+
+    final categories = await categoryUseCase.getPostCategory();
     emit(state.copyWith(categories: categories, categorySelected: categories.first.name));
     await getPost(
       GetPostWithCategory(page: 1, pageSize: 10, category: categories.first.name),
       emit,
       categories.first.name,
     );
+
+    emit(state.copyWith(isLoading: false));
   }
 
   FutureOr<void> onSelectCategory(OnSelectCategoryEvent event, Emitter<WorkState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
     emit(state.copyWith(categorySelected: event.category));
     await getPost(
       GetPostWithCategory(page: 1, pageSize: 10, category: event.category),
       emit,
       event.category,
     );
+
+    emit(state.copyWith(isLoading: false));
   }
 
   FutureOr<void> onRefresh(RefreshEvent event, Emitter<WorkState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
     await getPost(
       GetPostWithCategory(page: 1, pageSize: 10, category: state.categorySelected),
       emit,
       state.categorySelected,
     );
+
+    emit(state.copyWith(isLoading: false));
   }
 
   FutureOr<void> onLoadMore(LoadMoreEvent event, Emitter<WorkState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
     if (state.meta.currentPage >= state.meta.totalPage) {
       emit(state.copyWith(messageNotification: 'No more data'));
       emit(state.copyWith(messageNotification: ''));
@@ -80,5 +99,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         meta: response.meta,
       ),
     );
+
+    emit(state.copyWith(isLoading: false));
   }
 }

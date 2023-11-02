@@ -1,16 +1,8 @@
 import 'package:flutter/material.dart';
 
-final List<Map<String, dynamic>> staticRequireSkill = [
-  {'title': 'Database'},
-  {'title': 'Design'},
-  {'title': 'Mobile'},
-  {'title': 'Web'},
-  {'title': 'Iot'},
-  {'title': 'Sale'}
-];
-
 class RequireSkill extends StatefulWidget {
-  const RequireSkill({super.key, required this.scrollController, required this.onSelected});
+  final List<String> skills;
+  const RequireSkill({required this.skills, super.key, required this.scrollController, required this.onSelected});
 
   final ScrollController scrollController;
   final Function(int) onSelected;
@@ -46,29 +38,32 @@ class _RequireSkillState extends State<RequireSkill> {
             ),
             child: ListView.separated(
               separatorBuilder: (context, index) => const SizedBox(width: 8.0),
+              itemCount: widget.skills.length,
+              physics: const BouncingScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
               itemBuilder: (context, index) {
-                final e = staticRequireSkill[index];
+                final e = widget.skills[index];
                 return SizedBox(
-                  height: 28,
+                  height: 40,
                   child: ChoiceChip.elevated(
-                    label: Text(e['title'], style: themeData.textTheme.displayMedium),
+                    label: Text('# $e', style: themeData.textTheme.displayMedium),
                     selected: false,
                     showCheckmark: false,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(4),
+                    ),
                     labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                     visualDensity: VisualDensity.compact,
                     labelStyle: themeData.textTheme.displayLarge!.copyWith(
-                      color: themeData.colorScheme.onBackground,
+                      color: Colors.black,
                     ),
                     color: MaterialStatePropertyAll(themeData.colorScheme.background),
                     elevation: 3,
                   ),
                 );
               },
-              itemCount: staticRequireSkill.length,
-              physics: const BouncingScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              shrinkWrap: true,
-              padding: const EdgeInsets.only(left: 20.0, right: 20.0),
             ),
           )
         ],

@@ -16,6 +16,13 @@ class Meta {
     required this.pageSize,
   });
 
+  factory Meta.empty() => const Meta(
+        currentPage: 1,
+        totalPage: 0,
+        totalRecord: 0,
+        pageSize: 10,
+      );
+
   factory Meta.fromJson(Map<String, dynamic> json) => _$MetaFromJson(json);
 
   Map<String, dynamic> toJson() => _$MetaToJson(this);

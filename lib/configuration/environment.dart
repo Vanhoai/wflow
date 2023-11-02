@@ -6,4 +6,5 @@ class EnvironmentConfiguration {
   static String apiBaseUrl = FlutterConfigPlus.get('API_BASE_URL');
   static String appHeading = FlutterConfigPlus.get('APP_HEADING');
   static String applicationID = FlutterConfigPlus.get('APPLICATION_ID');
+  static String accessTokenSecret = FlutterConfigPlus.get('ACCESS_TOKEN_SECRET');
 }

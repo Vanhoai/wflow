@@ -1,26 +1,28 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
 const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8d6f09dd6320855f.jpg';
 
 class CandidateItemWidget extends StatefulWidget {
-  const CandidateItemWidget({
-    super.key,
-    this.onTapLeading,
-    this.leadingPhotoUrl = IMAGE_PHOTO,
-    this.onTapName,
-    this.onTapCv,
-    this.onTapChat,
-    this.onTap,
-  });
+  const CandidateItemWidget(
+      {super.key,
+      this.onTapLeading,
+      this.onTapName,
+      this.onTapCv,
+      this.onTapChat,
+      this.onTap,
+      required this.candidateEntity});
 
   final double leadingSize = 50;
-  final String leadingPhotoUrl;
   final VoidCallback? onTapLeading;
   final VoidCallback? onTapName;
-  final VoidCallback? onTapCv;
-  final VoidCallback? onTapChat;
   final VoidCallback? onTap;
+  final VoidCallback? onTapChat;
+  final VoidCallback? onTapCv;
+  final CandidateEntity candidateEntity;
 
   @override
   State<CandidateItemWidget> createState() => _CandidateItemWidgetState();
@@ -32,7 +34,9 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
     final ThemeData themeData = Theme.of(context);
     return InkWell(
       onTap: widget.onTap,
-      child: SizedBox(
+      borderRadius: BorderRadius.circular(8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 16),
         width: MediaQuery.of(context).size.width,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -44,11 +48,13 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                 ClipRRect(
                   borderRadius: BorderRadius.circular(99),
                   clipBehavior: Clip.antiAlias,
-                  child: Image.network(
-                    widget.leadingPhotoUrl,
+                  child: CachedNetworkImage(
+                    imageUrl: widget.candidateEntity.worker.avatar,
                     width: widget.leadingSize,
                     height: widget.leadingSize,
                     fit: BoxFit.cover,
+                    placeholder: (context, url) => const CupertinoActivityIndicator(),
+                    filterQuality: FilterQuality.high,
                   ),
                 ),
                 Positioned.fill(
@@ -64,7 +70,7 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                 ),
               ],
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 20),
             Expanded(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -74,23 +80,23 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                   InkWell(
                     onTap: widget.onTapName,
                     child: Text(
-                      'Tran Van Hoai',
-                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                      widget.candidateEntity.worker.name,
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
                         color: themeData.colorScheme.onBackground,
                       )),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 4),
                   CandidateCvItemWidget(
-                    cvName: 'React_Native_Developer',
+                    cvName: widget.candidateEntity.cv.url,
                     onTap: widget.onTapCv,
                   ),
                 ],
               ),
             ),
-            const SizedBox(width: 10),
+            const SizedBox(width: 20),
             Column(
               mainAxisSize: MainAxisSize.min,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -119,25 +125,6 @@ class _CandidateItemWidgetState extends State<CandidateItemWidget> {
                         style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
                       ),
                     ),
-                  ),
-                ),
-                const SizedBox(height: 10),
-                IconButton(
-                  onPressed: () {},
-                  icon: RotatedBox(
-                    quarterTurns: 2,
-                    child: Icon(
-                      Icons.arrow_back_ios,
-                      color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                      size: 20,
-                    ),
-                  ),
-                  padding: EdgeInsets.zero,
-                  constraints: const BoxConstraints(),
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(EdgeInsets.zero),
-                    minimumSize: MaterialStateProperty.all(Size.zero),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                 ),
               ],

@@ -43,9 +43,9 @@ class _FormState extends State<FormRegisterPhone> {
         child: Column(
           children: [
             TextFieldFrom(
-              label: 'Số điện thoại',
+              label: 'Phone',
               controller: emailController,
-              placeholder: 'Nhập số điện thoại',
+              placeholder: 'Enter your phone',
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.next,
               prefixIcon: const Icon(
@@ -60,8 +60,8 @@ class _FormState extends State<FormRegisterPhone> {
             ),
             TextFieldFrom(
               controller: passwordController,
-              label: 'Mật khẩu',
-              placeholder: 'Nhập mật khẩu',
+              label: 'Password',
+              placeholder: 'Enter your password',
               textInputAction: TextInputAction.next,
               prefixIcon: const Icon(
                 Icons.lock,
@@ -71,8 +71,8 @@ class _FormState extends State<FormRegisterPhone> {
             ),
             TextFieldFrom(
               controller: rePasswordController,
-              label: 'Nhập lại mật khẩu',
-              placeholder: 'Nhập lại mật khẩu',
+              label: 'Confirm password',
+              placeholder: 'Enter your confirm password',
               textInputAction: TextInputAction.done,
               prefixIcon: const Icon(
                 Icons.lock,
@@ -80,12 +80,10 @@ class _FormState extends State<FormRegisterPhone> {
               ),
               isPassword: true,
             ),
-            const SizedBox(height: 30),
+            const SizedBox(height: 24),
             PrimaryButton(
-              onPressed: () {
-                Navigator.pushReplacementNamed(context, RouteKeys.verificationScreen);
-              },
-              label: 'Đăng ký',
+              onPressed: () => Navigator.pushReplacementNamed(context, RouteKeys.verificationScreen),
+              label: 'Sign Up',
             ),
           ],
         ),

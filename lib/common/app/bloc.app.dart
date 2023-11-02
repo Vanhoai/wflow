@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 part 'state.app.dart';
 part 'event.app.dart';
@@ -16,6 +17,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     on<SetIsFirstTime>(setIsFirstTime);
     on<AppChangeAuth>(onAppChangeAuth);
     on<RefreshTokenEvent>(onRefreshToken);
+    on<AppChangeUser>(onChangeUserEntity);
   }
 
   static AppState onInit() {
@@ -23,24 +25,13 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
       return AppState.fromJson(jsonDecode(sharedPreferences.getString('AppBloc')!));
     }
 
-    return const AppState(
-      authEntity: AuthEntity(
+    return AppState(
+      authEntity: const AuthEntity(
         accessToken: '',
         refreshToken: '',
         isSignIn: false,
-        user: User(
-          id: 0,
-          name: '',
-          role: 0,
-          age: 0,
-          address: '',
-          email: '',
-          phone: '',
-          isVerify: false,
-          avatar: '',
-          business: 0,
-        ),
       ),
+      userEntity: UserEntity.createEmpty(),
     );
   }
 
@@ -58,12 +49,20 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   }
 
   FutureOr<void> onAppChangeAuth(AppChangeAuth event, Emitter<AppState> emit) {
-    emit(state.copyWith(authEntity: event.authEntity));
+    emit(state.copyWith(
+      authEntity: event.authEntity,
+      role: event.role,
+      rememberMe: event.rememberMe,
+    ));
   }
 
   FutureOr<void> onRefreshToken(RefreshTokenEvent event, Emitter<AppState> emit) {
     final authEntity = state.authEntity.copyWith(accessToken: event.accessToken, refreshToken: event.refreshToken);
     emit(state.copyWith(authEntity: authEntity));
+  }
+
+  FutureOr<void> onChangeUserEntity(AppChangeUser event, Emitter<AppState> emit) {
+    emit(state.copyWith(userEntity: event.userEntity));
   }
 
   @override

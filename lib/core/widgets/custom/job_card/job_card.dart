@@ -110,12 +110,12 @@ class _JobCardState extends State<JobCard> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return InkWell(
-      onTap: widget.cardPressed,
-      child: Container(
-        decoration: widget.boxDecoration,
-        padding: widget.padding,
-        margin: widget.margin,
+    return Container(
+      decoration: widget.boxDecoration,
+      padding: widget.padding,
+      margin: widget.margin,
+      child: InkWell(
+        onTap: widget.cardPressed,
         child: Card(
           clipBehavior: Clip.none,
           shape: RoundedRectangleBorder(

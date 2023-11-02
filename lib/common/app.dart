@@ -11,9 +11,6 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/introduction/presentation/introduction.dart';
-import 'package:wflow/modules/main/presentation/home/home/home.dart';
-import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
 
 SystemUiOverlayStyle systemUiOverlayStyle = const SystemUiOverlayStyle(
   statusBarColor: Colors.white,
@@ -82,12 +79,6 @@ class _AppState extends State<App> {
                         );
                       };
                       return child!;
-                      // Widget error = const Text('...rendering error...');
-                      // if (widget is Scaffold || widget is Navigator) {
-                      //   error = Scaffold(body: Center(child: error));
-                      // }
-                      // ErrorWidget.builder = (errorDetails) => error;
-                      // return child!;
                     },
                     navigatorKey:
                         instance.get<NavigationService>().navigatorKey,
@@ -101,7 +92,6 @@ class _AppState extends State<App> {
                         parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                     onGenerateRoute: AppRoutes.generateRoute,
                     initialRoute: RouteKeys.introScreen,
-                    home: const IntroScreen(),
                   ),
                   BlocBuilder(
                     bloc: instance.get<AppLoadingBloc>(),

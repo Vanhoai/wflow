@@ -22,34 +22,24 @@ class SearchWorkScreen extends StatefulWidget {
 
 class _SearchWorkScreenState extends State<SearchWorkScreen> {
   late final TextEditingController _controller;
-  late bool _isHiddenSuffixIcon;
-  Timer? _debounce;
+  late final ScrollController _scrollController;
   late final ThemeData themeData;
+  Timer? _debounce;
 
   @override
   void initState() {
     _controller = TextEditingController();
-    _isHiddenSuffixIcon = true;
+    _scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
     _controller.dispose();
+    _scrollController.dispose();
     _debounce?.cancel();
     super.dispose();
   }
-
-  void _onChangedSearch(String value, BuildContext context) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-
-    _debounce = Timer(const Duration(milliseconds: 200), () {
-      BlocProvider.of<SearchWorkBloc>(context)
-          .add(ChangedSearchWorkEvent(txtSearch: value));
-    });
-  }
-
-  void _onClearSearch() {}
 
   @override
   Widget build(BuildContext context) {
@@ -58,22 +48,25 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
     return BlocProvider(
       create: (_) => SearchWorkBloc(postUseCase: instance.get<PostUseCase>())
         ..add(
-          const ChangedSearchWorkEvent(txtSearch: ''),
+          const InitSearchWorkEvent(),
         ),
       child: Scaffold(
-        appBar: _buildAppBar(),
+        appBar: const AppHeader(text: 'Works'),
         body: _buildBody(),
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar() {
-    return const AppHeader(text: 'Works');
-  }
-
   Widget _buildBody() {
     return BlocBuilder<SearchWorkBloc, SearchWorkState>(
       builder: (context, state) {
+        _scrollController.addListener(() {
+          if (_scrollController.position.maxScrollExtent ==
+              _scrollController.offset) {
+            BlocProvider.of<SearchWorkBloc>(context)
+                .add(const ScrollSearchWorkEvent());
+          }
+        });
         return SizedBox(
           width: double.infinity,
           height: double.infinity,
@@ -81,15 +74,31 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
             children: <Widget>[
               SearchWorkBar(
                 controller: _controller,
-                isHiddenSuffixIcon: _isHiddenSuffixIcon,
-                onChangedSearch: (value) => _onChangedSearch(value, context),
-                onClearSearch: () => _onClearSearch(),
+                isHiddenSuffixIcon: state.isHiddenSuffixIcon,
+                onChangedSearch: (value) => {
+                  BlocProvider.of<SearchWorkBloc>(context)
+                      .add(ChangedIconClearSearchWorkEvent(txtSearch: value)),
+                  if (_debounce?.isActive ?? false) _debounce?.cancel(),
+                  _debounce = Timer(const Duration(milliseconds: 400), () {
+                    BlocProvider.of<SearchWorkBloc>(context)
+                        .add(ChangedSearchWorkEvent(txtSearch: value));
+                  })
+                },
+                onClearSearch: () => {
+                  _controller.clear(),
+                  BlocProvider.of<SearchWorkBloc>(context).add(
+                      const ChangedIconClearSearchWorkEvent(txtSearch: '')),
+                },
               ),
               Expanded(
                 child: ListView.builder(
+                  controller: _scrollController,
                   physics: const BouncingScrollPhysics(),
                   itemBuilder: (context, index) => JobCard(
-                    margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                    margin: const EdgeInsets.symmetric(
+                      horizontal: 20.0,
+                      vertical: 10,
+                    ),
                     boxDecoration: BoxDecoration(
                       color: themeData.colorScheme.background,
                       borderRadius: BorderRadius.circular(8.0),

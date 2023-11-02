@@ -24,25 +24,33 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<SignInWithGoogleEvent>(signInWithGoogle);
   }
 
-  FutureOr<void> onChangeEmail(OnChangeEmailEvent event, Emitter<SignInState> emit) {
+  FutureOr<void> onChangeEmail(
+      OnChangeEmailEvent event, Emitter<SignInState> emit) {
     bool emailValid = false;
-    if (double.tryParse(event.email) != null && event.email.length == 10 || event.email.length == 12) {
-      emailValid = RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\d]').hasMatch(event.email);
+    if (double.tryParse(event.email) != null && event.email.length == 10 ||
+        event.email.length == 12) {
+      emailValid =
+          RegExp(r'[!@#<>?":_`~;[\]\\|=+)(*&^%\d]').hasMatch(event.email);
     } else {
-      emailValid = RegExp(r"^[a-zA-Z\d.a-zA-Z\d.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z\d]+\.[a-zA-Z]+").hasMatch(event.email);
+      emailValid = RegExp(
+              r"^[a-zA-Z\d.a-zA-Z\d.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z\d]+\.[a-zA-Z]+")
+          .hasMatch(event.email);
     }
     emit(state.copyWith(email: event.email, regex: emailValid));
   }
 
-  FutureOr<void> onChangePassword(OnChangePasswordEvent event, Emitter<SignInState> emit) {
+  FutureOr<void> onChangePassword(
+      OnChangePasswordEvent event, Emitter<SignInState> emit) {
     emit(state.copyWith(password: event.password));
   }
 
-  FutureOr<void> rememberPass(RememberPassEvent event, Emitter<SignInState> emit) {
+  FutureOr<void> rememberPass(
+      RememberPassEvent event, Emitter<SignInState> emit) {
     emit(state.copyWith(isRemember: event.isRemember));
   }
 
-  FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
+  FutureOr<void> signInSubmitted(
+      SignInSubmittedEvent event, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
     final String? deviceToken = await FirebaseService.getDeviceToken();
@@ -51,8 +59,10 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
     }
 
-    final response = await authUseCase
-        .signIn(AuthNormalRequest(username: event.email, password: event.password, deviceToken: deviceToken!));
+    final response = await authUseCase.signIn(AuthNormalRequest(
+        username: event.email,
+        password: event.password,
+        deviceToken: deviceToken!));
 
     response.fold(
       (AuthEntity left) {
@@ -60,7 +70,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         emit(SignInSuccess());
       },
       (Failure right) {
-        emit(const SignInFailure(message: 'Something went wrong when sign in, please try again!'));
+        emit(const SignInFailure(
+            message: 'Something went wrong when sign in, please try again!'));
         emit(const SignInState());
       },
     );
@@ -68,7 +79,8 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
-  FutureOr<void> signInWithGoogle(SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
+  FutureOr<void> signInWithGoogle(
+      SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
     String idToken = await FirebaseService.signInWithGoogle();
     if (idToken.isNotEmpty) {
       print('IDToken: $idToken');

@@ -9,6 +9,7 @@ abstract class TaskService {
   Future<TaskEntity> addTaskToContract(CreateTaskModel model);
   Future<TaskEntity> updateTaskInContract(UpdateTaskModel model);
   Future<String> deleteTaskInContract(String id);
+  Future<List<TaskEntity>> taskInContract(num id);
 }
 
 class TaskServiceImpl implements TaskService {
@@ -55,6 +56,28 @@ class TaskServiceImpl implements TaskService {
       }
 
       return TaskEntity.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<List<TaskEntity>> taskInContract(num id) async {
+    try {
+      final response = await agent.dio.get(
+        '/task/task-in-contract/$id',
+      );
+
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      print(httpResponse.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+      List<TaskEntity> tasks = [];
+      httpResponse.data.forEach((element) {
+        tasks.add(TaskEntity.fromJson(element));
+      });
+      return tasks;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

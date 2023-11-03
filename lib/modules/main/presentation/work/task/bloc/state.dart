@@ -1,30 +1,29 @@
 import 'package:equatable/equatable.dart';
-
-class Task {
-  final int id;
-  final String title;
-  final String content;
-  final String end;
-  final String status;
-
-  Task(
-      {required this.id,
-      required this.title,
-      required this.content,
-      required this.end,
-      required this.status});
-}
+import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
 
 class TaskState extends Equatable {
-  final List<Task> listTask;
+  final bool isLoading;
 
-  const TaskState({required this.listTask});
+  const TaskState({this.isLoading = false});
 
-  TaskState copyWith({List<Task>? listTask}) {
-    return TaskState(listTask: listTask ?? this.listTask);
+  TaskState copyWith({bool? isLoading}) {
+    return TaskState(isLoading: isLoading ?? this.isLoading);
   }
 
   @override
-  // TODO: implement props
-  List<Object?> get props => [listTask];
+  List<Object?> get props => [isLoading];
+}
+
+class GetTaskListSuccessState extends TaskState {
+  final List<TaskEntity> taskEntities;
+  const GetTaskListSuccessState({required this.taskEntities, required super.isLoading});
+
+  @override
+  GetTaskListSuccessState copyWith({bool? isLoading, List<TaskEntity>? taskEntities}) {
+    return GetTaskListSuccessState(
+        taskEntities: taskEntities ?? this.taskEntities, isLoading: isLoading ?? super.isLoading);
+  }
+
+  @override
+  List<Object?> get props => [isLoading, taskEntities];
 }

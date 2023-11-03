@@ -105,7 +105,6 @@ class MainChatBloc extends Bloc<MainChatEvent, MainChatState> {
   FutureOr<void> sendRecord(SendRecordEvent event, Emitter<MainChatState> emit) {
     Message message = Message(id: '1', content: event.file.path, type: 'record', createAt: DateTime.now().toString());
     final newState = state.copyWith(listChat: List.of(state.listChat)..add(message));
-
     emit(newState);
   }
 

@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/state.dart';
@@ -12,7 +14,6 @@ class Record extends StatefulWidget {
 
   @override
   State<StatefulWidget> createState() {
-    // TODO: implement createState
     return _RecordState();
   }
 }
@@ -80,7 +81,9 @@ class _RecordState extends State<Record> {
                       padding: const EdgeInsets.only(bottom: 5, top: 5, right: 5, left: 5),
                       child: InkWell(
                         borderRadius: BorderRadius.circular(50),
-                        onTap: () {},
+                        onTap: () {
+                          context.read<MainChatBloc>().add(SendRecordEvent(file: state.file!));
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(8),
                           child: SvgPicture.asset(

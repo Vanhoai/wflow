@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
@@ -12,7 +13,6 @@ import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
-import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 
 import 'event.dart';
 import 'state.dart';

@@ -45,66 +45,63 @@ class _ContractScreenState extends State<ContractScreen> {
               context.read<ContractListBloc>().add(GetListContractMoreEvent());
             }
           });
-          return Scaffold(
+          return CommonScaffold(
+            hideKeyboardWhenTouchOutside: true,
             appBar: const AppHeader(text: 'Works'),
             body: RefreshIndicator(
-                onRefresh: () async => context.read<ContractListBloc>().add(GetListContractEvent()),
-                child: SizedBox(
-                  width: double.infinity,
-                  height: double.infinity,
-                  child: Column(
-                    children: [
-                      const SearchContract(),
-                      Expanded(
-                        child: Visibility(
-                          visible: !state.isLoading,
-                          replacement: const Loading(),
-                          child: Builder(builder: (context) {
-                            if (state is GetContractListSuccessState) {
-                              if (state.contractEntities.isEmpty) {
-                                return Center(
-                                  child: Text(
-                                    'No item applied',
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                );
-                              }
-                              return ListView.builder(
-                                physics: const BouncingScrollPhysics(),
-                                controller: _scrollController,
-                                itemCount: state.contractEntities.length,
-                                itemBuilder: (context, index) => ContractCard(
-                                  image: state.contractEntities[index].business.logo,
-                                  name: state.contractEntities[index].title,
-                                  content: state.contractEntities[index].content,
-                                  status: state.contractEntities[index].state,
-                                ),
-                              );
-                            } else {
-                              return const SizedBox();
-                            }
-                          }),
-                        ),
-                      ),
-                      Builder(
-                        builder: (context) {
-                          if (state is GetContractListSuccessState) {
-                            return Visibility(
-                              visible: state.loadMore,
-                              child: SizedBox(
-                                width: MediaQuery.of(context).size.width,
-                                height: 40,
-                                child: const Loading(),
+              onRefresh: () async {
+                context.read<ContractListBloc>().add(GetListContractEvent());
+              },
+              child: Column(
+                children: [
+                  const SearchContract(),
+                  Expanded(
+                    child: Visibility(
+                      visible: !state.isLoading,
+                      replacement: const Loading(),
+                      child: Builder(builder: (context) {
+                        if (state is GetContractListSuccessState) {
+                          if (state.contractEntities.isEmpty) {
+                            return Center(
+                              child: Text(
+                                'No item applied',
+                                style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             );
-                          } else {
-                            return const SizedBox();
                           }
-                        },
-                      )
-                    ],
+                          return ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            controller: _scrollController,
+                            itemCount: state.contractEntities.length,
+                            itemBuilder: (context, index) => ContractCard(
+                              contractEntity: state.contractEntities[index],
+                            ),
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      }),
+                    ),
                   ),
-                )),
+                  Builder(
+                    builder: (context) {
+                      if (state is GetContractListSuccessState) {
+                        return Visibility(
+                          visible: state.loadMore,
+                          child: SizedBox(
+                            width: MediaQuery.of(context).size.width,
+                            height: 40,
+                            child: const Loading(),
+                          ),
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  )
+                ],
+              ),
+            ),
           );
         },
       ),

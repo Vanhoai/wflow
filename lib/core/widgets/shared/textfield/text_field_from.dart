@@ -45,8 +45,8 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
 
   @override
   void dispose() {
-    super.dispose();
     focusNode.dispose();
+    super.dispose();
   }
 
   @override

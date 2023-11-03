@@ -6,6 +6,7 @@ import 'package:wflow/modules/auth/domain/auth_repository.dart';
 
 abstract class AuthUseCase {
   Future<Either<AuthEntity, Failure>> signIn(AuthNormalRequest request);
+  Future<Either<String, Failure>> register(AuthNormalRegisterRequest request);
 }
 
 class AuthUseCaseImpl implements AuthUseCase {
@@ -16,5 +17,10 @@ class AuthUseCaseImpl implements AuthUseCase {
   @override
   Future<Either<AuthEntity, Failure>> signIn(AuthNormalRequest request) async {
     return await authRepository.signIn(request);
+  }
+
+  @override
+  Future<Either<String, Failure>> register(AuthNormalRegisterRequest request) async {
+    return await authRepository.register(request);
   }
 }

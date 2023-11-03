@@ -3,3 +3,4 @@ export 'json.util.dart';
 export 'hydrated.util.dart';
 export 'alert.util.dart';
 export 'search.utils.dart';
+export 'strings.util.dart';

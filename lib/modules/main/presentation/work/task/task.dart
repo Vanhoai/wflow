@@ -161,6 +161,7 @@ class _TaskScreenState extends State<TaskScreen> {
   Widget _iconStatus(String status) {
     switch (status) {
       case 'Done':
+      case 'Accepted':
         return Padding(padding: const EdgeInsets.all(2), child: SvgPicture.asset(AppConstants.checkOutLine));
       case 'InProgress':
         return Padding(padding: const EdgeInsets.all(0), child: SvgPicture.asset(AppConstants.warning));
@@ -195,6 +196,7 @@ class _TaskScreenState extends State<TaskScreen> {
         return Container(
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
           decoration: const BoxDecoration(
+            color: Colors.white,
             borderRadius: BorderRadius.only(topRight: Radius.circular(20), topLeft: Radius.circular(20)),
           ),
           width: MediaQuery.of(context).size.width,
@@ -258,13 +260,13 @@ class _TaskScreenState extends State<TaskScreen> {
 
   Widget _buttonStatus(String status) {
     switch (status) {
-      case 'NONE':
-        return const SizedBox();
       case 'DONE':
+      case 'Accepted':
+      case 'InProgress':
         return const SizedBox();
-      case 'REQUEST':
+      case 'Created':
         return _buttonRequest();
-      case 'REJECT':
+      case 'Reject':
         return _buttonReject();
       default:
         return const SizedBox();

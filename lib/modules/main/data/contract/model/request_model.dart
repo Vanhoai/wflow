@@ -1,11 +1,18 @@
 class ApplyPostRequest {
   final num post;
   final num cv;
+  final String introduction;
 
-  ApplyPostRequest({required this.post, required this.cv});
+  ApplyPostRequest({
+    required this.post,
+    required this.cv,
+    required this.introduction,
+  });
+
   Map<String, dynamic> toJson() => {
         'post': post,
         'cv': cv,
+        'introduction': introduction,
       };
 }
 
@@ -46,10 +53,12 @@ class GetContractWaitingSign {
   final num page;
   final num pageSize;
   final String search;
+  final bool isBusiness;
 
   const GetContractWaitingSign({
     required this.page,
     required this.pageSize,
     required this.search,
+    required this.isBusiness,
   });
 }

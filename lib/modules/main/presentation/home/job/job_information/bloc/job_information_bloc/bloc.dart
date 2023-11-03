@@ -31,7 +31,11 @@ class JobInformationBloc extends Bloc<JobInformationEvent, JobInformationState> 
   FutureOr<void> applyPost(ApplyPostEvent event, Emitter<JobInformationState> emit) async {
     if (state is GetJobInformationSuccessState) {
       emit(state.copyWith(isLoading: true));
-      final response = await contractUseCase.applyPost(ApplyPostRequest(post: event.post, cv: event.cv));
+      final response = await contractUseCase.applyPost(ApplyPostRequest(
+        post: event.post,
+        cv: event.cv,
+        introduction: 'no information',
+      ));
       response.fold((String left) {
         emit(ApplyPostState(
             message: left, postEntity: (state as GetJobInformationSuccessState).postEntity, isLoading: false));

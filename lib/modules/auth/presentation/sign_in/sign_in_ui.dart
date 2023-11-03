@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -9,8 +11,8 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
+import 'package:wflow/modules/auth/presentation/sign_in/widgets/form_signin.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
-import 'components/form_signin.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
@@ -22,6 +24,10 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  Future<void> pushNotification() async {
+    await FirebaseMessagingService.pushNotification('title', 'body', []);
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
@@ -51,6 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         width: 80,
                       ),
                     ),
+                    24.verticalSpace,
                     Container(
                       padding: const EdgeInsets.only(top: 17, bottom: 20),
                       child: Text(
@@ -112,7 +119,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           ),
                           onTap: () {
                             // context.read<SignInBloc>().add(SignInWithGoogleEvent());
-                            Navigator.pushNamed(context, RouteKeys.bottomScreen);
+                            // Navigator.pushNamed(
+                            //     context, RouteKeys.bottomScreen);
+                            pushNotification();
                           },
                         );
                       },

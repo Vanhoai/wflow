@@ -16,51 +16,6 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   late final List<Map<String, dynamic>> staticMenuSelection;
 
   @override
-  void initState() {
-    staticMenuSelection = [
-      {
-        'title': 'Balance',
-        'icon': AppConstants.ic_balance,
-      },
-      {
-        'title': 'Reputation',
-        'icon': AppConstants.ic_reputation,
-      },
-      {
-        'title': instance.get<AppBloc>().state.role == 1 ? 'Apply' : 'Business',
-        'icon': instance.get<AppBloc>().state.role == 1 ? AppConstants.apply : AppConstants.ic_business,
-      },
-      {
-        'title': 'Sign',
-        'icon': AppConstants.ic_more,
-      }
-    ];
-    super.initState();
-  }
-
-  void navigateTo(int index) {
-    switch (index) {
-      case 0:
-        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
-        break;
-      case 2:
-        final role = instance.get<AppBloc>().state.role;
-        if (role == 1) {
-          Navigator.of(context).pushNamed(RouteKeys.applyScreen);
-        } else {
-          Navigator.of(context).pushNamed(RouteKeys.companyScreen);
-        }
-        break;
-      case 3:
-        Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
-        break;
-      default:
-        Navigator.of(context).pushNamed(RouteKeys.developScreen);
-        break;
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.only(top: 20, bottom: 4),
@@ -124,5 +79,50 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    staticMenuSelection = [
+      {
+        'title': 'Balance',
+        'icon': AppConstants.ic_balance,
+      },
+      {
+        'title': 'Reputation',
+        'icon': AppConstants.ic_reputation,
+      },
+      {
+        'title': instance.get<AppBloc>().state.role == 1 ? 'Apply' : 'Business',
+        'icon': instance.get<AppBloc>().state.role == 1 ? AppConstants.apply : AppConstants.ic_business,
+      },
+      {
+        'title': 'Sign',
+        'icon': AppConstants.ic_more,
+      }
+    ];
+    super.initState();
+  }
+
+  void navigateTo(int index) {
+    switch (index) {
+      case 0:
+        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
+        break;
+      case 2:
+        final role = instance.get<AppBloc>().state.role;
+        if (role == 1) {
+          Navigator.of(context).pushNamed(RouteKeys.applyScreen);
+        } else {
+          Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+        }
+        break;
+      case 3:
+        Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        break;
+      default:
+        Navigator.of(context).pushNamed(RouteKeys.developScreen);
+        break;
+    }
   }
 }

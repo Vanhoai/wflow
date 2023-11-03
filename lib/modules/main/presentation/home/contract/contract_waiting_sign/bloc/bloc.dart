@@ -2,6 +2,9 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/models/models.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -25,11 +28,13 @@ class ContractWaitingSignBloc extends Bloc<ContractWaitingSignEvent, ContractWai
   FutureOr<void> onFetch(ContractWaitingSignEventFetch event, Emitter<ContractWaitingSignState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final isBusiness = instance.get<AppBloc>().state.role != RoleEnum.user.index + 1;
     final contracts = await contractUseCase.findContractWaitingSign(
-      const GetContractWaitingSign(
+      GetContractWaitingSign(
         page: 1,
         pageSize: 10,
         search: '',
+        isBusiness: isBusiness,
       ),
     );
 
@@ -43,11 +48,13 @@ class ContractWaitingSignBloc extends Bloc<ContractWaitingSignEvent, ContractWai
   FutureOr<void> onSearch(ContractWaitingSignEventSearch event, Emitter<ContractWaitingSignState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final isBusiness = instance.get<AppBloc>().state.role != RoleEnum.user.index + 1;
     final contracts = await contractUseCase.findContractWaitingSign(
       GetContractWaitingSign(
         page: 1,
         pageSize: 10,
         search: event.search,
+        isBusiness: isBusiness,
       ),
     );
 
@@ -62,11 +69,13 @@ class ContractWaitingSignBloc extends Bloc<ContractWaitingSignEvent, ContractWai
       ContractWaitingSignEventClearSearch event, Emitter<ContractWaitingSignState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final isBusiness = instance.get<AppBloc>().state.role != RoleEnum.user.index + 1;
     final contracts = await contractUseCase.findContractWaitingSign(
-      const GetContractWaitingSign(
+      GetContractWaitingSign(
         page: 1,
         pageSize: 10,
         search: '',
+        isBusiness: isBusiness,
       ),
     );
 
@@ -80,11 +89,13 @@ class ContractWaitingSignBloc extends Bloc<ContractWaitingSignEvent, ContractWai
   FutureOr<void> onRefresh(ContractWaitingSignEventRefresh event, Emitter<ContractWaitingSignState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final isBusiness = instance.get<AppBloc>().state.role != RoleEnum.user.index + 1;
     final contracts = await contractUseCase.findContractWaitingSign(
-      const GetContractWaitingSign(
+      GetContractWaitingSign(
         page: 1,
         pageSize: 10,
         search: '',
+        isBusiness: isBusiness,
       ),
     );
 
@@ -98,11 +109,13 @@ class ContractWaitingSignBloc extends Bloc<ContractWaitingSignEvent, ContractWai
   FutureOr<void> onLoadMore(ContractWaitingSignEventLoadMore event, Emitter<ContractWaitingSignState> emit) async {
     emit(state.copyWith(isLoading: true));
 
+    final isBusiness = instance.get<AppBloc>().state.role != RoleEnum.user.index + 1;
     final contracts = await contractUseCase.findContractWaitingSign(
       GetContractWaitingSign(
         page: state.meta.currentPage + 1,
         pageSize: 10,
         search: '',
+        isBusiness: isBusiness,
       ),
     );
 

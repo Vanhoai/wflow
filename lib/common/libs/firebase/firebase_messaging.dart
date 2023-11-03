@@ -4,25 +4,18 @@ class FirebaseMessagingService {
   static Future<void> registerNotification() async {
     NotificationSettings notificationSettings = await firebaseMessaging.requestPermission(
       alert: true,
+      announcement: true,
       badge: true,
+      carPlay: false,
+      criticalAlert: true,
       provisional: true,
       sound: true,
     );
 
     if (notificationSettings.authorizationStatus == AuthorizationStatus.authorized) {
       FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-        print('Got a message whilst in the foreground!');
-        print('Message data: ${message.data}');
-
-        if (message.notification != null) {
-          print('Message also contained a notification: ${message.notification}');
-        }
-
         RemoteNotification? notification = message.notification;
         AndroidNotification? android = message.notification?.android;
-
-        print('notification: $notification');
-        print('android: $android');
 
         if (notification != null && android != null) {
           flutterLocalNotificationsPlugin.show(
@@ -48,25 +41,55 @@ class FirebaseMessagingService {
   }
 
   static Future<void> setupLocalPushNotification() async {
-    const AndroidInitializationSettings initializationSettingsAndroid =
-        AndroidInitializationSettings('@mipmap/ic_launcher');
-    const DarwinInitializationSettings initializationSettingsDarwin = DarwinInitializationSettings(
+    await firebaseMessaging.setForegroundNotificationPresentationOptions(
+      alert: true,
+      badge: true,
+      sound: true,
+    );
+
+    const AndroidInitializationSettings androidSetting = AndroidInitializationSettings(
+      '@mipmap/ic_launcher',
+    );
+
+    const DarwinInitializationSettings darwinSetting = DarwinInitializationSettings(
       requestSoundPermission: false,
       requestBadgePermission: false,
       requestAlertPermission: false,
     );
 
     const InitializationSettings initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid,
-      iOS: initializationSettingsDarwin,
-      macOS: initializationSettingsDarwin,
+      android: androidSetting,
+      iOS: darwinSetting,
     );
 
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  Future<void> pushNotification(String title, String body) async {
-    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(channel.id, channel.name);
+  static Future<void> pushNotification(
+    String title,
+    String body,
+    List<AndroidNotificationAction>? actions,
+  ) async {
+    AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
+      channel.id,
+      channel.name,
+      channelShowBadge: true,
+      channelDescription: channel.description,
+      actions: actions,
+      when: DateTime.now().millisecondsSinceEpoch,
+      visibility: NotificationVisibility.public,
+      importance: Importance.max,
+      channelAction: AndroidNotificationChannelAction.createIfNotExists,
+      playSound: true,
+      enableLights: true,
+      showWhen: true,
+      showProgress: true,
+      priority: Priority.max,
+      icon: 'mipmap/ic_launcher',
+      fullScreenIntent: true,
+      styleInformation: const DefaultStyleInformation(false, false),
+    );
+
     DarwinNotificationDetails darwinNotificationDetails = const DarwinNotificationDetails();
 
     NotificationDetails notificationDetails = NotificationDetails(
@@ -74,12 +97,16 @@ class FirebaseMessagingService {
       iOS: darwinNotificationDetails,
     );
 
-    await FlutterLocalNotificationsPlugin().show(
-      0,
+    await flutterLocalNotificationsPlugin.show(
+      Random().nextInt(1000),
       title,
       body,
       notificationDetails,
+      payload: 'payload',
     );
+
+    String deviceToken = await getDeviceToken() ?? '';
+    print('Device Token: $deviceToken');
   }
 
   static Future<String?> getDeviceToken() async {

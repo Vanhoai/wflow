@@ -6,7 +6,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
-import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';

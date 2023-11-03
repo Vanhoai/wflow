@@ -5,12 +5,12 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 
 class SelectionListWidget extends StatefulWidget {
+  final ScrollController scrollController;
+
   const SelectionListWidget({
     super.key,
     required this.scrollController,
   });
-
-  final ScrollController scrollController;
 
   @override
   State<SelectionListWidget> createState() => _SelectionListWidgetState();

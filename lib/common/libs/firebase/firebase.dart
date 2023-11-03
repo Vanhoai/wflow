@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -22,10 +23,22 @@ class FirebaseService {
     firebaseApp = await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
+
     firebaseAuth = FirebaseAuth.instanceFor(app: firebaseApp);
     firebaseMessaging = FirebaseMessaging.instance;
-    channel = const AndroidNotificationChannel('WFlow', 'WFlow');
+
+    channel = const AndroidNotificationChannel(
+      'WFlow',
+      'WFlow',
+      importance: Importance.max,
+      enableLights: true,
+      enableVibration: true,
+      playSound: true,
+      showBadge: true,
+    );
+
     flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
     await flutterLocalNotificationsPlugin
         .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
         ?.createNotificationChannel(channel);

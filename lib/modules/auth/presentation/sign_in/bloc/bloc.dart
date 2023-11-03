@@ -85,7 +85,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     if (role != 1) {
       final topic = jwt.payload['business'];
-      subscribeToTopic(topic);
+      subscribeToTopic(topic.toString());
     }
     return role;
   }

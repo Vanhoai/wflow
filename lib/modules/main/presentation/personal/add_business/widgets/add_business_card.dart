@@ -29,11 +29,9 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
     return InkWell(
       onTap: () => {},
       child: Ink(
-        padding: const EdgeInsets.only(
-          left: AppSize.paddingScreenDefault,
-          right: AppSize.paddingScreenDefault,
-          top: AppSize.paddingMedium * 2,
-          bottom: AppSize.paddingMedium * 2,
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSize.paddingScreenDefault,
+          vertical: AppSize.paddingMedium * 2,
         ),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -66,7 +64,6 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
 
   Widget _buildContent() {
     return SizedBox(
-      height: 50,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

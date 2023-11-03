@@ -20,18 +20,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     }
     final taskList = await taskUseCase.taskInContract(event.idContract);
     taskList.fold((List<TaskEntity> left) {
-      left.add(TaskEntity(
-          state: 'Accepted',
-          title:
-              'Toi da du task de qua mon cut khoi nganh nay, sau nay lay vo co co chac khong cho hoc nganh nay nua, neu no doi toi dam no ',
-          content: 'Em huy dep trai',
-          startTime: DateTime.now(),
-          endTime: DateTime.now(),
-          salary: 5000,
-          id: 10000,
-          createdAt: DateTime.now(),
-          updatedAt: DateTime.now(),
-          deletedAt: DateTime.now()));
       emit(GetTaskListSuccessState(taskEntities: left, isLoading: false));
     }, (Failure right) {
       emit(const GetTaskListSuccessState(taskEntities: [], isLoading: false));

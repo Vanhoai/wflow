@@ -12,8 +12,7 @@ abstract class UserPath {
 
 abstract class UserService {
   Future<UserModel> myProfile();
-  Future<List<UserEntity>> getUsersNotBusiness(
-      GetUserNotBusinessModel getUserNotBusinessModel);
+  Future<List<UserEntity>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel);
 }
 
 class UserServiceImpl implements UserService {
@@ -29,8 +28,7 @@ class UserServiceImpl implements UserService {
       if (httpResponse.statusCode == 200) {
         return UserModel.fromJson(httpResponse.data);
       } else {
-        return throw CommonFailure(
-            message: httpResponse.message, statusCode: httpResponse.statusCode);
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
       return throw const ServerFailure();
@@ -38,8 +36,7 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<List<UserEntity>> getUsersNotBusiness(
-      GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<List<UserEntity>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
     try {
       final response = await agent.dio.get(
           '${UserPath.getUsersNotBusiness}?page=${getUserNotBusinessModel.page}&&pageSize=${getUserNotBusinessModel.pageSize}&&search=${getUserNotBusinessModel.search}');
@@ -53,8 +50,7 @@ class UserServiceImpl implements UserService {
 
         return users;
       } else {
-        return throw CommonFailure(
-            message: httpResponse.message, statusCode: httpResponse.statusCode);
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
       return throw const ServerFailure();

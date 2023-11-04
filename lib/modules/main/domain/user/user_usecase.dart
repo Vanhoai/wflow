@@ -6,8 +6,7 @@ import 'package:wflow/modules/main/domain/user/user_repository.dart';
 
 abstract class UserUseCase {
   Future<Either<UserEntity, Failure>> myProfile();
-  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
-      GetUserNotBusinessModel getUserNotBusinessModel);
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel);
 }
 
 class UserUseCaseImpl implements UserUseCase {
@@ -21,8 +20,7 @@ class UserUseCaseImpl implements UserUseCase {
   }
 
   @override
-  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
-      GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
     return await userRepository.getUsersNotBusiness(getUserNotBusinessModel);
   }
 }

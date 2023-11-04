@@ -13,8 +13,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
   final int defaultPageSize = 3;
   final String defaultSearch = '';
 
-  AddBusinessBloc({required this.userUseCase})
-      : super(const AddBusinessState()) {
+  AddBusinessBloc({required this.userUseCase}) : super(const AddBusinessState()) {
     on<InitAddBusinessEvent>(onInitAddBusiness);
     on<SearchAddBusinessEvent>(onSearchAddBusiness);
     on<ChangedIconClearAddBusinessEvent>(onChangedIconClearAddBusiness);
@@ -23,12 +22,9 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     // on<LoadMoreSearchWorkEvent>(onLoadMoreSearchWork);
   }
 
-  Future<void> onInitAddBusiness(
-      InitAddBusinessEvent event, Emitter emit) async {
-    GetUserNotBusinessModel getUserNotBusinessModel =
-        const GetUserNotBusinessModel();
-    final Either<List<UserEntity>, Failure> result =
-        await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
+  Future<void> onInitAddBusiness(InitAddBusinessEvent event, Emitter emit) async {
+    GetUserNotBusinessModel getUserNotBusinessModel = const GetUserNotBusinessModel();
+    final Either<List<UserEntity>, Failure> result = await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
     result.fold(
       (List<UserEntity> l) {
         emit(state.copyWith(users: l));
@@ -39,10 +35,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     );
   }
 
-  Future<void> onSearchAddBusiness(
-      SearchAddBusinessEvent event, Emitter emit) async {}
-  Future<void> onChangedIconClearAddBusiness(
-      ChangedIconClearAddBusinessEvent event, Emitter emit) async {}
-  Future<void> onScrollAddBusiness(
-      ScrollAddBusinessEvent event, Emitter emit) async {}
+  Future<void> onSearchAddBusiness(SearchAddBusinessEvent event, Emitter emit) async {}
+  Future<void> onChangedIconClearAddBusiness(ChangedIconClearAddBusinessEvent event, Emitter emit) async {}
+  Future<void> onScrollAddBusiness(ScrollAddBusinessEvent event, Emitter emit) async {}
 }

@@ -17,8 +17,8 @@ import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
-import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
 
@@ -175,7 +175,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
         body: LazyLoadIndexedStack(
           index: currentIndex,
           children: [
-            const AddBusinessScreen(),
+            const HomeScreen(),
             const WorkScreen(),
             Container(),
             const RoomsScreen(),

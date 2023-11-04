@@ -105,7 +105,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                 ),
                               ],
                               cancelButton: CupertinoActionSheetAction(
-                                onPressed: () {},
+                                onPressed: () => Navigator.of(context).pop(),
                                 child: const Text('Cancel'),
                               ),
                             ),

@@ -6,6 +6,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -83,7 +84,11 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                           child: const Text('Add post'),
                         ),
                         CupertinoActionSheetAction(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.of(context)
+                              ..pop()
+                              ..pushNamed(RouteKeys.addBusinessScreen);
+                          },
                           child: const Text('Add member'),
                         ),
                         CupertinoActionSheetAction(

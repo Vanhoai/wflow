@@ -30,7 +30,7 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
+    emailController = TextEditingController(text: 'anhsybusiness@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
@@ -44,7 +44,8 @@ class _FormState extends State<FormSignIn> {
 
   Future<void> listener(BuildContext context, SignInState state) async {
     if (state is SignInSuccess) {
-      Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
+      Navigator.of(context)
+          .pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
     } else if (state is SignInFailure) {
       await showCupertinoDialog(
         context: context,
@@ -88,7 +89,9 @@ class _FormState extends State<FormSignIn> {
               TextFieldFrom(
                 label: 'Email or phone number',
                 controller: emailController,
-                onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
+                onChange: (val) => context
+                    .read<SignInBloc>()
+                    .add(OnChangeEmailEvent(email: val)),
                 placeholder: 'Enter email or phone number',
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
@@ -96,12 +99,15 @@ class _FormState extends State<FormSignIn> {
                   size: 24,
                 ),
                 suffixIcon: Padding(
-                  padding: const EdgeInsets.only(bottom: 16, top: 16, right: 17, left: 18),
+                  padding: const EdgeInsets.only(
+                      bottom: 16, top: 16, right: 17, left: 18),
                   child: SvgPicture.asset(AppConstants.checkFill,
                       fit: BoxFit.cover,
                       colorFilter: state.regex
-                          ? const ColorFilter.mode(Colors.green, BlendMode.srcIn)
-                          : const ColorFilter.mode(Colors.black38, BlendMode.srcIn)),
+                          ? const ColorFilter.mode(
+                              Colors.green, BlendMode.srcIn)
+                          : const ColorFilter.mode(
+                              Colors.black38, BlendMode.srcIn)),
                 ),
               ),
               TextFieldFrom(
@@ -120,7 +126,9 @@ class _FormState extends State<FormSignIn> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () => context.read<SignInBloc>().add(RememberPassEvent(isRemember: !state.isRemember)),
+                    onTap: () => context
+                        .read<SignInBloc>()
+                        .add(RememberPassEvent(isRemember: !state.isRemember)),
                     borderRadius: BorderRadius.circular(4),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,9 +140,11 @@ class _FormState extends State<FormSignIn> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.black26),
                             borderRadius: BorderRadius.circular(6.0),
-                            color: state.isRemember ? Colors.blue : Colors.white,
+                            color:
+                                state.isRemember ? Colors.blue : Colors.white,
                           ),
-                          child: SvgPicture.asset(AppConstants.checkOutLine, height: 12, width: 12),
+                          child: SvgPicture.asset(AppConstants.checkOutLine,
+                              height: 12, width: 12),
                         ),
                         const Padding(padding: EdgeInsets.only(left: 8)),
                         Text(
@@ -147,7 +157,8 @@ class _FormState extends State<FormSignIn> {
                   InkWell(
                     borderRadius: BorderRadius.circular(4),
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 5, vertical: 2),
                       child: Text(
                         'Forgot password ?',
                         style: Theme.of(context).textTheme.bodyLarge,
@@ -190,7 +201,8 @@ class _FormState extends State<FormSignIn> {
                             InkWell(
                               borderRadius: BorderRadius.circular(8),
                               splashColor: AppColors.blueColor,
-                              child: SvgPicture.asset(height: 50, AppConstants.bionic),
+                              child: SvgPicture.asset(
+                                  height: 50, AppConstants.bionic),
                             )
                           ],
                         ));

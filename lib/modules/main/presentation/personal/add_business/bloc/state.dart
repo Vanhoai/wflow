@@ -1,43 +1,48 @@
 import 'package:equatable/equatable.dart';
-import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
-class SearchWorkState extends Equatable {
-  final List<PostEntity> postsData;
+class AddBusinessState extends Equatable {
+  final List<UserEntity> users;
   final bool isHiddenSuffixIcon;
   final int page;
   final String txtSearch;
   final bool isLoadMore;
+  final List<int> usersChecked;
 
-  const SearchWorkState({
-    this.postsData = const [],
+  const AddBusinessState({
+    this.users = const [],
     this.isHiddenSuffixIcon = true,
     this.page = 1,
     this.txtSearch = '',
     this.isLoadMore = false,
+    this.usersChecked = const [],
   });
 
-  SearchWorkState coppyWith({
-    List<PostEntity>? postsData,
+  AddBusinessState copyWith({
+    List<UserEntity>? users,
     bool? isHiddenSuffixIcon,
     int? page,
     String? txtSearch,
     bool? isLoadMore,
+    List<int>? usersChecked,
   }) {
-    return SearchWorkState(
-      postsData: postsData ?? this.postsData,
+    return AddBusinessState(
+      users: users ?? this.users,
       isHiddenSuffixIcon: isHiddenSuffixIcon ?? this.isHiddenSuffixIcon,
       page: page ?? this.page,
       txtSearch: txtSearch ?? this.txtSearch,
       isLoadMore: isLoadMore ?? this.isLoadMore,
+      usersChecked: usersChecked ?? this.usersChecked,
     );
   }
 
   @override
-  List<Object?> get props => [
-        postsData,
+  List get props => [
+        users,
         isHiddenSuffixIcon,
         page,
         txtSearch,
         isLoadMore,
+        usersChecked,
       ];
 }

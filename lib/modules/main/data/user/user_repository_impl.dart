@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -17,11 +18,37 @@ class UserRepositoryImpl extends UserRepository {
       return Left(UserEntity.fromJson(userModel.toJson()));
     } catch (e) {
       if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
+        return Right(
+            CommonFailure(message: e.message, statusCode: e.statusCode));
       } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
+        return Right(
+            ServerFailure(message: e.message, statusCode: e.statusCode));
       } else if (e is CacheFailure) {
-        return Right(CacheFailure(message: e.message, statusCode: e.statusCode));
+        return Right(
+            CacheFailure(message: e.message, statusCode: e.statusCode));
+      } else {
+        return const Right(ServerFailure());
+      }
+    }
+  }
+
+  @override
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
+      GetUserNotBusinessModel getUserNotBusinessModel) async {
+    try {
+      final List<UserEntity> users =
+          await userService.getUsersNotBusiness(getUserNotBusinessModel);
+      return Left(users);
+    } catch (e) {
+      if (e is CommonFailure) {
+        return Right(
+            CommonFailure(message: e.message, statusCode: e.statusCode));
+      } else if (e is ServerFailure) {
+        return Right(
+            ServerFailure(message: e.message, statusCode: e.statusCode));
+      } else if (e is CacheFailure) {
+        return Right(
+            CacheFailure(message: e.message, statusCode: e.statusCode));
       } else {
         return const Right(ServerFailure());
       }

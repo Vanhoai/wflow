@@ -19,6 +19,7 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
 
@@ -29,7 +30,8 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation> with SingleTickerProviderStateMixin {
+class _BottomNavigationState extends State<BottomNavigation>
+    with SingleTickerProviderStateMixin {
   int currentIndex = 0;
   late AnimationController _animationController;
 
@@ -55,7 +57,8 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   void initState() {
     super.initState();
     _requestPermissions();
-    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+    _animationController = AnimationController(
+        vsync: this, duration: const Duration(milliseconds: 1500));
     _animationController.repeat(min: 0, max: 1, reverse: true);
 
     instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
@@ -175,7 +178,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
         body: LazyLoadIndexedStack(
           index: currentIndex,
           children: [
-            const HomeScreen(),
+            const AddBusinessScreen(),
             const WorkScreen(),
             Container(),
             const RoomsScreen(),
@@ -195,7 +198,8 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
         showIncomingUi: true,
         isVideoCall: call.isVideoCall,
         stringeeCall2: call);
-    Navigator.of(context).pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
+    Navigator.of(context)
+        .pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
   }
 
   FutureOr<void> _requestPermissions() async {

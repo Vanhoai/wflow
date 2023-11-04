@@ -1,14 +1,19 @@
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 abstract class UserPath {
   static const String myProfile = '/user/my-profile';
+  static const String getUsersNotBusiness = 'user/user-not-business';
 }
 
 abstract class UserService {
   Future<UserModel> myProfile();
+  Future<List<UserEntity>> getUsersNotBusiness(
+      GetUserNotBusinessModel getUserNotBusinessModel);
 }
 
 class UserServiceImpl implements UserService {
@@ -24,7 +29,32 @@ class UserServiceImpl implements UserService {
       if (httpResponse.statusCode == 200) {
         return UserModel.fromJson(httpResponse.data);
       } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+        return throw CommonFailure(
+            message: httpResponse.message, statusCode: httpResponse.statusCode);
+      }
+    } catch (e) {
+      return throw const ServerFailure();
+    }
+  }
+
+  @override
+  Future<List<UserEntity>> getUsersNotBusiness(
+      GetUserNotBusinessModel getUserNotBusinessModel) async {
+    try {
+      final response = await agent.dio.get(
+          '${UserPath.getUsersNotBusiness}?page=${getUserNotBusinessModel.page}&&pageSize=${getUserNotBusinessModel.pageSize}&&search=${getUserNotBusinessModel.search}');
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode == 200) {
+        List<UserEntity> users = [];
+        httpResponse.data.forEach((user) {
+          users.add(UserEntity.fromJson(user));
+        });
+
+        return users;
+      } else {
+        return throw CommonFailure(
+            message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
       return throw const ServerFailure();

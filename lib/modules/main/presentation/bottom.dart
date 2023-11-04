@@ -17,7 +17,6 @@ import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
@@ -30,12 +29,11 @@ class BottomNavigation extends StatefulWidget {
   State<BottomNavigation> createState() => _BottomNavigationState();
 }
 
-class _BottomNavigationState extends State<BottomNavigation>
-    with SingleTickerProviderStateMixin {
+class _BottomNavigationState extends State<BottomNavigation> with SingleTickerProviderStateMixin {
   int currentIndex = 0;
-  late AnimationController _animationController;
+  late AnimationController animationController;
 
-  Widget _bottomTabBar(String icon, bool isActive) {
+  Widget bottomTabBar(String icon, bool isActive) {
     return SvgPicture.asset(
       icon,
       height: 24,
@@ -47,7 +45,7 @@ class _BottomNavigationState extends State<BottomNavigation>
     );
   }
 
-  void _onTabTapped(int index) {
+  void onTabTapped(int index) {
     setState(() {
       currentIndex = index;
     });
@@ -56,17 +54,16 @@ class _BottomNavigationState extends State<BottomNavigation>
   @override
   void initState() {
     super.initState();
-    _requestPermissions();
-    _animationController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 1500));
-    _animationController.repeat(min: 0, max: 1, reverse: true);
+    requestPermissions();
+    animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 1500));
+    animationController.repeat(min: 0, max: 1, reverse: true);
 
     instance.get<VideoCallBloc>().add(const VideoCallConnectEvent());
   }
 
   @override
   void dispose() {
-    _animationController.dispose();
+    animationController.dispose();
     super.dispose();
   }
 
@@ -95,7 +92,7 @@ class _BottomNavigationState extends State<BottomNavigation>
           child: Visibility(
             visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
             child: AnimatedBuilder(
-              animation: _animationController,
+              animation: animationController,
               builder: (context, child) {
                 return Container(
                   height: 68,
@@ -108,12 +105,12 @@ class _BottomNavigationState extends State<BottomNavigation>
                       BoxShadow(
                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                         blurRadius: 8,
-                        offset: Offset(0, _animationController.value * 10),
+                        offset: Offset(0, animationController.value * 10),
                       ),
                       BoxShadow(
                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                         blurRadius: 8,
-                        offset: Offset(0, _animationController.value * -4),
+                        offset: Offset(0, animationController.value * -4),
                       ),
                     ],
                   ),
@@ -145,16 +142,16 @@ class _BottomNavigationState extends State<BottomNavigation>
             ),
             type: BottomNavigationBarType.fixed,
             iconSize: 24,
-            onTap: _onTabTapped,
+            onTap: onTabTapped,
             items: [
               BottomNavigationBarItem(
-                icon: _bottomTabBar(AppConstants.bottomHome, false),
-                activeIcon: _bottomTabBar(AppConstants.bottomHome, true),
+                icon: bottomTabBar(AppConstants.bottomHome, false),
+                activeIcon: bottomTabBar(AppConstants.bottomHome, true),
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: _bottomTabBar(AppConstants.bottomWork, false),
-                activeIcon: _bottomTabBar(AppConstants.bottomWork, true),
+                icon: bottomTabBar(AppConstants.bottomWork, false),
+                activeIcon: bottomTabBar(AppConstants.bottomWork, true),
                 label: 'Works',
               ),
               const BottomNavigationBarItem(
@@ -163,13 +160,13 @@ class _BottomNavigationState extends State<BottomNavigation>
                 label: '',
               ),
               BottomNavigationBarItem(
-                icon: _bottomTabBar(AppConstants.bottomMessage, false),
-                activeIcon: _bottomTabBar(AppConstants.bottomMessage, true),
+                icon: bottomTabBar(AppConstants.bottomMessage, false),
+                activeIcon: bottomTabBar(AppConstants.bottomMessage, true),
                 label: 'Message',
               ),
               BottomNavigationBarItem(
-                icon: _bottomTabBar(AppConstants.bottomExtended, false),
-                activeIcon: _bottomTabBar(AppConstants.bottomExtended, true),
+                icon: bottomTabBar(AppConstants.bottomExtended, false),
+                activeIcon: bottomTabBar(AppConstants.bottomExtended, true),
                 label: 'Personal',
               ),
             ],
@@ -191,18 +188,18 @@ class _BottomNavigationState extends State<BottomNavigation>
 
   void call(StringeeCall2 call) {
     ArgumentsCall argumentsCall = ArgumentsCall(
-        client: instance.get<StringeeClient>(),
-        toUserId: call.to!,
-        fromUserId: call.from!,
-        callType: StringeeObjectEventType.call2,
-        showIncomingUi: true,
-        isVideoCall: call.isVideoCall,
-        stringeeCall2: call);
-    Navigator.of(context)
-        .pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
+      client: instance.get<StringeeClient>(),
+      toUserId: call.to!,
+      fromUserId: call.from!,
+      callType: StringeeObjectEventType.call2,
+      showIncomingUi: true,
+      isVideoCall: call.isVideoCall,
+      stringeeCall2: call,
+    );
+    Navigator.of(context).pushNamed(RouteKeys.callScreen, arguments: argumentsCall);
   }
 
-  FutureOr<void> _requestPermissions() async {
+  FutureOr<void> requestPermissions() async {
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     deviceInfoPlugin.androidInfo.then((value) async {
       if (value.version.sdkInt >= 31) {

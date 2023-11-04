@@ -37,112 +37,117 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
         buildWhen: (previous, current) =>
             previous.isLoadingPost != current.isLoadingPost || previous.listPost != current.listPost,
         builder: (context, state) {
-          return LayoutBuilder(
-            builder: (context, constraints) {
-              return Visibility(
-                visible: !state.isLoadingPost,
-                replacement: ShimmerWork(
-                  physics: const NeverScrollableScrollPhysics(),
-                  height: 280,
-                  width: double.infinity,
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.zero,
-                  margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(
-                      color: themeData.colorScheme.onBackground.withOpacity(0.8),
-                      width: 1,
+          return RefreshIndicator(
+            onRefresh: () async {
+              fetchPost();
+            },
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                return Visibility(
+                  visible: !state.isLoadingPost,
+                  replacement: ShimmerWork(
+                    physics: const NeverScrollableScrollPhysics(),
+                    height: 280,
+                    width: double.infinity,
+                    scrollDirection: Axis.vertical,
+                    padding: EdgeInsets.zero,
+                    margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                        width: 1,
+                      ),
                     ),
                   ),
-                ),
-                child: ListView.separated(
-                  separatorBuilder: (context, index) => const SizedBox(width: 20),
-                  physics: const BouncingScrollPhysics(),
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  itemCount: state.listPost.length,
-                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                  itemBuilder: (context, index) {
-                    final job = state.listPost[index];
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(width: 20),
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemCount: state.listPost.length,
+                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    itemBuilder: (context, index) {
+                      final job = state.listPost[index];
 
-                    return Container(
-                      padding: const EdgeInsets.symmetric(vertical: 10.0),
-                      child: JobCard(
-                        boxDecoration: BoxDecoration(
-                          color: themeData.colorScheme.background,
-                          borderRadius: BorderRadius.circular(8.0),
-                          boxShadow: [
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                            BoxShadow(
-                              color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                              blurRadius: 4,
-                              offset: const Offset(0, 2),
-                            ),
-                          ],
-                        ),
-                        cardPressed: () => pressCard(job.id),
-                        padding: const EdgeInsets.all(12),
-                        header: Header(
-                          leadingPhotoUrl: job.companyLogo,
-                          title: Text(
-                            job.position,
-                            style: themeData.textTheme.displayLarge!.merge(
-                              TextStyle(
-                                fontSize: 18,
-                                color: themeData.colorScheme.onBackground,
-                                fontWeight: FontWeight.w400,
+                      return Container(
+                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        child: JobCard(
+                          boxDecoration: BoxDecoration(
+                            color: themeData.colorScheme.background,
+                            borderRadius: BorderRadius.circular(8.0),
+                            boxShadow: [
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
-                          ),
-                          subtitle: Text(
-                            job.companyName,
-                            style: themeData.textTheme.displayMedium!.merge(
-                              TextStyle(
-                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                                fontWeight: FontWeight.w400,
+                              BoxShadow(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                blurRadius: 4,
+                                offset: const Offset(0, 2),
                               ),
-                            ),
+                            ],
                           ),
-                          onTapLeading: () {},
-                          leadingSize: 30,
-                          actions: [
-                            InkWell(
-                              child: SvgPicture.asset(
-                                AppConstants.bookmark,
-                                height: 24,
-                                width: 24,
-                                colorFilter: ColorFilter.mode(
-                                  themeData.colorScheme.onBackground.withOpacity(0.5),
-                                  BlendMode.srcIn,
+                          cardPressed: () => pressCard(job.id),
+                          padding: const EdgeInsets.all(12),
+                          header: Header(
+                            leadingPhotoUrl: job.companyLogo,
+                            title: Text(
+                              job.position,
+                              style: themeData.textTheme.displayLarge!.merge(
+                                TextStyle(
+                                  fontSize: 18,
+                                  color: themeData.colorScheme.onBackground,
+                                  fontWeight: FontWeight.w400,
                                 ),
                               ),
                             ),
-                            const SizedBox(width: 8.0),
-                          ],
-                        ),
-                        cost: '${job.salary} VND',
-                        duration: job.duration,
-                        description: TextMore(
-                          job.content,
-                          trimMode: TrimMode.Hidden,
-                          trimHiddenMaxLines: 3,
-                          style: themeData.textTheme.displayMedium!.merge(
-                            TextStyle(
-                              color: themeData.colorScheme.onBackground,
+                            subtitle: Text(
+                              job.companyName,
+                              style: themeData.textTheme.displayMedium!.merge(
+                                TextStyle(
+                                  color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                  fontWeight: FontWeight.w400,
+                                ),
+                              ),
+                            ),
+                            onTapLeading: () {},
+                            leadingSize: 30,
+                            actions: [
+                              InkWell(
+                                child: SvgPicture.asset(
+                                  AppConstants.bookmark,
+                                  height: 24,
+                                  width: 24,
+                                  colorFilter: ColorFilter.mode(
+                                    themeData.colorScheme.onBackground.withOpacity(0.5),
+                                    BlendMode.srcIn,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(width: 8.0),
+                            ],
+                          ),
+                          cost: '${job.salary} VND',
+                          duration: job.duration,
+                          description: TextMore(
+                            job.content,
+                            trimMode: TrimMode.Hidden,
+                            trimHiddenMaxLines: 3,
+                            style: themeData.textTheme.displayMedium!.merge(
+                              TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    );
-                  },
-                ),
-              );
-            },
+                      );
+                    },
+                  ),
+                );
+              },
+            ),
           );
         },
       ),

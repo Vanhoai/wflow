@@ -25,4 +25,14 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<String, Failure>> register(AuthNormalRegisterRequest request) async {
+    try {
+      final response = await authService.register(request);
+      return Left(response);
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
+    }
+  }
 }

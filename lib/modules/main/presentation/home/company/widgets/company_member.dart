@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shimmer/shimmer.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-import 'package:wflow/core/widgets/shared/shimmer_work/shimmer_work.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
 class CompanyMemberWidget extends StatefulWidget {
@@ -32,56 +34,90 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
       builder: (context, state) {
         return Visibility(
           visible: !state.isLoadingMember,
-          replacement: ShimmerWork(
-            physics: const NeverScrollableScrollPhysics(),
-            height: 280,
-            width: double.infinity,
-            scrollDirection: Axis.vertical,
-            padding: EdgeInsets.zero,
-            itemCount: 1,
-            margin: const EdgeInsets.only(bottom: 20, top: 10, left: 10, right: 10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(
-                color: themeData.colorScheme.onBackground.withOpacity(0.8),
-                width: 1,
+          replacement: Shimmer.fromColors(
+            baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+            highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+            child: Container(
+              margin: EdgeInsets.only(bottom: 20.h, top: 10.h),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                    child: Header(
+                      title: Flexible(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Container(
+                            height: 20.h,
+                            width: 100.w,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4.r),
+                            ),
+                          ),
+                        ),
+                      ),
+                      subtitle: Container(
+                        height: 20.h,
+                        width: 100.w,
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(4.r),
+                        ),
+                      ),
+                      onTapLeading: () {},
+                      leadingPhotoUrl: '',
+                      actions: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(AppConstants.more),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+                itemCount: 10,
               ),
             ),
           ),
-          child: Container(
-            margin: const EdgeInsets.only(bottom: 20, top: 10),
-            child: ListView.builder(
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final name = context.watch<MyCompanyBloc>().state.listUser[index].name;
-                final phone = context.watch<MyCompanyBloc>().state.listUser[index].phone;
-                final img = context.watch<MyCompanyBloc>().state.listUser[index].avatar;
-                return Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                  child: Header(
-                    title: Flexible(
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          name,
-                          overflow: TextOverflow.ellipsis,
-                          style: themeData.textTheme.displayMedium!.copyWith(fontWeight: FontWeight.bold),
+          child: RefreshIndicator(
+            onRefresh: () async {
+              fetchUser();
+            },
+            child: Container(
+              margin: EdgeInsets.only(bottom: 20.h, top: 10.h),
+              child: ListView.builder(
+                shrinkWrap: true,
+                itemBuilder: (context, index) {
+                  final UserEntity userEntity = state.listUser[index];
+                  return Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                    child: Header(
+                      title: Flexible(
+                        child: InkWell(
+                          onTap: () {},
+                          child: Text(
+                            userEntity.name.toString(),
+                            overflow: TextOverflow.ellipsis,
+                            style: themeData.textTheme.displayMedium!.copyWith(fontWeight: FontWeight.bold),
+                          ),
                         ),
                       ),
+                      subtitle: Text(userEntity.email.toString()),
+                      onTapLeading: () {},
+                      leadingPhotoUrl: userEntity.avatar.toString(),
+                      actions: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: SvgPicture.asset(AppConstants.more),
+                        ),
+                      ],
                     ),
-                    subtitle: Text(phone),
-                    onTapLeading: () {},
-                    leadingPhotoUrl: img,
-                    actions: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(AppConstants.more),
-                      ),
-                    ],
-                  ),
-                );
-              },
-              itemCount: context.watch<MyCompanyBloc>().state.listUser.length,
+                  );
+                },
+                itemCount: state.listUser.length,
+              ),
             ),
           ),
         );

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +27,7 @@ class SignInScreen extends StatefulWidget {
 
 class _SignInScreenState extends State<SignInScreen> {
   Future<void> pushNotification() async {
-    await FirebaseMessagingService.pushNotification('title', 'body', []);
+    await FirebaseMessagingService.pushNotification(id: Random().nextInt(1000), title: 'Test', body: 'Test');
   }
 
   @override

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
@@ -19,70 +21,53 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   Widget build(BuildContext context) {
     return SliverPadding(
       padding: const EdgeInsets.only(top: 20, bottom: 4),
-      sliver: SliverToBoxAdapter(
-        child: ConstrainedBox(
-          constraints: const BoxConstraints(
-            minHeight: 90,
-            maxHeight: 100,
-          ),
-          child: LayoutBuilder(
-            builder: (BuildContext context, BoxConstraints constraints) {
-              return ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: staticMenuSelection.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return SizedBox(
-                    width: constraints.maxWidth / 4,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Material(
-                          color: Colors.white,
-                          elevation: 3.0,
-                          borderRadius: BorderRadius.circular(12.0),
-                          clipBehavior: Clip.antiAliasWithSaveLayer,
-                          surfaceTintColor: Colors.white,
-                          shadowColor: Colors.black,
-                          child: InkWell(
-                            onTap: () => navigateTo(index),
-                            borderRadius: BorderRadius.circular(12.0),
-                            child: Container(
-                              width: 60,
-                              height: 60,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12.0),
-                                color: Colors.transparent,
-                              ),
-                              padding: const EdgeInsets.all(12.0),
-                              child: SvgPicture.asset(
-                                staticMenuSelection[index]['icon'],
-                                height: 24,
-                                width: 24,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 8.0),
-                        Text(
-                          staticMenuSelection[index]['title'],
-                          style: Theme.of(context).textTheme.labelMedium!.merge(
-                                const TextStyle(fontWeight: FontWeight.w400, fontSize: 14),
-                              ),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              );
-            },
-          ),
+      sliver: SliverGrid.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 0,
+          childAspectRatio: 1,
         ),
+        itemCount: staticMenuSelection.length,
+        itemBuilder: (context, index) {
+          return Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () => navigateTo(index),
+                  child: Container(
+                    height: 48.w,
+                    width: 48.w,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: SvgPicture.asset(
+                      staticMenuSelection[index]['icon'],
+                      width: 24.w,
+                      height: 24.w,
+                    ),
+                  ),
+                ),
+                4.verticalSpace,
+                Text(
+                  staticMenuSelection[index]['title'],
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 
   @override
   void initState() {
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     staticMenuSelection = [
       {
         'title': 'Balance',
@@ -93,13 +78,29 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.ic_reputation,
       },
       {
-        'title': instance.get<AppBloc>().state.role == 1 ? 'Apply' : 'Business',
-        'icon': instance.get<AppBloc>().state.role == 1 ? AppConstants.apply : AppConstants.ic_business,
+        'title': isUser ? 'Apply' : 'Business',
+        'icon': isUser ? AppConstants.apply : AppConstants.ic_business,
+      },
+      {
+        'title': 'Bookmark',
+        'icon': AppConstants.ic_bookmark_navigate,
       },
       {
         'title': 'Sign',
         'icon': AppConstants.ic_more,
-      }
+      },
+      {
+        'title': 'Signed',
+        'icon': AppConstants.ic_signed,
+      },
+      {
+        'title': 'Cv',
+        'icon': AppConstants.ic_cv,
+      },
+      {
+        'title': 'Graph',
+        'icon': AppConstants.ic_graph,
+      },
     ];
     super.initState();
   }
@@ -109,6 +110,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       case 0:
         Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
         break;
+
       case 2:
         final role = instance.get<AppBloc>().state.role;
         if (role == 1) {
@@ -117,8 +119,11 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
           Navigator.of(context).pushNamed(RouteKeys.companyScreen);
         }
         break;
-      case 3:
+      case 4:
         Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        break;
+      case 6:
+        Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
         break;
       default:
         Navigator.of(context).pushNamed(RouteKeys.developScreen);

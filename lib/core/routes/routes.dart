@@ -1,47 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
-
+import 'package:wflow/core/widgets/shared/develop/develop.dart';
 // auth
 import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/create_account/create_account.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
-
+import 'package:wflow/modules/introduction/presentation/introduction.dart';
 // bottom
 import 'package:wflow/modules/main/presentation/bottom.dart';
+import 'package:wflow/modules/main/presentation/home/add_cv/add_cv.dart';
+import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
 import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
-import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
-import 'package:wflow/modules/main/presentation/home/job/job.dart';
-import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
-import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
-
-// work
-import 'package:wflow/modules/main/presentation/work/task/task.dart';
-
+import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
+import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
+import 'package:wflow/modules/main/presentation/home/job/job.dart';
 // message
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
-import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
-
 // other
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
-import 'package:wflow/modules/introduction/presentation/introduction.dart';
-import 'package:wflow/core/widgets/shared/develop/develop.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
+// work
+import 'package:wflow/modules/main/presentation/work/task/task.dart';
 
 class AppRoutes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -137,6 +133,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       case RouteKeys.contractWaitingSignScreen:
         return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
+      case RouteKeys.addCVScreen:
+        return MaterialPageRoute(builder: (_) => const AddCVScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

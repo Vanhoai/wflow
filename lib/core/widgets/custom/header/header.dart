@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-const String IMAGE_URL = 'https://res.cloudinary.com/dhwzs1m4l/image/upload/v1697453686/notion-avatar_sxmijk.png';
+const String defaultUrl = 'https://www.pinclipart.com/picdir/middle/148-1486972_mystery-man-avatar-circle-clipart.png';
 
 class Header extends StatefulWidget {
   const Header({
@@ -49,25 +49,16 @@ class _HeaderState extends State<Header> {
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.2),
                 backgroundImage: NetworkImage(
-                  widget.leadingPhotoUrl == '' ? IMAGE_URL : widget.leadingPhotoUrl,
+                  widget.leadingPhotoUrl == '' ? defaultUrl : widget.leadingPhotoUrl,
                 ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {
                   return;
                 },
-                child: Builder(builder: (context) {
-                  if (!widget.leadingBadge) {
-                    return Container();
-                  }
-                  return Align(
-                    alignment: Alignment.bottomRight,
-                    child: SvgPicture.asset('assets/icons/online.svg', width: 20, height: 20),
-                  );
-                }),
               ),
             );
           }),
-          const SizedBox(width: 12),
+          12.horizontalSpace,
           Expanded(
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 0),

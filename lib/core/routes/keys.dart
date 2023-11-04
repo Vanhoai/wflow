@@ -35,4 +35,5 @@ class RouteKeys {
   static const String balanceScreen = '/balance_screen';
   static const String searchWorkScreen = '/search_work_screen';
   static const String contractWaitingSignScreen = '/contract_waiting_sign_screen';
+  static const String addCVScreen = '/add_cv_screen';
 }

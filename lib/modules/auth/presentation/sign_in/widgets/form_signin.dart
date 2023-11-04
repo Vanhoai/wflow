@@ -30,7 +30,7 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
+    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
@@ -53,23 +53,20 @@ class _FormState extends State<FormSignIn> {
             title: Text(
               'Notification',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.displayMedium,
             ),
-            content: Text(state.message),
+            content: Container(
+              margin: const EdgeInsets.symmetric(vertical: 8),
+              child: Text(state.message),
+            ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text('OK'),
-                    )
-                  ],
+              CupertinoDialogAction(
+                onPressed: () => Navigator.of(context).pop(),
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: AppColors.blueColor),
                 ),
-              ),
+              )
             ],
           );
         },

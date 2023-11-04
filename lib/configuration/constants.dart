@@ -65,6 +65,13 @@ class AppConstants {
   static const String ic_work = '${commonIconPath}ic.work.svg';
   static const String ic_clock = '${commonIconPath}ic.clock.svg';
   static const String ic_money = '${commonIconPath}ic.money.svg';
+  static const String ic_top_up = '${commonIconPath}ic.top_up.svg';
+  static const String ic_pay_out = '${commonIconPath}ic.pay_out.svg';
+  static const String ic_no_avatar = '${commonIconPath}ic.no_avatar.svg';
+  static const String ic_signed = '${commonIconPath}ic.signed.svg';
+  static const String ic_cv = '${commonIconPath}ic.cv.svg';
+  static const String ic_graph = '${commonIconPath}ic.graph.svg';
+  static const String ic_bookmark_navigate = '${commonIconPath}ic.bookmark_navigate.svg';
 
   //image
   static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';

@@ -18,25 +18,15 @@ class FirebaseMessagingService {
         AndroidNotification? android = message.notification?.android;
 
         if (notification != null && android != null) {
-          flutterLocalNotificationsPlugin.show(
-            notification.hashCode,
-            notification.title,
-            notification.body,
-            NotificationDetails(
-              android: AndroidNotificationDetails(
-                channel.id,
-                channel.name,
-                icon: android.smallIcon,
-                importance: Importance.max,
-                priority: Priority.high,
-                ticker: 'ticker',
-              ),
-            ),
+          pushNotification(
+            id: notification.hashCode,
+            title: notification.title!,
+            body: notification.body!,
           );
         }
       });
     } else {
-      print('User declined or has not accepted permission');
+      AlertUtils.showMessage('Notification', 'Please allow notification in setting');
     }
   }
 
@@ -65,17 +55,16 @@ class FirebaseMessagingService {
     await flutterLocalNotificationsPlugin.initialize(initializationSettings);
   }
 
-  static Future<void> pushNotification(
-    String title,
-    String body,
-    List<AndroidNotificationAction>? actions,
-  ) async {
+  static Future<void> pushNotification({
+    required int id,
+    required String title,
+    required String body,
+  }) async {
     AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
       channel.id,
       channel.name,
       channelShowBadge: true,
       channelDescription: channel.description,
-      actions: actions,
       when: DateTime.now().millisecondsSinceEpoch,
       visibility: NotificationVisibility.public,
       importance: Importance.max,
@@ -87,7 +76,9 @@ class FirebaseMessagingService {
       priority: Priority.max,
       icon: 'mipmap/ic_launcher',
       fullScreenIntent: true,
-      styleInformation: const DefaultStyleInformation(false, false),
+      ticker: 'ticker',
+      timeoutAfter: 5000,
+      color: Colors.blue,
     );
 
     DarwinNotificationDetails darwinNotificationDetails = const DarwinNotificationDetails();
@@ -98,15 +89,12 @@ class FirebaseMessagingService {
     );
 
     await flutterLocalNotificationsPlugin.show(
-      Random().nextInt(1000),
+      id,
       title,
       body,
       notificationDetails,
       payload: 'payload',
     );
-
-    String deviceToken = await getDeviceToken() ?? '';
-    print('Device Token: $deviceToken');
   }
 
   static Future<String?> getDeviceToken() async {

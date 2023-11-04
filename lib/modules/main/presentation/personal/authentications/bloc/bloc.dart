@@ -116,7 +116,7 @@ class AuthenticationsBloc extends Bloc<AuthenticationsEvent, AuthenticationsStat
           stepOne: state.stepThree.copyWith(messageStep: 'SUCCESS'),
           isLoading: false,
         ));
-        emit(AuthenticationsSuccessState(message: "Cập nhật thông tin thành công"));
+        emit(const AuthenticationsSuccessState(message: "Cập nhật thông tin thành công"));
       } else {
         emit(state.copyWith(
           stepOne: state.stepThree.copyWith(messageStep: 'Face match fail'),

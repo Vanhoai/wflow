@@ -106,12 +106,12 @@ class AuthStepThreeScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              if (state.stepTwo.messageStep == "") {
+                              if (state.stepThree.messageStep == "") {
                                 return const SizedBox(
                                   height: 24,
                                 );
                               } else {
-                                if (state.stepTwo.messageStep == "SUCCESS") {
+                                if (state.stepThree.messageStep == "SUCCESS") {
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -142,7 +142,7 @@ class AuthStepThreeScreen extends StatelessWidget {
                                         width: 5,
                                       ),
                                       Text(
-                                        state.stepTwo.messageStep,
+                                        state.stepThree.messageStep,
                                         style: Theme.of(context).textTheme.displayMedium,
                                       )
                                     ],

@@ -36,4 +36,48 @@ class ChangedIconClearAddBusinessEvent extends AddBusinessEvent {
   List get props => [txtSearch];
 }
 
-class ScrollAddBusinessEvent extends AddBusinessEvent {}
+class ScrollAddBusinessEvent extends AddBusinessEvent {
+  const ScrollAddBusinessEvent();
+
+  @override
+  List get props => [];
+}
+
+class LoadMoreAddBusinessEvent extends AddBusinessEvent {
+  final bool isLoadMore;
+
+  const LoadMoreAddBusinessEvent({this.isLoadMore = false});
+
+  LoadMoreAddBusinessEvent copyWith({bool? isLoadMore}) =>
+      LoadMoreAddBusinessEvent(isLoadMore: isLoadMore ?? this.isLoadMore);
+
+  @override
+  List get props => [isLoadMore];
+}
+
+class RefreshAddBusinessEvent extends AddBusinessEvent {
+  const RefreshAddBusinessEvent();
+
+  @override
+  List<Object?> get props => [];
+}
+
+class UserCheckedAddBusinessEvent extends AddBusinessEvent {
+  final bool isChecked;
+  final int id;
+
+  const UserCheckedAddBusinessEvent(
+      {required this.isChecked, required this.id});
+
+  @override
+  List get props => [isChecked, id];
+}
+
+class AddCollaboratorAddBusinessEvent extends AddBusinessEvent {
+  final List<int> usersChecked;
+
+  const AddCollaboratorAddBusinessEvent({required this.usersChecked});
+
+  @override
+  List get props => [usersChecked];
+}

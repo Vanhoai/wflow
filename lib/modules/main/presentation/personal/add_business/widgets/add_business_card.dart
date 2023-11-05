@@ -34,8 +34,8 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
           vertical: AppSize.paddingMedium * 2,
         ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             _buildAvatar(),
             _buildContent(),
@@ -56,7 +56,9 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
       child: CircleAvatar(
         radius: MediaQuery.sizeOf(context).width,
         backgroundImage: NetworkImage(
-          widget.image,
+          widget.image != ''
+              ? widget.image
+              : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQw-rXpe_F2T_nvmUckfNWrGLnv9LvAoPNcbYVt_cLY7Q&s',
         ),
       ),
     );
@@ -64,16 +66,21 @@ class _AddBusinessCardState extends State<AddBusinessCard> {
 
   Widget _buildContent() {
     return SizedBox(
+      width: ((MediaQuery.sizeOf(context).width) / 100) * 51.02,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            widget.name,
+            widget.name.trim(),
             style: textTheme.labelMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
-            widget.email,
+            widget.email.trim(),
             style: textTheme.labelMedium,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),

@@ -68,7 +68,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       leadingPhotoUrl: state.userEntity.avatar,
                       title: Text(
                         'Hi $name 👋🏻',
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                        style:
+                            themeData.textTheme.displayLarge!.merge(TextStyle(
                           color: themeData.colorScheme.onBackground,
                           fontWeight: FontWeight.w400,
                         )),
@@ -79,8 +80,10 @@ class _HomeScreenState extends State<HomeScreen> {
                         email,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                        style:
+                            themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.5),
                           fontWeight: FontWeight.w400,
                         )),
                       ),
@@ -89,7 +92,8 @@ class _HomeScreenState extends State<HomeScreen> {
                       actions: [
                         HeaderIcon(
                           icon: AppConstants.ic_notification,
-                          onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+                          onTap: () => Navigator.of(context)
+                              .pushNamed(RouteKeys.notificationScreen),
                         ),
                       ],
                     );
@@ -99,12 +103,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             const NavigateFeatWidget(),
             SliverPadding(
-              padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
+              padding: const EdgeInsets.only(
+                  top: 10, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Hot Job',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                    color: themeData.textTheme.displayMedium!.color!
+                        .withOpacity(0.5),
                     fontWeight: FontWeight.w400,
                   )),
                 ),
@@ -112,12 +118,14 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             HowJobListWidget(scrollController: _hotJobScrollController),
             SliverPadding(
-              padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
+              padding:
+                  const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
                   'Recent Job',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                    color: themeData.textTheme.displayMedium!.color!
+                        .withOpacity(0.5),
                     fontWeight: FontWeight.w400,
                   )),
                 ),

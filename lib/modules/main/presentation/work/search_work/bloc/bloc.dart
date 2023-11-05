@@ -101,7 +101,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
           )),
     ];
 
-    emit(state.coppyWith(postsData: newPosts, isLoadMore: !state.isLoadMore));
+    emit(state.coppyWith(postsData: newPosts, isLoadMore: false));
   }
 
   Future<void> onRefreshSearchWork(

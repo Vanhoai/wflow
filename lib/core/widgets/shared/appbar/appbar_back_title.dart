@@ -49,7 +49,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
       actions: onTap != null
           ? [
               InkWell(
-                onTap: () => {},
+                onTap: onTap,
                 borderRadius: BorderRadius.circular(6),
                 child: const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),

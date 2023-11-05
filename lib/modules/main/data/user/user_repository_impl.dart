@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
+import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -33,25 +34,25 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
+  Future<List<UserEntity>> getUsersNotBusiness(
       GetUserNotBusinessModel getUserNotBusinessModel) async {
     try {
-      final List<UserEntity> users =
+      final List<UserModel> users =
           await userService.getUsersNotBusiness(getUserNotBusinessModel);
-      return Left(users);
+
+      return [...users.map((e) => UserEntity.fromJson(e.toJson()))];
     } catch (e) {
-      if (e is CommonFailure) {
-        return Right(
-            CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(
-            ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(
-            CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+      return [];
+    }
+  }
+
+  @override
+  Future<bool> addCollaborator(
+      AddCollaboratorModel addCollaboratorModel) async {
+    try {
+      return await userService.addCollaborator(addCollaboratorModel);
+    } catch (e) {
+      return false;
     }
   }
 }

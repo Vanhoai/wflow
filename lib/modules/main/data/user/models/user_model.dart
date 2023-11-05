@@ -61,7 +61,8 @@ class UserModel extends BaseEntity with EquatableMixin {
     required this.business,
   });
 
-  factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
+  factory UserModel.fromJson(Map<String, dynamic> json) =>
+      _$UserModelFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$UserModelToJson(this);

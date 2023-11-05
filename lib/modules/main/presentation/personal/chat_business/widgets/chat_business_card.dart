@@ -37,7 +37,7 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               child: Row(children: <Widget>[
                 _buildAvatar(),
                 const SizedBox(
@@ -54,7 +54,7 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
   }
 
   Widget _buildAvatar() {
-    return Container(
+    return SizedBox(
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: CircleAvatar(

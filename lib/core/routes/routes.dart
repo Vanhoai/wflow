@@ -21,6 +21,7 @@ import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
+import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
 
 // work
 import 'package:wflow/modules/main/presentation/work/task/task.dart';
@@ -60,7 +61,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const MessageScreen());
       case RouteKeys.photoScreen:
         final args = settings.arguments as ArgumentsPhoto;
-        return MaterialPageRoute(builder: (_) => PhotoScreen(argumentsPhoto: args));
+        return MaterialPageRoute(
+            builder: (_) => PhotoScreen(argumentsPhoto: args));
       case RouteKeys.callScreen:
         final args = settings.arguments as ArgumentsCall;
         return MaterialPageRoute(
@@ -69,7 +71,8 @@ class AppRoutes {
       case RouteKeys.createAccountScreen:
         final args = settings.arguments as String;
         return MaterialPageRoute(
-          builder: (_) => CreateAccountScreen(createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
+          builder: (_) => CreateAccountScreen(
+              createAccountBloc: instance.get<CreateAccountBloc>(), str: args),
         );
       case RouteKeys.bottomScreen:
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
@@ -81,7 +84,8 @@ class AppRoutes {
                 ));
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
-        return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
+        return MaterialPageRoute(
+            builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
         final post = settings.arguments as num;
         return MaterialPageRoute(
@@ -132,7 +136,11 @@ class AppRoutes {
       case RouteKeys.searchWorkScreen:
         return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       case RouteKeys.contractWaitingSignScreen:
-        return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
+        return MaterialPageRoute(
+            builder: (_) => const ContractWaitingSignScreen());
+      case RouteKeys.removeCollaboratorScreen:
+        return MaterialPageRoute(
+            builder: (_) => const RemoveCollaboratorScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

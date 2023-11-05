@@ -1,4 +1,7 @@
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/configuration/environment.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -96,8 +99,13 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
   Future<void> onAddCollaboratorAddBusiness(
       AddCollaboratorAddBusinessEvent event, Emitter emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    String accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
+    final jwt = JWT.verify(
+        accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+    final business = jwt.payload['business'];
+
     AddCollaboratorModel addCollaboratorModel =
-        AddCollaboratorModel(business: 1, users: state.usersChecked);
+        AddCollaboratorModel(business: business, users: state.usersChecked);
 
     final bool result = await userUseCase.addCollaborator(addCollaboratorModel);
 

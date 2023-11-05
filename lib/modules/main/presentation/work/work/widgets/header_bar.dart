@@ -18,12 +18,14 @@ class _HeaderBarWidgetState extends State<HeaderBarWidget> {
       actions: [
         HeaderIcon(
           icon: AppConstants.search,
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.searchWorkScreen),
+          onTap: () =>
+              Navigator.of(context).pushNamed(RouteKeys.chatBusinessScreen),
         ),
         const SizedBox(width: 12),
         HeaderIcon(
           icon: AppConstants.ic_notification,
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+          onTap: () =>
+              Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
         )
       ],
     );

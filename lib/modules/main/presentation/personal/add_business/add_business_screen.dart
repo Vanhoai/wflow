@@ -48,9 +48,9 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
           _scrollController.addListener(() {
             if (_scrollController.position.maxScrollExtent ==
                     _scrollController.offset &&
-                !(state.isLoadMore)) {
+                !state.isLoadMore) {
               BlocProvider.of<AddBusinessBloc>(context)
-                  .add(const LoadMoreAddBusinessEvent(isLoadMore: true));
+                  .add(LoadMoreAddBusinessEvent());
               BlocProvider.of<AddBusinessBloc>(context)
                   .add(const ScrollAddBusinessEvent());
             }

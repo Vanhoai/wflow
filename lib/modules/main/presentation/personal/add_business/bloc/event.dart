@@ -43,18 +43,6 @@ class ScrollAddBusinessEvent extends AddBusinessEvent {
   List get props => [];
 }
 
-class LoadMoreAddBusinessEvent extends AddBusinessEvent {
-  final bool isLoadMore;
-
-  const LoadMoreAddBusinessEvent({this.isLoadMore = false});
-
-  LoadMoreAddBusinessEvent copyWith({bool? isLoadMore}) =>
-      LoadMoreAddBusinessEvent(isLoadMore: isLoadMore ?? this.isLoadMore);
-
-  @override
-  List get props => [isLoadMore];
-}
-
 class RefreshAddBusinessEvent extends AddBusinessEvent {
   const RefreshAddBusinessEvent();
 
@@ -81,3 +69,5 @@ class AddCollaboratorAddBusinessEvent extends AddBusinessEvent {
   @override
   List get props => [usersChecked];
 }
+
+class LoadMoreAddBusinessEvent extends AddBusinessEvent {}

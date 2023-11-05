@@ -21,9 +21,9 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     on<ChangedIconClearAddBusinessEvent>(onChangedIconClearAddBusiness);
     on<ScrollAddBusinessEvent>(onScrollAddBusiness);
     on<RefreshAddBusinessEvent>(onRefreshAddBusiness);
-    on<LoadMoreAddBusinessEvent>(onLoadMoreAddBusiness);
     on<UserCheckedAddBusinessEvent>(onUserCheckedAddBusiness);
     on<AddCollaboratorAddBusinessEvent>(onAddCollaboratorAddBusiness);
+    on<LoadMoreAddBusinessEvent>(onLoadMoreAddBusiness);
   }
 
   Future<void> onInitAddBusiness(
@@ -46,7 +46,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     final List<UserEntity> users =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
 
-    emit(state.copyWith(users: users, isLoadMore: false, page: 1));
+    emit(state.copyWith(users: users, page: 1));
   }
 
   Future<void> onChangedIconClearAddBusiness(
@@ -68,12 +68,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     ];
 
     emit(state.copyWith(
-        users: newUsers, page: state.page + 1, isLoadMore: !state.isLoadMore));
-  }
-
-  Future<void> onLoadMoreAddBusiness(
-      LoadMoreAddBusinessEvent event, Emitter emit) async {
-    emit(state.copyWith(isLoadMore: event.isLoadMore));
+        users: newUsers, page: state.page + 1, isLoadMore: false));
   }
 
   Future<void> onRefreshAddBusiness(
@@ -83,7 +78,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     final List<UserEntity> users =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
 
-    emit(state.copyWith(users: users, isLoadMore: false));
+    emit(state.copyWith(users: users));
   }
 
   Future<void> onUserCheckedAddBusiness(
@@ -117,5 +112,10 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
       emit(state.copyWith());
     }
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  Future<void> onLoadMoreAddBusiness(
+      LoadMoreAddBusinessEvent event, Emitter emit) async {
+    emit(state.copyWith(isLoadMore: true));
   }
 }

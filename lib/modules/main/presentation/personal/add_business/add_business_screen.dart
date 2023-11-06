@@ -58,6 +58,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
           return Scaffold(
             appBar: AppHeader(
               text: 'Add to business',
+              actionTitle: 'add',
               onTap: () => BlocProvider.of<AddBusinessBloc>(context).add(
                   AddCollaboratorAddBusinessEvent(
                       usersChecked: state.usersChecked)),

@@ -8,10 +8,12 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
     this.text = '',
     this.onBack,
     this.onTap,
+    this.actionTitle,
   });
 
   final Function? onBack;
   final String text;
+  final String? actionTitle;
   final void Function()? onTap;
 
   @override
@@ -51,11 +53,12 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
               InkWell(
                 onTap: onTap,
                 borderRadius: BorderRadius.circular(6),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                child: Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                   child: Text(
-                    'Add',
-                    style: TextStyle(
+                    actionTitle ?? 'actionTitle',
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.normal,
                       color: Color(

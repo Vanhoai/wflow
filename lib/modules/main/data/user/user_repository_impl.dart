@@ -1,7 +1,9 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
+import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -51,6 +53,29 @@ class UserRepositoryImpl extends UserRepository {
       AddCollaboratorModel addCollaboratorModel) async {
     try {
       return await userService.addCollaborator(addCollaboratorModel);
+    } catch (e) {
+      return false;
+    }
+  }
+
+  @override
+  Future<List<UserEntity>> getAllCollaborator(
+      GetAllCollaboratorModel getAllCollaboratorModel) async {
+    try {
+      final List<UserModel> users =
+          await userService.getAllCollaborator(getAllCollaboratorModel);
+
+      return [...users.map((e) => UserEntity.fromJson(e.toJson()))];
+    } catch (e) {
+      return [];
+    }
+  }
+
+  @override
+  Future<bool> removeCollaborator(
+      RemoveCollaboratorModel removeCollaboratorModel) async {
+    try {
+      return await userService.removeCollaborator(removeCollaboratorModel);
     } catch (e) {
       return false;
     }

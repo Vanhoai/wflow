@@ -19,7 +19,9 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/home.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/personal.dart';
+import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
 import 'package:wflow/modules/main/presentation/work/work/work.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -177,8 +179,8 @@ class _BottomNavigationState extends State<BottomNavigation>
         body: LazyLoadIndexedStack(
           index: currentIndex,
           children: [
-            const HomeScreen(),
-            const WorkScreen(),
+            const AddBusinessScreen(),
+            const RemoveCollaboratorScreen(),
             Container(),
             const RoomsScreen(),
             const PersonalScreen(),

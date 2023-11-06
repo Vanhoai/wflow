@@ -40,15 +40,15 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
     super.initState();
     _locationLib = LocationLib();
     _companyEntity = BlocProvider.of<MyCompanyBloc>(context).state.companyEntity;
-    _initialCameraPosition = const CameraPosition(
-      target: LatLng(10.853535629225869, 106.62804689672772),
+    _initialCameraPosition = CameraPosition(
+      target: LatLng(_companyEntity.latitude, _companyEntity.longitude),
       zoom: ZOOM,
       bearing: BEARING,
       tilt: TILT,
     );
 
     _addMarker(
-      const LatLng(10.853535629225869, 106.62804689672772),
+      LatLng(_companyEntity.latitude, _companyEntity.longitude),
       'company',
       BitmapDescriptor.defaultMarker,
     );
@@ -74,18 +74,17 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       API_KEY,
       PointLatLng(position.latitude, position.longitude), // starting point
-      const PointLatLng(10.853535629225869, 106.62804689672772), // ending point
+      PointLatLng(_companyEntity.latitude, _companyEntity.longitude), // ending point
       travelMode: TravelMode.driving,
     );
-
-    print('===============================================${result.points.length}');
-
     if (result.points.isNotEmpty) {
       for (var point in result.points) {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       }
     }
     _addPolyLine();
+
+    // WITHOUT BILLING ACCOUNT :(
   }
 
   void _onMapCreated(GoogleMapController controller) {
@@ -125,15 +124,31 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                         polylines: Set<Polyline>.of(polylines.values),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(10.r),
-                      child: Header(
-                        leadingPhotoUrl: companyEntity.logo,
-                        title: Text(companyEntity.name, style: Theme.of(context).textTheme.displayLarge),
-                        subtitle: Text(companyEntity.address, style: Theme.of(context).textTheme.displaySmall),
-                        actions: const [],
-                      ),
-                    )
+                    if (snapshot.data != null)
+                      Padding(
+                        padding: EdgeInsets.all(10.r),
+                        child: Header(
+                          leadingPhotoUrl: companyEntity.logo,
+                          title: Text(companyEntity.name, style: Theme.of(context).textTheme.displayLarge),
+                          subtitle: Text(companyEntity.address, style: Theme.of(context).textTheme.displaySmall),
+                          actions: [
+                            IconButton(
+                                onPressed: () {
+                                  mapController.animateCamera(
+                                    CameraUpdate.newCameraPosition(
+                                      CameraPosition(
+                                        target: LatLng(companyEntity.latitude, companyEntity.longitude),
+                                        zoom: ZOOM,
+                                        bearing: BEARING,
+                                        tilt: TILT,
+                                      ),
+                                    ),
+                                  );
+                                },
+                                icon: const Icon(Icons.location_on)),
+                          ],
+                        ),
+                      )
                   ],
                 );
               }

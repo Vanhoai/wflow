@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -38,9 +39,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
             previous.isLoadingPost != current.isLoadingPost || previous.listPost != current.listPost,
         builder: (context, state) {
           return RefreshIndicator(
-            onRefresh: () async {
-              fetchPost();
-            },
+            onRefresh: () async => fetchPost(),
             child: LayoutBuilder(
               builder: (context, constraints) {
                 return Visibility(
@@ -61,21 +60,21 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                     ),
                   ),
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(width: 20),
+                    separatorBuilder: (context, index) => 10.horizontalSpace,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: state.listPost.length,
-                    padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                    padding: EdgeInsets.symmetric(horizontal: 10.w),
                     itemBuilder: (context, index) {
                       final job = state.listPost[index];
 
                       return Container(
-                        padding: const EdgeInsets.symmetric(vertical: 10.0),
+                        padding: EdgeInsets.symmetric(vertical: 10.h),
                         child: JobCard(
                           boxDecoration: BoxDecoration(
                             color: themeData.colorScheme.background,
-                            borderRadius: BorderRadius.circular(8.0),
+                            borderRadius: BorderRadius.circular(8.r),
                             boxShadow: [
                               BoxShadow(
                                 color: themeData.colorScheme.onBackground.withOpacity(0.1),
@@ -90,14 +89,14 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                             ],
                           ),
                           cardPressed: () => pressCard(job.id),
-                          padding: const EdgeInsets.all(12),
+                          padding: EdgeInsets.all(12.r),
                           header: Header(
                             leadingPhotoUrl: job.companyLogo,
                             title: Text(
                               job.position,
                               style: themeData.textTheme.displayLarge!.merge(
                                 TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   color: themeData.colorScheme.onBackground,
                                   fontWeight: FontWeight.w400,
                                 ),
@@ -118,15 +117,15 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                               InkWell(
                                 child: SvgPicture.asset(
                                   AppConstants.bookmark,
-                                  height: 24,
-                                  width: 24,
+                                  height: 24.h,
+                                  width: 24.h,
                                   colorFilter: ColorFilter.mode(
                                     themeData.colorScheme.onBackground.withOpacity(0.5),
                                     BlendMode.srcIn,
                                   ),
                                 ),
                               ),
-                              const SizedBox(width: 8.0),
+                              8.horizontalSpace,
                             ],
                           ),
                           cost: '${job.salary} VND',

@@ -18,56 +18,9 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   late final List<Map<String, dynamic>> staticMenuSelection;
 
   @override
-  Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.only(top: 20, bottom: 4),
-      sliver: SliverGrid.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          mainAxisSpacing: 0,
-          crossAxisSpacing: 0,
-          childAspectRatio: 1,
-        ),
-        itemCount: staticMenuSelection.length,
-        itemBuilder: (context, index) {
-          return Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () => navigateTo(index),
-                  child: Container(
-                    height: 48.w,
-                    width: 48.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                    child: SvgPicture.asset(
-                      staticMenuSelection[index]['icon'],
-                      width: 24.w,
-                      height: 24.w,
-                    ),
-                  ),
-                ),
-                4.verticalSpace,
-                Text(
-                  staticMenuSelection[index]['title'],
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
-                ),
-              ],
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  @override
   void initState() {
-    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final isUser =
+        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     staticMenuSelection = [
       {
         'title': 'Balance',
@@ -119,15 +72,78 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
           Navigator.of(context).pushNamed(RouteKeys.companyScreen);
         }
         break;
+      case 3:
+        Navigator.of(context).pushNamed(RouteKeys.bookmarkScreen);
+        break;
       case 4:
         Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
         break;
+      case 5:
+        Navigator.of(context).pushNamed(RouteKeys.signedScreen);
+        break;
       case 6:
         Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+        break;
+      case 7:
+        Navigator.of(context).pushNamed(RouteKeys.graphScreen);
         break;
       default:
         Navigator.of(context).pushNamed(RouteKeys.developScreen);
         break;
     }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SliverPadding(
+      padding: const EdgeInsets.only(top: 20, bottom: 4),
+      sliver: SliverGrid.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 4,
+          mainAxisSpacing: 0,
+          crossAxisSpacing: 0,
+          childAspectRatio: 1,
+        ),
+        itemCount: staticMenuSelection.length,
+        itemBuilder: (context, index) {
+          return Container(
+            alignment: Alignment.center,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                InkWell(
+                  onTap: () => navigateTo(index),
+                  child: Container(
+                    height: 48.w,
+                    width: 48.w,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context)
+                          .colorScheme
+                          .primary
+                          .withOpacity(0.1),
+                      borderRadius: BorderRadius.circular(6.r),
+                    ),
+                    child: SvgPicture.asset(
+                      staticMenuSelection[index]['icon'],
+                      width: 24.w,
+                      height: 24.w,
+                    ),
+                  ),
+                ),
+                4.verticalSpace,
+                Text(
+                  staticMenuSelection[index]['title'],
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodyMedium!
+                      .copyWith(fontSize: 14.sp),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 }

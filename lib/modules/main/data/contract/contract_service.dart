@@ -14,6 +14,7 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
 }
 
 class ContractPaths {
@@ -26,6 +27,8 @@ class ContractPaths {
   static const String findContractWaitingSignOfBusiness = '/contract/find-contract-waiting-sign-of-business';
   static String getPathCandidateApplied(num id) => '/contract/candidate-applied/$id';
   static String getPathWorkerSignContract(int id) => '/contract/worker-sign-contract/$id';
+  static const String findContractSignedOfUser = '/contract/find-contract-signed-of-user';
+  static const String findContractSignedOfBusiness = '/contract/find-contract-signed-of-business';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -202,6 +205,38 @@ class ContractServiceImpl implements ContractService {
       }
 
       return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request) async {
+    try {
+      final url =
+          request.isBusiness ? ContractPaths.findContractSignedOfBusiness : ContractPaths.findContractSignedOfUser;
+
+      final response = await agent.dio.get(
+        url,
+        queryParameters: {
+          'page': request.page,
+          'pageSize': request.pageSize,
+          'search': request.search,
+        },
+      );
+
+      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: contracts,
+      );
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

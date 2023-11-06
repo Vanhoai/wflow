@@ -62,3 +62,17 @@ class GetContractWaitingSign {
     required this.isBusiness,
   });
 }
+
+class GetContractSigned {
+  final num page;
+  final num pageSize;
+  final String search;
+  final bool isBusiness;
+
+  const GetContractSigned({
+    required this.page,
+    required this.pageSize,
+    required this.search,
+    required this.isBusiness,
+  });
+}

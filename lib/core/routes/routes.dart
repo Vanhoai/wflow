@@ -4,25 +4,25 @@ import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
-// auth
 import 'package:wflow/modules/auth/presentation/create_account/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/create_account/create_account.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
-// bottom
 import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/home/add_cv/add_cv.dart';
 import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
 import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bookmark.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
+import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
+import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
-// message
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
@@ -33,10 +33,8 @@ import 'package:wflow/modules/main/presentation/personal/notification/notificati
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
-// other
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
-// work
 import 'package:wflow/modules/main/presentation/work/task/task.dart';
 
 class AppRoutes {
@@ -71,19 +69,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
         final candidate = settings.arguments as String;
-        return MaterialPageRoute(
-            builder: (_) => CandidateContractScreen(
-                  candidate: candidate,
-                ));
+        return MaterialPageRoute(builder: (_) => CandidateContractScreen(candidate: candidate));
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
         return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
         final post = settings.arguments as num;
-        return MaterialPageRoute(
-            builder: (_) => CandidateListScreen(
-                  post: post,
-                ));
+        return MaterialPageRoute(builder: (_) => CandidateListScreen(post: post));
       case RouteKeys.createContractScreen:
         final contract = settings.arguments as String;
         return MaterialPageRoute(
@@ -105,10 +97,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const AuthStepThreeScreen());
       case RouteKeys.taskScreen:
         final args = settings.arguments as num;
-        return MaterialPageRoute(
-            builder: (_) => TaskScreen(
-                  idContract: args,
-                ));
+        return MaterialPageRoute(builder: (_) => TaskScreen(idContract: args));
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:
@@ -135,6 +124,12 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
       case RouteKeys.addCVScreen:
         return MaterialPageRoute(builder: (_) => const AddCVScreen());
+      case RouteKeys.bookmarkScreen:
+        return MaterialPageRoute(builder: (_) => const BookMarkScreen());
+      case RouteKeys.signedScreen:
+        return MaterialPageRoute(builder: (_) => const ContractSignedScreen());
+      case RouteKeys.graphScreen:
+        return MaterialPageRoute(builder: (_) => const GraphScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

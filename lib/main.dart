@@ -19,6 +19,7 @@ Future<void> main() async {
   FlipperClient flipperClient = FlipperClient.getDefault();
   flipperClient.addPlugin(FlipperNetworkPlugin());
   flipperClient.addPlugin(FlipperSharedPreferencesPlugin());
+  flipperClient.addPlugin(FlipperReduxInspectorPlugin());
   flipperClient.start();
 
   runApp(const App());

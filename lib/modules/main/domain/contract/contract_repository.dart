@@ -14,4 +14,5 @@ abstract class ContractRepository {
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<Either<String, Failure>> workerSignContract(int id);
   Future<Either<String, Failure>> businessSignContract(int id);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
 }

@@ -23,102 +23,45 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
   }
 
   Future<void> onInitSearchWork(InitSearchWorkEvent event, Emitter emit) async {
-    GetWorkModel getWorkModel = GetWorkModel(
-        page: defaultPage, pageSize: defaultPageSize, search: defaultSearch);
-    final List<PostEntity> posts =
-        await postUseCase.getSearchWorks(getWorkModel);
-
-    emit(state.coppyWith(postsData: posts));
+    GetWorkModel getWorkModel = GetWorkModel(page: defaultPage, pageSize: defaultPageSize, search: defaultSearch);
+    final List<PostEntity> posts = await postUseCase.getSearchWorks(getWorkModel);
+    emit(state.copyWith(postsData: posts));
   }
 
-  Future<void> onChangedSearchWork(
-      ChangedSearchWorkEvent event, Emitter emit) async {
-    GetWorkModel getWorkModel = GetWorkModel(
-        page: defaultPage, pageSize: defaultPageSize, search: event.txtSearch);
-    final List<PostEntity> posts =
-        await postUseCase.getSearchWorks(getWorkModel);
-
-    emit(state.coppyWith(
-        postsData: posts, txtSearch: event.txtSearch, isLoadMore: false));
+  Future<void> onChangedSearchWork(ChangedSearchWorkEvent event, Emitter emit) async {
+    GetWorkModel getWorkModel = GetWorkModel(page: defaultPage, pageSize: defaultPageSize, search: event.txtSearch);
+    final List<PostEntity> posts = await postUseCase.getSearchWorks(getWorkModel);
+    emit(state.copyWith(postsData: posts, txtSearch: event.txtSearch, isLoadMore: false));
   }
 
-  Future<void> onChangedIconClearSearchWork(
-      ChangedIconClearSearchWorkEvent event, Emitter emit) async {
-    emit(state.coppyWith(
-        isHiddenSuffixIcon: event.txtSearch == '', txtSearch: event.txtSearch));
+  Future<void> onChangedIconClearSearchWork(ChangedIconClearSearchWorkEvent event, Emitter emit) async {
+    emit(state.copyWith(isHiddenSuffixIcon: event.txtSearch == '', txtSearch: event.txtSearch));
   }
 
-  Future<void> onScrollSearchWork(
-      ScrollSearchWorkEvent event, Emitter emit) async {
+  Future<void> onScrollSearchWork(ScrollSearchWorkEvent event, Emitter emit) async {
     GetWorkModel getWorkModel = GetWorkModel(
       page: state.page + 1,
       pageSize: defaultPageSize,
       search: state.txtSearch,
     );
-    final List<PostEntity> posts =
-        await postUseCase.getSearchWorks(getWorkModel);
+    final List<PostEntity> posts = await postUseCase.getSearchWorks(getWorkModel);
+    final List<PostEntity> newPosts = [...state.postsData, ...posts];
 
-    final List<PostEntity> newPosts = [
-      ...state.postsData.map((e) => PostEntity(
-            id: e.id,
-            updatedAt: e.updatedAt,
-            position: e.position,
-            title: e.title,
-            content: e.content,
-            duration: e.duration,
-            salary: e.salary,
-            creatorId: e.creatorId,
-            creatorName: e.creatorName,
-            creatorAvatar: e.creatorAvatar,
-            companyName: e.companyName,
-            companyLogo: e.companyLogo,
-            skills: e.skills,
-            tasks: e.tasks,
-            createdAt: e.createdAt,
-            deletedAt: e.deletedAt,
-            business: e.business,
-            numberApplied: e.numberApplied,
-          )),
-      ...posts.map((e) => PostEntity(
-            id: e.id,
-            updatedAt: e.updatedAt,
-            position: e.position,
-            title: e.title,
-            content: e.content,
-            duration: e.duration,
-            salary: e.salary,
-            creatorId: e.creatorId,
-            creatorName: e.creatorName,
-            creatorAvatar: e.creatorAvatar,
-            companyName: e.companyName,
-            companyLogo: e.companyLogo,
-            skills: e.skills,
-            tasks: e.tasks,
-            createdAt: e.createdAt,
-            deletedAt: e.deletedAt,
-            business: e.business,
-            numberApplied: e.numberApplied,
-          )),
-    ];
-
-    emit(state.coppyWith(postsData: newPosts, isLoadMore: !state.isLoadMore));
+    emit(state.copyWith(postsData: newPosts, isLoadMore: !state.isLoadMore));
   }
 
-  Future<void> onRefreshSearchWork(
-      RefreshSearchWorkEvent event, Emitter emit) async {
+  Future<void> onRefreshSearchWork(RefreshSearchWorkEvent event, Emitter emit) async {
     GetWorkModel getWorkModel = GetWorkModel(
       page: defaultPage,
       pageSize: defaultPageSize,
       search: state.txtSearch,
     );
-    final List<PostEntity> posts =
-        await postUseCase.getSearchWorks(getWorkModel);
+    final List<PostEntity> posts = await postUseCase.getSearchWorks(getWorkModel);
 
-    emit(state.coppyWith(postsData: posts, isLoadMore: false));
+    emit(state.copyWith(postsData: posts, isLoadMore: false));
   }
 
-  Future<void> onLoadMoreSearchWork(
-      LoadMoreSearchWorkEvent event, Emitter emit) async {
-    emit(state.coppyWith(isLoadMore: event.isLoadMore));
+  Future<void> onLoadMoreSearchWork(LoadMoreSearchWorkEvent event, Emitter emit) async {
+    emit(state.copyWith(isLoadMore: event.isLoadMore));
   }
 }

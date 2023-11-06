@@ -22,7 +22,7 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Left(authEntity);
     } catch (exception) {
-      return const Right(ServerFailure());
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -32,7 +32,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await authService.register(request);
       return Left(response);
     } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

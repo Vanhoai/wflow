@@ -1,5 +1,5 @@
 import 'package:wflow/core/agent/agent.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/data/models/response_model.dart';
 
@@ -19,12 +19,12 @@ class AuthServiceImpl implements AuthService {
       final json = await agent.dio.post('/auth/sign-in', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
-        throw Exception(httpResponse.message);
+        throw ServerException(message: httpResponse.message);
       } else {
         return AuthSignInResponse.fromJson(httpResponse.data);
       }
     } catch (exception) {
-      throw Exception(exception);
+      throw ServerException(message: exception.toString());
     }
   }
 
@@ -34,12 +34,12 @@ class AuthServiceImpl implements AuthService {
       final json = await agent.dio.post('/auth/create-account', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
-        throw Exception(httpResponse.message);
+        throw ServerException(message: httpResponse.message);
       } else {
         return httpResponse.message;
       }
     } catch (exception) {
-      throw Exception(exception);
+      throw ServerException(message: exception.toString());
     }
   }
 }

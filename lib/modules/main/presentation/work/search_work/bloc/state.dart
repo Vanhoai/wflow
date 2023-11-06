@@ -16,7 +16,7 @@ class SearchWorkState extends Equatable {
     this.isLoadMore = false,
   });
 
-  SearchWorkState coppyWith({
+  SearchWorkState copyWith({
     List<PostEntity>? postsData,
     bool? isHiddenSuffixIcon,
     int? page,

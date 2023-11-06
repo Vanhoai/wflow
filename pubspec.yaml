@@ -61,6 +61,7 @@ dependencies:
   geolocator: ^10.1.0
   google_maps_flutter: ^2.5.0
   flutter_stripe: ^9.5.0+1
+  syncfusion_flutter_charts: ^20.4.54
 
 dev_dependencies:
   flutter_test:

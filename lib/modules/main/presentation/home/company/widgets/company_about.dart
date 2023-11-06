@@ -63,7 +63,7 @@ class _CompanyAboutWidgetState extends State<CompanyAboutWidget> {
                             )),
                         6.verticalSpace,
                         Text(
-                          'lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco labor',
+                          companyEntity.overview.toString(),
                           style: themeData.textTheme.displayMedium!.copyWith(
                             color: AppColors.textColor,
                             fontSize: 12.sp,
@@ -133,18 +133,17 @@ class _CompanyAboutWidgetState extends State<CompanyAboutWidget> {
                                 .copyWith(color: themeData.textTheme.displaySmall!.color!.withOpacity(0.7)),
                             maxLines: 2),
                         12.verticalSpace,
-                        InkWell(
-                          onTap: () => widget.tabController.animateTo(3, curve: Curves.easeOut),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text('Get direction',
-                                  style: themeData.textTheme.displaySmall!.copyWith(color: AppColors.primary)),
-                              Icon(Icons.arrow_forward_ios, size: 14.sp, color: AppColors.primary)
-                            ],
-                          ),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            InkWell(
+                                onTap: () => widget.tabController.animateTo(3, curve: Curves.easeOut),
+                                child: Text('Get direction',
+                                    style: themeData.textTheme.displaySmall!.copyWith(color: AppColors.primary))),
+                            Icon(Icons.arrow_forward_ios, size: 14.sp, color: AppColors.primary)
+                          ],
+                        ),
                       ],
                     ),
                   )

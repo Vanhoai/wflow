@@ -131,7 +131,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                     baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
                     highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,7 +160,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Padding(
-                      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+                      padding: EdgeInsets.symmetric(horizontal: 10.w),
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.start,

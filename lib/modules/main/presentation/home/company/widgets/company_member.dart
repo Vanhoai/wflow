@@ -50,7 +50,7 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
                           onTap: () {},
                           child: Container(
                             height: 20.h,
-                            width: 100.w,
+                            width: double.infinity,
                             decoration: BoxDecoration(
                               color: Colors.white,
                               borderRadius: BorderRadius.circular(4.r),
@@ -60,7 +60,7 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
                       ),
                       subtitle: Container(
                         height: 20.h,
-                        width: 100.w,
+                        width: double.infinity,
                         decoration: BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(4.r),

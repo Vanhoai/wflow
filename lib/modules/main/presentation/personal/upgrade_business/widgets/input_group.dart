@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class InputGroup extends StatefulWidget {
+class InputGroup extends StatelessWidget {
   const InputGroup({
     super.key,
     required this.labelText,
     required this.hintText,
+    this.maxLines = 1,
+    this.minLines = 1,
+    required this.editingController,
   });
 
   final String labelText;
   final String hintText;
+  final int maxLines;
+  final int minLines;
+  final TextEditingController editingController;
 
-  @override
-  State<InputGroup> createState() => _InputGroupState();
-}
-
-class _InputGroupState extends State<InputGroup> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -23,7 +24,7 @@ class _InputGroupState extends State<InputGroup> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Text(
-            widget.labelText,
+            labelText,
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.normal,
@@ -33,9 +34,12 @@ class _InputGroupState extends State<InputGroup> {
           const SizedBox(height: 4),
           SizedBox(
             child: TextField(
+              controller: editingController,
+              maxLines: maxLines,
+              minLines: minLines,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(16),
-                hintText: widget.hintText,
+                hintText: hintText,
                 hintStyle: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.normal,

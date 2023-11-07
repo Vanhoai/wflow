@@ -26,22 +26,26 @@ import 'package:wflow/modules/main/data/contract/contract_repository_impl.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
+import 'package:wflow/modules/main/data/media/media_repository_impl.dart';
+import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
 import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
 import 'package:wflow/modules/main/data/task/task_service.dart';
+import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
+import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_repository.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_usecase.dart';
 import 'package:wflow/modules/main/domain/category/category_repository.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
-import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
-import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
+import 'package:wflow/modules/main/domain/media/media_repository.dart';
+import 'package:wflow/modules/main/domain/media/media_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
@@ -49,6 +53,7 @@ import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
+
 import 'videocall/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
@@ -123,6 +128,18 @@ Future<void> initAppInjection() async {
   // Authen bloc
   instance.registerLazySingleton<AuthenticationsBloc>(
       () => AuthenticationsBloc(authenticationUseCase: instance.get<AuthenticationUseCase>()));
+
+  // media
+  instance.registerLazySingleton<MediaService>(
+    () => MediaServiceImpl(agent: instance.get<Agent>()),
+  );
+  instance.registerLazySingleton<MediaRepository>(
+    () => MediaRepositoryImpl(mediaService: instance.get<MediaService>()),
+  );
+  instance.registerLazySingleton<MediaUseCase>(
+    () => MediaUseCaseImpl(mediaRepository: instance.get<MediaRepository>()),
+  );
+
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));

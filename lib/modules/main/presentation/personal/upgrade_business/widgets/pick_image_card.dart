@@ -30,7 +30,10 @@ class _PickImageCardState extends State<PickImageCard> {
         color: Colors.transparent,
       ),
       child: widget.isImage
-          ? Image.file(widget.image!)
+          ? Image.file(
+              widget.image!,
+              fit: BoxFit.cover,
+            )
           : Container(
               decoration: BoxDecoration(
                 color: themeData.colorScheme.onBackground.withOpacity(0.05),

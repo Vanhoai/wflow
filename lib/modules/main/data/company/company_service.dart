@@ -1,7 +1,7 @@
 import 'package:wflow/core/agent/agent.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/company/company_model.dart';
+import 'package:wflow/modules/main/data/company/request/update_business_rqst.dart';
 import 'package:wflow/modules/main/data/post/models/post_model.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 
@@ -10,6 +10,7 @@ class CompanyPath {
   static const String myCompany = '/business/my-business';
   static const String myCompanyMember = '/business/members-in-my-business';
   static const String myCompanyJob = '/post/post-in-my-business';
+  static const String upgradeBusiness = '/user/upgrade-to-business';
 }
 
 abstract class CompanyService {
@@ -17,6 +18,7 @@ abstract class CompanyService {
   Future<CompanyModel> myCompany();
   Future<List<UserModel>> myCompanyMember(int page, int pageSize);
   Future<List<PostModel>> myCompanyJob(int page, int pageSize);
+  Future<String> upgradeBusiness({required UpgradeBusinessRequest request});
 }
 
 class CompanyServiceImpl implements CompanyService {
@@ -69,7 +71,6 @@ class CompanyServiceImpl implements CompanyService {
         return throw CommonFailure(message: response.data['message'], statusCode: response.data['statusCode']);
       }
     } catch (e) {
-      print(e);
       return throw const ServerFailure();
     }
   }
@@ -88,8 +89,22 @@ class CompanyServiceImpl implements CompanyService {
         return throw CommonFailure(message: response.data['message'], statusCode: response.data['statusCode']);
       }
     } catch (e) {
-      print(e);
       return throw const ServerFailure();
+    }
+  }
+
+  @override
+  Future<String> upgradeBusiness({required UpgradeBusinessRequest request}) async {
+    try {
+      final response = await agent.dio.put(CompanyPath.upgradeBusiness, data: request.toJson());
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (response.statusCode != 200) {
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      }
+
+      return httpResponse.data;
+    } catch (error) {
+      throw ServerException(message: error.toString());
     }
   }
 }

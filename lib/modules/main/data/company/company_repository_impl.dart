@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/company/company_service.dart';
+import 'package:wflow/modules/main/data/company/request/update_business_rqst.dart';
 import 'package:wflow/modules/main/domain/company/company_repository.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
@@ -8,7 +9,6 @@ import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 class CompanyRepositoryImpl extends CompanyRepository {
   final CompanyService companyService;
-
   CompanyRepositoryImpl({required this.companyService});
 
   @override
@@ -80,6 +80,16 @@ class CompanyRepositoryImpl extends CompanyRepository {
       } else {
         return const Right(ServerFailure());
       }
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> upgradeBusiness({required UpgradeBusinessRequest request}) async {
+    try {
+      final response = await companyService.upgradeBusiness(request: request);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

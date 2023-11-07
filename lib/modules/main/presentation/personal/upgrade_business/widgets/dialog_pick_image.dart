@@ -15,18 +15,12 @@ class DialogPickImage extends StatefulWidget {
 }
 
 class _DialogPickImageState extends State<DialogPickImage> {
-  late final RoundedRectangleBorder _roundedRectangleBorder;
-
-  @override
-  void initState() {
-    _roundedRectangleBorder = RoundedRectangleBorder(borderRadius: BorderRadius.circular(8));
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      shape: _roundedRectangleBorder,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8),
+      ),
       content: const Text(
         'Allow Wflow choose an image',
         style: TextStyle(
@@ -39,14 +33,19 @@ class _DialogPickImageState extends State<DialogPickImage> {
         ElevatedButton(
           onPressed: widget.pickImageFromCamera,
           style: ElevatedButton.styleFrom(
-            shape: _roundedRectangleBorder,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
           child: const Text('Camera'),
         ),
+        const Spacer(),
         ElevatedButton(
           onPressed: widget.pickImageFromGallery,
           style: ElevatedButton.styleFrom(
-            shape: _roundedRectangleBorder,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8),
+            ),
           ),
           child: const Text('Gallery'),
         ),

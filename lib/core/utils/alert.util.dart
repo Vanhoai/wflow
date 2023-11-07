@@ -17,10 +17,10 @@ class AlertUtils {
             CupertinoDialogAction(
               child: const Text('OK'),
               onPressed: () {
+                Navigator.of(context).pop();
                 if (callback != null) {
                   callback();
                 }
-                Navigator.of(context).pop();
               },
             ),
           ],

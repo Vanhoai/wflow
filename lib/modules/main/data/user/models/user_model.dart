@@ -42,6 +42,12 @@ class UserModel extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'role', defaultValue: 0)
   final int role;
 
+  @JsonKey(name: 'balance', defaultValue: 0)
+  final int balance;
+
+  @JsonKey(name: 'customerID', defaultValue: '')
+  final String customerID;
+
   const UserModel({
     required super.id,
     required super.createdAt,
@@ -59,6 +65,8 @@ class UserModel extends BaseEntity with EquatableMixin {
     required this.role,
     required this.state,
     required this.business,
+    required this.balance,
+    required this.customerID,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) => _$UserModelFromJson(json);
@@ -79,6 +87,8 @@ class UserModel extends BaseEntity with EquatableMixin {
     String? identifyCode,
     int? role,
     int? business,
+    int? balance,
+    String? customerID,
   }) {
     return UserModel(
       id: id,
@@ -97,6 +107,8 @@ class UserModel extends BaseEntity with EquatableMixin {
       identifyCode: identifyCode ?? this.identifyCode,
       role: role ?? this.role,
       business: business ?? this.business,
+      balance: balance ?? this.balance,
+      customerID: customerID ?? this.customerID,
     );
   }
 
@@ -118,6 +130,8 @@ class UserModel extends BaseEntity with EquatableMixin {
       updatedAt: null,
       deletedAt: null,
       business: 0,
+      balance: 0,
+      customerID: '',
     );
   }
 
@@ -135,5 +149,8 @@ class UserModel extends BaseEntity with EquatableMixin {
         isVerify,
         identifyCode,
         role,
+        customerID,
+        business,
+        balance,
       ];
 }

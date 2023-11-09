@@ -39,6 +39,12 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'role', defaultValue: 0)
   final int role;
 
+  @JsonKey(name: 'balance', defaultValue: 0)
+  final int balance;
+
+  @JsonKey(name: 'customerID', defaultValue: '')
+  final String customerID;
+
   const UserEntity({
     required super.id,
     required super.createdAt,
@@ -55,6 +61,8 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.phone,
     required this.role,
     required this.business,
+    required this.balance,
+    required this.customerID,
   });
 
   factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
@@ -75,6 +83,8 @@ class UserEntity extends BaseEntity with EquatableMixin {
     String? identifyCode,
     int? role,
     int? business,
+    int? balance,
+    String? customerID,
   }) {
     return UserEntity(
       id: id,
@@ -92,6 +102,8 @@ class UserEntity extends BaseEntity with EquatableMixin {
       identifyCode: identifyCode ?? this.identifyCode,
       role: role ?? this.role,
       business: business ?? this.business,
+      balance: balance ?? this.balance,
+      customerID: customerID ?? this.customerID,
     );
   }
 
@@ -112,21 +124,12 @@ class UserEntity extends BaseEntity with EquatableMixin {
       updatedAt: null,
       deletedAt: null,
       business: 0,
+      balance: 0,
+      customerID: '',
     );
   }
 
   @override
-  List<Object?> get props => [
-        id,
-        email,
-        phone,
-        avatar,
-        age,
-        name,
-        dob,
-        address,
-        isVerify,
-        identifyCode,
-        role,
-      ];
+  List<Object?> get props =>
+      [id, email, phone, avatar, age, name, dob, address, isVerify, identifyCode, role, balance, customerID];
 }

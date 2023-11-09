@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
+import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
+import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({super.key});
@@ -12,15 +20,58 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
+  late final BalanceUseCase balanceUseCase;
+
+  @override
+  initState() {
+    balanceUseCase = instance.get<BalanceUseCase>();
+    super.initState();
+  }
+
+  Future<void> createPaymentSheet() async {
+    try {
+      final customerID = instance.get<AppBloc>().state.userEntity.customerID;
+
+      final response = await balanceUseCase.createPaymentSheet(
+        request: CreatePaymentSheetRequest(customer: customerID, amount: 200000),
+      );
+
+      response.fold(
+        (CreatePaymentSheetResponse createPaymentSheetResponse) {
+          initPaymentSheet(createPaymentSheetResponse);
+        },
+        (Failure failure) {
+          AlertUtils.showMessage('Notification', failure.message);
+        },
+      );
+    } catch (exception) {
+      AlertUtils.showMessage('Notification', exception.toString());
+    }
+  }
+
+  Future<void> initPaymentSheet(CreatePaymentSheetResponse createPaymentSheetResponse) async {
+    await Stripe.instance.initPaymentSheet(
+      paymentSheetParameters: SetupPaymentSheetParameters(
+        customFlow: false,
+        merchantDisplayName: 'Flutter Stripe Store Demo',
+        paymentIntentClientSecret: createPaymentSheetResponse.paymentIntent,
+        customerEphemeralKeySecret: createPaymentSheetResponse.ephemeralKey,
+        customerId: createPaymentSheetResponse.customer,
+        allowsDelayedPaymentMethods: true,
+      ),
+    );
+
+    await Stripe.instance.presentPaymentSheet();
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
+      isSafe: true,
       appBar: const AppHeader(
         text: 'Balance',
-        actions: [],
       ),
-      isSafe: true,
       body: SizedBox(
         width: MediaQuery.of(context).size.width,
         height: MediaQuery.of(context).size.height,
@@ -80,7 +131,9 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                   ),
                                   8.horizontalSpace,
                                   InkWell(
-                                    onTap: () {},
+                                    onTap: () {
+                                      createPaymentSheet();
+                                    },
                                     child: SvgPicture.asset(
                                       AppConstants.ic_top_up,
                                       height: 24,

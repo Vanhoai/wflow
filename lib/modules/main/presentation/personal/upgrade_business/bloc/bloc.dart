@@ -3,7 +3,6 @@ import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
@@ -78,10 +77,6 @@ class UpgradeBusinessBloc extends Bloc<UpgradeBusinessEvent, UpgradeBusinessStat
   }
 
   FutureOr<void> upgradeBusiness(UpgradeBusinessRequest request, Emitter<UpgradeBusinessState> emit) async {
-    // init payment sheet
-    final paymentSheet =
-        await Stripe.instance.initPaymentSheet(paymentSheetParameters: const SetupPaymentSheetParameters());
-
     final response = await companyUseCase.upgradeBusiness(request: request);
     response.fold(
       (String message) {

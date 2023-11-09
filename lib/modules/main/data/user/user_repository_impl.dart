@@ -16,42 +16,18 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final UserModel userModel = await userService.myProfile();
       return Left(UserEntity.fromJson(userModel.toJson()));
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(
-            CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(
-            ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(
-            CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
   @override
-  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
-      GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
     try {
-      final List<UserEntity> users =
-          await userService.getUsersNotBusiness(getUserNotBusinessModel);
+      final List<UserEntity> users = await userService.getUsersNotBusiness(getUserNotBusinessModel);
       return Left(users);
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(
-            CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(
-            ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(
-            CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

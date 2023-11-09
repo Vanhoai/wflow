@@ -18,6 +18,8 @@ import 'package:wflow/modules/auth/domain/auth_repository.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/main/data/authentication/authentication_repository_impl.dart';
 import 'package:wflow/modules/main/data/authentication/authentication_service.dart';
+import 'package:wflow/modules/main/data/balance/balance_repository_impl.dart';
+import 'package:wflow/modules/main/data/balance/balance_service.dart';
 import 'package:wflow/modules/main/data/category/category_repository_impl.dart';
 import 'package:wflow/modules/main/data/category/category_service.dart';
 import 'package:wflow/modules/main/data/company/company_repository_impl.dart';
@@ -36,6 +38,8 @@ import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_repository.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_usecase.dart';
+import 'package:wflow/modules/main/domain/balance/balance_repository.dart';
+import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/domain/category/category_repository.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/company/company_repository.dart';
@@ -138,6 +142,16 @@ Future<void> initAppInjection() async {
   );
   instance.registerLazySingleton<MediaUseCase>(
     () => MediaUseCaseImpl(mediaRepository: instance.get<MediaRepository>()),
+  );
+
+  instance.registerLazySingleton<BalanceService>(
+    () => BalanceServiceImpl(agent: instance.get<Agent>()),
+  );
+  instance.registerLazySingleton<BalanceRepository>(
+    () => BalanceRepositoryImpl(balanceService: instance.get<BalanceService>()),
+  );
+  instance.registerLazySingleton<BalanceUseCase>(
+    () => BalanceUseCaseImpl(balanceRepository: instance.get<BalanceRepository>()),
   );
 
   // Video call connect bloc

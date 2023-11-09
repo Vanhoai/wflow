@@ -3,7 +3,9 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/balance/balance_service.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
+import 'package:wflow/modules/main/data/balance/models/update_balance_rqst.dart';
 import 'package:wflow/modules/main/domain/balance/balance_repository.dart';
+import 'package:wflow/modules/main/domain/balance/entities/balance_entity.dart';
 
 class BalanceRepositoryImpl implements BalanceRepository {
   final BalanceService balanceService;
@@ -14,6 +16,26 @@ class BalanceRepositoryImpl implements BalanceRepository {
       {required CreatePaymentSheetRequest request}) async {
     try {
       final response = await balanceService.createPaymentSheet(request: request);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<BalanceEntity, Failure>> getMyBalance() async {
+    try {
+      final response = await balanceService.getMyBalance();
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<BalanceEntity, Failure>> topUpBalance({required UpdateBalanceRequest request}) async {
+    try {
+      final response = await balanceService.topUpBalance(request: request);
       return Left(response);
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));

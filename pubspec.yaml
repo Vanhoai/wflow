@@ -4,8 +4,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  # sdk: ">=3.0.6 <4.0.0"
-  sdk: ">=3.0.0 <3.3.0"
+  sdk: ">=3.0.6 <4.0.0"
 
 dependencies:
   flutter:
@@ -60,8 +59,8 @@ dependencies:
   dart_jsonwebtoken: ^2.12.0
   geolocator: ^10.1.0
   google_maps_flutter: ^2.5.0
-  flutter_stripe: ^9.5.0+1
   syncfusion_flutter_charts: ^20.4.54
+  flutter_stripe: ^9.5.0+1
 
 dev_dependencies:
   flutter_test:

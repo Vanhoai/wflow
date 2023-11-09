@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/navigation.dart';
-
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/http/response.http.dart';
 import 'package:wflow/core/models/models.dart';
@@ -28,6 +27,8 @@ class Agent {
     }, onError: (DioException exception, handler) async {
       return handler.next(exception);
     }, onResponse: (Response<dynamic> response, handler) async {
+      print('Response: ${response.data}');
+
       if (response.statusCode! >= 500) {
         exitApp('Some thing error, please try again later');
       }
@@ -36,7 +37,11 @@ class Agent {
 
       // check status 401 => refresh token
       if (httpResponse.statusCode == 401) {
+        print('Refresh token');
+
         final String? accessToken = await refreshToken();
+
+        print('Access token: $accessToken');
         if (accessToken != null && accessToken.isNotEmpty) {
           final options = response.requestOptions;
           options.headers = {
@@ -44,10 +49,16 @@ class Agent {
             'Authorization': 'Bearer $accessToken',
           };
 
+          print('Retry request: ${options.path}');
+
           return handler.resolve(await retry(options));
         } else {
+          print('Exit app: ${httpResponse.message}');
+
           exitApp(httpResponse.message);
         }
+      } else if (httpResponse.statusCode == 402) {
+        exitApp(httpResponse.message);
       }
 
       return handler.next(response);
@@ -103,7 +114,10 @@ class Agent {
       builder: (context) {
         return CupertinoAlertDialog(
           title: const Text('Notification', style: TextStyle(fontWeight: FontWeight.w400, fontSize: 16)),
-          content: Text(message),
+          content: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 12),
+            child: Text(message),
+          ),
           actions: [
             CupertinoDialogAction(
               child: const Text('OK'),

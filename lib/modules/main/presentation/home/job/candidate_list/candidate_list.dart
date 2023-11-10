@@ -92,21 +92,24 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                   onTapChat: () {
                                     Worker worker = state.candidateEntities[index].worker;
                                     UserEntity userEntity = UserEntity(
-                                        id: worker.id as int,
-                                        createdAt: null,
-                                        updatedAt: null,
-                                        deletedAt: null,
-                                        address: '',
-                                        age: worker.age,
-                                        avatar: worker.avatar,
-                                        dob: worker.dob,
-                                        email: worker.email,
-                                        identifyCode: worker.identifyCode,
-                                        isVerify: worker.isVerify,
-                                        name: worker.name,
-                                        phone: worker.phone,
-                                        role: worker.role as int,
-                                        business: worker.business as int);
+                                      id: worker.id as int,
+                                      createdAt: null,
+                                      updatedAt: null,
+                                      deletedAt: null,
+                                      address: '',
+                                      age: worker.age,
+                                      avatar: worker.avatar,
+                                      dob: worker.dob,
+                                      email: worker.email,
+                                      identifyCode: worker.identifyCode,
+                                      isVerify: worker.isVerify,
+                                      name: worker.name,
+                                      phone: worker.phone,
+                                      role: worker.role as int,
+                                      business: worker.business as int,
+                                      balance: 0,
+                                      customerID: '',
+                                    );
                                     ArgumentsMessage argumentsMessage =
                                         ArgumentsMessage(id: null, userEntity: userEntity);
                                     Navigator.of(context)

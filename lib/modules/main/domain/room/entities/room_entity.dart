@@ -14,38 +14,42 @@ class RoomEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'messages', defaultValue: [])
   final List<MessagesEntity> messages;
 
-  RoomEntity(
-      {required this.state,
-      required this.userCreator,
-      required this.userClient,
-      required this.messages,
-      required super.id,
-      required super.createdAt,
-      required super.updatedAt,
-      required super.deletedAt});
+  RoomEntity({
+    required this.state,
+    required this.userCreator,
+    required this.userClient,
+    required this.messages,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.deletedAt,
+  });
 
   factory RoomEntity.fromJson(Map<String, dynamic> json) => _$RoomEntityFromJson(json);
 
+  @override
   Map<String, dynamic> toJson() => _$RoomEntityToJson(this);
 
-  RoomEntity copyWith(
-      {int? id,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      DateTime? deletedAt,
-      String? state,
-      UserEntity? userCreator,
-      UserEntity? userClient,
-      List<MessagesEntity>? messages}) {
+  RoomEntity copyWith({
+    int? id,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? deletedAt,
+    String? state,
+    UserEntity? userCreator,
+    UserEntity? userClient,
+    List<MessagesEntity>? messages,
+  }) {
     return RoomEntity(
-        state: state ?? this.state,
-        userCreator: userCreator ?? this.userCreator,
-        userClient: userClient ?? this.userClient,
-        messages: messages ?? this.messages,
-        id: id ?? super.id,
-        createdAt: createdAt ?? super.createdAt,
-        updatedAt: updatedAt ?? super.updatedAt,
-        deletedAt: deletedAt ?? super.deletedAt);
+      state: state ?? this.state,
+      userCreator: userCreator ?? this.userCreator,
+      userClient: userClient ?? this.userClient,
+      messages: messages ?? this.messages,
+      id: id ?? super.id,
+      createdAt: createdAt ?? super.createdAt,
+      updatedAt: updatedAt ?? super.updatedAt,
+      deletedAt: deletedAt ?? super.deletedAt,
+    );
   }
 
   @override
@@ -57,14 +61,15 @@ class MessagesEntity extends BaseEntity with EquatableMixin {
   final String message;
   final String type;
   final UserEntity userSender;
-  MessagesEntity(
-      {required this.message,
-      required this.type,
-      required super.id,
-      required super.createdAt,
-      required super.updatedAt,
-      required super.deletedAt,
-      required this.userSender});
+  MessagesEntity({
+    required this.message,
+    required this.type,
+    required super.id,
+    required super.createdAt,
+    required super.updatedAt,
+    required super.deletedAt,
+    required this.userSender,
+  });
 
   factory MessagesEntity.fromJson(Map<String, dynamic> json) => _$MessagesEntityFromJson(json);
 
@@ -80,13 +85,14 @@ class MessagesEntity extends BaseEntity with EquatableMixin {
       DateTime? deletedAt,
       UserEntity? userSender}) {
     return MessagesEntity(
-        message: message ?? this.message,
-        type: type ?? this.type,
-        id: id ?? super.id,
-        createdAt: createdAt ?? super.createdAt,
-        updatedAt: updatedAt ?? super.updatedAt,
-        deletedAt: deletedAt ?? super.deletedAt,
-        userSender: userSender ?? this.userSender);
+      message: message ?? this.message,
+      type: type ?? this.type,
+      id: id ?? super.id,
+      createdAt: createdAt ?? super.createdAt,
+      updatedAt: updatedAt ?? super.updatedAt,
+      deletedAt: deletedAt ?? super.deletedAt,
+      userSender: userSender ?? this.userSender,
+    );
   }
 
   @override

@@ -13,8 +13,7 @@ class RemoveCollaboratorScreen extends StatefulWidget {
   const RemoveCollaboratorScreen({super.key});
 
   @override
-  State<RemoveCollaboratorScreen> createState() =>
-      _RemoveCollaboratorScreenState();
+  State<RemoveCollaboratorScreen> createState() => _RemoveCollaboratorScreenState();
 }
 
 class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
@@ -34,19 +33,13 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          RemoveCollaboratorBloc(userUseCase: instance.get<UserUseCase>())
-            ..add(GetAllCollaboratorEvent()),
+      create: (_) => RemoveCollaboratorBloc(userUseCase: instance.get<UserUseCase>())..add(GetAllCollaboratorEvent()),
       child: BlocBuilder<RemoveCollaboratorBloc, RemoveCollaboratorState>(
         builder: (context, state) {
           _scrollController.addListener(() {
-            if (_scrollController.position.maxScrollExtent ==
-                    _scrollController.offset &&
-                !state.isLoadMore) {
-              BlocProvider.of<RemoveCollaboratorBloc>(context)
-                  .add((LoadMoreCollaboratorEvent()));
-              BlocProvider.of<RemoveCollaboratorBloc>(context)
-                  .add(ScrollCollaboratorEvent());
+            if (_scrollController.position.maxScrollExtent == _scrollController.offset && !state.isLoadMore) {
+              BlocProvider.of<RemoveCollaboratorBloc>(context).add((LoadMoreCollaboratorEvent()));
+              BlocProvider.of<RemoveCollaboratorBloc>(context).add(ScrollCollaboratorEvent());
             }
           });
           return BlocListener<RemoveCollaboratorBloc, RemoveCollaboratorState>(
@@ -55,9 +48,12 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
             child: Scaffold(
               appBar: AppHeader(
                 text: 'Members in your business',
-                actionTitle: 'remove',
-                onTap: () => BlocProvider.of<RemoveCollaboratorBloc>(context)
-                    .add(DeleteCollaboratorEvent()),
+                actions: [
+                  InkWell(
+                    onTap: () => BlocProvider.of<RemoveCollaboratorBloc>(context).add(DeleteCollaboratorEvent()),
+                    child: const Text('add'),
+                  ),
+                ],
               ),
               body: SizedBox(
                 width: double.infinity,
@@ -74,13 +70,9 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
                           email: state.users[index].email,
                           image: state.users[index].avatar,
                           role: state.users[index].role,
-                          isCheck: state.usersChecked
-                              .contains(state.users[index].id),
-                          onCheck: (value) =>
-                              BlocProvider.of<RemoveCollaboratorBloc>(context)
-                                  .add(CheckedCollaboratorEvent(
-                                      isChecked: value!,
-                                      id: state.users[index].id)),
+                          isCheck: state.usersChecked.contains(state.users[index].id),
+                          onCheck: (value) => BlocProvider.of<RemoveCollaboratorBloc>(context)
+                              .add(CheckedCollaboratorEvent(isChecked: value!, id: state.users[index].id)),
                         ),
                       ),
                     ),
@@ -110,8 +102,7 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
     );
   }
 
-  Future<void> _listener(
-      BuildContext context, RemoveCollaboratorState state) async {
+  Future<void> _listener(BuildContext context, RemoveCollaboratorState state) async {
     if (state is LoadCollaboratorFailedState) {
       showDialog(
         state.message,

@@ -11,7 +11,7 @@ abstract class UserRepository {
   Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
       GetUserNotBusinessModel getUserNotBusinessModel);
   Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
-  Future<List<UserEntity>> getAllCollaborator(
+  Future<Either<List<UserEntity>, Failure>> getAllCollaborator(
       GetAllCollaboratorModel getAllCollaboratorModel);
   Future<bool> removeCollaborator(
       RemoveCollaboratorModel removeCollaboratorModel);

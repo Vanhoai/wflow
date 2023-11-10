@@ -4,6 +4,7 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/configuration/environment.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -18,7 +19,7 @@ class RemoveCollaboratorBloc
       : super(const RemoveCollaboratorState()) {
     on<GetAllCollaboratorEvent>(onGetAllCollaborator);
     on<ScrollCollaboratorEvent>(onScrollCollaborator);
-    on<LoadMoreCollaboratorEvent>(onLoadMorelCollaborator);
+    on<LoadMoreCollaboratorEvent>(onLoadMoreCollaborator);
     on<CheckedCollaboratorEvent>(onCheckedCollaborator);
     on<DeleteCollaboratorEvent>(onDeleteCollaborator);
   }
@@ -26,32 +27,42 @@ class RemoveCollaboratorBloc
   Future<void> onGetAllCollaborator(
       GetAllCollaboratorEvent event, Emitter emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-    final List<UserEntity> users =
+    final result =
         await userUseCase.getAllCollaborator(const GetAllCollaboratorModel());
 
-    print('my log');
-    emit(state.copyWith(users: users));
+    result.fold(
+        (List<UserEntity> users) =>
+            {emit(state.copyWith(users: users, page: 1))},
+        (Failure failure) => {
+              emit(LoadCollaboratorFailedState(message: failure.message)),
+              emit(const RemoveCollaboratorState()),
+            });
+
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onScrollCollaborator(
       ScrollCollaboratorEvent event, Emitter emit) async {
-    final List<UserEntity> users = await userUseCase
+    List<UserEntity> newUsers;
+    final result = await userUseCase
         .getAllCollaborator(GetAllCollaboratorModel(page: state.page + 1));
 
-    final List<UserEntity> newUsers = [
-      ...state.users.map((e) => UserEntity.fromJson(e.toJson())),
-      ...users.map((e) => UserEntity.fromJson(e.toJson()))
-    ];
-
-    emit(state.copyWith(
-      users: newUsers,
-      page: state.page + 1,
-      isLoadMore: false,
-    ));
+    result.fold(
+        (List<UserEntity> users) => {
+              newUsers = [
+                ...state.users.map((e) => UserEntity.fromJson(e.toJson())),
+                ...users.map((e) => UserEntity.fromJson(e.toJson()))
+              ],
+              emit(state.copyWith(
+                users: newUsers,
+                page: state.page + 1,
+                isLoadMore: false,
+              )),
+            },
+        (Failure failure) => {});
   }
 
-  Future<void> onLoadMorelCollaborator(
+  Future<void> onLoadMoreCollaborator(
       LoadMoreCollaboratorEvent event, Emitter emit) async {
     emit(state.copyWith(isLoadMore: event.isLoadMore));
   }
@@ -72,17 +83,25 @@ class RemoveCollaboratorBloc
   Future<void> onDeleteCollaborator(
       DeleteCollaboratorEvent event, Emitter emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-    String accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
-    final jwt = JWT.verify(
-        accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
-    final business = jwt.payload['business'];
-    final result = await userUseCase.removeCollaborator(
-        RemoveCollaboratorModel(business: business, users: state.usersChecked));
-    if (result) {
+    if (state.usersChecked.isEmpty) {
+      emit(const RemoveCollaboratorFailedState(
+          message: 'An error occurred. Please try again later'));
       add(GetAllCollaboratorEvent());
-      emit(state.copyWith(usersChecked: []));
     } else {
-      emit(state.copyWith());
+      String accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
+      final jwt = JWT.verify(
+          accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+      final business = jwt.payload['business'];
+      final result = await userUseCase.removeCollaborator(
+          RemoveCollaboratorModel(
+              business: business, users: state.usersChecked));
+      if (result) {
+        emit(const RemoveCollaboratorSuccessedState(message: 'Success'));
+        add(GetAllCollaboratorEvent());
+        emit(state.copyWith(usersChecked: []));
+      } else {
+        emit(state.copyWith());
+      }
     }
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }

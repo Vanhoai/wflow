@@ -67,16 +67,23 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<List<UserEntity>> getAllCollaborator(
+  Future<Either<List<UserEntity>, Failure>> getAllCollaborator(
       GetAllCollaboratorModel getAllCollaboratorModel) async {
     try {
       final List<UserModel> users =
           await userService.getAllCollaborator(getAllCollaboratorModel);
 
-      return [...users.map((e) => UserEntity.fromJson(e.toJson()))];
+      return Left([...users.map((e) => UserEntity.fromJson(e.toJson()))]);
     } catch (e) {
-      print('my log $e');
-      return [];
+      if (e is CommonFailure) {
+        return Right(
+            CommonFailure(message: e.message, statusCode: e.statusCode));
+      } else if (e is ServerFailure) {
+        return Right(
+            ServerFailure(message: e.message, statusCode: e.statusCode));
+      } else {
+        return const Right(ServerFailure());
+      }
     }
   }
 

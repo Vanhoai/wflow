@@ -30,3 +30,30 @@ class RemoveCollaboratorState extends Equatable {
   @override
   List get props => [users, usersChecked, page, isLoadMore];
 }
+
+class LoadCollaboratorFailedState extends RemoveCollaboratorState {
+  final String message;
+
+  const LoadCollaboratorFailedState({required this.message});
+
+  @override
+  List get props => [message];
+}
+
+class RemoveCollaboratorSuccessedState extends RemoveCollaboratorState {
+  final String message;
+
+  const RemoveCollaboratorSuccessedState({required this.message});
+
+  @override
+  List get props => [message];
+}
+
+class RemoveCollaboratorFailedState extends RemoveCollaboratorState {
+  final String message;
+
+  const RemoveCollaboratorFailedState({required this.message});
+
+  @override
+  List get props => [message];
+}

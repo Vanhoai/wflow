@@ -103,7 +103,7 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
 
     result.fold(
         (List<UserEntity> users) =>
-            {emit(state.copyWith(users: users, usersChecked: []))},
+            {emit(state.copyWith(users: users, usersChecked: [], page: 1))},
         (r) => {});
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }

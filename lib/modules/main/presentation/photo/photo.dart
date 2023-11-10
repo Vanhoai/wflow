@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/photo/component/detail_page.dart';
 
@@ -158,19 +159,17 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocProvider(
-        lazy: true,
-        create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.argumentsPhoto.multiple)),
-        child: Scaffold(
-            appBar: const AppHeader(text: 'Chọn ảnh'),
-            body: Column(
-              children: [
-                Expanded(child: _buildBody(context)),
-              ],
-            ),
-            floatingActionButton: const SendPhoto()),
-      ),
+    return BlocProvider(
+      lazy: true,
+      create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.argumentsPhoto.multiple)),
+      child: CommonScaffold(
+          appBar: const AppHeader(text: 'Chọn ảnh'),
+          body: Column(
+            children: [
+              Expanded(child: _buildBody(context)),
+            ],
+          ),
+          floatingActionButton: const SendPhoto()),
     );
   }
 }

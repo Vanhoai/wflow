@@ -82,7 +82,9 @@ class _RecordState extends State<Record> {
                       child: InkWell(
                         borderRadius: BorderRadius.circular(50),
                         onTap: () {
-                          context.read<MainChatBloc>().add(SendRecordEvent(file: state.file!));
+                          context
+                              .read<MainChatBloc>()
+                              .add(SendFilesEvent(id: "", type: "RECORD", files: [state.file!]));
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8),

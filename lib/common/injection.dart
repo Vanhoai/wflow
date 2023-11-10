@@ -32,6 +32,8 @@ import 'package:wflow/modules/main/data/media/media_repository_impl.dart';
 import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/data/room/room_repository_impl.dart';
+import 'package:wflow/modules/main/data/room/room_service.dart';
 import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
 import 'package:wflow/modules/main/data/task/task_service.dart';
 import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
@@ -52,6 +54,8 @@ import 'package:wflow/modules/main/domain/media/media_repository.dart';
 import 'package:wflow/modules/main/domain/media/media_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/room/room_repository.dart';
+import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
 import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
@@ -121,6 +125,17 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<TaskService>(() => TaskServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(taskService: instance.get<TaskService>()));
   instance.registerLazySingleton<TaskUseCase>(() => TaskUseCaseImpl(taskRepository: instance.get<TaskRepository>()));
+
+  // Category
+  instance.registerLazySingleton<RoomService>(
+    () => RoomServiceImpl(agent: instance.get<Agent>()),
+  );
+  instance.registerLazySingleton<RoomRepository>(
+    () => RoomRepositoryImpl(roomService: instance.get<RoomService>()),
+  );
+  instance.registerLazySingleton<RoomUseCase>(
+    () => RoomUseCaseImpl(roomRepository: instance.get<RoomRepository>()),
+  );
 
   // Authentication
   instance.registerLazySingleton<AuthenticationService>(() => AuthenticationServiceImpl(agent: instance.get<Agent>()));

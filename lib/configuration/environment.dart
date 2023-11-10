@@ -7,4 +7,5 @@ class EnvironmentConfiguration {
   static String appHeading = FlutterConfigPlus.get('APP_HEADING');
   static String applicationID = FlutterConfigPlus.get('APPLICATION_ID');
   static String accessTokenSecret = FlutterConfigPlus.get('ACCESS_TOKEN_SECRET');
+  static String urlSocket = FlutterConfigPlus.get('URL_SOCKET');
 }

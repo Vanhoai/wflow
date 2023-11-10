@@ -69,7 +69,6 @@ class TaskServiceImpl implements TaskService {
       );
 
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      print(httpResponse.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }

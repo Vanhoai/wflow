@@ -1,19 +1,15 @@
-
-
-
 import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart' as foundation;
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/colors.dart';
 
-class EmojiKeyboard extends StatelessWidget{
-
-
+class EmojiKeyboard extends StatelessWidget {
   const EmojiKeyboard({
     Key? key,
     required this.controller,
     this.emojiShowing = false,
-  }):super(key: key);
+  }) : super(key: key);
 
   final bool emojiShowing;
   final TextEditingController controller;
@@ -21,11 +17,8 @@ class EmojiKeyboard extends StatelessWidget{
   _onBackspacePressed() {
     controller
       ..text = controller.text.characters.toString()
-      ..selection = TextSelection.fromPosition(
-          TextPosition(offset: controller.text.length));
+      ..selection = TextSelection.fromPosition(TextPosition(offset: controller.text.length));
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -39,12 +32,12 @@ class EmojiKeyboard extends StatelessWidget{
             onBackspacePressed: _onBackspacePressed,
             config: Config(
               columns: 7,
-              emojiSizeMax: 32 *
-                  (foundation.defaultTargetPlatform ==
-                      TargetPlatform.iOS
-                      ? 1.30
-                      : 1.0),
+              emojiSizeMax: 32 * (foundation.defaultTargetPlatform == TargetPlatform.iOS ? 1.30 : 1.0),
               initCategory: Category.RECENT,
+              iconColor: AppColors.primary,
+              backspaceColor: AppColors.primary,
+              iconColorSelected: AppColors.primary,
+              indicatorColor: AppColors.primary,
               noRecents: const Text(
                 'No Recents',
                 style: TextStyle(fontSize: 20, color: Colors.black26),
@@ -54,5 +47,4 @@ class EmojiKeyboard extends StatelessWidget{
           )),
     );
   }
-
 }

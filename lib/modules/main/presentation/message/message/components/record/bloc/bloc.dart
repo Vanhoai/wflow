@@ -26,13 +26,13 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
 
   FutureOr<void> handleStartRecord(HandleStartRecordEvent event, Emitter<RecordState> emit) async {
     final cache = await cachePath;
-    path = '$cache/temp.wav';
+    path = '$cache/temp.mp4';
     await _recordingSession.openRecorder();
     await _recordingSession.setSubscriptionDuration(const Duration(milliseconds: 10));
 
     await _recordingSession.startRecorder(
       toFile: path,
-      codec: Codec.pcm16WAV,
+      codec: Codec.aacMP4,
     );
 
     await emit.forEach(_recordingSession.onProgress as Stream<RecordingDisposition>, onData: (e) {

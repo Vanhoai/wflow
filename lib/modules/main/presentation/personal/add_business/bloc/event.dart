@@ -36,19 +36,9 @@ class ChangedIconClearAddBusinessEvent extends AddBusinessEvent {
   List get props => [txtSearch];
 }
 
-class ScrollAddBusinessEvent extends AddBusinessEvent {
-  const ScrollAddBusinessEvent();
+class ScrollAddBusinessEvent extends AddBusinessEvent {}
 
-  @override
-  List get props => [];
-}
-
-class RefreshAddBusinessEvent extends AddBusinessEvent {
-  const RefreshAddBusinessEvent();
-
-  @override
-  List<Object?> get props => [];
-}
+class RefreshAddBusinessEvent extends AddBusinessEvent {}
 
 class UserCheckedAddBusinessEvent extends AddBusinessEvent {
   final bool isChecked;

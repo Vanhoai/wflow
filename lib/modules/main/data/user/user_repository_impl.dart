@@ -36,15 +36,23 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<List<UserEntity>> getUsersNotBusiness(
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
       GetUserNotBusinessModel getUserNotBusinessModel) async {
     try {
       final List<UserModel> users =
           await userService.getUsersNotBusiness(getUserNotBusinessModel);
 
-      return [...users.map((e) => UserEntity.fromJson(e.toJson()))];
+      return Left([...users.map((e) => UserEntity.fromJson(e.toJson()))]);
     } catch (e) {
-      return [];
+      if (e is CommonFailure) {
+        return Right(
+            CommonFailure(message: e.message, statusCode: e.statusCode));
+      } else if (e is ServerFailure) {
+        return Right(
+            ServerFailure(message: e.message, statusCode: e.statusCode));
+      } else {
+        return const Right(ServerFailure());
+      }
     }
   }
 
@@ -67,6 +75,7 @@ class UserRepositoryImpl extends UserRepository {
 
       return [...users.map((e) => UserEntity.fromJson(e.toJson()))];
     } catch (e) {
+      print('my log $e');
       return [];
     }
   }

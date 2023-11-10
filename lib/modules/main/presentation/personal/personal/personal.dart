@@ -110,6 +110,19 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   child: const Text('Settings'),
                                 ),
                                 CupertinoActionSheetAction(
+                                  onPressed: () => Navigator.of(context)
+                                    ..pop()
+                                    ..pushNamed(RouteKeys.addBusinessScreen),
+                                  child: const Text('Add'),
+                                ),
+                                CupertinoActionSheetAction(
+                                  onPressed: () => Navigator.of(context)
+                                    ..pop()
+                                    ..pushNamed(
+                                        RouteKeys.removeCollaboratorScreen),
+                                  child: const Text('Remove'),
+                                ),
+                                CupertinoActionSheetAction(
                                   onPressed: () =>
                                       personalBloc.add(const SignOutEvent()),
                                   isDestructiveAction: true,

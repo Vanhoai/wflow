@@ -8,7 +8,7 @@ import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 abstract class UserRepository {
   Future<Either<UserEntity, Failure>> myProfile();
-  Future<List<UserEntity>> getUsersNotBusiness(
+  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(
       GetUserNotBusinessModel getUserNotBusinessModel);
   Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
   Future<List<UserEntity>> getAllCollaborator(

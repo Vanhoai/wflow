@@ -65,12 +65,17 @@ class UserServiceImpl implements UserService {
         httpResponse.data.forEach((user) {
           users.add(UserModel.fromJson(user));
         });
+
         return users;
       } else {
         return throw CommonFailure(
             message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
+      if (e is CommonFailure) {
+        return throw CommonFailure(
+            message: e.message, statusCode: e.statusCode);
+      }
       return throw const ServerFailure();
     }
   }
@@ -110,12 +115,15 @@ class UserServiceImpl implements UserService {
         httpResponse.data.forEach((user) {
           users.add(UserModel.fromJson(user));
         });
+        print('my log ${httpResponse.message}');
         return users;
       } else {
+        print('my log ${httpResponse.message}');
         return throw CommonFailure(
             message: httpResponse.message, statusCode: httpResponse.statusCode);
       }
     } catch (e) {
+      print('my log $e');
       return throw const ServerFailure();
     }
   }

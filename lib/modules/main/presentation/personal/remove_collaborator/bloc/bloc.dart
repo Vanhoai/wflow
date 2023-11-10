@@ -82,7 +82,6 @@ class RemoveCollaboratorBloc
       add(GetAllCollaboratorEvent());
       emit(state.copyWith(usersChecked: []));
     } else {
-      print('my log loi roj');
       emit(state.copyWith());
     }
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

@@ -2,6 +2,7 @@ import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/configuration/environment.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -35,21 +36,35 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
 
     GetUserNotBusinessModel getUserNotBusinessModel =
         const GetUserNotBusinessModel();
-    final List<UserEntity> users =
+    final result =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
-    emit(state.copyWith(users: users));
+
+    result.fold(
+        (List<UserEntity> users) => {
+              emit(state.copyWith(users: users)),
+            },
+        (Failure failure) => {
+              emit(LoadFailureAddBusinessState(message: failure.message)),
+              emit(const AddBusinessState()),
+            });
 
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onSearchAddBusiness(
       SearchAddBusinessEvent event, Emitter emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
     GetUserNotBusinessModel getUserNotBusinessModel =
         GetUserNotBusinessModel(search: event.txtSearch);
-    final List<UserEntity> users =
+    final result =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
 
-    emit(state.copyWith(users: users, page: 1));
+    result.fold(
+        (List<UserEntity> users) =>
+            {emit(state.copyWith(users: users, page: 1))},
+        (Failure failure) => {});
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onChangedIconClearAddBusiness(
@@ -60,28 +75,37 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
 
   Future<void> onScrollAddBusiness(
       ScrollAddBusinessEvent event, Emitter emit) async {
+    List<UserEntity> newUsers;
     GetUserNotBusinessModel getUserNotBusinessModel =
         GetUserNotBusinessModel(page: state.page + 1, search: state.txtSearch);
-    final List<UserEntity> users =
+    final result =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
 
-    List<UserEntity> newUsers = [
-      ...state.users.map((e) => UserEntity.fromJson(e.toJson())),
-      ...users.map((e) => UserEntity.fromJson(e.toJson())),
-    ];
-
-    emit(state.copyWith(
-        users: newUsers, page: state.page + 1, isLoadMore: false));
+    result.fold(
+        (List<UserEntity> users) => {
+              newUsers = [
+                ...state.users.map((e) => UserEntity.fromJson(e.toJson())),
+                ...users.map((e) => UserEntity.fromJson(e.toJson())),
+              ],
+              emit(state.copyWith(
+                  users: newUsers, page: state.page + 1, isLoadMore: false)),
+            },
+        (Failure failure) => {});
   }
 
   Future<void> onRefreshAddBusiness(
       RefreshAddBusinessEvent event, Emitter emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     GetUserNotBusinessModel getUserNotBusinessModel =
         GetUserNotBusinessModel(search: state.txtSearch);
-    final List<UserEntity> users =
+    final result =
         await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
 
-    emit(state.copyWith(users: users));
+    result.fold(
+        (List<UserEntity> users) =>
+            {emit(state.copyWith(users: users, usersChecked: []))},
+        (r) => {});
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onUserCheckedAddBusiness(
@@ -99,25 +123,29 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
   Future<void> onAddCollaboratorAddBusiness(
       AddCollaboratorAddBusinessEvent event, Emitter emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-    String accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
-    final jwt = JWT.verify(
-        accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
-    final business = jwt.payload['business'];
-
-    AddCollaboratorModel addCollaboratorModel =
-        AddCollaboratorModel(business: business, users: state.usersChecked);
-
-    final bool result = await userUseCase.addCollaborator(addCollaboratorModel);
-
-    if (result) {
-      GetUserNotBusinessModel getUserNotBusinessModel =
-          const GetUserNotBusinessModel();
-      final List<UserEntity> users =
-          await userUseCase.getUsersNotBusiness(getUserNotBusinessModel);
-
-      emit(state.copyWith(users: users, usersChecked: []));
+    if (state.usersChecked.isEmpty) {
+      emit(const AddCollaboratorFailedAddBusinessState(
+          message: 'An error occurred. Please try again later'));
+      add(RefreshAddBusinessEvent());
     } else {
-      emit(state.copyWith());
+      String accessToken = instance.get<AppBloc>().state.authEntity.accessToken;
+      final jwt = JWT.verify(
+          accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+      final business = jwt.payload['business'];
+
+      AddCollaboratorModel addCollaboratorModel =
+          AddCollaboratorModel(business: business, users: state.usersChecked);
+
+      final bool result =
+          await userUseCase.addCollaborator(addCollaboratorModel);
+
+      if (result) {
+        emit(
+            const AddCollaboratorSuccessedAddBusinessState(message: 'Success'));
+        add(RefreshAddBusinessEvent());
+      } else {
+        emit(state.copyWith());
+      }
     }
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }

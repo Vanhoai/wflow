@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/core/theme/colors.dart';
 
@@ -52,6 +53,15 @@ final themeData = ThemeData(
   dividerTheme: const DividerThemeData(
     color: AppColors.primary,
   ),
+  appBarTheme: const AppBarTheme(
+    surfaceTintColor: Colors.white,
+    color: Colors.white,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+    ),
+  ),
 );
 
 final themeDataDark = ThemeData(
@@ -65,5 +75,14 @@ final themeDataDark = ThemeData(
   fontFamily: 'SF-Pro-Display',
   dividerTheme: const DividerThemeData(
     color: AppColors.primary,
+  ),
+  appBarTheme: const AppBarTheme(
+    surfaceTintColor: Colors.white,
+    color: Colors.white,
+    systemOverlayStyle: SystemUiOverlayStyle(
+      statusBarColor: Colors.white,
+      statusBarIconBrightness: Brightness.dark,
+      statusBarBrightness: Brightness.dark,
+    ),
   ),
 );

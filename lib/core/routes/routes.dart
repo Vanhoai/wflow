@@ -23,7 +23,6 @@ import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.da
 import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
-import 'package:wflow/modules/main/presentation/home/stripe/stripe.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
@@ -131,8 +130,6 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ContractSignedScreen());
       case RouteKeys.graphScreen:
         return MaterialPageRoute(builder: (_) => const GraphScreen());
-      case RouteKeys.stripeScreen:
-        return MaterialPageRoute(builder: (_) => const StripeScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

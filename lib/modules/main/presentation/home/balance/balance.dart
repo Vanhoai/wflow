@@ -1,18 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/extensions/number.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/utils/utils.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
-import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/balance/bloc/bloc.dart';
 
@@ -24,50 +19,6 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  late final BalanceUseCase balanceUseCase;
-
-  @override
-  initState() {
-    balanceUseCase = instance.get<BalanceUseCase>();
-    super.initState();
-  }
-
-  Future<void> createPaymentSheet() async {
-    try {
-      final customerID = instance.get<AppBloc>().state.userEntity.customerID;
-
-      final response = await balanceUseCase.createPaymentSheet(
-        request: CreatePaymentSheetRequest(customer: customerID, amount: 200000),
-      );
-
-      response.fold(
-        (CreatePaymentSheetResponse createPaymentSheetResponse) {
-          initPaymentSheet(createPaymentSheetResponse);
-        },
-        (Failure failure) {
-          AlertUtils.showMessage('Notification', failure.message);
-        },
-      );
-    } catch (exception) {
-      AlertUtils.showMessage('Notification', exception.toString());
-    }
-  }
-
-  Future<void> initPaymentSheet(CreatePaymentSheetResponse createPaymentSheetResponse) async {
-    await Stripe.instance.initPaymentSheet(
-      paymentSheetParameters: SetupPaymentSheetParameters(
-        customFlow: false,
-        merchantDisplayName: 'Flutter Stripe Store Demo',
-        paymentIntentClientSecret: createPaymentSheetResponse.paymentIntent,
-        customerEphemeralKeySecret: createPaymentSheetResponse.ephemeralKey,
-        customerId: createPaymentSheetResponse.customer,
-        allowsDelayedPaymentMethods: true,
-      ),
-    );
-
-    await Stripe.instance.presentPaymentSheet();
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -139,7 +90,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                           ),
                                           8.horizontalSpace,
                                           InkWell(
-                                            onTap: () => Navigator.of(context).pushNamed(RouteKeys.stripeScreen),
+                                            onTap: () => context.read<BalanceBloc>().add(BalanceTopUpEvent(100000)),
                                             child: SvgPicture.asset(
                                               AppConstants.ic_top_up,
                                               height: 24,
@@ -220,6 +171,63 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     },
                   )),
               20.verticalSpace,
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20.w),
+                child: Row(
+                  children: [
+                    Text(
+                      'Recent Transactions',
+                      style: themeData.textTheme.displayMedium,
+                    ),
+                  ],
+                ),
+              ),
+              20.verticalSpace,
+              Expanded(
+                child: Container(
+                  child: ListView.separated(
+                    itemCount: 20,
+                    padding: EdgeInsets.only(top: 2.h),
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, index) => 12.verticalSpace,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(horizontal: 20.w),
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: themeData.colorScheme.background,
+                          borderRadius: BorderRadius.circular(8),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.2),
+                              blurRadius: 8,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Container(
+                              height: 40.w,
+                              width: 40.w,
+                              alignment: Alignment.center,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(40),
+                                color: AppColors.greenColor.withOpacity(0.2),
+                              ),
+                              child: SvgPicture.asset(
+                                AppConstants.transaction,
+                                height: 24.w,
+                                width: 24.w,
+                              ),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
             ],
           ),
         ),

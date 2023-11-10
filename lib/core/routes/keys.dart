@@ -39,5 +39,4 @@ class RouteKeys {
   static const String bookmarkScreen = '/bookmark_screen';
   static const String signedScreen = '/signed_screen';
   static const String graphScreen = '/graph_screen';
-  static const String stripeScreen = '/stripe_screen';
 }

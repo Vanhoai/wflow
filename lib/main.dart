@@ -16,6 +16,7 @@ Future<void> main() async {
   await initAppInjection();
   Stripe.publishableKey =
       'pk_test_51Msy89LoJoXEgivefPW8pyHzTPik1CXFh3fE2RDaU3CL29VbUZDb3xhcYm0CfcOWspPknCRJZS686oMV8OPakrPW00w5wRSJrV';
+  await Stripe.instance.applySettings();
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   HydratedBloc.storage = SecureHydrateStorage(sharedPreferences: sharedPreferences); // initialize HydratedBloc

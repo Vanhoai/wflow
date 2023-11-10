@@ -7,6 +7,7 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
+import 'package:wflow/modules/main/data/balance/models/update_balance_rqst.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/domain/balance/entities/balance_entity.dart';
 
@@ -24,7 +25,9 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
           ),
         ) {
     on<BalanceEventFetch>(onFetch);
-    on<BalanceTopUpEvent>(onTopUp);
+    on<BalanceTopUpEvent>((event, emit) async {
+      await onTopUp(event, emit);
+    });
   }
 
   FutureOr<void> onFetch(BalanceEventFetch event, Emitter<BalanceState> emit) async {
@@ -48,11 +51,12 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
       final response = await balanceUseCase.createPaymentSheet(
         request: CreatePaymentSheetRequest(customer: state.balanceEntity.customerID, amount: event.amount),
       );
-      response.fold(
-        (CreatePaymentSheetResponse createPaymentSheetResponse) {
-          initPaymentSheet(createPaymentSheetResponse);
+
+      await response.fold(
+        (CreatePaymentSheetResponse createPaymentSheetResponse) async {
+          await initPaymentSheet(createPaymentSheetResponse, event.amount, emit);
         },
-        (Failure failure) {
+        (Failure failure) async {
           AlertUtils.showMessage('Notification', failure.message);
         },
       );
@@ -64,29 +68,57 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
     }
   }
 
-  Future<void> initPaymentSheet(CreatePaymentSheetResponse createPaymentSheetResponse) async {
+  Future<void> initPaymentSheet(
+      CreatePaymentSheetResponse createPaymentSheetResponse, num amount, Emitter<BalanceState> emit) async {
     try {
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
           customFlow: false,
           merchantDisplayName: 'DepFow Top Up Balance',
-          paymentIntentClientSecret: createPaymentSheetResponse.paymentIntent,
+          paymentIntentClientSecret: createPaymentSheetResponse.paymentIntentSecret,
           customerEphemeralKeySecret: createPaymentSheetResponse.ephemeralKey,
           customerId: createPaymentSheetResponse.customer,
           allowsDelayedPaymentMethods: true,
         ),
       );
 
-      final response = await Stripe.instance.presentPaymentSheet();
-      print('response: $response');
-    } on StripeException catch (exception) {
-      print('exception: $exception');
-      AlertUtils.showMessage('Notification', exception.toString());
+      await Stripe.instance.presentPaymentSheet();
     } catch (exception) {
-      print('exception: $exception');
       AlertUtils.showMessage('Notification', exception.toString());
+    } finally {
+      await checkPaymentStatus(
+        emit,
+        amount: amount,
+        balanceID: state.balanceEntity.id,
+        paymentIntentID: createPaymentSheetResponse.paymentIntentID,
+      );
     }
   }
 
-  Future<void> cancelPaymentSheet() async {}
+  Future<void> checkPaymentStatus(
+    Emitter<BalanceState> emit, {
+    required num amount,
+    required num balanceID,
+    required String paymentIntentID,
+  }) async {
+    final response = await balanceUseCase.topUpBalance(
+      request: UpdateBalanceRequest(amount: amount, balanceID: balanceID, paymentIntentID: paymentIntentID),
+    );
+
+    print('Response: $response');
+
+    await response.fold(
+      (BalanceEntity l) async {
+        print('BalanceEntity: $l');
+        emit(state.copyWith(balanceEntity: l));
+        AlertUtils.showMessage('Notification', 'Top up success', callback: () {
+          // instance.get<NavigationService>().pop();
+        });
+      },
+      (Failure r) async {
+        print('Failure: $r');
+        AlertUtils.showMessage('Notification', r.message);
+      },
+    );
+  }
 }

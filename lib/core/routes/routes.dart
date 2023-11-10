@@ -31,6 +31,7 @@ import 'package:wflow/modules/main/presentation/personal/add_business/add_busine
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
@@ -135,6 +136,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ContractSignedScreen());
       case RouteKeys.graphScreen:
         return MaterialPageRoute(builder: (_) => const GraphScreen());
+      case RouteKeys.removeCollaboratorScreen:
+        return MaterialPageRoute(builder: (_) => const RemoveCollaboratorScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

@@ -46,7 +46,6 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
     );
     final List<PostEntity> posts = await postUseCase.getSearchWorks(getWorkModel);
     final List<PostEntity> newPosts = [...state.postsData, ...posts];
-
     emit(state.copyWith(postsData: newPosts, isLoadMore: !state.isLoadMore));
   }
 

@@ -65,7 +65,8 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.customerID,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) =>
+      _$UserEntityFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);

@@ -3,10 +3,11 @@ final List<Map<String, dynamic>> users = [
     'id': 0,
     'image':
         'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT7b2PVyKI3rMsrNGIdognv6uTxYbDWYi8wAPbBgDa_cCmGU-r8qzIvRcqZTK1sQ_OpsqA&usqp=CAU',
-    'name': 'Trần Văn Hoài',
-    'message': 'Cho em xin job ạ',
-    'time': '2 minutes ago',
-    'quantity': 99
+    'name': 'Trần Văn Hoài, Trần Văn Hoài, Trần Văn Hoài, Trần Văn Hoài',
+    'message':
+        'Cho em xin job ạ, Cho em xin job ạ Cho em xin job ạ Cho em xin job ạCho em xin job ạ',
+    'time': '2 minutes ago, 2 minutes ago 2 minutes ago 2 minutes ago',
+    'quantity': 9999999999999
   },
   {
     'id': 1,

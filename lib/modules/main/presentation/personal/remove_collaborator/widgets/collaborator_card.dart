@@ -3,14 +3,15 @@ import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
 
-class AddBusinessCard extends StatefulWidget {
-  const AddBusinessCard({
+class CollaboratorCard extends StatefulWidget {
+  const CollaboratorCard({
     super.key,
     required this.image,
     required this.name,
     required this.email,
     required this.isCheck,
     required this.onCheck,
+    required this.role,
   });
 
   final String image;
@@ -18,34 +19,65 @@ class AddBusinessCard extends StatefulWidget {
   final String email;
   final bool isCheck;
   final Function(bool?)? onCheck;
+  final int role;
 
   @override
-  State<AddBusinessCard> createState() => _AddBusinessCardState();
+  State<CollaboratorCard> createState() => _CollaboratorCardState();
 }
 
-class _AddBusinessCardState extends State<AddBusinessCard> {
+class _CollaboratorCardState extends State<CollaboratorCard> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => {},
       child: Ink(
-        padding: const EdgeInsets.symmetric(
-          horizontal: AppSize.paddingScreenDefault,
-          vertical: AppSize.paddingMedium * 2,
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            _buildAvatar(),
-            _buildContent(),
-            SizedBox(
-              width: ((MediaQuery.sizeOf(context).width) / 100) * 8.16,
-            ),
-            _buildCheckbox(),
-          ],
-        ),
-      ),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSize.paddingScreenDefault,
+            vertical: AppSize.paddingMedium * 2,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  _buildAvatar(),
+                  _buildContent(),
+                  SizedBox(
+                    width: ((MediaQuery.sizeOf(context).width) / 100) * 8.16,
+                  ),
+                  widget.role == 3 ? _buildCheckbox() : const SizedBox(),
+                ],
+              ),
+              widget.role == 3
+                  ? const Text(
+                      'Collaborator',
+                      style: TextStyle(
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.5,
+                        color: AppColors.greenColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    )
+                  : const Text(
+                      'Creator',
+                      style: TextStyle(
+                        fontSize: 12,
+                        overflow: TextOverflow.ellipsis,
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: 0.5,
+                        color: AppColors.redColor,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+            ],
+          )),
     );
   }
 

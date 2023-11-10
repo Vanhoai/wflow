@@ -46,3 +46,30 @@ class AddBusinessState extends Equatable {
         usersChecked,
       ];
 }
+
+class LoadFailureAddBusinessState extends AddBusinessState {
+  final String message;
+
+  const LoadFailureAddBusinessState({required this.message});
+
+  @override
+  List get props => [message];
+}
+
+class AddCollaboratorFailedAddBusinessState extends AddBusinessState {
+  final String message;
+
+  const AddCollaboratorFailedAddBusinessState({required this.message});
+
+  @override
+  List get props => [message];
+}
+
+class AddCollaboratorSuccessedAddBusinessState extends AddBusinessState {
+  final String message;
+
+  const AddCollaboratorSuccessedAddBusinessState({required this.message});
+
+  @override
+  List get props => [message];
+}

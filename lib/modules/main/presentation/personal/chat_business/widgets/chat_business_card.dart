@@ -37,7 +37,7 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
+            SizedBox(
               child: Row(children: <Widget>[
                 _buildAvatar(),
                 const SizedBox(
@@ -54,7 +54,7 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
   }
 
   Widget _buildAvatar() {
-    return Container(
+    return SizedBox(
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: CircleAvatar(
@@ -77,16 +77,22 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
           Text(
             widget.name,
             style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
-                color: Colors.black),
+              fontSize: 14,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           Text(
             widget.message,
             style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.normal,
-                color: Colors.black),
+              fontSize: 16,
+              fontWeight: FontWeight.normal,
+              color: Colors.black,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ],
       ),
@@ -108,6 +114,8 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
               fontWeight: FontWeight.normal,
               color: Colors.black,
             ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(
             height: 4,
@@ -129,6 +137,8 @@ class _ChatBusinessCardState extends State<ChatBusinessCard> {
                 fontWeight: FontWeight.normal,
                 color: Colors.white,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
         ],

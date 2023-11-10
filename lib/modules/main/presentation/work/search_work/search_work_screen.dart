@@ -187,7 +187,7 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                         return const SizedBox();
                       }
                     },
-                  )
+                  ),
                 ],
               ),
             );

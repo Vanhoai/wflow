@@ -1,31 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/time.util.dart';
-
-class Room {
-  final String image;
-  final String name;
-  final String lastMessage;
-  final String createAt;
-
-  Room({required this.image, required this.name, required this.lastMessage, required this.createAt});
-}
-
-List<Room> data = [
-  Room(
-    image:
-        'https://images.pexels.com/photos/18070630/pexels-photo-18070630/free-photo-of-tuy-t-hoang-hon-th-i-trang-b-bi-n.jpeg?auto=compress&cs=tinysrgb&w=1600&lazy=load',
-    name: 'Trần Văn Hoài',
-    lastMessage: 'Nay đi chơi không mậy ??',
-    createAt: DateTime.now().toString(),
-  ),
-];
+import 'package:wflow/modules/main/domain/room/entities/room_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 class ListRoom extends StatefulWidget {
-  const ListRoom({super.key});
-
+  const ListRoom({super.key, required this.listRoom});
+  final List<RoomEntity> listRoom;
   @override
   State<StatefulWidget> createState() {
     return _ListRoomState();
@@ -36,18 +21,20 @@ class _ListRoomState extends State<ListRoom> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-      itemCount: data.length,
+      itemCount: widget.listRoom.length,
       itemBuilder: (context, index) {
-        return _room(data[index]);
+        return _room(widget.listRoom[index]);
       },
     );
   }
 
-  Widget _room(Room room) {
+  Widget _room(RoomEntity room) {
+    UserEntity userEntity =
+        room.userCreator.id == instance.get<AppBloc>().state.userEntity.id ? room.userClient : room.userCreator;
     return InkWell(
       onTap: () {
-        print(room.name);
-        Navigator.of(context).pushNamed(RouteKeys.messageScreen);
+        ArgumentsMessage argumentsMessage = ArgumentsMessage(id: room.id, userEntity: userEntity);
+        Navigator.of(context).pushNamed(RouteKeys.messageScreen, arguments: argumentsMessage);
       },
       child: Container(
         margin: const EdgeInsets.symmetric(vertical: 10),
@@ -56,7 +43,9 @@ class _ListRoomState extends State<ListRoom> {
           children: [
             ClipOval(
                 child: Image.network(
-              room.image,
+              userEntity.avatar.isEmpty
+                  ? 'https://vtv1.mediacdn.vn/zoom/640_400/2022/3/4/avatar-jake-neytiri-pandora-ocean-1646372078251163431014-crop-16463720830272075805905.jpg'
+                  : userEntity.avatar,
               fit: BoxFit.cover,
               width: 58.0,
               height: 58.0,
@@ -72,9 +61,9 @@ class _ListRoomState extends State<ListRoom> {
                     alignment: Alignment.centerLeft,
                     widthFactor: 0.7,
                     child: Text(
-                      room.name,
+                      userEntity.name,
                       overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge,
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   Row(
@@ -85,14 +74,14 @@ class _ListRoomState extends State<ListRoom> {
                           alignment: Alignment.centerLeft,
                           widthFactor: 0.7,
                           child: Text(
-                            room.lastMessage,
+                            room.messages[0].message,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context).textTheme.bodyLarge,
+                            style: Theme.of(context).textTheme.bodyMedium,
                           ),
                         ),
                       ),
                       Text(
-                        instance.get<Time>().getHourMinute(room.createAt),
+                        instance.get<Time>().getHourMinute(room.messages[0].createdAt.toString()),
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.textGrey),
                       ),

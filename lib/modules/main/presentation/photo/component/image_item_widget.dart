@@ -32,12 +32,10 @@ class ImageItemWidget extends StatelessWidget {
     AssetEntity entity,
     ThumbnailOption option,
   ) {
-
-    return BlocBuilder<PhotoBloc,PhotoState>(
+    return BlocBuilder<PhotoBloc, PhotoState>(
       builder: (BuildContext context, state) {
         bool select = false;
-        if(state is PhotoMultipleState)
-        {
+        if (state is PhotoMultipleState) {
           select = state.entities.indexWhere((element) => element.id == entity.id) != -1 ? true : false;
         }
         return Stack(
@@ -98,7 +96,7 @@ class ImageItemWidget extends StatelessWidget {
                             ),
                           ),
                         Icon(
-                              () {
+                          () {
                             switch (entity.type) {
                               case AssetType.other:
                                 return Icons.abc;
@@ -124,13 +122,12 @@ class ImageItemWidget extends StatelessWidget {
               end: 0,
               child: LayoutBuilder(
                 builder: (context, constraints) {
-                  if(state is PhotoMultipleState){
+                  if (state is PhotoMultipleState) {
                     return GestureDetector(
                       onTap: () {
-                        if(!select)
-                        {
+                        if (!select) {
                           context.read<PhotoBloc>().add(SelectPhotoEvent(entity: entity));
-                        }else {
+                        } else {
                           context.read<PhotoBloc>().add(UnSelectPhotoEvent(entity: entity));
                         }
                       },
@@ -140,17 +137,13 @@ class ImageItemWidget extends StatelessWidget {
                         padding: const EdgeInsets.all(9),
                         child: Container(
                           decoration: BoxDecoration(
-                              color: select ? AppColors.blueColor : Colors.black12,
+                              color: select ? AppColors.primary : Colors.black12,
                               shape: BoxShape.circle,
-                              border: Border.all(
-                                color: Colors.white,
-                                width: 1.5
-                              )
-                          ),
+                              border: Border.all(color: Colors.white, width: 1.5)),
                         ),
                       ),
                     );
-                  }else {
+                  } else {
                     return const SizedBox();
                   }
                 },

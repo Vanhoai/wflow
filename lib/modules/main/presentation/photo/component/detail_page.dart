@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 
 import 'common_util.dart';
 import 'live_photos_widget.dart';
@@ -22,7 +23,8 @@ class _DetailPageState extends State<DetailPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return CommonScaffold(
+      isSafe: true,
       appBar: AppBar(
         title: Text(
           'Detail',

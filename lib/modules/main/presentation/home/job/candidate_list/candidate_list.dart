@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
+import 'package:wflow/modules/main/domain/contract/entities/models/worker.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/state.dart';
@@ -54,9 +58,10 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
               },
               child: Column(
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.symmetric(vertical: 0, horizontal: 20),
-                    child: SearchCandidateWidget(),
+                  Container(
+                    color: themeData.colorScheme.background,
+                    padding: const EdgeInsets.only(left: 20, right: 20, bottom: 10),
+                    child: const SearchCandidateWidget(),
                   ),
                   Expanded(
                     child: Visibility(
@@ -84,7 +89,29 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                     RouteKeys.candidateContractScreen,
                                     arguments: state.candidateEntities[index].id.toString(),
                                   ),
-                                  onTapChat: () {},
+                                  onTapChat: () {
+                                    Worker worker = state.candidateEntities[index].worker;
+                                    UserEntity userEntity = UserEntity(
+                                        id: worker.id as int,
+                                        createdAt: null,
+                                        updatedAt: null,
+                                        deletedAt: null,
+                                        address: '',
+                                        age: worker.age,
+                                        avatar: worker.avatar,
+                                        dob: worker.dob,
+                                        email: worker.email,
+                                        identifyCode: worker.identifyCode,
+                                        isVerify: worker.isVerify,
+                                        name: worker.name,
+                                        phone: worker.phone,
+                                        role: worker.role as int,
+                                        business: worker.business as int);
+                                    ArgumentsMessage argumentsMessage =
+                                        ArgumentsMessage(id: null, userEntity: userEntity);
+                                    Navigator.of(context)
+                                        .pushNamed(RouteKeys.messageScreen, arguments: argumentsMessage);
+                                  },
                                   onTapCv: () {},
                                   onTapName: () {},
                                 );

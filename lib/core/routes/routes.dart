@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
@@ -51,7 +52,11 @@ class AppRoutes {
       case RouteKeys.roomsScreen:
         return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
-        return MaterialPageRoute(builder: (_) => const MessageScreen());
+        final args = settings.arguments as ArgumentsMessage;
+        return MaterialPageRoute(
+            builder: (_) => MessageScreen(
+                  argumentsMessage: args,
+                ));
       case RouteKeys.photoScreen:
         final args = settings.arguments as ArgumentsPhoto;
         return MaterialPageRoute(builder: (_) => PhotoScreen(argumentsPhoto: args));

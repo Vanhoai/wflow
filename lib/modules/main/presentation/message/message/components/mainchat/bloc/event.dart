@@ -1,9 +1,19 @@
 import 'dart:io';
 import 'package:equatable/equatable.dart';
 
-import 'state.dart';
-
 sealed class MainChatEvent extends Equatable {
+  @override
+  List<Object?> get props => [];
+}
+
+class GetListMessage extends MainChatEvent {
+  GetListMessage();
+  @override
+  List<Object?> get props => [];
+}
+
+class GetListMessageMore extends MainChatEvent {
+  GetListMessageMore();
   @override
   List<Object?> get props => [];
 }
@@ -17,12 +27,20 @@ class GetMessageEvent extends MainChatEvent {
 }
 
 class SendMessageEvent extends MainChatEvent {
-  final Message message;
-
-  SendMessageEvent({required this.message});
+  final String message;
+  final String type;
+  SendMessageEvent({required this.message, required this.type});
 
   @override
   List<Object?> get props => [message];
+}
+
+class JoinRoomEvent extends MainChatEvent {
+  final dynamic roomID;
+  JoinRoomEvent({required this.roomID});
+
+  @override
+  List<Object?> get props => [roomID];
 }
 
 class SendFilesEvent extends MainChatEvent {

@@ -2,16 +2,16 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
-import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/keyboard/emoji.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
-import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/record.dart';
+import 'package:wflow/modules/main/presentation/photo/photo.dart';
 
 import 'bloc/bloc.dart';
 import 'bloc/event.dart';
@@ -90,6 +90,7 @@ class _BoxChatState extends State<BoxChat> {
                                   AppConstants.smile,
                                   height: 20,
                                   width: 20,
+                                  colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                                 ),
                               ),
                             )),
@@ -100,29 +101,29 @@ class _BoxChatState extends State<BoxChat> {
                             InkWell(
                               borderRadius: BorderRadius.circular(50),
                               onTap: () {
-                                _getImage();
+                                _getImage(context);
                               },
                               child: Padding(
                                 padding: const EdgeInsets.all(4),
-                                child: SvgPicture.asset(
-                                  AppConstants.clips,
-                                  height: 22,
-                                  width: 22,
-                                ),
+                                child: SvgPicture.asset(AppConstants.clips,
+                                    height: 22,
+                                    width: 22,
+                                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn)),
                               ),
                             ),
                             Container(
                               margin: const EdgeInsets.only(right: 10),
                               child: InkWell(
                                 borderRadius: BorderRadius.circular(50),
-                                onTap: () {},
+                                onTap: () {
+                                  _getImageFromCamera(context: context);
+                                },
                                 child: Padding(
                                   padding: const EdgeInsets.all(4),
-                                  child: SvgPicture.asset(
-                                    AppConstants.camera,
-                                    height: 24,
-                                    width: 24,
-                                  ),
+                                  child: SvgPicture.asset(AppConstants.camera,
+                                      height: 24,
+                                      width: 24,
+                                      colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn)),
                                 ),
                               ),
                             )
@@ -150,13 +151,8 @@ class _BoxChatState extends State<BoxChat> {
                       if (!state.isSend) {
                         _showRecord(context, state);
                       } else {
-                        _sendMessage(
-                            context,
-                            Message(
-                              id: '1',
-                              content: _controller.text,
-                              type: 'text',
-                            ));
+                        _sendMessage(context);
+
                         _controller.clear();
                         if (!state.isShowEmojiKeyboard && !state.isShowVoiceRecord) {
                           _focusNode.requestFocus();
@@ -216,16 +212,28 @@ class _BoxChatState extends State<BoxChat> {
     }
   }
 
-  _sendMessage(BuildContext context, Message message) {
-    BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: message));
+  _sendMessage(BuildContext context) {
+    BlocProvider.of<MainChatBloc>(context).add(SendMessageEvent(message: _controller.text, type: 'TEXT'));
   }
 
-  Future<void> _getImage() async {
-    var result = await Navigator.of(context)
-        .pushNamed(RouteKeys.photoScreen, arguments: ArgumentsPhoto(multiple: true, onlyImage: false));
-    result as List<File>;
+  _getImageFromCamera({required BuildContext context}) async {
+    XFile? result = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (result == null) return;
+    List<File> files = [File(result.path)];
     if (context.mounted) {
-      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'type', files: result));
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'IMAGE', files: files));
+    }
+  }
+
+  _getImage(BuildContext context) async {
+    var result = await showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return PhotoScreen(argumentsPhoto: ArgumentsPhoto(multiple: true, onlyImage: true));
+      },
+    );
+    if (context.mounted) {
+      BlocProvider.of<MainChatBloc>(context).add(SendFilesEvent(id: '', type: 'IMAGE', files: result));
     }
   }
 }

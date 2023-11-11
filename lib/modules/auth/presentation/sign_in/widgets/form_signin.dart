@@ -30,10 +30,10 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
+    // business: hoaitvps22068@gmail.com
+    // user: tvhoai241223@gmail.com
     emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
-    // hoaitvps22068
-    // admin123A@
     super.initState();
   }
 

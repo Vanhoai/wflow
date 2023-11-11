@@ -7,8 +7,8 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
-part 'state.app.dart';
 part 'event.app.dart';
+part 'state.app.dart';
 
 class AppBloc extends HydratedBloc<AppEvent, AppState> {
   AppBloc() : super(onInit()) {
@@ -29,6 +29,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
       authEntity: const AuthEntity(
         accessToken: '',
         refreshToken: '',
+        stringeeToken: '',
         isSignIn: false,
       ),
       userEntity: UserEntity.createEmpty(),

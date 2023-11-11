@@ -24,7 +24,7 @@ class _RequireSkillState extends State<RequireSkill> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              '# Require skills',
+              '📌 Require skills',
               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                 color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
                 fontSize: 18,

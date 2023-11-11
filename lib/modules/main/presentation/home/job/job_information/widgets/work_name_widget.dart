@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class WorkNameWidget extends StatelessWidget {
   final String workName;
-  const WorkNameWidget({required this.workName,super.key});
+  const WorkNameWidget({required this.workName, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,13 +15,13 @@ class WorkNameWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '# Work Name',
+            '🚚 Work Name',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
             )),
           ),
-          const SizedBox(height: 13.0),
+          12.verticalSpace,
           Text(
             workName,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(

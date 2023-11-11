@@ -9,9 +9,9 @@ import 'package:wflow/modules/main/presentation/home/contract/create_contract/bl
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class TaskCreateContract extends StatefulWidget {
-  const TaskCreateContract({super.key, required this.isBusiness});
+  const TaskCreateContract({super.key, required this.isEnabled});
 
-  final bool isBusiness;
+  final bool isEnabled;
 
   @override
   State<TaskCreateContract> createState() => _TaskCreateContractState();
@@ -185,7 +185,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
-                                  enabled: widget.isBusiness,
+                                  enabled: widget.isEnabled,
                                   controller: titleController,
                                   minLines: 1,
                                   maxLines: 1,
@@ -199,7 +199,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
-                                  enabled: widget.isBusiness,
+                                  enabled: widget.isEnabled,
                                   controller: contentController,
                                   minLines: 1,
                                   maxLines: 4,
@@ -214,7 +214,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 const SizedBox(height: 8),
                                 InkWell(
                                   onTap: () {
-                                    if (widget.isBusiness) showDatePicker(0, setState);
+                                    if (widget.isEnabled) showDatePicker(0, setState);
                                   },
                                   child: Container(
                                     height: 50,
@@ -242,7 +242,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 const SizedBox(height: 8),
                                 InkWell(
                                   onTap: () {
-                                    if (widget.isBusiness) showDatePicker(1, setState);
+                                    if (widget.isEnabled) showDatePicker(1, setState);
                                   },
                                   child: Container(
                                     height: 50,
@@ -264,11 +264,11 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 32),
                                 PrimaryButton(
-                                  label: widget.isBusiness ? 'Update' : 'OK',
+                                  label: widget.isEnabled ? 'Update' : 'OK',
                                   onPressed: () {
                                     final bool isValid = validate();
                                     if (isValid) {
-                                      if (widget.isBusiness) {
+                                      if (widget.isEnabled) {
                                         parentContext.read<CreateContractBloc>().add(
                                               UpdateTaskCreateContractEvent(
                                                 id: id,
@@ -333,7 +333,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
               )),
             ),
             Visibility(
-              visible: widget.isBusiness,
+              visible: widget.isEnabled,
               child: BlocBuilder<CreateContractBloc, CreateContractState>(
                 builder: (context, state) {
                   return InkWell(
@@ -408,7 +408,9 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                               startTimeController.text = state.tasks[index].startTime.toString();
                               endTimeController.text = state.tasks[index].endTime.toString();
 
-                              showBottomSheetEditTask(context, index, state.tasks[index].id);
+                              if (widget.isEnabled) {
+                                showBottomSheetEditTask(context, index, state.tasks[index].id);
+                              }
                             },
                             borderRadius: BorderRadius.circular(8),
                             child: Container(
@@ -449,7 +451,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
         ),
         const SizedBox(height: 12),
         Visibility(
-          visible: widget.isBusiness,
+          visible: widget.isEnabled,
           child: BlocBuilder<CreateContractBloc, CreateContractState>(
             builder: (context, state) {
               return InkWell(

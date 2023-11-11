@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 
 const List<String> staticTitle = [
-  '# Duration',
-  'No information',
-  '# Description',
-  '# Skills',
+  '⏰ Duration',
+  '💰 Budget',
+  '📘 Description',
+  '📚 Skills',
   '# Poster',
   '# Progress',
 ];
@@ -92,11 +94,11 @@ class _JobCardState extends State<JobCard> {
           ],
         ),
         Text(
-          'Update 2 seconds ago',
+          '⏳ 2m ago',
           textAlign: TextAlign.end,
           style: Theme.of(context).textTheme.displaySmall!.merge(
-                TextStyle(
-                  color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                const TextStyle(
+                  color: AppColors.primary,
                   fontSize: 14,
                 ),
               ),
@@ -163,7 +165,7 @@ class _JobCardState extends State<JobCard> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 4),
+                  8.verticalSpace,
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [

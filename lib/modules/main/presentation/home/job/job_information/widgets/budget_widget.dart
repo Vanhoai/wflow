@@ -9,8 +9,7 @@ class BudgetWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final noSimbolInUSFormat =
-        NumberFormat.currency(locale: "vi_VN", symbol: "");
+    final noSimbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
     final ThemeData themeData = Theme.of(context);
     return SliverToBoxAdapter(
       child: Column(
@@ -19,10 +18,9 @@ class BudgetWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '# Budget',
+            '🪙 Budget',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
             )),
           ),

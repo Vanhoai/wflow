@@ -17,6 +17,7 @@ import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
 import 'package:wflow/modules/main/presentation/home/balance/balance.dart';
 import 'package:wflow/modules/main/presentation/home/bookmark/bookmark.dart';
 import 'package:wflow/modules/main/presentation/home/company/company.dart';
+import 'package:wflow/modules/main/presentation/home/completed/completed.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
@@ -54,10 +55,7 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
         final args = settings.arguments as ArgumentsMessage;
-        return MaterialPageRoute(
-            builder: (_) => MessageScreen(
-                  argumentsMessage: args,
-                ));
+        return MaterialPageRoute(builder: (_) => MessageScreen(argumentsMessage: args));
       case RouteKeys.photoScreen:
         final args = settings.arguments as ArgumentsPhoto;
         return MaterialPageRoute(builder: (_) => PhotoScreen(argumentsPhoto: args));
@@ -123,7 +121,8 @@ class AppRoutes {
       case RouteKeys.applyScreen:
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
       case RouteKeys.balanceScreen:
-        return MaterialPageRoute(builder: (_) => const BalanceScreen());
+        final balance = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => BalanceScreen(balanceID: balance));
       case RouteKeys.searchWorkScreen:
         return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       case RouteKeys.contractWaitingSignScreen:
@@ -138,6 +137,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const GraphScreen());
       case RouteKeys.removeCollaboratorScreen:
         return MaterialPageRoute(builder: (_) => const RemoveCollaboratorScreen());
+      case RouteKeys.completedContractScreen:
+        return MaterialPageRoute(builder: (_) => const CompletedContractScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

@@ -19,8 +19,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
 
   @override
   void initState() {
-    final isUser =
-        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     staticMenuSelection = [
       {
         'title': 'Balance',
@@ -47,8 +46,8 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.ic_signed,
       },
       {
-        'title': 'Cv',
-        'icon': AppConstants.ic_cv,
+        'title': isUser ? 'Cv' : 'Completed',
+        'icon': isUser ? AppConstants.ic_cv : AppConstants.history,
       },
       {
         'title': 'Graph',
@@ -59,14 +58,16 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   }
 
   void navigateTo(int index) {
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final balance = instance.get<AppBloc>().state.userEntity.balance;
+
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
+        Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
         break;
 
       case 2:
-        final role = instance.get<AppBloc>().state.role;
-        if (role == 1) {
+        if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.applyScreen);
         } else {
           Navigator.of(context).pushNamed(RouteKeys.companyScreen);
@@ -82,7 +83,11 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         Navigator.of(context).pushNamed(RouteKeys.signedScreen);
         break;
       case 6:
-        Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+        if (isUser) {
+          Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+        } else {
+          Navigator.of(context).pushNamed(RouteKeys.completedContractScreen);
+        }
         break;
       case 7:
         Navigator.of(context).pushNamed(RouteKeys.graphScreen);
@@ -118,10 +123,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                     width: 48.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.1),
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: SvgPicture.asset(
@@ -134,10 +136,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                 4.verticalSpace,
                 Text(
                   staticMenuSelection[index]['title'],
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: 14.sp),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
                 ),
               ],
             ),

@@ -23,6 +23,7 @@ import 'package:wflow/modules/main/presentation/home/contract/contract/contract_
 import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
+import 'package:wflow/modules/main/presentation/home/cv/cv.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
@@ -129,6 +130,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
       case RouteKeys.addCVScreen:
         return MaterialPageRoute(builder: (_) => const AddCVScreen());
+      case RouteKeys.cvScreen:
+        return MaterialPageRoute(builder: (_) => const CVScreen());
       case RouteKeys.bookmarkScreen:
         return MaterialPageRoute(builder: (_) => const BookMarkScreen());
       case RouteKeys.signedScreen:

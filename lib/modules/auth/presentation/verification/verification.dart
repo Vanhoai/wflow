@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_verification.dart';
@@ -61,6 +62,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   child: SvgPicture.asset(
                     AppConstants.app,
                     semanticsLabel: 'Logo',
+                    colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                   ),
                 ),
                 Container(
@@ -123,7 +125,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
                       ),
                       InkWell(
                         borderRadius: BorderRadius.circular(4),
-                        onTap: () => {Navigator.pop(context)},
+                        onTap: () => {
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil(RouteKeys.signInScreen, (Route<dynamic> route) => false)
+                        },
                         child: Padding(
                           padding: const EdgeInsets.all(2),
                           child: Text(

@@ -36,6 +36,7 @@ class RouteKeys {
   static const String searchWorkScreen = '/search_work_screen';
   static const String contractWaitingSignScreen = '/contract_waiting_sign_screen';
   static const String addCVScreen = '/add_cv_screen';
+  static const String cvScreen = '/cv_screen';
   static const String bookmarkScreen = '/bookmark_screen';
   static const String signedScreen = '/signed_screen';
   static const String graphScreen = '/graph_screen';

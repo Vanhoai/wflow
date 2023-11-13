@@ -204,6 +204,7 @@ Widget _tabSelect({String? icon, String? title}) {
         SvgPicture.asset(
           icon!,
           semanticsLabel: 'Logo',
+          colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
         ),
         const SizedBox(width: 17),
         Text(

@@ -72,7 +72,7 @@ class _CallScreenState extends State<CallScreen> {
             alignment: Alignment.center,
             padding: const EdgeInsets.only(bottom: 15.0),
             child: Text(
-              (widget.nameShow ? widget._fromUserId : widget._toUserId),
+              (widget.nameShow ? widget._fromUserId.split('_')[0] : widget._toUserId.split('_')[0]),
               style: const TextStyle(
                 color: Colors.white,
                 fontSize: 35.0,
@@ -599,5 +599,4 @@ class _CallScreenState extends State<CallScreen> {
       });
     }
   }
-
 }

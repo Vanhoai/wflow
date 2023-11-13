@@ -1,11 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
@@ -21,30 +20,23 @@ class CompanyScreen extends StatefulWidget {
 }
 
 class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
-  late final TabController _tabController;
-  late final ScrollController _scrollController;
+  late final ScrollController scrollController;
 
   List<bool> isFirstLoad = [false, false, false];
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(
-      length: 4,
-      vsync: this,
-      initialIndex: 0,
-      animationDuration: const Duration(milliseconds: 300),
-    );
-    _scrollController = ScrollController(initialScrollOffset: 0);
+    scrollController = ScrollController(initialScrollOffset: 0);
   }
 
   @override
   void dispose() {
-    _tabController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
-  Widget _buildLoading(ThemeData themeData) {
+  Widget buildLoading(ThemeData themeData) {
     return Shimmer.fromColors(
       baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
       highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
@@ -81,10 +73,16 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider<MyCompanyBloc>(
-      create: (context) => MyCompanyBloc(companyUseCase: instance.call<CompanyUseCase>())
-        ..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
+      create: (context) => MyCompanyBloc(
+        companyUseCase: instance.call<CompanyUseCase>(),
+      )..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
       lazy: true,
       child: CommonScaffold(
+        isSafe: true,
+        appBar: const AppHeader(
+          text: 'TheFlow',
+          actions: [],
+        ),
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
           listener: (context, state) {},
           buildWhen: (previous, current) =>
@@ -92,127 +90,111 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
           listenWhen: (previous, current) =>
               previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
           builder: (context, state) {
-            final companyEntity = state.companyEntity;
-            return CustomScrollView(
-              controller: _scrollController,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              slivers: [
-                SliverAppBar(
-                  pinned: true,
-                  snap: false,
-                  floating: false,
-                  backgroundColor: themeData.colorScheme.background,
-                  automaticallyImplyLeading: true,
-                  surfaceTintColor: Colors.transparent,
-                  elevation: 0,
-                  centerTitle: true,
-                  stretch: true,
-                  title: Visibility(
-                    visible: !state.isLoadingCompany,
-                    replacement: Shimmer.fromColors(
-                      baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                      highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
-                      child: SizedBox(
-                        height: 20.h,
-                        width: 100.w,
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4.r),
-                            color: Colors.white,
+            return Column(
+              children: [
+                Container(
+                  height: 130.h,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  clipBehavior: Clip.none,
+                  decoration: const BoxDecoration(),
+                  child: Stack(
+                    children: [
+                      SizedBox(
+                        height: double.infinity,
+                        width: double.infinity,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(8.r),
+                          child: CachedNetworkImage(
+                            imageUrl: state.companyEntity.logo.toString(),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
                           ),
                         ),
                       ),
-                    ),
-                    child: Text(
-                      companyEntity.name,
-                      style: themeData.textTheme.displayLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.textColor,
-                        fontSize: 26.sp,
-                      ),
-                    ),
-                  ),
-                  actions: [
-                    IconButton(
-                      onPressed: () {
-                        showCupertinoModalPopup(
-                          context: context,
-                          builder: (context) {
-                            return CupertinoActionSheet(
-                              actions: [
-                                CupertinoActionSheetAction(
-                                  onPressed: () {},
-                                  child: const Text('Add post'),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {},
-                                  child: const Text('Add member'),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {},
-                                  child: const Text('Edit company'),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {},
-                                  child: const Text('Share'),
-                                ),
-                              ],
-                              cancelButton: CupertinoActionSheetAction(
-                                onPressed: () {},
-                                child: const Text('Cancel'),
-                              ),
-                            );
-                          },
-                        );
-                      },
-                      icon: SvgPicture.asset(
-                        AppConstants.ic_more,
-                        height: 24.h,
-                        width: 24.w,
-                        colorFilter: ColorFilter.mode(themeData.colorScheme.primary, BlendMode.srcIn),
-                      ),
-                    ),
-                  ],
-                  bottom: TabBar(
-                    controller: _tabController,
-                    labelColor: AppColors.primary,
-                    unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
-                      color: AppColors.textColor,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
-                    ),
-                    labelStyle: themeData.textTheme.displaySmall!.copyWith(
-                      color: AppColors.primary,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14.sp,
-                    ),
-                    unselectedLabelColor: themeData.colorScheme.onBackground,
-                    indicatorSize: TabBarIndicatorSize.tab,
-                    tabAlignment: TabAlignment.fill,
-                    splashFactory: NoSplash.splashFactory,
-                    physics: const NeverScrollableScrollPhysics(),
-                    indicatorWeight: 3,
-                    labelPadding: EdgeInsets.zero,
-                    onTap: (index) {
-                      final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
-                      observeTabBar(index, bloc);
-                    },
-                    tabs: staticTab.map((e) => Tab(child: Text(e))).toList(),
-                  ),
-                ),
-                SliverFillRemaining(
-                  child: TabBarView(
-                    controller: _tabController,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: [
-                      CompanyAboutWidget(tabController: _tabController),
-                      const CompanyJobPostWidget(),
-                      const CompanyMemberWidget(),
-                      const CompanyLocationWidget()
                     ],
                   ),
-                )
+                ),
+                Container(
+                  transform: Matrix4.translationValues(32.w, -30.h, 0),
+                  alignment: Alignment.centerLeft,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        height: 80.w,
+                        width: 80.w,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(color: Colors.white, width: 2),
+                        ),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(60),
+                          child: CachedNetworkImage(
+                            imageUrl: state.companyEntity.logo.toString(),
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                          ),
+                        ),
+                      ),
+                      8.horizontalSpace,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Text(
+                          '${state.companyEntity.collaborators.length} members',
+                          style: themeData.textTheme.displayMedium,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Container(
+                  transform: Matrix4.translationValues(0, -12.h, 0),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                  ),
+                ),
+                TabBar(
+                  isScrollable: true,
+                  labelColor: AppColors.primary,
+                  unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
+                    color: AppColors.textColor,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.sp,
+                  ),
+                  labelStyle: themeData.textTheme.displaySmall!.copyWith(
+                    color: AppColors.primary,
+                    fontWeight: FontWeight.w400,
+                    fontSize: 14.sp,
+                  ),
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  unselectedLabelColor: themeData.colorScheme.onBackground,
+                  indicatorSize: TabBarIndicatorSize.tab,
+                  tabAlignment: TabAlignment.fill,
+                  splashFactory: NoSplash.splashFactory,
+                  physics: const NeverScrollableScrollPhysics(),
+                  indicatorWeight: 3,
+                  labelPadding: EdgeInsets.zero,
+                  onTap: (index) {
+                    final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                    observeTabBar(index, bloc);
+                  },
+                  tabs: staticTab.map((e) => Tab(child: Text(e))).toList(),
+                ),
+                const Expanded(
+                  child: TabBarView(
+                    physics: NeverScrollableScrollPhysics(),
+                    children: [
+                      CompanyAboutWidget(),
+                      CompanyJobPostWidget(),
+                      CompanyMemberWidget(),
+                      CompanyLocationWidget()
+                    ],
+                  ),
+                ),
               ],
             );
           },
@@ -232,7 +214,6 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
             pageSize: 10,
           ),
         );
-        _tabController.animateTo(0, curve: Curves.decelerate);
         break;
       case 1:
         if (isFirstLoad[1] == false) {
@@ -246,7 +227,6 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
           );
           isFirstLoad[1] = true;
         }
-        _tabController.animateTo(1, curve: Curves.easeOut);
         break;
       case 2:
         if (isFirstLoad[2] == false) {
@@ -260,13 +240,10 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
           );
           isFirstLoad[2] = true;
         }
-        _tabController.animateTo(2, curve: Curves.easeOut);
         break;
       case 3:
-        _tabController.animateTo(3, curve: Curves.easeOut);
         break;
       default:
-        _tabController.animateTo(0, curve: Curves.easeOut);
     }
   }
 }

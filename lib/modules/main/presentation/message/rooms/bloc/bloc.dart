@@ -18,7 +18,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
     if (state is! GetListRoomSuccess) {
       emit(state.copyWith(isLoading: true));
     }
-    final roomEntities = await roomUseCase.getListRoom(const PaginationModel(page: 1, pageSize: 10, search: ""));
+    final roomEntities = await roomUseCase.getListRoom(const PaginationModel(page: 1, pageSize: 10, search: ''));
 
     emit(GetListRoomSuccess(
       roomEntities: roomEntities.data,
@@ -36,12 +36,16 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
         emit((state as GetListRoomSuccess).copyWith(loadMore: false));
         return;
       }
-      final candidateList = await roomUseCase
-          .getListRoom(PaginationModel(page: state.meta.currentPage + 1 as int, pageSize: 10, search: state.search));
-      emit((state as GetListRoomSuccess).copyWith(
+      final candidateList = await roomUseCase.getListRoom(
+        PaginationModel(page: state.meta.currentPage + 1 as int, pageSize: 10, search: state.search),
+      );
+      emit(
+        (state as GetListRoomSuccess).copyWith(
           loadMore: false,
           roomEntities: [...(state as GetListRoomSuccess).roomEntities, ...candidateList.data],
-          meta: candidateList.meta));
+          meta: candidateList.meta,
+        ),
+      );
     }
   }
 }

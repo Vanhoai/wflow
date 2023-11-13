@@ -60,17 +60,16 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                     ),
                   ),
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => 10.horizontalSpace,
+                    separatorBuilder: (context, index) => 12.verticalSpace,
                     physics: const BouncingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: state.listPost.length,
-                    padding: EdgeInsets.symmetric(horizontal: 10.w),
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
                     itemBuilder: (context, index) {
                       final job = state.listPost[index];
 
                       return Container(
-                        padding: EdgeInsets.symmetric(vertical: 10.h),
                         child: JobCard(
                           boxDecoration: BoxDecoration(
                             color: themeData.colorScheme.background,

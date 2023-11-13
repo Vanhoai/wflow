@@ -5,16 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:wflow/common/libs/libs.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
-const double ZOOM = 19;
-const double BEARING = 60;
-const double TILT = 90;
+const double ZOOM = 14;
 const String API_KEY = 'AIzaSyCbebDSMbXojb0pQecwGASs9gezw0nHiWY';
 
 class CompanyLocationWidget extends StatefulWidget {
@@ -25,11 +25,12 @@ class CompanyLocationWidget extends StatefulWidget {
 }
 
 class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
-  late final CompanyEntity _companyEntity;
+  late final CompanyEntity companyEntity;
 
-  late final LocationLib _locationLib;
+  late final LocationLib locationLib;
   late GoogleMapController mapController;
-  late final CameraPosition _initialCameraPosition;
+  late final CameraPosition initialCameraPosition;
+
   Map<MarkerId, Marker> markers = {};
   Map<PolylineId, Polyline> polylines = {};
   List<LatLng> polylineCoordinates = [];
@@ -38,43 +39,41 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
   @override
   void initState() {
     super.initState();
-    _locationLib = LocationLib();
-    _companyEntity = BlocProvider.of<MyCompanyBloc>(context).state.companyEntity;
-    _initialCameraPosition = CameraPosition(
-      target: LatLng(_companyEntity.latitude, _companyEntity.longitude),
+    locationLib = LocationLib();
+    companyEntity = BlocProvider.of<MyCompanyBloc>(context).state.companyEntity;
+    initialCameraPosition = CameraPosition(
+      target: LatLng(companyEntity.latitude, companyEntity.longitude),
       zoom: ZOOM,
-      bearing: BEARING,
-      tilt: TILT,
     );
 
-    _addMarker(
-      LatLng(_companyEntity.latitude, _companyEntity.longitude),
+    addMarker(
+      LatLng(companyEntity.latitude, companyEntity.longitude),
       'company',
       BitmapDescriptor.defaultMarker,
     );
 
-    _getPolyline();
+    getPolyline();
   }
 
-  _addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
+  addMarker(LatLng position, String id, BitmapDescriptor descriptor) {
     MarkerId markerId = MarkerId(id);
     Marker marker = Marker(markerId: markerId, icon: descriptor, position: position);
     markers[markerId] = marker;
   }
 
-  _addPolyLine() {
+  addPolyLine() {
     PolylineId id = const PolylineId('poly');
     Polyline polyline = Polyline(polylineId: id, color: Colors.red, points: polylineCoordinates);
     polylines[id] = polyline;
     setState(() {});
   }
 
-  _getPolyline() async {
-    final Position position = await _locationLib.getCurrentLocation();
+  getPolyline() async {
+    final Position position = await locationLib.getCurrentLocation();
     PolylineResult result = await polylinePoints.getRouteBetweenCoordinates(
       API_KEY,
       PointLatLng(position.latitude, position.longitude), // starting point
-      PointLatLng(_companyEntity.latitude, _companyEntity.longitude), // ending point
+      PointLatLng(companyEntity.latitude, companyEntity.longitude), // ending point
       travelMode: TravelMode.driving,
     );
     if (result.points.isNotEmpty) {
@@ -82,12 +81,10 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
         polylineCoordinates.add(LatLng(point.latitude, point.longitude));
       }
     }
-    _addPolyLine();
-
-    // WITHOUT BILLING ACCOUNT :(
+    addPolyLine();
   }
 
-  void _onMapCreated(GoogleMapController controller) {
+  void onMapCreated(GoogleMapController controller) {
     mapController = controller;
   }
 
@@ -98,7 +95,7 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
         final CompanyEntity companyEntity = state.companyEntity;
         return Scaffold(
           body: FutureBuilder(
-            future: _locationLib.getCurrentLocation(),
+            future: locationLib.getCurrentLocation(),
             builder: (context, snapshot) {
               if (snapshot.hasError) {
                 return const Center(
@@ -106,16 +103,19 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                 );
               }
               if (snapshot.connectionState == ConnectionState.done) {
-                _addMarker(LatLng(snapshot.data!.latitude, snapshot.data!.longitude), 'myLocation',
-                    BitmapDescriptor.defaultMarkerWithHue(90));
+                addMarker(
+                  LatLng(snapshot.data!.latitude, snapshot.data!.longitude),
+                  'myLocation',
+                  BitmapDescriptor.defaultMarkerWithHue(90),
+                );
 
                 return Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Expanded(
                       child: GoogleMap(
-                        initialCameraPosition: _initialCameraPosition,
-                        onMapCreated: _onMapCreated,
+                        initialCameraPosition: initialCameraPosition,
+                        onMapCreated: onMapCreated,
                         mapType: MapType.normal,
                         indoorViewEnabled: true,
                         myLocationEnabled: true,
@@ -133,19 +133,22 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                           subtitle: Text(companyEntity.address, style: Theme.of(context).textTheme.displaySmall),
                           actions: [
                             IconButton(
-                                onPressed: () {
-                                  mapController.animateCamera(
-                                    CameraUpdate.newCameraPosition(
-                                      CameraPosition(
-                                        target: LatLng(companyEntity.latitude, companyEntity.longitude),
-                                        zoom: ZOOM,
-                                        bearing: BEARING,
-                                        tilt: TILT,
-                                      ),
+                              onPressed: () {
+                                mapController.animateCamera(
+                                  CameraUpdate.newCameraPosition(
+                                    CameraPosition(
+                                      target: LatLng(companyEntity.latitude, companyEntity.longitude),
+                                      zoom: ZOOM,
                                     ),
-                                  );
-                                },
-                                icon: const Icon(Icons.location_on)),
+                                  ),
+                                );
+                              },
+                              icon: SvgPicture.asset(
+                                AppConstants.more,
+                                height: 28.w,
+                                width: 28.w,
+                              ),
+                            ),
                           ],
                         ),
                       )

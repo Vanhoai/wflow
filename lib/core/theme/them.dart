@@ -48,16 +48,18 @@ final themeData = ThemeData(
   textTheme: textTheme,
   colorScheme: const ColorScheme.light(
     primary: AppColors.primary,
+    background: Color(0xFFF5FDFF),
+    onBackground: Color(0xFF282828),
   ),
   fontFamily: 'SF-Pro-Display',
   dividerTheme: const DividerThemeData(
     color: AppColors.primary,
   ),
   appBarTheme: const AppBarTheme(
-    surfaceTintColor: Colors.white,
-    color: Colors.white,
+    surfaceTintColor: Color(0xFFF5FDFF),
+    color: Color(0xFFF5FDFF),
     systemOverlayStyle: SystemUiOverlayStyle(
-      statusBarColor: Colors.white,
+      statusBarColor: Color(0xFFF5FDFF),
       statusBarIconBrightness: Brightness.dark,
       statusBarBrightness: Brightness.dark,
     ),
@@ -71,6 +73,8 @@ final themeDataDark = ThemeData(
   colorScheme: const ColorScheme.dark(
     primary: AppColors.primary,
     secondary: AppColors.primary,
+    background: Color(0xFF0A0A0A),
+    onBackground: Color(0xFF282828),
   ),
   fontFamily: 'SF-Pro-Display',
   dividerTheme: const DividerThemeData(

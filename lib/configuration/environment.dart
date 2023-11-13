@@ -8,4 +8,5 @@ class EnvironmentConfiguration {
   static String applicationID = FlutterConfigPlus.get('APPLICATION_ID');
   static String accessTokenSecret = FlutterConfigPlus.get('ACCESS_TOKEN_SECRET');
   static String urlSocket = FlutterConfigPlus.get('URL_SOCKET');
+  static String publishableKey = FlutterConfigPlus.get('PUBLISHABLE_KEY');
 }

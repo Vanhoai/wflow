@@ -7,10 +7,11 @@ class RoomState extends Equatable {
   final Meta meta;
   final String search;
 
-  const RoomState(
-      {this.isLoading = false,
-      this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
-      this.search = ''});
+  const RoomState({
+    this.isLoading = false,
+    this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
+    this.search = '',
+  });
   RoomState copyWith({bool? isLoading}) {
     return RoomState(isLoading: isLoading ?? this.isLoading);
   }
@@ -22,6 +23,7 @@ class RoomState extends Equatable {
 class GetListRoomSuccess extends RoomState {
   final List<RoomEntity> roomEntities;
   final bool loadMore;
+
   const GetListRoomSuccess({
     required this.roomEntities,
     super.meta,

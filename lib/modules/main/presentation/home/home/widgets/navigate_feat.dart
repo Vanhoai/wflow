@@ -65,7 +65,8 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       case 0:
         Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
         break;
-
+      case 1:
+        break;
       case 2:
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.applyScreen);

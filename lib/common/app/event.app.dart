@@ -55,3 +55,5 @@ class RefreshTokenEvent extends AppEvent {
 
   RefreshTokenEvent({required this.accessToken, required this.refreshToken});
 }
+
+class ResetAppEvent extends AppEvent {}

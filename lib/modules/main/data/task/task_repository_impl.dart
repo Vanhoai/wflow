@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/main/data/task/models/create_task_model.dart';
 import 'package:wflow/modules/main/data/task/models/update_task_model.dart';
+import 'package:wflow/modules/main/data/task/models/update_task_status_model.dart';
 import 'package:wflow/modules/main/data/task/task_service.dart';
 import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
@@ -44,6 +45,26 @@ class TaskRepositoryImpl implements TaskRepository {
   Future<Either<List<TaskEntity>, Failure>> taskInContract(num id) async {
     try {
       final response = await taskService.taskInContract(id);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<TaskEntity, Failure>> workerUpdateStatusTask(UpdateTaskStatusRequest request) async {
+    try {
+      final response = await taskService.workerUpdateStatusTask(request);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<TaskEntity, Failure>> businessUpdateStatusTask(UpdateTaskStatusRequest request) async {
+    try {
+      final response = await taskService.businessUpdateStatusTask(request);
       return Left(response);
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));

@@ -100,4 +100,14 @@ class ContractRepositoryImpl implements ContractRepository {
       return HttpResponseWithPagination.empty();
     }
   }
+
+  @override
+  Future<Either<String, Failure>> checkContractAndTransfer(int id) async {
+    try {
+      final response = await contactService.checkContractAndTransfer(id);
+      return Left(response);
+    } on ServerFailure catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
 }

@@ -1,5 +1,6 @@
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/exception.http.dart';
+import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
@@ -15,6 +16,7 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
   Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
+  Future<String> checkContractAndTransfer(int id);
 }
 
 class ContractPaths {
@@ -29,6 +31,7 @@ class ContractPaths {
   static String getPathWorkerSignContract(int id) => '/contract/worker-sign-contract/$id';
   static const String findContractSignedOfUser = '/contract/find-contract-signed-of-user';
   static const String findContractSignedOfBusiness = '/contract/find-contract-signed-of-business';
+  static String checkContractAndTransfer(int id) => '/contract/check-contract-and-transfer/$id';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -239,6 +242,26 @@ class ContractServiceImpl implements ContractService {
       );
     } catch (exception) {
       throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> checkContractAndTransfer(int id) async {
+    try {
+      final response = await agent.dio.patch(
+        ContractPaths.checkContractAndTransfer(id),
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.data;
+    } on ServerException catch (exception) {
+      throw ServerFailure(message: '${exception.message}');
+    } catch (exception) {
+      throw ServerException();
     }
   }
 }

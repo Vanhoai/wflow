@@ -61,6 +61,7 @@ import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/work/task/bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
 
@@ -172,7 +173,9 @@ Future<void> initAppInjection() async {
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
-
+  //Task Bloc
+  instance.registerLazySingleton<TaskBloc>(
+      () => TaskBloc(taskUseCase: instance.get<TaskUseCase>(), contractUseCase: instance.get<ContractUseCase>()));
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());

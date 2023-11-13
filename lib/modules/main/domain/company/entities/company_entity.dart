@@ -26,6 +26,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     required this.totalCollaborators,
     required this.totalPosts,
     required this.totalContracts,
+    required this.balance,
   });
 
   @JsonKey(name: 'posts', defaultValue: 0)
@@ -73,6 +74,9 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'totalContracts', defaultValue: 0)
   final int totalContracts;
 
+  @JsonKey(name: 'balance', defaultValue: 0)
+  final num balance;
+
   factory CompanyEntity.fromJson(Map<String, dynamic> json) => _$CompanyEntityFromJson(json);
 
   @override
@@ -94,6 +98,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     int? totalCollaborators,
     int? totalPosts,
     int? totalContracts,
+    num? balance,
   }) {
     return CompanyEntity(
       id: id,
@@ -115,6 +120,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       totalCollaborators: totalCollaborators ?? this.totalCollaborators,
       totalPosts: totalPosts ?? this.totalPosts,
       totalContracts: totalContracts ?? this.totalContracts,
+      balance: balance ?? this.balance,
     );
   }
 
@@ -139,6 +145,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       totalCollaborators: 0,
       totalPosts: 0,
       totalContracts: 0,
+      balance: 0,
     );
   }
 
@@ -163,5 +170,6 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
         totalCollaborators,
         totalPosts,
         totalContracts,
+        balance,
       ];
 }

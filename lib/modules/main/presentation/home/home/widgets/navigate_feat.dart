@@ -71,7 +71,10 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.applyScreen);
         } else {
-          Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+          Navigator.of(context).pushNamed(
+            RouteKeys.companyScreen,
+            arguments: instance.get<AppBloc>().state.userEntity.business.toString(),
+          );
         }
         break;
       case 3:

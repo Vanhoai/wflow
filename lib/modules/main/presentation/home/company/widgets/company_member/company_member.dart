@@ -20,8 +20,14 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
   int pageSize = 10;
 
   void fetchUser({int? page, int? pageSize}) {
-    context.read<MyCompanyBloc>().add(GetMyMemberCompanyEvent(
-        isLoading: true, message: 'Start load member', page: page ?? 1, pageSize: pageSize ?? 10));
+    context.read<MyCompanyBloc>().add(
+          GetMyMemberCompanyEvent(
+            isLoading: true,
+            message: 'Start load member',
+            page: page ?? 1,
+            pageSize: pageSize ?? 10,
+          ),
+        );
   }
 
   @override
@@ -41,7 +47,7 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
               shrinkWrap: true,
               itemBuilder: (context, index) {
                 return Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                  margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h, top: 4.h),
                   child: Header(
                     title: Flexible(
                       child: InkWell(
@@ -65,7 +71,6 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
                       ),
                     ),
                     onTapLeading: () {},
-                    leadingPhotoUrl: '',
                     actions: [
                       IconButton(
                         onPressed: () {},
@@ -87,27 +92,17 @@ class _CompanyMemberWidgetState extends State<CompanyMemberWidget> {
               itemBuilder: (context, index) {
                 final UserEntity userEntity = state.listUser[index];
                 return Container(
-                  margin: EdgeInsets.only(left: 10.w, right: 10.w, bottom: 10.h),
+                  margin: EdgeInsets.only(left: 20.w, right: 20.w, bottom: 20.h, top: 4.h),
                   child: Header(
-                    title: Flexible(
-                      child: InkWell(
-                        onTap: () {},
-                        child: Text(
-                          userEntity.name.toString(),
-                          overflow: TextOverflow.ellipsis,
-                          style: themeData.textTheme.displayMedium!.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      ),
+                    title: Text(
+                      userEntity.name.toString(),
+                      overflow: TextOverflow.ellipsis,
+                      style: themeData.textTheme.displayMedium!,
                     ),
                     subtitle: Text(userEntity.email.toString()),
                     onTapLeading: () {},
                     leadingPhotoUrl: userEntity.avatar.toString(),
-                    actions: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: SvgPicture.asset(AppConstants.more),
-                      ),
-                    ],
+                    actions: const [],
                   ),
                 );
               },

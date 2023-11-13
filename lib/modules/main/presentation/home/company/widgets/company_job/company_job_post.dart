@@ -21,7 +21,13 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
 
   void fetchPost({int? page, int? pageSize}) {
     context.read<MyCompanyBloc>().add(
-        GetMyPostCompanyEvent(isLoading: true, message: 'Start load post', page: page ?? 1, pageSize: pageSize ?? 10));
+          GetMyPostCompanyEvent(
+            isLoading: true,
+            message: 'Start load post',
+            page: page ?? 1,
+            pageSize: pageSize ?? 10,
+          ),
+        );
   }
 
   void pressCard(num work) {
@@ -50,7 +56,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                     width: double.infinity,
                     scrollDirection: Axis.vertical,
                     padding: EdgeInsets.zero,
-                    margin: const EdgeInsets.only(bottom: 10, left: 10, right: 10, top: 10),
+                    margin: EdgeInsets.only(bottom: 10, left: 20.w, right: 20.w, top: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
@@ -65,7 +71,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,
                     itemCount: state.listPost.length,
-                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 4.h, bottom: 20.h),
                     itemBuilder: (context, index) {
                       final job = state.listPost[index];
 

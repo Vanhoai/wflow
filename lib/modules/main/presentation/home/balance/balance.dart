@@ -73,7 +73,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       controller: amountController,
                       minLines: 1,
                       maxLines: 1,
-                      hintText: 'Enter task heading',
+                      hintText: 'Enter amount',
                       keyboardType: TextInputType.number,
                     ),
                     24.verticalSpace,
@@ -102,7 +102,10 @@ class _BalanceScreenState extends State<BalanceScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider(
-      create: (_) => BalanceBloc(balanceUseCase: instance.get<BalanceUseCase>())..add(BalanceEventFetch()),
+      create: (_) => BalanceBloc(balanceUseCase: instance.get<BalanceUseCase>())
+        ..add(
+          BalanceEventFetch(id: widget.balanceID),
+        ),
       child: CommonScaffold(
         isSafe: true,
         appBar: const AppHeader(

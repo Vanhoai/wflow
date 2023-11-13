@@ -31,13 +31,12 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     on<GetMyPostCompanyEvent>(onGetMyJobCompany);
   }
 
-  Future onGetMyCompany(GetMyCompanyEvent companyMyGetEvent, Emitter<MyCompanyState> emit) async {
-    emit(state.copyWith(isLoadingCompany: companyMyGetEvent.isLoading, message: companyMyGetEvent.message));
-    final Either<CompanyEntity, Failure> result = await companyUseCase.myCompany();
+  Future onGetMyCompany(GetMyCompanyEvent event, Emitter<MyCompanyState> emit) async {
+    emit(state.copyWith(isLoadingCompany: event.isLoading, message: event.message));
+    final Either<CompanyEntity, Failure> result = await companyUseCase.findCompany(id: event.id);
     result.fold((CompanyEntity l) {
       emit(state.copyWith(companyEntity: l, isLoadingCompany: false, message: 'Load company success'));
     }, (Failure r) {
-      // handle error
       emit(state.copyWith(isLoadingCompany: false, message: r.message));
     });
   }
@@ -49,7 +48,6 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     result.fold(
       (List<UserEntity> l) => emit(state.copyWith(listUser: l, isLoadingMember: false, message: 'Load member success')),
       (Failure r) {
-        // handle error
         emit(state.copyWith(isLoadingMember: false, message: r.message));
       },
     );
@@ -62,8 +60,6 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
     result.fold(
       (List<PostEntity> l) => emit(state.copyWith(listPost: l, isLoadingPost: false, message: 'Load job success')),
       (Failure r) {
-        print(r);
-        // handle error
         emit(state.copyWith(isLoadingPost: false, message: r.message));
       },
     );

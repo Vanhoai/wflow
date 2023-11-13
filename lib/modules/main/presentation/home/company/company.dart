@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
@@ -13,7 +14,9 @@ import 'package:wflow/modules/main/presentation/home/company/function.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
 
 class CompanyScreen extends StatefulWidget {
-  const CompanyScreen({super.key});
+  const CompanyScreen({super.key, required this.companyID});
+
+  final String companyID;
 
   @override
   State<CompanyScreen> createState() => _CompanyScreenState();
@@ -21,6 +24,7 @@ class CompanyScreen extends StatefulWidget {
 
 class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
   late final ScrollController scrollController;
+  late final TabController tabController;
 
   List<bool> isFirstLoad = [false, false, false];
 
@@ -28,6 +32,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
   void initState() {
     super.initState();
     scrollController = ScrollController(initialScrollOffset: 0);
+    tabController = TabController(length: staticTab.length, vsync: this);
   }
 
   @override
@@ -75,13 +80,77 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
     return BlocProvider<MyCompanyBloc>(
       create: (context) => MyCompanyBloc(
         companyUseCase: instance.call<CompanyUseCase>(),
-      )..add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company')),
+      )..add(
+          GetMyCompanyEvent(
+            isLoading: true,
+            message: 'Start load company',
+            id: widget.companyID,
+          ),
+        ),
       lazy: true,
       child: CommonScaffold(
         isSafe: true,
-        appBar: const AppHeader(
+        appBar: AppHeader(
           text: 'TheFlow',
-          actions: [],
+          actions: [
+            BlocBuilder<MyCompanyBloc, MyCompanyState>(
+              builder: (context, state) {
+                final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                return Padding(
+                  padding: EdgeInsets.only(right: 20.w),
+                  child: InkWell(
+                    onTap: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (context) {
+                          return BlocProvider<MyCompanyBloc>.value(
+                            value: bloc,
+                            child: CupertinoActionSheet(
+                              actions: [
+                                CupertinoActionSheetAction(
+                                  onPressed: () {},
+                                  child: const Text('Add Collaborator'),
+                                ),
+                                CupertinoActionSheetAction(
+                                  onPressed: () {},
+                                  child: const Text('Edit Company'),
+                                ),
+                                CupertinoActionSheetAction(
+                                  onPressed: () {},
+                                  child: const Text('Post Job'),
+                                ),
+                                CupertinoActionSheetAction(
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                      ..pop()
+                                      ..pushNamed(
+                                        RouteKeys.balanceScreen,
+                                        arguments: state.companyEntity.balance.toString(),
+                                      );
+                                  },
+                                  child: const Text('Balance'),
+                                ),
+                              ],
+                              cancelButton: CupertinoActionSheetAction(
+                                onPressed: () => Navigator.of(context).pop(),
+                                child: const Text('Cancel'),
+                              ),
+                            ),
+                          );
+                        },
+                      );
+                    },
+                    child: Text(
+                      'More',
+                      style: themeData.textTheme.displayMedium!.copyWith(
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                );
+              },
+            )
+          ],
         ),
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
           listener: (context, state) {},
@@ -91,9 +160,10 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
               previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
           builder: (context, state) {
             return Column(
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: 130.h,
+                  height: 140.h,
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
                   clipBehavior: Clip.none,
                   decoration: const BoxDecoration(),
@@ -122,8 +192,8 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Container(
-                        height: 80.w,
-                        width: 80.w,
+                        height: 60.w,
+                        width: 60.w,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
@@ -138,12 +208,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                         ),
                       ),
                       8.horizontalSpace,
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 12),
-                        child: Text(
-                          '${state.companyEntity.collaborators.length} members',
-                          style: themeData.textTheme.displayMedium,
-                        ),
+                      Text(
+                        '${state.companyEntity.collaborators.length} members',
+                        style: themeData.textTheme.displayMedium,
                       ),
                     ],
                   ),
@@ -157,37 +224,40 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                     color: themeData.colorScheme.onBackground.withOpacity(0.1),
                   ),
                 ),
-                TabBar(
-                  isScrollable: true,
-                  labelColor: AppColors.primary,
-                  unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
-                    color: AppColors.textColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
+                Container(
+                  width: double.infinity,
+                  margin: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: TabBar(
+                    controller: tabController,
+                    isScrollable: true,
+                    labelColor: AppColors.primary,
+                    unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
+                      color: AppColors.textColor,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                    ),
+                    labelStyle: themeData.textTheme.displaySmall!.copyWith(
+                      color: AppColors.primary,
+                      fontWeight: FontWeight.w400,
+                      fontSize: 14.sp,
+                    ),
+                    unselectedLabelColor: themeData.colorScheme.onBackground,
+                    physics: const NeverScrollableScrollPhysics(),
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    onTap: (index) {
+                      final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                      observeTabBar(index, bloc);
+                    },
+                    tabs: staticTab.map((e) {
+                      return Tab(child: Text(e));
+                    }).toList(),
                   ),
-                  labelStyle: themeData.textTheme.displaySmall!.copyWith(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.w400,
-                    fontSize: 14.sp,
-                  ),
-                  padding: EdgeInsets.symmetric(horizontal: 20.w),
-                  unselectedLabelColor: themeData.colorScheme.onBackground,
-                  indicatorSize: TabBarIndicatorSize.tab,
-                  tabAlignment: TabAlignment.fill,
-                  splashFactory: NoSplash.splashFactory,
-                  physics: const NeverScrollableScrollPhysics(),
-                  indicatorWeight: 3,
-                  labelPadding: EdgeInsets.zero,
-                  onTap: (index) {
-                    final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
-                    observeTabBar(index, bloc);
-                  },
-                  tabs: staticTab.map((e) => Tab(child: Text(e))).toList(),
                 ),
-                const Expanded(
+                Expanded(
                   child: TabBarView(
-                    physics: NeverScrollableScrollPhysics(),
-                    children: [
+                    physics: const NeverScrollableScrollPhysics(),
+                    controller: tabController,
+                    children: const [
                       CompanyAboutWidget(),
                       CompanyJobPostWidget(),
                       CompanyMemberWidget(),

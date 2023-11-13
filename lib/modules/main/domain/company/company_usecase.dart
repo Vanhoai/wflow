@@ -12,6 +12,7 @@ abstract class CompanyUseCase {
   Future<Either<List<UserEntity>, Failure>> myCompanyMember(int page, int pageSize);
   Future<Either<List<PostEntity>, Failure>> myCompanyJob(int page, int pageSize);
   Future<Either<String, Failure>> upgradeBusiness({required UpgradeBusinessRequest request});
+  Future<Either<CompanyEntity, Failure>> findCompany({required String id});
 }
 
 class CompanyUseCaseImpl extends CompanyUseCase {
@@ -41,5 +42,10 @@ class CompanyUseCaseImpl extends CompanyUseCase {
   @override
   Future<Either<String, Failure>> upgradeBusiness({required UpgradeBusinessRequest request}) async {
     return await companyRepository.upgradeBusiness(request: request);
+  }
+
+  @override
+  Future<Either<CompanyEntity, Failure>> findCompany({required String id}) async {
+    return await companyRepository.findCompany(id: id);
   }
 }

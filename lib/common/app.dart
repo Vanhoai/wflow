@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -53,16 +54,20 @@ class _AppState extends State<App> {
                   children: [
                     MaterialApp(
                       builder: (context, child) {
-                        Widget errorWidget = ErrorPage(
-                          onPressed: () async {
-                            if (await instance.get<NavigationService>().canPop()) {
-                              instance.get<NavigationService>().pop();
-                            } else {
-                              instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.signInScreen);
-                            }
-                          },
-                        );
-                        ErrorWidget.builder = (errorDetails) => errorWidget;
+                        if (kDebugMode) {
+                          Widget errorWidget = ErrorPage(
+                            onPressed: () async {
+                              if (await instance.get<NavigationService>().canPop()) {
+                                instance.get<NavigationService>().pop();
+                              } else {
+                                instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.signInScreen);
+                              }
+                            },
+                          );
+                          ErrorWidget.builder = (errorDetails) => errorWidget;
+                          return child!;
+                        }
+
                         return child!;
                       },
                       navigatorKey: instance.get<NavigationService>().navigatorKey,

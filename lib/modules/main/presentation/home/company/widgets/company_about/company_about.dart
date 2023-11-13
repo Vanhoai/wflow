@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
@@ -30,10 +29,6 @@ class _CompanyAboutWidgetState extends State<CompanyAboutWidget> {
     super.dispose();
   }
 
-  refreshListener(BuildContext context) {
-    context.read<MyCompanyBloc>().add(const GetMyCompanyEvent(isLoading: true, message: 'Start load company'));
-  }
-
   Widget buildVisible() {
     return const Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -57,21 +52,18 @@ class _CompanyAboutWidgetState extends State<CompanyAboutWidget> {
         return Visibility(
           visible: !state.isLoadingCompany,
           replacement: buildVisible(),
-          child: RefreshIndicator(
-            onRefresh: () async => refreshListener(context),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              padding: EdgeInsets.only(bottom: 20.h),
-              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
-              controller: scrollController,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CompanyInformationWidget(companyEntity: companyEntity),
-                ],
-              ),
+          child: SingleChildScrollView(
+            physics: const BouncingScrollPhysics(),
+            padding: EdgeInsets.only(bottom: 20.h),
+            keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.onDrag,
+            controller: scrollController,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                CompanyInformationWidget(companyEntity: companyEntity),
+              ],
             ),
           ),
         );

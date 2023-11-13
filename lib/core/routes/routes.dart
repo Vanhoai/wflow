@@ -114,7 +114,8 @@ class AppRoutes {
       case RouteKeys.upgradeBusinessScreen:
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
-        return MaterialPageRoute(builder: (_) => const CompanyScreen());
+        final company = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => CompanyScreen(companyID: company));
       case RouteKeys.upPostScreen:
         return MaterialPageRoute(builder: (_) => const UpPostScreen());
       case RouteKeys.developScreen:

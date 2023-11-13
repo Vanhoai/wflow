@@ -8,7 +8,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -57,7 +56,7 @@ class _AddCVScreenState extends State<AddCVScreen> {
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.cvScreen, (Route<dynamic> route) => false);
+                  Navigator.of(context).pop();
                 },
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,

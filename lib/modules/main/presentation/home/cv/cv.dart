@@ -54,8 +54,10 @@ class _CVScreenState extends State<CVScreen> {
                         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                         child: Text(
                           'Add',
-                          style: themeData.textTheme.displayMedium!
-                              .copyWith(color: AppColors.primary, fontWeight: FontWeight.normal),
+                          style: themeData.textTheme.displayMedium!.copyWith(
+                            color: AppColors.primary,
+                            fontWeight: FontWeight.normal,
+                          ),
                         ),
                       ),
                     );

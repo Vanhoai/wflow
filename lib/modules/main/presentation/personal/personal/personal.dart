@@ -35,30 +35,23 @@ class _PersonalScreenState extends State<PersonalScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) =>
-          PersonalBloc(userUseCase: instance.get<UserUseCase>())
-            ..add(const GetPersonalInformationEvent(
-                isLoading: true,
-                message: 'Start loading personal information')),
+      create: (context) => PersonalBloc(userUseCase: instance.get<UserUseCase>())
+        ..add(const GetPersonalInformationEvent(isLoading: true, message: 'Start loading personal information')),
       lazy: true,
       child: BlocConsumer<PersonalBloc, PersonalState>(
         listener: (context, state) {
           if (state.isSignOut == true) {
             Navigator.of(context)
               ..pop()
-              ..pushNamedAndRemoveUntil(
-                  RouteKeys.signInScreen, (route) => false);
+              ..pushNamedAndRemoveUntil(RouteKeys.signInScreen, (route) => false);
           }
         },
         buildWhen: (previous, current) =>
-            previous.userEntity != current.userEntity ||
-            previous.isLoading != current.isLoading,
+            previous.userEntity != current.userEntity || previous.isLoading != current.isLoading,
         listenWhen: (previous, current) =>
-            previous.isSignOut != current.isSignOut ||
-            previous.userEntity != current.userEntity,
+            previous.isSignOut != current.isSignOut || previous.userEntity != current.userEntity,
         builder: (context, state) {
-          final PersonalBloc personalBloc =
-              BlocProvider.of<PersonalBloc>(context);
+          final PersonalBloc personalBloc = BlocProvider.of<PersonalBloc>(context);
           return CommonScaffold(
             isSafe: true,
             body: Visibility(
@@ -66,9 +59,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
               replacement: const ShimmerUser(),
               child: RefreshIndicator(
                 onRefresh: () async => personalBloc.add(
-                    const GetPersonalInformationEvent(
-                        isLoading: true,
-                        message: 'Start loading personal information')),
+                    const GetPersonalInformationEvent(isLoading: true, message: 'Start loading personal information')),
                 child: CustomScrollView(
                   slivers: [
                     const HeaderAvatarWidget(),
@@ -81,13 +72,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
                             child: CupertinoActionSheet(
                               actions: [
                                 Visibility(
-                                  visible: instance.get<AppBloc>().state.role ==
-                                      RoleEnum.user.index + 1,
+                                  visible: instance.get<AppBloc>().state.role == RoleEnum.user.index + 1,
                                   child: CupertinoActionSheetAction(
                                     onPressed: () => Navigator.of(context)
                                       ..pop(context)
-                                      ..pushNamed(
-                                          RouteKeys.upgradeBusinessScreen),
+                                      ..pushNamed(RouteKeys.upgradeBusinessScreen),
                                     child: const Text('Upgrade'),
                                   ),
                                 ),
@@ -110,21 +99,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   child: const Text('Settings'),
                                 ),
                                 CupertinoActionSheetAction(
-                                  onPressed: () => Navigator.of(context)
-                                    ..pop()
-                                    ..pushNamed(RouteKeys.addBusinessScreen),
-                                  child: const Text('Add'),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () => Navigator.of(context)
-                                    ..pop()
-                                    ..pushNamed(
-                                        RouteKeys.removeCollaboratorScreen),
-                                  child: const Text('Remove'),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () =>
-                                      personalBloc.add(const SignOutEvent()),
+                                  onPressed: () => personalBloc.add(const SignOutEvent()),
                                   isDestructiveAction: true,
                                   child: const Text('Sign out'),
                                 ),
@@ -140,8 +115,7 @@ class _PersonalScreenState extends State<PersonalScreen> {
                     ),
                   ],
                   dragStartBehavior: DragStartBehavior.start,
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.manual,
+                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                   physics: const AlwaysScrollableScrollPhysics(),
                   shrinkWrap: true,
                   controller: _scrollController,

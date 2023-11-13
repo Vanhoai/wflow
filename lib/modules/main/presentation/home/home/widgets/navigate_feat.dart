@@ -6,6 +6,7 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/utils.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
@@ -60,10 +61,15 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   void navigateTo(int index) {
     final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     final balance = instance.get<AppBloc>().state.userEntity.balance;
+    final isVerify = instance.get<AppBloc>().state.userEntity.isVerify;
 
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
       case 1:
         break;
@@ -81,14 +87,27 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         Navigator.of(context).pushNamed(RouteKeys.bookmarkScreen);
         break;
       case 4:
-        Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
       case 5:
-        Navigator.of(context).pushNamed(RouteKeys.signedScreen);
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.signedScreen);
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
       case 6:
+        if (!isVerify) {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          return;
+        }
+
         if (isUser) {
-          Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+          Navigator.of(context).pushNamed(RouteKeys.cvScreen);
         } else {
           Navigator.of(context).pushNamed(RouteKeys.completedContractScreen);
         }

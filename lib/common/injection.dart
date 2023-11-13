@@ -36,6 +36,8 @@ import 'package:wflow/modules/main/data/room/room_repository_impl.dart';
 import 'package:wflow/modules/main/data/room/room_service.dart';
 import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
 import 'package:wflow/modules/main/data/task/task_service.dart';
+import 'package:wflow/modules/main/data/tracking/tracking_repository_impl.dart';
+import 'package:wflow/modules/main/data/tracking/tracking_service.dart';
 import 'package:wflow/modules/main/data/user/user_repository_impl.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/authentication/authentication_repository.dart';
@@ -58,6 +60,8 @@ import 'package:wflow/modules/main/domain/room/room_repository.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
 import 'package:wflow/modules/main/domain/task/task_usecase.dart';
+import 'package:wflow/modules/main/domain/tracking/tracking_repository.dart';
+import 'package:wflow/modules/main/domain/tracking/tracking_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
@@ -94,23 +98,17 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<CVUseCase>(() => CVUseCaseImpl(cvRepository: instance.get<CVRepository>()));
 
   // Company
-  instance.registerLazySingleton<CompanyService>(
-    () => CompanyServiceImpl(agent: instance.get<Agent>()),
-  );
+  instance.registerLazySingleton<CompanyService>(() => CompanyServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<CompanyRepository>(
-    () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()),
-  );
+      () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()));
   instance.registerLazySingleton<CompanyUseCase>(
     () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()),
   );
 
   // Category
-  instance.registerLazySingleton<CategoryService>(
-    () => CategoryServiceImpl(agent: instance.get<Agent>()),
-  );
+  instance.registerLazySingleton<CategoryService>(() => CategoryServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpl(categoryService: instance.get<CategoryService>()),
-  );
+      () => CategoryRepositoryImpl(categoryService: instance.get<CategoryService>()));
   instance.registerLazySingleton<CategoryUseCase>(
     () => CategoryUseCaseImpl(categoryRepository: instance.get<CategoryRepository>()),
   );
@@ -128,15 +126,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<TaskUseCase>(() => TaskUseCaseImpl(taskRepository: instance.get<TaskRepository>()));
 
   // Category
-  instance.registerLazySingleton<RoomService>(
-    () => RoomServiceImpl(agent: instance.get<Agent>()),
-  );
-  instance.registerLazySingleton<RoomRepository>(
-    () => RoomRepositoryImpl(roomService: instance.get<RoomService>()),
-  );
-  instance.registerLazySingleton<RoomUseCase>(
-    () => RoomUseCaseImpl(roomRepository: instance.get<RoomRepository>()),
-  );
+  instance.registerLazySingleton<RoomService>(() => RoomServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<RoomRepository>(() => RoomRepositoryImpl(roomService: instance.get<RoomService>()));
+  instance.registerLazySingleton<RoomUseCase>(() => RoomUseCaseImpl(roomRepository: instance.get<RoomRepository>()));
 
   // Authentication
   instance.registerLazySingleton<AuthenticationService>(() => AuthenticationServiceImpl(agent: instance.get<Agent>()));
@@ -145,37 +137,40 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<AuthenticationUseCase>(
       () => AuthenticationUseCaseImpl(authenticationRepository: instance.get<AuthenticationRepository>()));
 
-  // Authen bloc
+  // Auth bloc
   instance.registerLazySingleton<AuthenticationsBloc>(
       () => AuthenticationsBloc(authenticationUseCase: instance.get<AuthenticationUseCase>()));
 
   // media
-  instance.registerLazySingleton<MediaService>(
-    () => MediaServiceImpl(agent: instance.get<Agent>()),
-  );
-  instance.registerLazySingleton<MediaRepository>(
-    () => MediaRepositoryImpl(mediaService: instance.get<MediaService>()),
-  );
+  instance.registerLazySingleton<MediaService>(() => MediaServiceImpl(agent: instance.get<Agent>()));
+  instance
+      .registerLazySingleton<MediaRepository>(() => MediaRepositoryImpl(mediaService: instance.get<MediaService>()));
   instance.registerLazySingleton<MediaUseCase>(
     () => MediaUseCaseImpl(mediaRepository: instance.get<MediaRepository>()),
   );
 
-  instance.registerLazySingleton<BalanceService>(
-    () => BalanceServiceImpl(agent: instance.get<Agent>()),
-  );
+  // balance
+  instance.registerLazySingleton<BalanceService>(() => BalanceServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<BalanceRepository>(
-    () => BalanceRepositoryImpl(balanceService: instance.get<BalanceService>()),
-  );
+      () => BalanceRepositoryImpl(balanceService: instance.get<BalanceService>()));
   instance.registerLazySingleton<BalanceUseCase>(
-    () => BalanceUseCaseImpl(balanceRepository: instance.get<BalanceRepository>()),
-  );
+      () => BalanceUseCaseImpl(balanceRepository: instance.get<BalanceRepository>()));
+
+  // tracking
+  instance.registerLazySingleton<TrackingService>(() => TrackingServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<TrackingRepository>(
+      () => TrackingRepositoryImpl(trackingService: instance.get<TrackingService>()));
+  instance.registerLazySingleton<TrackingUseCase>(
+      () => TrackingUseCaseImpl(trackingRepository: instance.get<TrackingRepository>()));
 
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
+
   //Task Bloc
   instance.registerLazySingleton<TaskBloc>(
-      () => TaskBloc(taskUseCase: instance.get<TaskUseCase>(), contractUseCase: instance.get<ContractUseCase>()));
+    () => TaskBloc(taskUseCase: instance.get<TaskUseCase>(), contractUseCase: instance.get<ContractUseCase>()),
+  );
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());

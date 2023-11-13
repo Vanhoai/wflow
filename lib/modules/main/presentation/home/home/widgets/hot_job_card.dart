@@ -99,6 +99,7 @@ class _HotJobCardState extends State<HotJobCard> {
         duration: widget.job.duration,
         description: TextMore(
           widget.job.content,
+          trimLines: 3,
           trimMode: TrimMode.Hidden,
           trimHiddenMaxLines: 3,
           style: themeData.textTheme.displayMedium!.merge(

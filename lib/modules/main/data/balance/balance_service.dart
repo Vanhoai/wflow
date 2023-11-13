@@ -9,7 +9,7 @@ class BalancePaths {
   static const String createPaymentSheet = '/balance/create-payment-sheet';
   static const String getMyBalance = '/user/my-balance';
   static const String topUpBalance = '/balance/top-up-balance';
-  static String getFindBalance({required String id}) => '/user/find-balance/$id';
+  static String getFindBalance({required String id}) => '/balance/find-balance/$id';
 }
 
 abstract class BalanceService {

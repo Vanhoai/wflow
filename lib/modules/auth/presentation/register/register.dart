@@ -5,7 +5,6 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
-import 'package:wflow/core/utils/alert.util.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:wflow/modules/auth/presentation/register/widgets/widgets.dart';
@@ -33,12 +32,12 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Listener(
-        onPointerDown: (PointerDownEvent event) => FocusManager.instance.primaryFocus?.unfocus(),
-        child: BlocProvider<RegisterBloc>(
-          create: (_) => RegisterBloc(authUseCase: instance.get<AuthUseCase>()),
-          lazy: true,
+    return BlocProvider(
+      create: (_) => RegisterBloc(authUseCase: instance.call<AuthUseCase>()),
+      lazy: true,
+      child: SafeArea(
+        child: Listener(
+          onPointerDown: (PointerDownEvent event) => FocusManager.instance.primaryFocus?.unfocus(),
           child: Scaffold(
             resizeToAvoidBottomInset: false,
             body: SingleChildScrollView(
@@ -55,59 +54,40 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
-                    Builder(
-                      builder: (context) {
-                        return BlocListener<RegisterBloc, RegisterState>(
-                          bloc: BlocProvider.of<RegisterBloc>(context),
-                          listener: (context, state) {
-                            if (state is RegisterEmailSuccessState) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, RouteKeys.verificationScreen, (route) => false);
-                            } else if (state is RegisterPhoneSuccessState) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, RouteKeys.verificationScreen, (route) => false);
-                            } else if (state is RegisterErrorState) {
-                              AlertUtils.showMessage('Notification', state.message);
-                            }
-                          },
-                          listenWhen: (previous, current) => previous != current,
-                          child: DefaultTabController(
-                            length: 2,
-                            child: Column(
-                              children: [
-                                Container(
-                                  margin: const EdgeInsets.only(top: 20),
-                                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                                  child: TabBar(
-                                    indicatorSize: TabBarIndicatorSize.tab,
-                                    indicatorColor: Theme.of(context).primaryColor,
-                                    controller: _tabController,
-                                    tabs: [
-                                      _tabSelect(icon: AppConstants.email, title: 'Email'),
-                                      _tabSelect(
-                                        icon: AppConstants.phone,
-                                        title: (MediaQuery.of(context).size.width <= 400 ? 'Phone' : 'Phone number'),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: (MediaQuery.of(context).size.height <= 800
-                                      ? 400
-                                      : MediaQuery.of(context).size.height * 0.45),
-                                  child: TabBarView(
-                                    controller: _tabController,
-                                    children: const [
-                                      FormRegisterEmail(),
-                                      FormRegisterPhone(),
-                                    ],
-                                  ),
+                    DefaultTabController(
+                      length: 2,
+                      child: Column(
+                        children: [
+                          Container(
+                            margin: const EdgeInsets.only(top: 20),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                            child: TabBar(
+                              indicatorSize: TabBarIndicatorSize.tab,
+                              indicatorColor: Theme.of(context).primaryColor,
+                              controller: _tabController,
+                              tabs: [
+                                _tabSelect(icon: AppConstants.email, title: 'Email'),
+                                _tabSelect(
+                                  icon: AppConstants.phone,
+                                  title: (MediaQuery.of(context).size.width <= 400 ? 'Phone' : 'Phone number'),
                                 ),
                               ],
                             ),
                           ),
-                        );
-                      },
+                          SizedBox(
+                            height: (MediaQuery.of(context).size.height <= 800
+                                ? 400
+                                : MediaQuery.of(context).size.height * 0.45),
+                            child: TabBarView(
+                              controller: _tabController,
+                              children: const [
+                                FormRegisterEmail(),
+                                FormRegisterPhone(),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       margin: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
@@ -158,7 +138,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             ],
                           ),
                         ),
-                        onTap: () {},
+                        onTap: () => Navigator.pushNamed(context, RouteKeys.verificationScreen, arguments: {}),
                       ),
                     ),
                     Container(

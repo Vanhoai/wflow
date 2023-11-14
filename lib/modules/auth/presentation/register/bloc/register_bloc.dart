@@ -11,13 +11,14 @@ part 'register_state.dart';
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   final AuthUseCase authUseCase;
 
-  RegisterBloc({required this.authUseCase}) : super(RegisterState.createEmpty()) {
+  RegisterBloc({required this.authUseCase}) : super(const RegisterInitialState()) {
     on<RegisterTypeEvent>(onRegisterType);
     on<RegisterErrorEvent>(onRegisterError);
   }
 
   Future<void> onRegisterType(RegisterTypeEvent registerEvent, Emitter<RegisterState> emit) async {
     try {
+      emit(const RegisterInitialState());
       instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
       final request = AuthNormalRegisterRequest(
         username: registerEvent.username,
@@ -27,7 +28,11 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
       final result = await authUseCase.register(request);
       result.fold((String l) {
-        emit(RegisterEmailSuccessState(message: l));
+        if (registerEvent.type == 'phone') {
+          emit(const RegisterPhoneSuccessState(message: 'Please check your phone for OTP code'));
+        } else {
+          emit(const RegisterEmailSuccessState(message: 'Please check your email for OTP code'));
+        }
         return l;
       }, (r) {
         add(RegisterErrorEvent(message: r.message.toString()));

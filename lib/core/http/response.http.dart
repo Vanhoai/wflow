@@ -18,6 +18,11 @@ class HttpResponse<T> {
       data: json['data'],
     );
   }
+
+  @override
+  String toString() {
+    return 'HttpResponse(statusCode: $statusCode, message: $message, data: $data)';
+  }
 }
 
 class HttpResponseWithPagination<T> {

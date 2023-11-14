@@ -83,18 +83,20 @@ class _AppState extends State<App> {
                           instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
                       home: const IntroScreen(),
                     ),
-                    BlocBuilder(
+                    BlocBuilder<AppLoadingBloc, AppLoadingState>(
                       bloc: instance.get<AppLoadingBloc>(),
                       builder: (context, state) {
-                        if (state is HideLoadingState)
-                          // ignore: curly_braces_in_flow_control_structures
+                        if (state is AppShowLoadingState) {
+                          return const MaterialApp(
+                            debugShowCheckedModeBanner: false,
+                            home: Scaffold(
+                              backgroundColor: Colors.transparent,
+                              body: GlobalLoading(),
+                            ),
+                          );
+                        } else {
                           return const SizedBox();
-                        else if (state is ShowLoadingState)
-                          // ignore: curly_braces_in_flow_control_structures
-                          return const GlobalLoading();
-                        else
-                          // ignore: curly_braces_in_flow_control_structures
-                          return const SizedBox();
+                        }
                       },
                     )
                   ],

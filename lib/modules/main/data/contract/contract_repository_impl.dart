@@ -11,6 +11,7 @@ class ContractRepositoryImpl implements ContractRepository {
   final ContractService contactService;
 
   ContractRepositoryImpl({required this.contactService});
+
   @override
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request) async {
     try {

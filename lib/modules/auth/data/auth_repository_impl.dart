@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
+import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/auth/domain/auth_repository.dart';
@@ -32,6 +33,33 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.register(request);
       return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> registerWithGoogle({required AuthWithGoogleModel request}) async {
+    try {
+      final response = await authService.registerWithGoogle(request: request);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<AuthEntity, Failure>> signInWithGoogle({required AuthWithGoogleModel request}) async {
+    try {
+      final authResponse = await authService.signInWithGoogle(request: request);
+      final AuthEntity authEntity = AuthEntity(
+        accessToken: authResponse.accessToken,
+        refreshToken: authResponse.refreshToken,
+        stringeeToken: authResponse.stringeeToken,
+        isSignIn: true,
+      );
+
+      return Left(authEntity);
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }

@@ -8,7 +8,8 @@ import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/utils/secure.util.dart';
+import 'package:wflow/core/utils/utils.dart';
+import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_entity.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
@@ -71,6 +72,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   Future<void> signIn(String username, String password, Emitter<SignInState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
     final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
     if (deviceToken == null || deviceToken.isEmpty) {
       emit(const SignInFailure(message: "Can't get device token"));
@@ -92,10 +94,9 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         emit(const SignInState());
       },
     );
+
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
-
-  Future<void> getUserProfile(AuthEntity authEntity, Emitter<SignInState> emit) async {}
 
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
     await signIn(event.email, event.password, emit);
@@ -110,6 +111,29 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   FutureOr<void> signInWithGoogle(SignInWithGoogleEvent event, Emitter<SignInState> emit) async {
     String idToken = await FirebaseAuthService.signInWithGoogle();
-    if (idToken.isNotEmpty) {}
+    String? deviceToken = await FirebaseMessagingService.getDeviceToken();
+    if (idToken.isEmpty || deviceToken == null) {
+      AlertUtils.showMessage('Notification', "Can't get device token");
+      return;
+    }
+
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    final response = await authUseCase.signInWithGoogle(
+      request: AuthWithGoogleModel(idToken: idToken, deviceToken: deviceToken, type: 'sign-in'),
+    );
+
+    response.fold(
+      (AuthEntity authEntity) {
+        final role = verifyAccessToken(authEntity.accessToken);
+        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, rememberMe: state.isRemember, role: role));
+        emit(SignInSuccess());
+      },
+      (Failure failure) {
+        emit(SignInFailure(message: failure.message));
+        emit(const SignInState());
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

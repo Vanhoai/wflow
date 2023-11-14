@@ -1,10 +1,14 @@
-part of "bloc.dart";
+part of 'bloc.dart';
 
 abstract class AppLoadingState extends Equatable {
   @override
   List<Object> get props => [];
 }
 
-class HideLoadingState extends AppLoadingState {}
+class AppHideLoadingState extends AppLoadingState {}
 
-class ShowLoadingState extends AppLoadingState {}
+class AppShowLoadingState extends AppLoadingState {
+  final String message;
+
+  AppShowLoadingState({required this.message});
+}

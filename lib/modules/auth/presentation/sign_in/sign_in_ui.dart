@@ -1,11 +1,8 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -26,10 +23,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  Future<void> pushNotification() async {
-    await FirebaseMessagingService.pushNotification(id: Random().nextInt(1000), title: 'Test', body: 'Test');
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
@@ -119,12 +112,7 @@ class _SignInScreenState extends State<SignInScreen> {
                               ],
                             ),
                           ),
-                          onTap: () {
-                            // context.read<SignInBloc>().add(SignInWithGoogleEvent());
-                            // Navigator.pushNamed(
-                            //     context, RouteKeys.bottomScreen);
-                            pushNotification();
-                          },
+                          onTap: () => context.read<SignInBloc>().add(SignInWithGoogleEvent()),
                         );
                       },
                     ),

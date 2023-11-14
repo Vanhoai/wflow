@@ -11,8 +11,7 @@ class FirebaseAuthService {
     );
 
     UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
-    return await userCredential.user!.getIdToken() ?? '';
+    String token = await userCredential.user!.getIdToken() ?? '';
+    return token;
   }
-
-  static Future<void> signInWithPhoneNumber() async {}
 }

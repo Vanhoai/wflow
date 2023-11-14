@@ -32,7 +32,7 @@ class GlobalLoading extends StatelessWidget {
     return Container(
       height: double.infinity,
       width: double.infinity,
-      color: const Color.fromARGB(100, 24, 24, 24),
+      color: const Color.fromARGB(20, 24, 24, 24),
       child: const Center(
         child: CupertinoActivityIndicator(radius: 16),
       ),

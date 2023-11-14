@@ -108,7 +108,11 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                             child: CupertinoActionSheet(
                               actions: [
                                 CupertinoActionSheetAction(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                      ..pop()
+                                      ..pushNamed(RouteKeys.addBusinessScreen);
+                                  },
                                   child: const Text('Add Collaborator'),
                                 ),
                                 CupertinoActionSheetAction(
@@ -116,7 +120,11 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                   child: const Text('Edit Company'),
                                 ),
                                 CupertinoActionSheetAction(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context)
+                                      ..pop()
+                                      ..pushNamed(RouteKeys.upPostScreen);
+                                  },
                                   child: const Text('Post Job'),
                                 ),
                                 CupertinoActionSheetAction(

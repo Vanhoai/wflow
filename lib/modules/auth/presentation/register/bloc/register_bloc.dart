@@ -39,9 +39,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         return r;
       });
     } catch (exception) {
-      print(exception);
-
-      add(const RegisterErrorEvent(message: 'Server error'));
+      add(RegisterErrorEvent(message: exception.toString()));
     } finally {
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
     }

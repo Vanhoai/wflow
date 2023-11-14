@@ -34,7 +34,11 @@ class AuthRepositoryImpl implements AuthRepository {
       final response = await authService.register(request);
       return Left(response);
     } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+      if (exception is ServerFailure) {
+        return Right(ServerFailure(message: exception.message));
+      } else {
+        return const Right(ServerFailure());
+      }
     }
   }
 }

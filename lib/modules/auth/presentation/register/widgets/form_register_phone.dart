@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
@@ -122,8 +123,8 @@ class _FormState extends State<FormRegisterPhone> {
                 onPressed: () {
                   if (validatePhone(phoneController.text) == null &&
                       validatePassword(passwordController.text, rePasswordController.text) == null) {
-                    context.read<RegisterBloc>().add(RegisterTypeEvent(
-                        username: phoneController.text, password: passwordController.text, type: 'phone'));
+                    Navigator.pushNamed(context, RouteKeys.verificationScreen,
+                        arguments: FormPhoneArgument(phoneController.text, passwordController.text));
                   }
                 },
                 label: 'Sign Up',
@@ -133,5 +134,17 @@ class _FormState extends State<FormRegisterPhone> {
         ),
       ),
     );
+  }
+}
+
+class FormPhoneArgument {
+  final String phone;
+  final String password;
+
+  FormPhoneArgument(this.phone, this.password);
+
+  @override
+  String toString() {
+    return 'FormPhoneArgument{phone: $phone, password: $password}';
   }
 }

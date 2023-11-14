@@ -1,7 +1,12 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/navigation.dart';
+import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/utils.dart';
+import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 
@@ -14,6 +19,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   RegisterBloc({required this.authUseCase}) : super(const RegisterInitialState()) {
     on<RegisterTypeEvent>(onRegisterType);
     on<RegisterErrorEvent>(onRegisterError);
+    on<RegisterWithGoogleEvent>(onRegisterWithGoogle);
   }
 
   Future<void> onRegisterType(RegisterTypeEvent registerEvent, Emitter<RegisterState> emit) async {
@@ -47,5 +53,35 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
 
   Future<void> onRegisterError(RegisterErrorEvent registerEvent, Emitter<RegisterState> emit) async {
     emit(RegisterErrorState(message: registerEvent.message));
+  }
+
+  Future<void> onRegisterWithGoogle(RegisterWithGoogleEvent event, Emitter<RegisterState> emit) async {
+    String idToken = await FirebaseAuthService.signInWithGoogle();
+    if (idToken.isEmpty) {
+      AlertUtils.showMessage('Notification', "Can't get IDToken from Google");
+      return;
+    }
+
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    final response = await authUseCase.registerWithGoogle(
+      request: AuthWithGoogleModel(idToken: idToken, deviceToken: '', type: 'sign-up'),
+    );
+
+    response.fold(
+      (String message) {
+        AlertUtils.showMessage(
+          'Notification',
+          message,
+          callback: () {
+            instance.get<NavigationService>().pop();
+          },
+        );
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

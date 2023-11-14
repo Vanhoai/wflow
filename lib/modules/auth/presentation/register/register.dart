@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
@@ -112,35 +111,39 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                     ),
                     const SizedBox(height: 8),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: InkWell(
-                        child: Ink(
-                          height: 50,
-                          decoration: BoxDecoration(
-                            border: Border.all(color: Colors.black26, width: 1),
-                            borderRadius: const BorderRadius.all(Radius.circular(12.0)),
-                          ),
-                          child: Stack(
-                            children: [
-                              Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                    padding: const EdgeInsets.only(left: 11),
-                                    child: SvgPicture.asset(AppConstants.google),
-                                  )),
-                              Align(
-                                alignment: Alignment.center,
-                                child: Text(
-                                  'Sign up with Google',
-                                  style: Theme.of(context).textTheme.displayMedium,
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: BlocBuilder<RegisterBloc, RegisterState>(
+                          builder: (context, state) {
+                            return InkWell(
+                              onTap: () => context.read<RegisterBloc>().add(RegisterWithGoogleEvent()),
+                              child: Ink(
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black26, width: 1),
+                                  borderRadius: const BorderRadius.all(Radius.circular(12.0)),
                                 ),
-                              )
-                            ],
-                          ),
-                        ),
-                        onTap: () => Navigator.pushNamed(context, RouteKeys.verificationScreen, arguments: {}),
-                      ),
-                    ),
+                                child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: Container(
+                                        padding: const EdgeInsets.only(left: 11),
+                                        child: SvgPicture.asset(AppConstants.google),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        'Sign up with Google',
+                                        style: Theme.of(context).textTheme.displayMedium,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            );
+                          },
+                        )),
                     Container(
                       margin: const EdgeInsets.symmetric(vertical: 15),
                       alignment: Alignment.center,

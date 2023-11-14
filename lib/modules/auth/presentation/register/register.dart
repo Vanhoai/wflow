@@ -61,13 +61,13 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                           bloc: BlocProvider.of<RegisterBloc>(context),
                           listener: (context, state) {
                             if (state is RegisterEmailSuccessState) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, RouteKeys.verificationScreen, (route) => false);
+                              AlertUtils.showMessage('Notification', state.message.toString(),
+                                  callback: () => Navigator.pushNamed(context, RouteKeys.verificationScreen));
                             } else if (state is RegisterPhoneSuccessState) {
-                              Navigator.pushNamedAndRemoveUntil(
-                                  context, RouteKeys.verificationScreen, (route) => false);
+                              AlertUtils.showMessage('Notification', state.message.toString(),
+                                  callback: () => Navigator.pushNamed(context, RouteKeys.verificationScreen));
                             } else if (state is RegisterErrorState) {
-                              AlertUtils.showMessage('Notification', state.message);
+                              AlertUtils.showMessage('Notification', state.message.toString());
                             }
                           },
                           listenWhen: (previous, current) => previous != current,

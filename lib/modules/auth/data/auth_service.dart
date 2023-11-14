@@ -18,12 +18,14 @@ class AuthServiceImpl implements AuthService {
     try {
       final json = await agent.dio.post('/auth/sign-in', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
-      if (httpResponse.statusCode != 200) {
+      if (httpResponse.statusCode > 300) {
         throw ServerException(message: httpResponse.message);
       } else {
         return AuthSignInResponse.fromJson(httpResponse.data);
       }
     } catch (exception) {
+      print(exception.toString());
+
       throw ServerException(message: exception.toString());
     }
   }

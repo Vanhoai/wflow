@@ -7,6 +7,7 @@ import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
+import 'package:wflow/modules/auth/presentation/register/register.dart';
 
 class FormRegisterPhone extends StatefulWidget {
   const FormRegisterPhone({Key? key}) : super(key: key);
@@ -123,8 +124,15 @@ class _FormState extends State<FormRegisterPhone> {
                 onPressed: () {
                   if (validatePhone(phoneController.text) == null &&
                       validatePassword(passwordController.text, rePasswordController.text) == null) {
-                    Navigator.pushNamed(context, RouteKeys.verificationScreen,
-                        arguments: FormPhoneArgument(phoneController.text, passwordController.text));
+                    Navigator.pushNamed(
+                      context,
+                      RouteKeys.verificationScreen,
+                      arguments: FormRegisterArgument(
+                        username: phoneController.text,
+                        password: passwordController.text,
+                        type: 'phone',
+                      ),
+                    );
                   }
                 },
                 label: 'Sign Up',
@@ -134,17 +142,5 @@ class _FormState extends State<FormRegisterPhone> {
         ),
       ),
     );
-  }
-}
-
-class FormPhoneArgument {
-  final String phone;
-  final String password;
-
-  FormPhoneArgument(this.phone, this.password);
-
-  @override
-  String toString() {
-    return 'FormPhoneArgument{phone: $phone, password: $password}';
   }
 }

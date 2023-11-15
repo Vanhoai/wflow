@@ -4,9 +4,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:logger/logger.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/firebase/firebase.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -17,6 +17,7 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/verification/bloc/verification_bloc.dart';
+import 'package:logger/logger.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key, this.arguments});
@@ -38,7 +39,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _otpController6 = TextEditingController();
   int? count;
   Timer? _everySecond;
-
   String? verificationId;
 
   @override
@@ -76,23 +76,31 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   _initVerificationPhone() async {
     try {
+      final phoneNumber = '+84${widget.arguments!.username.substring(1)}';
       await firebaseAuth.verifyPhoneNumber(
         verificationCompleted: (PhoneAuthCredential credential) async {},
-        verificationFailed: (error) {},
+        verificationFailed: (error) {
+          instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+          AlertUtils.showMessage('Notification', error.message!);
+
+          Logger().d(error.toString());
+        },
         codeSent: (verificationId, forceResendingToken) {
           setState(() {
             this.verificationId = verificationId;
           });
+          Logger().d(verificationId);
         },
         codeAutoRetrievalTimeout: (verificationId) {
           setState(() {
             this.verificationId = verificationId;
           });
+          Logger().d(verificationId);
         },
-        phoneNumber: '+84 396 855 834',
+        phoneNumber: phoneNumber,
       );
     } catch (e) {
-      Logger().e(e);
+      Logger().d(e);
     }
   }
 

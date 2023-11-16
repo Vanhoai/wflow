@@ -43,6 +43,9 @@ class AppConstants {
   static const String apply = '${commonIconPath}ic.apply.svg';
   static const String close = '${commonIconPath}ic.close.svg';
   static const String transaction = '${commonIconPath}ic.transaction.svg';
+  static const String task = '${commonIconPath}ic.task.svg';
+  static const String history = '${commonIconPath}ic.history.svg';
+  static const String bank = '${commonIconPath}ic.bank.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';
@@ -80,6 +83,7 @@ class AppConstants {
   // path for lottie animation
   static const String lottiePath = 'assets/anim/';
   static const String developAnim = '${lottiePath}develop_anim.json';
+  static const String errorAnim = '${lottiePath}error_anim.json';
 
   // languages
   static const String pathVN = 'assets/languages/vn.json';

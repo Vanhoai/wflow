@@ -10,7 +10,8 @@ class MyCompanyEvent extends Equatable {
 class GetMyCompanyEvent extends MyCompanyEvent {
   final bool isLoading;
   final String message;
-  const GetMyCompanyEvent({required this.isLoading, required this.message});
+  final String id;
+  const GetMyCompanyEvent({required this.isLoading, required this.message, required this.id});
 
   @override
   List<Object> get props => [isLoading, message];

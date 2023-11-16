@@ -36,9 +36,12 @@ class RouteKeys {
   static const String searchWorkScreen = '/search_work_screen';
   static const String contractWaitingSignScreen = '/contract_waiting_sign_screen';
   static const String addCVScreen = '/add_cv_screen';
+  static const String cvScreen = '/cv_screen';
   static const String bookmarkScreen = '/bookmark_screen';
   static const String signedScreen = '/signed_screen';
   static const String graphScreen = '/graph_screen';
   static const String removeCollaboratorScreen = '/remove_collaborator_screen';
-  static const String postSavedScreen = '/post_saved_screen';
+  static const String completedContractScreen = '/completed_contract_screen';
+  static const String reportScreen = '/report_screen';
+  static const String editProfileScreen = '/edit_profile_screen';
 }

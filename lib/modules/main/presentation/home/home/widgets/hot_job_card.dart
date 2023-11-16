@@ -40,6 +40,7 @@ class _HotJobCardState extends State<HotJobCard> {
       height: widget.constraints.maxHeight,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: JobCard(
+        jobId: widget.job.id,
         isHorizontal: true,
         boxDecoration: BoxDecoration(
           color: themeData.colorScheme.background,
@@ -104,6 +105,7 @@ class _HotJobCardState extends State<HotJobCard> {
         duration: widget.job.duration,
         description: TextMore(
           widget.job.content,
+          trimLines: 3,
           trimMode: TrimMode.Hidden,
           trimHiddenMaxLines: 3,
           style: themeData.textTheme.displayMedium!.merge(

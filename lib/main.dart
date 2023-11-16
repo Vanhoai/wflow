@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wflow/common/app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
+import 'package:wflow/configuration/environment.dart';
 import 'package:wflow/core/utils/utils.dart';
 
 Future<void> main() async {
@@ -14,8 +15,7 @@ Future<void> main() async {
   await FlutterConfigPlus.loadEnvVariables();
   await FirebaseService.initialFirebase();
   await initAppInjection();
-  Stripe.publishableKey =
-      'pk_test_51Msy89LoJoXEgivefPW8pyHzTPik1CXFh3fE2RDaU3CL29VbUZDb3xhcYm0CfcOWspPknCRJZS686oMV8OPakrPW00w5wRSJrV';
+  Stripe.publishableKey = EnvironmentConfiguration.publishableKey;
   await Stripe.instance.applySettings();
 
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();

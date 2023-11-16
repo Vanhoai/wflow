@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/company/company_service.dart';
 import 'package:wflow/modules/main/data/company/request/update_business_rqst.dart';
 import 'package:wflow/modules/main/domain/company/company_repository.dart';
@@ -88,6 +88,18 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.upgradeBusiness(request: request);
       return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<CompanyEntity, Failure>> findCompany({required String id}) async {
+    try {
+      final response = await companyService.findCompany(id: id);
+      return Left(CompanyEntity.fromJson(response.toJson()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }

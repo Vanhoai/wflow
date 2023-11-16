@@ -8,6 +8,7 @@ class WorkState extends Equatable {
   final String messageNotification;
   final bool isLoading;
   final bool isLoadMore;
+  final bool isFinal;
 
   const WorkState({
     required this.categories,
@@ -17,6 +18,7 @@ class WorkState extends Equatable {
     this.messageNotification = '',
     this.isLoading = false,
     this.isLoadMore = false,
+    this.isFinal = false,
   });
 
   WorkState copyWith({
@@ -27,6 +29,7 @@ class WorkState extends Equatable {
     String? messageNotification,
     bool? isLoading,
     bool? isLoadMore,
+    bool? isFinal,
   }) {
     return WorkState(
       categories: categories ?? this.categories,
@@ -36,9 +39,11 @@ class WorkState extends Equatable {
       messageNotification: messageNotification ?? this.messageNotification,
       isLoading: isLoading ?? this.isLoading,
       isLoadMore: isLoadMore ?? this.isLoadMore,
+      isFinal: isFinal ?? this.isFinal,
     );
   }
 
   @override
-  List<Object> get props => [categories, categorySelected, meta, posts, messageNotification, isLoading, isLoadMore];
+  List<Object> get props =>
+      [categories, categorySelected, meta, posts, messageNotification, isLoading, isLoadMore, isFinal];
 }

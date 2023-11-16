@@ -20,12 +20,14 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     required this.name,
     required this.address,
     required this.logo,
+    required this.background,
     required this.overview,
     required this.longitude,
     required this.latitude,
     required this.totalCollaborators,
     required this.totalPosts,
     required this.totalContracts,
+    required this.balance,
   });
 
   @JsonKey(name: 'posts', defaultValue: 0)
@@ -52,6 +54,9 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'logo', defaultValue: null)
   final String logo;
 
+  @JsonKey(name: 'background', defaultValue: '')
+  final String background;
+
   @JsonKey(name: 'collaborators', defaultValue: null)
   final List<String> collaborators;
 
@@ -73,6 +78,9 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'totalContracts', defaultValue: 0)
   final int totalContracts;
 
+  @JsonKey(name: 'balance', defaultValue: 0)
+  final num balance;
+
   factory CompanyEntity.fromJson(Map<String, dynamic> json) => _$CompanyEntityFromJson(json);
 
   @override
@@ -87,6 +95,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     String? name,
     String? address,
     String? logo,
+    String? background,
     List<String>? collaborators,
     String? overview,
     double? longitude,
@@ -94,6 +103,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
     int? totalCollaborators,
     int? totalPosts,
     int? totalContracts,
+    num? balance,
   }) {
     return CompanyEntity(
       id: id,
@@ -108,6 +118,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       name: name ?? this.name,
       address: address ?? this.address,
       logo: logo ?? this.logo,
+      background: background ?? this.background,
       collaborators: collaborators ?? this.collaborators,
       overview: overview ?? this.overview,
       longitude: longitude ?? this.longitude,
@@ -115,6 +126,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       totalCollaborators: totalCollaborators ?? this.totalCollaborators,
       totalPosts: totalPosts ?? this.totalPosts,
       totalContracts: totalContracts ?? this.totalContracts,
+      balance: balance ?? this.balance,
     );
   }
 
@@ -130,6 +142,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       collaborators: [],
       id: 0,
       logo: '',
+      background: '',
       createdAt: DateTime.now(),
       updatedAt: null,
       deletedAt: null,
@@ -139,6 +152,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
       totalCollaborators: 0,
       totalPosts: 0,
       totalContracts: 0,
+      balance: 0,
     );
   }
 
@@ -149,6 +163,7 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
         updatedAt,
         deletedAt,
         logo,
+        background,
         posts,
         collaborators,
         members,
@@ -163,5 +178,6 @@ class CompanyEntity extends BaseEntity with EquatableMixin {
         totalCollaborators,
         totalPosts,
         totalContracts,
+        balance,
       ];
 }

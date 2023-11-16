@@ -15,10 +15,9 @@ class TaskWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '# Task',
+            '📑 Task',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color:
-                  Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+              color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,
             )),
           ),
@@ -33,7 +32,7 @@ class TaskWidget extends StatelessWidget {
               return Row(
                 children: [
                   Text(
-                    '$_kProgress \t\t',
+                    '${(index + 1).toString()}.  ',
                     style: themeData.textTheme.displayMedium!.merge(
                       TextStyle(
                         color: themeData.colorScheme.onBackground,
@@ -55,8 +54,7 @@ class TaskWidget extends StatelessWidget {
               );
             },
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            separatorBuilder: (BuildContext context, int index) =>
-                const SizedBox(height: 20),
+            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
           ),
         ],
       ),

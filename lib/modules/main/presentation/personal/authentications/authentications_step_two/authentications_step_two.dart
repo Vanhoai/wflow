@@ -132,66 +132,31 @@ class AuthStepTwoScreen extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.center,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () {
-                                  _pickImage(context: context);
-                                },
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.image, color: AppColors.primary),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'CHỌN ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                          child: InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                            onTap: () {
+                              _pickImage(context: context);
+                            },
+                            child: Ink(
+                              padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: AppColors.primary.withAlpha(30),
                               ),
-                              Text(
-                                ' / ',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () {
-                                  _getImageFromCamera(context: context);
-                                },
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.image, color: AppColors.primary),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.camera_alt, color: AppColors.primary),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'CHỤP ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                  Text(
+                                    'CHỌN ẢNH',
+                                    style: Theme.of(context).textTheme.displayMedium,
+                                  )
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         const Spacer(),

@@ -79,11 +79,11 @@ class _ContractCardState extends State<ContractCard> {
                     CircularPercentIndicator(
                       animation: true,
                       radius: 25,
-                      percent: 0.5,
-                      center: const Text(
-                        '50%',
+                      percent: widget.contractEntity.progress / 100,
+                      center: Text(
+                        '${widget.contractEntity.progress / 100}%',
                       ),
-                      progressColor: _progressColor(0.5),
+                      progressColor: _progressColor(widget.contractEntity.progress / 100),
                     )
                   ],
                 ),

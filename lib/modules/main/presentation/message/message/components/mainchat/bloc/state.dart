@@ -13,13 +13,15 @@ class MainChatState extends Equatable {
   final String search;
   final File? file;
   final double percent;
-  const MainChatState(
-      {required this.listChat,
-      this.scroll = false,
-      this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
-      this.file,
-      this.percent = 0,
-      this.search = ''});
+
+  const MainChatState({
+    required this.listChat,
+    this.scroll = false,
+    this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
+    this.file,
+    this.percent = 0,
+    this.search = '',
+  });
 
   MainChatState copyWith(
       {List<MessagesEntity>? listChat, bool? scroll, Meta? meta, String? search, File? file, double? percent}) {

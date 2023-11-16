@@ -9,6 +9,9 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'avatar', defaultValue: '')
   final String avatar;
 
+  @JsonKey(name: 'background', defaultValue: '')
+  final String background;
+
   @JsonKey(name: 'business', defaultValue: 0)
   final int business;
 
@@ -45,6 +48,15 @@ class UserEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'customerID', defaultValue: '')
   final String customerID;
 
+  @JsonKey(name: 'bio', defaultValue: '')
+  final String bio;
+
+  @JsonKey(name: 'workDone', defaultValue: 0)
+  final num workDone;
+
+  @JsonKey(name: 'reputation', defaultValue: 5)
+  final num reputation;
+
   const UserEntity({
     required super.id,
     required super.createdAt,
@@ -53,6 +65,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.address,
     required this.age,
     required this.avatar,
+    required this.background,
     required this.dob,
     required this.email,
     required this.identifyCode,
@@ -63,10 +76,12 @@ class UserEntity extends BaseEntity with EquatableMixin {
     required this.business,
     required this.balance,
     required this.customerID,
+    required this.bio,
+    required this.workDone,
+    required this.reputation,
   });
 
-  factory UserEntity.fromJson(Map<String, dynamic> json) =>
-      _$UserEntityFromJson(json);
+  factory UserEntity.fromJson(Map<String, dynamic> json) => _$UserEntityFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
@@ -76,6 +91,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
     String? email,
     String? phone,
     String? avatar,
+    String? background,
     num? age,
     String? name,
     String? dob,
@@ -86,6 +102,9 @@ class UserEntity extends BaseEntity with EquatableMixin {
     int? business,
     int? balance,
     String? customerID,
+    String? bio,
+    num? workDone,
+    num? reputation,
   }) {
     return UserEntity(
       id: id,
@@ -95,6 +114,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
       email: email ?? this.email,
       phone: phone ?? this.phone,
       avatar: avatar ?? this.avatar,
+      background: background ?? this.background,
       age: age ?? this.age,
       name: name ?? this.name,
       dob: dob ?? this.dob,
@@ -105,6 +125,9 @@ class UserEntity extends BaseEntity with EquatableMixin {
       business: business ?? this.business,
       balance: balance ?? this.balance,
       customerID: customerID ?? this.customerID,
+      bio: bio ?? this.bio,
+      workDone: workDone ?? this.workDone,
+      reputation: reputation ?? this.reputation,
     );
   }
 
@@ -114,6 +137,7 @@ class UserEntity extends BaseEntity with EquatableMixin {
       email: '',
       phone: '',
       avatar: '',
+      background: '',
       age: 0,
       name: '',
       dob: '',
@@ -127,10 +151,30 @@ class UserEntity extends BaseEntity with EquatableMixin {
       business: 0,
       balance: 0,
       customerID: '',
+      bio: '',
+      workDone: 0,
+      reputation: 5,
     );
   }
 
   @override
-  List<Object?> get props =>
-      [id, email, phone, avatar, age, name, dob, address, isVerify, identifyCode, role, balance, customerID];
+  List<Object?> get props => [
+        id,
+        email,
+        phone,
+        avatar,
+        background,
+        age,
+        name,
+        dob,
+        address,
+        isVerify,
+        identifyCode,
+        role,
+        balance,
+        customerID,
+        bio,
+        workDone,
+        reputation,
+      ];
 }

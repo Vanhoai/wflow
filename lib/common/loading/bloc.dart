@@ -5,16 +5,16 @@ part 'event.dart';
 part 'state.dart';
 
 class AppLoadingBloc extends Bloc<AppLoadingEvent, AppLoadingState> {
-  AppLoadingBloc() : super(HideLoadingState()) {
+  AppLoadingBloc() : super(AppHideLoadingState()) {
     on<AppShowLoadingEvent>(onShowLoading);
     on<AppHideLoadingEvent>(onHideLoading);
   }
 
   void onShowLoading(AppShowLoadingEvent event, Emitter<AppLoadingState> emit) {
-    emit(ShowLoadingState());
+    emit(AppShowLoadingState(message: event.message));
   }
 
   void onHideLoading(AppHideLoadingEvent event, Emitter<AppLoadingState> emit) {
-    emit(HideLoadingState());
+    emit(AppHideLoadingState());
   }
 }

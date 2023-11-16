@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/balance/balance_service.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
@@ -17,6 +17,8 @@ class BalanceRepositoryImpl implements BalanceRepository {
     try {
       final response = await balanceService.createPaymentSheet(request: request);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }
@@ -27,6 +29,8 @@ class BalanceRepositoryImpl implements BalanceRepository {
     try {
       final response = await balanceService.getMyBalance();
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }
@@ -37,6 +41,20 @@ class BalanceRepositoryImpl implements BalanceRepository {
     try {
       final response = await balanceService.topUpBalance(request: request);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<BalanceEntity, Failure>> findBalance({required String id}) async {
+    try {
+      final response = await balanceService.findBalance(id: id);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }

@@ -33,7 +33,7 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   FutureOr<void> onFetch(BalanceEventFetch event, Emitter<BalanceState> emit) async {
     emit(state.copyWith(isLoading: true));
 
-    final response = await balanceUseCase.getMyBalance();
+    final response = await balanceUseCase.findBalance(id: event.id);
     response.fold(
       (BalanceEntity l) {
         emit(state.copyWith(balanceEntity: l));

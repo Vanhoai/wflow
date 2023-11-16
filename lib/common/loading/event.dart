@@ -1,10 +1,11 @@
-part of "bloc.dart";
+part of 'bloc.dart';
 
-class AppLoadingEvent extends Equatable {
-  @override
-  List<Object> get props => [];
+abstract class AppLoadingEvent {}
+
+class AppShowLoadingEvent extends AppLoadingEvent {
+  final String message;
+
+  AppShowLoadingEvent({this.message = 'Đang tải'});
 }
-
-class AppShowLoadingEvent extends AppLoadingEvent {}
 
 class AppHideLoadingEvent extends AppLoadingEvent {}

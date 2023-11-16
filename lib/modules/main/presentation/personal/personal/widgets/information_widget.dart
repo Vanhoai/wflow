@@ -48,7 +48,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                 ),
                 24.verticalSpace,
                 Text(
-                  'I am a software engineer with 5 years of experience in the field of software development. I have worked with many programming languages and frameworks. I have a lot of experience in building large-scale applications.',
+                  userEntity.bio,
                   textAlign: TextAlign.center,
                   maxLines: 3,
                   style: themeData.textTheme.displayMedium!.copyWith(color: Theme.of(context).colorScheme.onBackground),
@@ -71,7 +71,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           ),
                           4.verticalSpace,
                           Text(
-                            '90',
+                            state.userEntity.reputation.toString(),
                             style: themeData.textTheme.displayLarge!
                                 .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 22.sp),
                           ),
@@ -98,7 +98,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                           ),
                           4.verticalSpace,
                           Text(
-                            '90',
+                            state.userEntity.workDone.toString(),
                             style: themeData.textTheme.displayLarge!
                                 .copyWith(color: Theme.of(context).colorScheme.onBackground, fontSize: 22.sp),
                           ),
@@ -158,7 +158,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).pushNamed(RouteKeys.editProfileScreen);
+                              },
                               borderRadius: BorderRadius.circular(4.r),
                               child: Center(
                                 child: Text(

@@ -2,23 +2,21 @@ import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
 
 import 'event.dart';
 import 'state.dart';
 
 class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
   final StringeeClient client;
-  String token_huy =
-      'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpLTE2OTY5NzQ0NDMiLCJpc3MiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpIiwiZXhwIjoxNjk5NTY2NDQzLCJ1c2VySWQiOiJodXkifQ.GzH32KZhobHvm9gk44Kt7lMo1EXiMGqkUuHpisvc2q8';
-  String token_teo =
-      'eyJjdHkiOiJzdHJpbmdlZS1hcGk7dj0xIiwidHlwIjoiSldUIiwiYWxnIjoiSFMyNTYifQ.eyJqdGkiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpLTE2OTY5NzQ1MDIiLCJpc3MiOiJTSy4wLmg0OTJpdXVIejdyRXpHRGpvM2o1NUZBMFdxM3ZEd2xpIiwiZXhwIjoxNjk5NTY2NTAyLCJ1c2VySWQiOiJ0ZW8ifQ.LK0EPc_bVLFjfOIHitq0NwcAAR3dEnyW-fFzYptOiDU';
   VideoCallBloc({required this.client}) : super(const InitVideoCallSate()) {
     on<VideoCallConnectEvent>(videoCallConnect);
     on<OnCallIncomingEvent>(onCallIncoming);
   }
 
   FutureOr<void> videoCallConnect(VideoCallConnectEvent event, Emitter<VideoCallState> emit) async {
-    client.connect(token_huy);
+    client.connect(instance.get<AppBloc>().state.authEntity.stringeeToken);
     await emit.forEach(client.eventStreamController.stream, onData: (event) {
       Map<dynamic, dynamic> map = event;
       switch (map['eventType']) {

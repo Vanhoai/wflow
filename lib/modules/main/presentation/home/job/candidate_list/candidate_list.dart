@@ -39,8 +39,9 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CandidateListBloc(contractUseCase: instance.get<ContractUseCase>())
-        ..add(GetCandidateAppliedListEvent(post: widget.post)),
+      create: (_) => CandidateListBloc(
+        contractUseCase: instance.get<ContractUseCase>(),
+      )..add(GetCandidateAppliedListEvent(post: widget.post)),
       child: BlocBuilder<CandidateListBloc, CandidateListState>(
         builder: (context, state) {
           _scrollController.addListener(() {
@@ -109,6 +110,10 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                       business: worker.business as int,
                                       balance: 0,
                                       customerID: '',
+                                      background: '',
+                                      bio: '',
+                                      reputation: 0,
+                                      workDone: 0,
                                     );
                                     ArgumentsMessage argumentsMessage =
                                         ArgumentsMessage(id: null, userEntity: userEntity);

@@ -7,23 +7,105 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/extensions/number.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/balance/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
 
 class BalanceScreen extends StatefulWidget {
-  const BalanceScreen({super.key});
+  const BalanceScreen({super.key, required this.balanceID});
+
+  final String balanceID;
 
   @override
   State<BalanceScreen> createState() => _BalanceScreenState();
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
+  final TextEditingController amountController = TextEditingController();
+
+  @override
+  void dispose() {
+    amountController.dispose();
+    super.dispose();
+  }
+
+  // 1: Top up
+  // 2: Pay out
+  void enterAmountModal(BuildContext parentContext, int option) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      useSafeArea: true,
+      backgroundColor: Theme.of(context).colorScheme.background,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(8),
+          topRight: Radius.circular(8),
+        ),
+      ),
+      builder: (_) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return FractionallySizedBox(
+              heightFactor: 0.8,
+              child: Container(
+                padding: EdgeInsets.only(left: 20.w, right: 20.w, top: 20.h),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.r),
+                    topRight: Radius.circular(8.r),
+                  ),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      "Enter Amount to ${option == 1 ? 'Top Up' : 'Pay Out'}",
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                      ),
+                    ),
+                    20.verticalSpace,
+                    TextFieldHelper(
+                      enabled: true,
+                      controller: amountController,
+                      minLines: 1,
+                      maxLines: 1,
+                      hintText: 'Enter amount',
+                      keyboardType: TextInputType.number,
+                    ),
+                    24.verticalSpace,
+                    PrimaryButton(
+                      label: 'Confirm',
+                      onPressed: () {
+                        if (amountController.text.isNotEmpty) {
+                          if (option == 1) {
+                            parentContext.read<BalanceBloc>().add(BalanceTopUpEvent(int.parse(amountController.text)));
+                          } else {}
+                          Navigator.pop(context);
+                        }
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider(
-      create: (_) => BalanceBloc(balanceUseCase: instance.get<BalanceUseCase>())..add(BalanceEventFetch()),
+      create: (_) => BalanceBloc(balanceUseCase: instance.get<BalanceUseCase>())
+        ..add(
+          BalanceEventFetch(id: widget.balanceID),
+        ),
       child: CommonScaffold(
         isSafe: true,
         appBar: const AppHeader(
@@ -58,12 +140,20 @@ class _BalanceScreenState extends State<BalanceScreen> {
                           Positioned(
                             top: 20.h,
                             left: 20.w,
-                            child: Text(
-                              'WFlow',
-                              style: themeData.textTheme.displayLarge!.copyWith(
-                                color: Colors.white,
-                                fontSize: 26,
-                              ),
+                            child: Column(
+                              children: [
+                                Text(
+                                  'WFlow',
+                                  style: themeData.textTheme.displayLarge!.copyWith(
+                                    color: Colors.white,
+                                    fontSize: 26,
+                                  ),
+                                ),
+                                12.verticalSpace,
+                                SvgPicture.asset(
+                                  AppConstants.ic_mastercard,
+                                ),
+                              ],
                             ),
                           ),
                           Positioned(
@@ -72,51 +162,51 @@ class _BalanceScreenState extends State<BalanceScreen> {
                             child: SizedBox(
                               child: Row(
                                 children: [
-                                  SvgPicture.asset(
-                                    AppConstants.ic_mastercard,
-                                  ),
                                   10.horizontalSpace,
                                   Column(
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Top Up',
-                                            style: themeData.textTheme.displayLarge!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 16,
+                                      InkWell(
+                                        onTap: () => enterAmountModal(context, 1),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Top Up',
+                                              style: themeData.textTheme.displayLarge!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                          ),
-                                          8.horizontalSpace,
-                                          InkWell(
-                                            onTap: () => context.read<BalanceBloc>().add(BalanceTopUpEvent(100000)),
-                                            child: SvgPicture.asset(
+                                            8.horizontalSpace,
+                                            SvgPicture.asset(
                                               AppConstants.ic_top_up,
                                               height: 24,
                                               width: 24,
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                       10.verticalSpace,
-                                      Row(
-                                        children: [
-                                          Text(
-                                            'Pay Out',
-                                            style: themeData.textTheme.displayLarge!.copyWith(
-                                              color: Colors.white,
-                                              fontSize: 16,
+                                      InkWell(
+                                        onTap: () => enterAmountModal(context, 2),
+                                        child: Row(
+                                          children: [
+                                            Text(
+                                              'Pay Out',
+                                              style: themeData.textTheme.displayLarge!.copyWith(
+                                                color: Colors.white,
+                                                fontSize: 16,
+                                              ),
                                             ),
-                                          ),
-                                          8.horizontalSpace,
-                                          SvgPicture.asset(
-                                            AppConstants.ic_pay_out,
-                                            height: 24,
-                                            width: 24,
-                                          ),
-                                        ],
-                                      )
+                                            8.horizontalSpace,
+                                            SvgPicture.asset(
+                                              AppConstants.ic_pay_out,
+                                              height: 24,
+                                              width: 24,
+                                            ),
+                                          ],
+                                        ),
+                                      ),
                                     ],
                                   ),
                                 ],
@@ -126,7 +216,9 @@ class _BalanceScreenState extends State<BalanceScreen> {
                           Positioned(
                             bottom: 32.h,
                             right: 32.w,
-                            child: SvgPicture.asset(AppConstants.ic_balancew),
+                            child: SvgPicture.asset(
+                              AppConstants.ic_balancew,
+                            ),
                           ),
                           Positioned(
                             bottom: 20.h,

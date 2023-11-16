@@ -62,6 +62,7 @@ dependencies:
   syncfusion_flutter_charts: ^20.4.54
   flutter_stripe: ^9.5.0+1
   flutter_polyline_points: ^1.0.0
+  fluttertoast: ^8.2.4
 
 dev_dependencies:
   flutter_test:

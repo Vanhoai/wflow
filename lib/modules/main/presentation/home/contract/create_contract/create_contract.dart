@@ -6,6 +6,7 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/extensions/regex.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -122,7 +123,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
-                                  enabled: isBusiness,
+                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
                                   controller: titleController,
                                   maxLines: 2,
                                   minLines: 1,
@@ -137,7 +138,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
-                                  enabled: isBusiness,
+                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
                                   controller: descriptionController,
                                   maxLines: 5,
                                   minLines: 3,
@@ -154,14 +155,16 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 ),
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
-                                  enabled: isBusiness,
+                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
                                   controller: budgetController,
                                   maxLines: 1,
                                   minLines: 1,
                                   hintText: 'Enter budget for project',
                                 ),
                                 const SizedBox(height: 20),
-                                TaskCreateContract(isBusiness: isBusiness),
+                                TaskCreateContract(
+                                  isEnabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
+                                ),
                                 const SizedBox(height: 16),
                                 Visibility(
                                   visible: isBusiness,
@@ -288,12 +291,23 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                     }
                                   },
                                 );
-                              } else {
+                              } else if (state.contractEntity.state != ContractStatus.Accepted.name) {
                                 return PrimaryButton(
                                   label: 'Accepted',
                                   width: double.infinity,
                                   onPressed: () {
                                     context.read<CreateContractBloc>().add(ContractCreatedBusinessSignEvent());
+                                  },
+                                );
+                              } else {
+                                return PrimaryButton(
+                                  label: 'View Progress',
+                                  width: double.infinity,
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(
+                                      RouteKeys.taskScreen,
+                                      arguments: state.contractEntity.id,
+                                    );
                                   },
                                 );
                               }

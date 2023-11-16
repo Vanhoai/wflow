@@ -110,7 +110,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
                       BoxShadow(
                         color: Theme.of(context).primaryColor.withOpacity(0.2),
                         blurRadius: 8,
-                        offset: Offset(0, animationController.value * -4),
+                        offset: Offset(0, animationController.value * -2),
                       ),
                     ],
                   ),

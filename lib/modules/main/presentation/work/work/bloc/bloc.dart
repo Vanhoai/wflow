@@ -33,6 +33,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       state.copyWith(
         posts: response.data,
         meta: response.meta,
+        isFinal: response.meta.currentPage >= response.meta.totalPage,
       ),
     );
   }
@@ -73,15 +74,15 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       state.categorySelected,
     );
 
-    emit(state.copyWith(isLoading: false));
+    emit(state.copyWith(
+      isLoading: false,
+    ));
   }
 
   FutureOr<void> onLoadMore(LoadMoreEvent event, Emitter<WorkState> emit) async {
-    emit(state.copyWith(isLoading: true));
+    emit(state.copyWith(isLoadMore: true));
 
     if (state.meta.currentPage >= state.meta.totalPage) {
-      emit(state.copyWith(messageNotification: 'No more data'));
-      emit(state.copyWith(messageNotification: ''));
       return;
     }
 
@@ -93,13 +94,15 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
       ),
     );
 
+    final isFinal = response.meta.currentPage >= response.meta.totalPage;
+
     emit(
       state.copyWith(
         posts: [...state.posts, ...response.data],
         meta: response.meta,
+        isLoadMore: false,
+        isFinal: isFinal,
       ),
     );
-
-    emit(state.copyWith(isLoading: false));
   }
 }

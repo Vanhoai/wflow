@@ -6,6 +6,7 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/utils.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
@@ -19,8 +20,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
 
   @override
   void initState() {
-    final isUser =
-        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     staticMenuSelection = [
       {
         'title': 'Balance',
@@ -47,8 +47,8 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.ic_signed,
       },
       {
-        'title': 'Cv',
-        'icon': AppConstants.ic_cv,
+        'title': isUser ? 'Cv' : 'Completed',
+        'icon': isUser ? AppConstants.ic_cv : AppConstants.history,
       },
       {
         'title': 'Graph',
@@ -59,30 +59,58 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   }
 
   void navigateTo(int index) {
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final balance = instance.get<AppBloc>().state.userEntity.balance;
+    final isVerify = instance.get<AppBloc>().state.userEntity.isVerify;
+
     switch (index) {
       case 0:
-        Navigator.of(context).pushNamed(RouteKeys.balanceScreen);
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
-
+      case 1:
+        break;
       case 2:
-        final role = instance.get<AppBloc>().state.role;
-        if (role == 1) {
+        if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.applyScreen);
         } else {
-          Navigator.of(context).pushNamed(RouteKeys.companyScreen);
+          Navigator.of(context).pushNamed(
+            RouteKeys.companyScreen,
+            arguments: instance.get<AppBloc>().state.userEntity.business.toString(),
+          );
         }
         break;
       case 3:
         Navigator.of(context).pushNamed(RouteKeys.bookmarkScreen);
         break;
       case 4:
-        Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
       case 5:
-        Navigator.of(context).pushNamed(RouteKeys.signedScreen);
+        if (isVerify) {
+          Navigator.of(context).pushNamed(RouteKeys.signedScreen);
+        } else {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+        }
         break;
       case 6:
-        Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+        if (!isVerify) {
+          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          return;
+        }
+
+        if (isUser) {
+          Navigator.of(context).pushNamed(RouteKeys.cvScreen);
+        } else {
+          Navigator.of(context).pushNamed(RouteKeys.completedContractScreen);
+        }
         break;
       case 7:
         Navigator.of(context).pushNamed(RouteKeys.graphScreen);
@@ -118,10 +146,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                     width: 48.w,
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.1),
+                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
                     ),
                     child: SvgPicture.asset(
@@ -134,10 +159,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                 4.verticalSpace,
                 Text(
                   staticMenuSelection[index]['title'],
-                  style: Theme.of(context)
-                      .textTheme
-                      .bodyMedium!
-                      .copyWith(fontSize: 14.sp),
+                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
                 ),
               ],
             ),

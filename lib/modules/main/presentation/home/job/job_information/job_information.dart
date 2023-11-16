@@ -2,11 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
@@ -32,6 +35,8 @@ class JobInformationScreen extends StatefulWidget {
 class _JobInformationScreenState extends State<JobInformationScreen> {
   int choiceValue = 0;
   late ScrollController _skillScrollController;
+  late TextEditingController _dialogInputController;
+
   late bool isUser;
   bool isYourBusiness = false;
 
@@ -41,8 +46,15 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
     _skillScrollController = ScrollController(
       initialScrollOffset: 0.0,
     );
-
+    _dialogInputController = TextEditingController();
     isUser = instance.get<AppBloc>().state.role == 1;
+  }
+
+  @override
+  void dispose() {
+    _skillScrollController.dispose();
+    _dialogInputController.dispose();
+    super.dispose();
   }
 
   void callBackSetChoiceValue(int value) {
@@ -63,8 +75,59 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
       },
     );
     if (result != null && context.mounted) {
-      BlocProvider.of<JobInformationBloc>(context).add(ApplyPostEvent(post: widget.work, cv: (result as int)));
+      var getIntroduction = await _displayTextInputDialog(context);
+      if (getIntroduction != null && context.mounted) {
+        BlocProvider.of<JobInformationBloc>(context)
+            .add(ApplyPostEvent(post: widget.work, cv: (result as int), introduction: _dialogInputController.text));
+        _dialogInputController.clear();
+      }
     }
+  }
+
+  _displayTextInputDialog(BuildContext context) async {
+    return showDialog(
+        context: context,
+        builder: (context) {
+          return Theme(
+              data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
+              child: AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
+                backgroundColor: themeData.colorScheme.background,
+                surfaceTintColor: Colors.transparent,
+                insetPadding: EdgeInsets.all(12.r),
+                title: const Text('Introduction'),
+                content: Container(
+                  width: MediaQuery.of(context).size.width,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      TextField(
+                        style: Theme.of(context).textTheme.bodyLarge,
+                        minLines: 3,
+                        maxLines: 5,
+                        controller: _dialogInputController,
+                        textInputAction: TextInputAction.newline,
+                        decoration: InputDecoration(
+                          hintText: 'Type your introduction',
+                          contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+                          hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 1),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: const BorderSide(color: Colors.black26, width: 1),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+                      PrimaryButton(label: 'Send', onPressed: () => Navigator.pop(context, true))
+                    ],
+                  ),
+                ),
+              ));
+        });
   }
 
   Future<void> listener(BuildContext context, JobInformationState state) async {
@@ -76,23 +139,22 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
             title: Text(
               'Notification',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
-            content: Text(state.message),
+            content: Padding(
+              padding: EdgeInsets.all(12.r),
+              child: Text(state.message),
+            ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text('OK'),
-                    )
-                  ],
+              CupertinoDialogAction(
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                 ),
-              ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         },
@@ -336,12 +398,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                   Positioned(
                     child: Visibility(
                       visible: state.isLoading,
-                      child: Container(
-                        width: MediaQuery.of(context).size.width,
-                        height: MediaQuery.of(context).size.height,
-                        color: Colors.white.withOpacity(0.1),
-                        child: const Loading(),
-                      ),
+                      child: const LoadingWithWhite(),
                     ),
                   )
                 ],

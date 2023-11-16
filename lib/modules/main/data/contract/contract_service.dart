@@ -19,10 +19,11 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(
       num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(
-      GetContractSigned request);
+
   Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(
       RequestApplyModel requestApplyModel);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
+  Future<String> checkContractAndTransfer(int id);
 }
 
 class ContractPaths {
@@ -32,21 +33,15 @@ class ContractPaths {
   static String getPathCandidateAppliedDetail(String id) =>
       '/contract/candidate-applied-detail/$id';
   static const String createContract = '/contract/update-contract';
-  static const String findContractAcceptedOfUser =
-      '/contract/find-contract-accepted-of-user';
-  static const String findContractWaitingSignOfUser =
-      '/contract/find-contract-waiting-sign-of-user';
-  static const String findContractWaitingSignOfBusiness =
-      '/contract/find-contract-waiting-sign-of-business';
-  static String getPathCandidateApplied(num id) =>
-      '/contract/candidate-applied/$id';
-  static String getPathWorkerSignContract(int id) =>
-      '/contract/worker-sign-contract/$id';
-  static const String findContractSignedOfUser =
-      '/contract/find-contract-signed-of-user';
-  static const String findContractSignedOfBusiness =
-      '/contract/find-contract-signed-of-business';
   static const String getContractApplies = '/contract/find-post-applied';
+  static const String findContractAcceptedOfUser = '/contract/find-contract-accepted-of-user';
+  static const String findContractWaitingSignOfUser = '/contract/find-contract-waiting-sign-of-user';
+  static const String findContractWaitingSignOfBusiness = '/contract/find-contract-waiting-sign-of-business';
+  static String getPathCandidateApplied(num id) => '/contract/candidate-applied/$id';
+  static String getPathWorkerSignContract(int id) => '/contract/worker-sign-contract/$id';
+  static const String findContractSignedOfUser = '/contract/find-contract-signed-of-user';
+  static const String findContractSignedOfBusiness = '/contract/find-contract-signed-of-business';
+  static String checkContractAndTransfer(int id) => '/contract/check-contract-and-transfer/$id';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -302,7 +297,21 @@ class ContractServiceImpl implements ContractService {
         message: httpResponseWithPagination.message,
         meta: httpResponseWithPagination.meta,
         data: applies,
+      );}}
+      
+@override
+  Future<String> checkContractAndTransfer(int id) async {
+    try {
+      final response = await agent.dio.patch(
+        ContractPaths.checkContractAndTransfer(id),
       );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.data;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

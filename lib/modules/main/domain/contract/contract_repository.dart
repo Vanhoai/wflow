@@ -18,8 +18,9 @@ abstract class ContractRepository {
       GetContractWaitingSign request);
   Future<Either<String, Failure>> workerSignContract(int id);
   Future<Either<String, Failure>> businessSignContract(int id);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(
-      GetContractSigned request);
+
   Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
       getContractApplies(RequestApplyModel requestApplyModel);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
+  Future<Either<String, Failure>> checkContractAndTransfer(int id);
 }

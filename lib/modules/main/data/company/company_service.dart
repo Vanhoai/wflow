@@ -11,6 +11,7 @@ class CompanyPath {
   static const String myCompanyMember = '/business/members-in-my-business';
   static const String myCompanyJob = '/post/post-in-my-business';
   static const String upgradeBusiness = '/user/upgrade-to-business';
+  static findCompany({required String id}) => '/business/find/$id';
 }
 
 abstract class CompanyService {
@@ -19,6 +20,7 @@ abstract class CompanyService {
   Future<List<UserModel>> myCompanyMember(int page, int pageSize);
   Future<List<PostModel>> myCompanyJob(int page, int pageSize);
   Future<String> upgradeBusiness({required UpgradeBusinessRequest request});
+  Future<CompanyModel> findCompany({required String id});
 }
 
 class CompanyServiceImpl implements CompanyService {
@@ -105,6 +107,21 @@ class CompanyServiceImpl implements CompanyService {
       return httpResponse.data;
     } catch (error) {
       throw ServerException(message: error.toString());
+    }
+  }
+
+  @override
+  Future<CompanyModel> findCompany({required String id}) async {
+    try {
+      final response = await agent.dio.get(CompanyPath.findCompany(id: id));
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (response.statusCode != 200) {
+        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      }
+
+      return CompanyModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 }

@@ -29,8 +29,8 @@ class SecurityBloc extends HydratedBloc<SecurityEvent, SecurityState> {
       instance.get<SecureStorage>().delete(AppConstants.keyPasswordSignInWithBiometric);
       emit(state.copyWith(touchIDEnabled: false));
     } else {
-      instance.get<SecureStorage>().write(AppConstants.keySignInWithBiometric, "hoaitv241223@gmail.com");
-      instance.get<SecureStorage>().write(AppConstants.keyPasswordSignInWithBiometric, "hoaitv241223");
+      instance.get<SecureStorage>().write(AppConstants.keySignInWithBiometric, 'hoaitv241223@gmail.com');
+      instance.get<SecureStorage>().write(AppConstants.keyPasswordSignInWithBiometric, 'hoaitv241223');
       emit(state.copyWith(touchIDEnabled: true));
     }
   }

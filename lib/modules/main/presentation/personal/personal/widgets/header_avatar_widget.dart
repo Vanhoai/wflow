@@ -1,5 +1,8 @@
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 
@@ -19,7 +22,7 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
       builder: (context, state) {
         final UserEntity userEntity = state.userEntity;
         return SliverPadding(
-          padding: const EdgeInsets.only(top: 13, left: 20, right: 20),
+          padding: EdgeInsets.only(top: 20.h, left: 20.w, right: 20.w),
           sliver: SliverToBoxAdapter(
             child: SizedBox(
               height: 260,
@@ -28,11 +31,17 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: SizedBox(
-                      height: 210,
-                      width: MediaQuery.of(context).size.width,
-                      child: Image.network(userEntity.avatar == '' ? 'https://picsum.photos/200' : userEntity.avatar,
-                          fit: BoxFit.cover),
-                    ),
+                        height: 210,
+                        width: MediaQuery.of(context).size.width,
+                        child: CachedNetworkImage(
+                          imageUrl: userEntity.background == '' ? 'https://picsum.photos/200' : userEntity.background,
+                          fit: BoxFit.cover,
+                          placeholder: (context, url) => const Center(
+                            child: CupertinoActivityIndicator(),
+                          ),
+                          filterQuality: FilterQuality.high,
+                          errorWidget: (context, url, error) => const Icon(Icons.error),
+                        )),
                   ),
                   Positioned(
                     bottom: 0,
@@ -43,7 +52,8 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                       backgroundColor: Colors.white,
                       child: CircleAvatar(
                         radius: 48,
-                        backgroundImage: NetworkImage(
+                        backgroundColor: Colors.grey,
+                        backgroundImage: CachedNetworkImageProvider(
                           userEntity.avatar == '' ? 'https://picsum.photos/200' : userEntity.avatar,
                         ),
                       ),

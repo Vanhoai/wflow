@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/contract/model/request_apply_model.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
@@ -12,6 +11,7 @@ class ContractRepositoryImpl implements ContractRepository {
   final ContractService contactService;
 
   ContractRepositoryImpl({required this.contactService});
+
   @override
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request) async {
     try {
@@ -116,6 +116,19 @@ class ContractRepositoryImpl implements ContractRepository {
       return Left(result);
     } catch (exception) {
       return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> checkContractAndTransfer(int id) async {
+    try {
+      final response = await contactService.checkContractAndTransfer(id);
+      return Left(response);
+    } on ServerException catch (exception) {
+      print('ServerException ${exception.message}');
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

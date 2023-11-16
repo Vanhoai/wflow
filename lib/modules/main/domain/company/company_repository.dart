@@ -11,4 +11,5 @@ abstract class CompanyRepository {
   Future<Either<List<UserEntity>, Failure>> myCompanyMember(int page, int pageSize);
   Future<Either<List<PostEntity>, Failure>> myCompanyJob(int page, int pageSize);
   Future<Either<String, Failure>> upgradeBusiness({required UpgradeBusinessRequest request});
+  Future<Either<CompanyEntity, Failure>> findCompany({required String id});
 }

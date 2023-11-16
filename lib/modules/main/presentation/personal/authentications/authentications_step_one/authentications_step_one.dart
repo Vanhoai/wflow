@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -20,15 +19,6 @@ class AuthStepOneScreen extends StatelessWidget {
         .pushNamed(RouteKeys.photoScreen, arguments: ArgumentsPhoto(multiple: false, onlyImage: true));
     if (file == null) return;
     file as File;
-    if (context.mounted) {
-      instance.get<AuthenticationsBloc>().add(StepOneEvent(frontID: file));
-    }
-  }
-
-  _getImageFromCamera({required BuildContext context}) async {
-    XFile? result = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (result == null) return;
-    File file = File(result.path);
     if (context.mounted) {
       instance.get<AuthenticationsBloc>().add(StepOneEvent(frontID: file));
     }
@@ -132,57 +122,29 @@ class AuthStepOneScreen extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.center,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () {
-                                  _pickImage(context: context);
-                                },
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.image, color: AppColors.primary),
-                                      const SizedBox(width: 10),
-                                      Text(
-                                        'CHỌN ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                          child: InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                            onTap: () {
+                              _pickImage(context: context);
+                            },
+                            child: Ink(
+                              padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: AppColors.primary.withAlpha(30),
                               ),
-                              const SizedBox(width: 12),
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () => _getImageFromCamera(context: context),
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.camera_alt, color: AppColors.primary),
-                                      const SizedBox(width: 12),
-                                      Text(
-                                        'CHỤP ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.image, color: AppColors.primary),
+                                  const SizedBox(width: 10),
+                                  Text(
+                                    'CHỌN ẢNH',
+                                    style: Theme.of(context).textTheme.displayMedium,
+                                  )
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         const Spacer(),

@@ -57,67 +57,70 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
               itemBuilder: (context, index) {
                 final job = state.recentJobs[index];
 
-                return JobCard(
-                  margin: const EdgeInsets.symmetric(horizontal: 20),
-                  cardPressed: () => pressCard(job.id),
-                  boxDecoration: BoxDecoration(
-                    color: themeData.colorScheme.background,
-                    borderRadius: BorderRadius.circular(8.0),
-                    boxShadow: [
-                      BoxShadow(
-                        color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                      BoxShadow(
-                        color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                        blurRadius: 4,
-                        offset: const Offset(0, 2),
-                      ),
-                    ],
-                  ),
-                  padding: const EdgeInsets.all(12),
-                  header: Header(
-                    leadingPhotoUrl: job.companyLogo,
-                    title: Text(
-                      job.position,
-                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                        fontSize: 18,
-                        color: themeData.colorScheme.onBackground,
-                      )),
+                return Container(
+                  constraints: const BoxConstraints(maxHeight: 270),
+                  child: JobCard(
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    cardPressed: () => pressCard(job.id),
+                    boxDecoration: BoxDecoration(
+                      color: themeData.colorScheme.background,
+                      borderRadius: BorderRadius.circular(8.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                        BoxShadow(
+                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    onTapLeading: () {},
-                    subtitle: Text(
-                      job.companyName,
-                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                        color: themeData.colorScheme.onBackground.withOpacity(0.5),
-                      )),
-                    ),
-                    leadingSize: 30,
-                    actions: [
-                      InkWell(
-                        child: SvgPicture.asset(
-                          AppConstants.bookmark,
-                          height: 24,
-                          width: 24,
-                          colorFilter: ColorFilter.mode(
-                            themeData.colorScheme.onBackground.withOpacity(0.5),
-                            BlendMode.srcIn,
+                    padding: const EdgeInsets.all(12),
+                    header: Header(
+                      leadingPhotoUrl: job.companyLogo,
+                      title: Text(
+                        job.position,
+                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          fontSize: 18,
+                          color: themeData.colorScheme.onBackground,
+                        )),
+                      ),
+                      onTapLeading: () {},
+                      subtitle: Text(
+                        job.companyName,
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                        )),
+                      ),
+                      leadingSize: 30,
+                      actions: [
+                        InkWell(
+                          child: SvgPicture.asset(
+                            AppConstants.bookmark,
+                            height: 24,
+                            width: 24,
+                            colorFilter: ColorFilter.mode(
+                              themeData.colorScheme.onBackground.withOpacity(0.5),
+                              BlendMode.srcIn,
+                            ),
                           ),
                         ),
-                      ),
-                      const SizedBox(width: 8.0),
-                    ],
-                  ),
-                  cost: '${job.salary} VND',
-                  duration: job.duration,
-                  description: TextMore(
-                    job.content,
-                    trimMode: TrimMode.Hidden,
-                    trimHiddenMaxLines: 3,
-                    style: themeData.textTheme.displayMedium!.merge(
-                      TextStyle(
-                        color: themeData.colorScheme.onBackground,
+                        const SizedBox(width: 8.0),
+                      ],
+                    ),
+                    cost: '${job.salary} VND',
+                    duration: job.duration,
+                    description: TextMore(
+                      job.content,
+                      trimMode: TrimMode.Hidden,
+                      trimHiddenMaxLines: 3,
+                      style: themeData.textTheme.displayMedium!.merge(
+                        TextStyle(
+                          color: themeData.colorScheme.onBackground,
+                        ),
                       ),
                     ),
                   ),

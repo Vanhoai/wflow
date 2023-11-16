@@ -34,7 +34,7 @@ class JobInformationBloc extends Bloc<JobInformationEvent, JobInformationState> 
       final response = await contractUseCase.applyPost(ApplyPostRequest(
         post: event.post,
         cv: event.cv,
-        introduction: 'no information',
+        introduction: event.introduction.isEmpty ? 'No information' : event.introduction,
       ));
       response.fold((String left) {
         emit(ApplyPostState(

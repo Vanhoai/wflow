@@ -99,12 +99,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 Positioned(
                   child: Visibility(
                     visible: state.isLoading,
-                    child: Container(
-                      width: MediaQuery.of(context).size.width,
-                      height: MediaQuery.of(context).size.height,
-                      color: Colors.white.withOpacity(0.1),
-                      child: const Loading(),
-                    ),
+                    child: const LoadingWithWhite(),
                   ),
                 )
               ],

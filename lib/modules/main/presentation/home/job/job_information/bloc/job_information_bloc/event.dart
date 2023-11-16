@@ -17,8 +17,8 @@ class GetJobInformationEvent extends JobInformationEvent {
 class ApplyPostEvent extends JobInformationEvent {
   final num post;
   final num cv;
-
-  ApplyPostEvent({required this.post, required this.cv});
+  final String introduction;
+  ApplyPostEvent({required this.post, required this.cv, required this.introduction});
   @override
-  List<Object?> get props => [post, cv];
+  List<Object?> get props => [post, cv, introduction];
 }

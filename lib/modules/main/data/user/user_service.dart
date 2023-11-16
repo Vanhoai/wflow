@@ -1,6 +1,5 @@
 import 'package:wflow/core/agent/agent.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
@@ -13,6 +12,7 @@ abstract class UserPath {
   static const String addCollaborator = '/business/add-collaborator';
   static const String getAllCollaborator = '/business/members-in-my-business';
   static const String removeCollaborator = '/business/remove-collaborator';
+  static String findUserByID(String id) => '/user/find/$id';
 }
 
 abstract class UserService {
@@ -21,6 +21,7 @@ abstract class UserService {
   Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
   Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
   Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
+  Future<UserModel> findUserByID({required String id});
 }
 
 class UserServiceImpl implements UserService {
@@ -128,6 +129,22 @@ class UserServiceImpl implements UserService {
       }
     } catch (e) {
       return throw const ServerFailure();
+    }
+  }
+
+  @override
+  Future<UserModel> findUserByID({required String id}) async {
+    try {
+      final response = await agent.dio.get(UserPath.findUserByID(id));
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode != 200) {
+        throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      }
+
+      return UserModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 }

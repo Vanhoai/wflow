@@ -171,7 +171,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Container(
-                  height: 140.h,
+                  height: 150.h,
                   margin: EdgeInsets.symmetric(horizontal: 20.w),
                   clipBehavior: Clip.none,
                   decoration: const BoxDecoration(),
@@ -183,7 +183,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(8.r),
                           child: CachedNetworkImage(
-                            imageUrl: state.companyEntity.logo.toString(),
+                            imageUrl: state.companyEntity.background.toString(),
                             fit: BoxFit.cover,
                             placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
                           ),

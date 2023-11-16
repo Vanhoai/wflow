@@ -12,4 +12,5 @@ abstract class UserRepository {
   Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
   Future<Either<List<UserEntity>, Failure>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
   Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
+  Future<Either<UserEntity, Failure>> findUserByID({required String id});
 }

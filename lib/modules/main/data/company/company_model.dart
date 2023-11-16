@@ -20,6 +20,7 @@ class CompanyModel extends BaseEntity with EquatableMixin {
     required this.name,
     required this.address,
     required this.logo,
+    required this.background,
     required this.overview,
     required this.longitude,
     required this.latitude,
@@ -52,6 +53,9 @@ class CompanyModel extends BaseEntity with EquatableMixin {
 
   @JsonKey(name: 'logo', defaultValue: null)
   final String logo;
+
+  @JsonKey(name: 'background', defaultValue: '')
+  final String background;
 
   @JsonKey(name: 'collaborators', defaultValue: null)
   final List<String> collaborators;
@@ -91,6 +95,7 @@ class CompanyModel extends BaseEntity with EquatableMixin {
     String? name,
     String? address,
     String? logo,
+    String? background,
     List<String>? collaborators,
     String? overview,
     double? longitude,
@@ -113,6 +118,7 @@ class CompanyModel extends BaseEntity with EquatableMixin {
       name: name ?? this.name,
       address: address ?? this.address,
       logo: logo ?? this.logo,
+      background: background ?? this.background,
       collaborators: collaborators ?? this.collaborators,
       overview: overview ?? this.overview,
       longitude: longitude ?? this.longitude,
@@ -136,6 +142,7 @@ class CompanyModel extends BaseEntity with EquatableMixin {
       collaborators: [],
       id: 0,
       logo: '',
+      background: '',
       createdAt: DateTime.now(),
       updatedAt: null,
       deletedAt: null,
@@ -156,6 +163,7 @@ class CompanyModel extends BaseEntity with EquatableMixin {
         updatedAt,
         deletedAt,
         logo,
+        background,
         posts,
         collaborators,
         members,

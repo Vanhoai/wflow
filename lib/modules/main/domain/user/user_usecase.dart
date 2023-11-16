@@ -13,6 +13,7 @@ abstract class UserUseCase {
   Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
   Future<Either<List<UserEntity>, Failure>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
   Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
+  Future<Either<UserEntity, Failure>> findUserByID({required String id});
 }
 
 class UserUseCaseImpl implements UserUseCase {
@@ -43,5 +44,10 @@ class UserUseCaseImpl implements UserUseCase {
   @override
   Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
     return await userRepository.removeCollaborator(removeCollaboratorModel);
+  }
+
+  @override
+  Future<Either<UserEntity, Failure>> findUserByID({required String id}) async {
+    return await userRepository.findUserByID(id: id);
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
@@ -72,6 +72,18 @@ class UserRepositoryImpl extends UserRepository {
       return await userService.removeCollaborator(removeCollaboratorModel);
     } catch (e) {
       return false;
+    }
+  }
+
+  @override
+  Future<Either<UserEntity, Failure>> findUserByID({required String id}) async {
+    try {
+      final UserModel userModel = await userService.findUserByID(id: id);
+      return Left(UserEntity.fromJson(userModel.toJson()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
     }
   }
 }

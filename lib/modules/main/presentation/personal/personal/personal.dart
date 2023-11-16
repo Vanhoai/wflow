@@ -123,6 +123,12 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                   child: const Text('Remove'),
                                 ),
                                 CupertinoActionSheetAction(
+                                  onPressed: () => Navigator.of(context)
+                                    ..pop()
+                                    ..pushNamed(RouteKeys.postSavedScreen),
+                                  child: const Text('Saved'),
+                                ),
+                                CupertinoActionSheetAction(
                                   onPressed: () =>
                                       personalBloc.add(const SignOutEvent()),
                                   isDestructiveAction: true,

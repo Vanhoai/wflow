@@ -16,7 +16,8 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<AuthSignInResponse> signIn(AuthNormalRequest request) async {
     try {
-      final json = await agent.dio.post('/auth/sign-in', data: request.toJson());
+      final json =
+          await agent.dio.post('/auth/sign-in', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
@@ -31,7 +32,8 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<String> register(AuthNormalRegisterRequest request) async {
     try {
-      final json = await agent.dio.post('/auth/create-account', data: request.toJson());
+      final json =
+          await agent.dio.post('/auth/create-account', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);

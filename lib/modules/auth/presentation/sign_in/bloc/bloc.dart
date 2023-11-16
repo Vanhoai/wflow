@@ -88,6 +88,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
         emit(SignInSuccess());
       },
       (Failure right) {
+        print('my log 4');
         emit(SignInFailure(message: right.message));
         emit(const SignInState());
       },

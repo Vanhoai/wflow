@@ -40,4 +40,5 @@ class RouteKeys {
   static const String signedScreen = '/signed_screen';
   static const String graphScreen = '/graph_screen';
   static const String removeCollaboratorScreen = '/remove_collaborator_screen';
+  static const String postSavedScreen = '/post_saved_screen';
 }

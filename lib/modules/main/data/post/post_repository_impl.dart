@@ -32,7 +32,8 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request) async {
     try {
       final response = await postService.getPostWithCategory(request);
       return response;
@@ -58,6 +59,28 @@ class PostRepositoryImpl implements PostRepository {
       return posts;
     } catch (exception) {
       return [];
+    }
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
+      GetWorkModel req) async {
+    try {
+      final posts = await postService.getPostsSaved(req);
+      return Left(posts);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<HttpResponse, Failure>> toggleBookmark(int id) async {
+    try {
+      final res = await postService.toggleBookmark(id);
+
+      return Left(res);
+    } catch (exception) {
+      return const Right(ServerFailure());
     }
   }
 }

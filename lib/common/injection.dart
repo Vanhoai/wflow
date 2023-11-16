@@ -60,6 +60,7 @@ import 'package:wflow/modules/main/domain/task/task_repository.dart';
 import 'package:wflow/modules/main/domain/task/task_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
 
 import 'videocall/bloc/bloc.dart';
@@ -70,27 +71,38 @@ final FlutterLocalization localization = FlutterLocalization.instance;
 
 Future<void> initAppInjection() async {
   // core
-  instance.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());
+  instance.registerLazySingleton<FlutterSecureStorage>(
+      () => const FlutterSecureStorage());
   sharedPreferences = await SharedPreferences.getInstance();
   instance.registerLazySingleton<SecureStorage>(
     () => SecureStorage(flutterSecureStorage: instance<FlutterSecureStorage>()),
   );
-  instance.registerFactory<Agent>(() => Agent(secureStorage: instance.get<SecureStorage>()));
+  instance.registerFactory<Agent>(
+      () => Agent(secureStorage: instance.get<SecureStorage>()));
 
   // auth
-  instance.registerLazySingleton<AuthService>(() => AuthServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<AuthRepository>(() => AuthRepositoryImpl(authService: instance.get<AuthService>()));
-  instance.registerLazySingleton<AuthUseCase>(() => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
+  instance.registerLazySingleton<AuthService>(
+      () => AuthServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<AuthRepository>(
+      () => AuthRepositoryImpl(authService: instance.get<AuthService>()));
+  instance.registerLazySingleton<AuthUseCase>(
+      () => AuthUseCaseImpl(authRepository: instance.get<AuthRepository>()));
 
   // post
-  instance.registerLazySingleton<PostService>(() => PostServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<PostRepository>(() => PostRepositoryImpl(postService: instance.get<PostService>()));
-  instance.registerLazySingleton<PostUseCase>(() => PostUseCaseImpl(postRepository: instance.get<PostRepository>()));
+  instance.registerLazySingleton<PostService>(
+      () => PostServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<PostRepository>(
+      () => PostRepositoryImpl(postService: instance.get<PostService>()));
+  instance.registerLazySingleton<PostUseCase>(
+      () => PostUseCaseImpl(postRepository: instance.get<PostRepository>()));
 
   // CV
-  instance.registerLazySingleton<CVService>(() => CVServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<CVRepository>(() => CVRepositoryImpl(cvService: instance.get<CVService>()));
-  instance.registerLazySingleton<CVUseCase>(() => CVUseCaseImpl(cvRepository: instance.get<CVRepository>()));
+  instance.registerLazySingleton<CVService>(
+      () => CVServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<CVRepository>(
+      () => CVRepositoryImpl(cvService: instance.get<CVService>()));
+  instance.registerLazySingleton<CVUseCase>(
+      () => CVUseCaseImpl(cvRepository: instance.get<CVRepository>()));
 
   // Company
   instance.registerLazySingleton<CompanyService>(
@@ -100,7 +112,8 @@ Future<void> initAppInjection() async {
     () => CompanyRepositoryImpl(companyService: instance.get<CompanyService>()),
   );
   instance.registerLazySingleton<CompanyUseCase>(
-    () => CompanyUseCaseImpl(companyRepository: instance.get<CompanyRepository>()),
+    () => CompanyUseCaseImpl(
+        companyRepository: instance.get<CompanyRepository>()),
   );
 
   // Category
@@ -108,23 +121,29 @@ Future<void> initAppInjection() async {
     () => CategoryServiceImpl(agent: instance.get<Agent>()),
   );
   instance.registerLazySingleton<CategoryRepository>(
-    () => CategoryRepositoryImpl(categoryService: instance.get<CategoryService>()),
+    () => CategoryRepositoryImpl(
+        categoryService: instance.get<CategoryService>()),
   );
   instance.registerLazySingleton<CategoryUseCase>(
-    () => CategoryUseCaseImpl(categoryRepository: instance.get<CategoryRepository>()),
+    () => CategoryUseCaseImpl(
+        categoryRepository: instance.get<CategoryRepository>()),
   );
 
   // Contract
-  instance.registerLazySingleton<ContractService>(() => ContractServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<ContractRepository>(
-      () => ContractRepositoryImpl(contactService: instance.get<ContractService>()));
-  instance.registerLazySingleton<ContractUseCase>(
-      () => ContractUseCaseImpl(contactRepository: instance.get<ContractRepository>()));
+  instance.registerLazySingleton<ContractService>(
+      () => ContractServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<ContractRepository>(() =>
+      ContractRepositoryImpl(contactService: instance.get<ContractService>()));
+  instance.registerLazySingleton<ContractUseCase>(() => ContractUseCaseImpl(
+      contactRepository: instance.get<ContractRepository>()));
 
   // Task
-  instance.registerLazySingleton<TaskService>(() => TaskServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<TaskRepository>(() => TaskRepositoryImpl(taskService: instance.get<TaskService>()));
-  instance.registerLazySingleton<TaskUseCase>(() => TaskUseCaseImpl(taskRepository: instance.get<TaskRepository>()));
+  instance.registerLazySingleton<TaskService>(
+      () => TaskServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<TaskRepository>(
+      () => TaskRepositoryImpl(taskService: instance.get<TaskService>()));
+  instance.registerLazySingleton<TaskUseCase>(
+      () => TaskUseCaseImpl(taskRepository: instance.get<TaskRepository>()));
 
   // Category
   instance.registerLazySingleton<RoomService>(
@@ -138,15 +157,18 @@ Future<void> initAppInjection() async {
   );
 
   // Authentication
-  instance.registerLazySingleton<AuthenticationService>(() => AuthenticationServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<AuthenticationRepository>(
-      () => AuthenticationRepositoryImpl(authenticationService: instance.get<AuthenticationService>()));
-  instance.registerLazySingleton<AuthenticationUseCase>(
-      () => AuthenticationUseCaseImpl(authenticationRepository: instance.get<AuthenticationRepository>()));
+  instance.registerLazySingleton<AuthenticationService>(
+      () => AuthenticationServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<AuthenticationRepository>(() =>
+      AuthenticationRepositoryImpl(
+          authenticationService: instance.get<AuthenticationService>()));
+  instance.registerLazySingleton<AuthenticationUseCase>(() =>
+      AuthenticationUseCaseImpl(
+          authenticationRepository: instance.get<AuthenticationRepository>()));
 
   // Authen bloc
-  instance.registerLazySingleton<AuthenticationsBloc>(
-      () => AuthenticationsBloc(authenticationUseCase: instance.get<AuthenticationUseCase>()));
+  instance.registerLazySingleton<AuthenticationsBloc>(() => AuthenticationsBloc(
+      authenticationUseCase: instance.get<AuthenticationUseCase>()));
 
   // media
   instance.registerLazySingleton<MediaService>(
@@ -166,23 +188,30 @@ Future<void> initAppInjection() async {
     () => BalanceRepositoryImpl(balanceService: instance.get<BalanceService>()),
   );
   instance.registerLazySingleton<BalanceUseCase>(
-    () => BalanceUseCaseImpl(balanceRepository: instance.get<BalanceRepository>()),
+    () => BalanceUseCaseImpl(
+        balanceRepository: instance.get<BalanceRepository>()),
   );
 
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
-  instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
+  instance.registerLazySingleton<VideoCallBloc>(
+      () => VideoCallBloc(client: instance.get<StringeeClient>()));
 
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
+  instance.registerLazySingleton<BookmarkBloc>(
+      () => BookmarkBloc(postUseCase: instance.get<PostUseCase>()));
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
   instance.registerSingleton<NavigationService>(NavigationService());
 
   // USER
-  instance.registerLazySingleton<UserService>(() => UserServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userService: instance.get<UserService>()));
-  instance.registerLazySingleton<UserUseCase>(() => UserUseCaseImpl(userRepository: instance.get<UserRepository>()));
+  instance.registerLazySingleton<UserService>(
+      () => UserServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<UserRepository>(
+      () => UserRepositoryImpl(userService: instance.get<UserService>()));
+  instance.registerLazySingleton<UserUseCase>(
+      () => UserUseCaseImpl(userRepository: instance.get<UserRepository>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;
@@ -211,12 +240,14 @@ class AppBlocObserver extends BlocObserver {
   @override
   void onTransition(Bloc bloc, Transition transition) {
     super.onTransition(bloc, transition);
-    logger.i('onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
+    logger.i(
+        'onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
   }
 
   @override
   void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
     super.onError(bloc, error, stackTrace);
-    logger.e('onError -- bloc: ${bloc.runtimeType}, error: $error, stackTrace: $stackTrace');
+    logger.e(
+        'onError -- bloc: ${bloc.runtimeType}, error: $error, stackTrace: $stackTrace');
   }
 }

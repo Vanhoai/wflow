@@ -7,6 +7,7 @@ class HomeState extends Equatable {
   final String categorySelected;
   final bool isLoading;
   final bool loadingCategory;
+  final List<bool> bookmarks;
 
   const HomeState({
     required this.recentJobs,
@@ -15,6 +16,7 @@ class HomeState extends Equatable {
     this.categorySelected = '',
     this.isLoading = false,
     this.loadingCategory = false,
+    this.bookmarks = const [],
   });
 
   HomeState copyWith({
@@ -24,6 +26,7 @@ class HomeState extends Equatable {
     String? categorySelected,
     bool? isLoading,
     bool? loadingCategory,
+    List<bool>? bookmarks,
   }) {
     return HomeState(
       recentJobs: recentJobs ?? this.recentJobs,
@@ -32,9 +35,18 @@ class HomeState extends Equatable {
       categorySelected: categorySelected ?? this.categorySelected,
       isLoading: isLoading ?? this.isLoading,
       loadingCategory: loadingCategory ?? this.loadingCategory,
+      bookmarks: bookmarks ?? this.bookmarks,
     );
   }
 
   @override
-  List<Object?> get props => [recentJobs, hotJobs, categories, categorySelected, isLoading, loadingCategory];
+  List<Object?> get props => [
+        recentJobs,
+        hotJobs,
+        categories,
+        categorySelected,
+        isLoading,
+        loadingCategory,
+        bookmarks,
+      ];
 }

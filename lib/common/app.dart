@@ -44,9 +44,15 @@ class _AppState extends State<App> {
         future: instance.allReady(),
         builder: ((context, snapshot) {
           SystemUiOverlayStyle systemUiOverlayStyle = SystemUiOverlayStyle(
-            statusBarColor: instance.get<AppBloc>().state.isDarkMode ? Colors.black : Colors.white,
-            statusBarIconBrightness: instance.get<AppBloc>().state.isDarkMode ? Brightness.light : Brightness.dark,
-            statusBarBrightness: instance.get<AppBloc>().state.isDarkMode ? Brightness.light : Brightness.dark,
+            statusBarColor: instance.get<AppBloc>().state.isDarkMode
+                ? Colors.black
+                : Colors.white,
+            statusBarIconBrightness: instance.get<AppBloc>().state.isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
+            statusBarBrightness: instance.get<AppBloc>().state.isDarkMode
+                ? Brightness.light
+                : Brightness.dark,
             systemNavigationBarColor: Colors.white,
             systemNavigationBarDividerColor: Colors.white,
             systemNavigationBarIconBrightness: Brightness.dark,
@@ -63,7 +69,8 @@ class _AppState extends State<App> {
                   children: [
                     MaterialApp(
                       builder: (context, child) {
-                        ErrorWidget.builder = (FlutterErrorDetails errorDetails) {
+                        ErrorWidget.builder =
+                            (FlutterErrorDetails errorDetails) {
                           bool isDebug = false;
                           assert(() {
                             isDebug = true;
@@ -92,18 +99,19 @@ class _AppState extends State<App> {
                         // ErrorWidget.builder = (errorDetails) => error;
                         // return child!;
                       },
-                      navigatorKey: instance.get<NavigationService>().navigatorKey,
+                      navigatorKey:
+                          instance.get<NavigationService>().navigatorKey,
                       supportedLocales: localization.supportedLocales,
-                      localizationsDelegates: localization.localizationsDelegates,
+                      localizationsDelegates:
+                          localization.localizationsDelegates,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,
                       darkTheme: themeDataDark,
-                      themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                      themeMode:
+                          parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute:
-                          instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
-                      home: const IntroScreen(),
+                      initialRoute: RouteKeys.signInScreen,
                     ),
                     BlocBuilder(
                       bloc: instance.get<AppLoadingBloc>(),

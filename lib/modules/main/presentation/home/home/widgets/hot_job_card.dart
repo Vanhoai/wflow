@@ -10,18 +10,21 @@ class HotJobCard extends StatefulWidget {
     required this.job,
     required this.constraints,
     required this.pressCard,
+    this.onToggleBookmark,
+    required this.isBookmarked,
   });
 
   final PostEntity job;
   final BoxConstraints constraints;
   final Function(int id) pressCard;
+  final void Function()? onToggleBookmark;
+  final bool isBookmarked;
 
   @override
   State<HotJobCard> createState() => _HotJobCardState();
 }
 
 class _HotJobCardState extends State<HotJobCard> {
-  bool isBookmark = false;
 
   @override
   void initState() {
@@ -81,13 +84,15 @@ class _HotJobCardState extends State<HotJobCard> {
           leadingSize: 32,
           actions: [
             InkWell(
-              onTap: () {},
+              onTap: widget.onToggleBookmark,
               child: SvgPicture.asset(
                 AppConstants.bookmark,
                 height: 24,
                 width: 24,
                 colorFilter: ColorFilter.mode(
-                  themeData.colorScheme.onBackground.withOpacity(0.5),
+                  widget.isBookmarked
+                      ? themeData.colorScheme.primary
+                      : themeData.colorScheme.onBackground.withOpacity(0.5),
                   BlendMode.srcIn,
                 ),
               ),

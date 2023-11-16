@@ -3,15 +3,16 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
 
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
-  const AppHeader({
-    super.key,
-    this.text = '',
-    this.onBack,
-    this.onTap,
-    this.actions,
-  });
+  const AppHeader(
+      {super.key,
+      this.text = '',
+      this.onBack,
+      this.onTap,
+      this.actions,
+      this.onBackReload});
 
   final Function? onBack;
+  final Function? onBackReload;
   final String text;
   final List<Widget>? actions;
   final void Function()? onTap;
@@ -32,10 +33,14 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
         padding: const EdgeInsets.all(8),
         child: InkWell(
           onTap: () {
-            if (onBack != null) {
-              onBack!();
+            if (onBackReload != null) {
+              onBackReload!();
+            } else {
+              if (onBack != null) {
+                onBack!();
+              }
+              Navigator.pop(context);
             }
-            Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(50),
           child: Container(

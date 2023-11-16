@@ -42,7 +42,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'companyLogo', defaultValue: '')
   final String companyLogo;
 
-  @JsonKey(name: 'isBookmark', defaultValue: false)
+  @JsonKey(name: 'isBookmarked', defaultValue: false)
   final bool isBookmark;
 
   @JsonKey(name: 'skills', defaultValue: [])

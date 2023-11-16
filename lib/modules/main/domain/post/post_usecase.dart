@@ -9,9 +9,13 @@ import 'package:wflow/modules/main/domain/post/post_repository.dart';
 abstract class PostUseCase {
   Future<List<PostEntity>> getRecentJobs(String category);
   Future<List<PostEntity>> getHotJobs();
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request);
   Future<Either<PostEntity, Failure>> getPostId(String id);
   Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
+      GetWorkModel req);
+  Future<Either<HttpResponse, Failure>> toggleBookmark(int id);
 }
 
 class PostUseCaseImpl implements PostUseCase {
@@ -30,7 +34,8 @@ class PostUseCaseImpl implements PostUseCase {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request) async {
     return await postRepository.getPostWithCategory(request);
   }
 
@@ -43,5 +48,16 @@ class PostUseCaseImpl implements PostUseCase {
   @override
   Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
     return await postRepository.getSearchWorks(getWorkModel);
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
+      GetWorkModel req) async {
+    return await postRepository.getPostsSaved(req);
+  }
+
+  @override
+  Future<Either<HttpResponse, Failure>> toggleBookmark(int id) async {
+    return await postRepository.toggleBookmark(id);
   }
 }

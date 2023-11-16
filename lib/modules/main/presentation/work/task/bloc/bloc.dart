@@ -43,7 +43,8 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(GetTaskListSuccessState(
           taskEntities: left, isLoading: false, idContract: event.idContract, isAllDone: isAllDone));
     }, (Failure right) {
-      emit(GetTaskListSuccessState(taskEntities: [], isLoading: false, idContract: event.idContract, isAllDone: false));
+      emit(GetTaskListSuccessState(
+          taskEntities: const [], isLoading: false, idContract: event.idContract, isAllDone: false));
     });
   }
 

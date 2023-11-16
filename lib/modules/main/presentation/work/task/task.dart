@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
@@ -27,11 +28,81 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
+  final TextEditingController _ratingController = TextEditingController();
+
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     instance.get<TaskBloc>().add(CleanEvent());
+    _ratingController.dispose();
+    super.dispose();
+  }
+
+  _displayTextInputDialog(BuildContext context) async {
+    final ThemeData themeData = Theme.of(context);
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return Theme(
+          data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
+          child: AlertDialog(
+            backgroundColor: themeData.colorScheme.background,
+            surfaceTintColor: Colors.transparent,
+            insetPadding: const EdgeInsets.all(10),
+            title: const Text('Rating'),
+            content: Container(
+              color: themeData.colorScheme.background,
+              width: MediaQuery.of(context).size.width,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  RatingBar.builder(
+                    initialRating: 5,
+                    minRating: 1,
+                    direction: Axis.horizontal,
+                    allowHalfRating: true,
+                    itemCount: 5,
+                    itemBuilder: (context, _) => const Icon(
+                      Icons.star,
+                      color: AppColors.primary,
+                    ),
+                    onRatingUpdate: (rating) {
+                      print(rating);
+                    },
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    style: Theme.of(context).textTheme.bodyLarge,
+                    minLines: 3,
+                    maxLines: 5,
+                    // and this
+                    textInputAction: TextInputAction.newline,
+                    controller: _ratingController,
+                    decoration: InputDecoration(
+                      hintText: 'Type your rating content here',
+                      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                      hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
+                      focusedBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide(color: AppColors.primary, width: 1.2),
+                      ),
+                      enabledBorder: const OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(12)),
+                        borderSide: BorderSide(color: Colors.black26, width: 1.2),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  PrimaryButton(
+                    label: 'Rating this contract',
+                    onPressed: () => Navigator.pop(context, true),
+                  )
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -72,6 +143,11 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                           ),
+                          PrimaryButton(
+                              label: 'Rate',
+                              onPressed: () {
+                                _displayTextInputDialog(context);
+                              }),
                           Builder(
                             builder: (context) {
                               if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) {

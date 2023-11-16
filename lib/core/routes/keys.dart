@@ -42,4 +42,5 @@ class RouteKeys {
   static const String graphScreen = '/graph_screen';
   static const String removeCollaboratorScreen = '/remove_collaborator_screen';
   static const String completedContractScreen = '/completed_contract_screen';
+  static const String reputationScreen = '/reputation_screen';
 }

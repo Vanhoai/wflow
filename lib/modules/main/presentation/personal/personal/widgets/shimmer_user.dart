@@ -15,7 +15,7 @@ class ShimmerUser extends StatelessWidget {
           baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
           highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
           child: Container(
-            padding: const EdgeInsets.only(top: 10, left: 20, right: 20),
+            padding: const EdgeInsets.only(top: 20, left: 20, right: 20),
             height: 260,
             child: Stack(
               children: [

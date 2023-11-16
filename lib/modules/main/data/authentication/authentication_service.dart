@@ -29,7 +29,6 @@ class AuthenticationServiceImpl extends AuthenticationService {
       return AuthenticationEntity(
           errorCode: httpResponse.data['errorCode'], errorMessage: httpResponse.data['errorMessage'], data: backIDs);
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }
@@ -46,7 +45,6 @@ class AuthenticationServiceImpl extends AuthenticationService {
       return AuthenticationEntity(
           errorCode: httpResponse.data['errorCode'], errorMessage: httpResponse.data['errorMessage'], data: fontIDs);
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }
@@ -66,7 +64,6 @@ class AuthenticationServiceImpl extends AuthenticationService {
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       return httpResponse;
     } catch (exception) {
-      print('errorr');
       throw ServerException(message: exception.toString());
     }
   }

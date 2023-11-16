@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/environment.dart';
@@ -13,13 +14,13 @@ import 'package:wflow/modules/main/domain/room/entities/room_entity.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/state.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
 
 class MainChatBloc extends Bloc<MainChatEvent, MainChatState> {
   late final IO.Socket socket;
   num? idRoom;
   final num idMember;
   final RoomUseCase roomUseCase;
+
   MainChatBloc({required this.idRoom, required this.idMember, required this.roomUseCase})
       : super(const MainChatState(listChat: [])) {
     socket = IO.io(EnvironmentConfiguration.urlSocket, <String, dynamic>{
@@ -100,13 +101,16 @@ class MainChatBloc extends Bloc<MainChatEvent, MainChatState> {
   }
 
   FutureOr<void> scroll(ScrollEvent event, Emitter<MainChatState> emit) {
-    emit(Scroll(
+    emit(
+      Scroll(
         listChat: state.listChat,
         scroll: !state.scroll,
         meta: state.meta,
         search: state.search,
         file: state.file,
-        percent: state.percent));
+        percent: state.percent,
+      ),
+    );
   }
 
   FutureOr<void> getListMessage(GetListMessage event, Emitter<MainChatState> emit) async {

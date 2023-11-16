@@ -28,6 +28,8 @@ import 'package:wflow/modules/main/data/contract/contract_repository_impl.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/cv/cv_repository_impl.dart';
 import 'package:wflow/modules/main/data/cv/cv_services.dart';
+import 'package:wflow/modules/main/data/feedback/feedback_repository_impl.dart';
+import 'package:wflow/modules/main/data/feedback/feedback_service.dart';
 import 'package:wflow/modules/main/data/media/media_repository_impl.dart';
 import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
@@ -52,6 +54,8 @@ import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/cv/cv_repository.dart';
 import 'package:wflow/modules/main/domain/cv/cv_usercase.dart';
+import 'package:wflow/modules/main/domain/feedback/feedback_repository.dart';
+import 'package:wflow/modules/main/domain/feedback/feedback_usecase.dart';
 import 'package:wflow/modules/main/domain/media/media_repository.dart';
 import 'package:wflow/modules/main/domain/media/media_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
@@ -181,6 +185,13 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<UserService>(() => UserServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userService: instance.get<UserService>()));
   instance.registerLazySingleton<UserUseCase>(() => UserUseCaseImpl(userRepository: instance.get<UserRepository>()));
+
+  // FEEDBACK
+  instance.registerLazySingleton<FeedbackService>(() => FeedbackServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<FeedbackRepository>(
+      () => FeedbackRepositoryImpl(feedbackService: instance.get<FeedbackService>()));
+  instance.registerLazySingleton<FeedbackUseCase>(
+      () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
 
   // ! FOR DEBUG ONLY
   bool isDebug = false;

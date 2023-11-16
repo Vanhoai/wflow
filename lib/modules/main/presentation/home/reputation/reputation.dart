@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:intl/intl.dart';
+import 'package:shimmer/shimmer.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
+import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
+import 'package:wflow/modules/main/domain/feedback/entities/reputation_entity.dart';
+import 'package:wflow/modules/main/domain/feedback/feedback_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/reputation/bloc/reputation_bloc.dart';
 
 class ReputationScreen extends StatefulWidget {
   const ReputationScreen({super.key});
@@ -26,101 +34,212 @@ class _ReputationScreenState extends State<ReputationScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    return CommonScaffold(
-      appBar: const AppBarCenterWidget(center: Text('Reputation')),
-      body: SingleChildScrollView(
-        controller: _scrollController,
-        padding: EdgeInsets.symmetric(horizontal: 16.w),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              'Rating are verified by Wflow. You can rate your experience with other users.',
-              style: themeData.textTheme.displayLarge!,
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            8.verticalSpace,
-            const Center(
-              child: RatingSummary(
-                counter: 100,
-                label: 'Total Rating',
-                average: 4.5,
-                averageStyle: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                ),
-                counterOneStars: 5,
-                counterTwoStars: 5,
-                counterThreeStars: 10,
-                counterFourStars: 30,
-                counterFiveStars: 50,
-                color: AppColors.primary,
-              ),
-            ),
-            4.verticalSpace,
-            ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder: (context, index) {
-                return Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Header(
-                      title: const Text('User Name'),
-                      subtitle: const Text('10/12/2023'),
-                      actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
-                    ),
-                    4.verticalSpace,
-                    RatingBar.builder(
-                      initialRating: 3,
-                      minRating: 1,
-                      direction: Axis.horizontal,
-                      allowHalfRating: true,
-                      itemCount: 5,
-                      itemBuilder: (context, _) => const Icon(
-                        Icons.star,
-                        color: AppColors.primary,
-                      ),
-                      onRatingUpdate: (rating) {
-                        print(rating);
-                      },
-                      glow: false,
-                      itemSize: 16,
-                      tapOnlyMode: false,
-                      ignoreGestures: true,
-                    ),
-                    4.verticalSpace,
-                    TextMore(
-                      "You are a great person to work with. I would like to work with you again. I'ld recommend you to my friends. Very professional and friendly. You are a great person to work with. I would like to work with you again. I'ld recommend you to my friends. Very professional and friendly. You are a great person to work with. I would like to work with you again. I'ld recommend you to my friends. Very professional and friendly. You are a great person to work with. I would like to work with you again. I'ld recommend you to my friends. Very professional and friendly. You are a great person to work with. I would like to work with you again. I'ld recommend you to my friends. Very professional and friendly. ",
-                      style: themeData.textTheme.displayMedium!,
-                      trimLines: 5,
-                      trimMode: TrimMode.Line,
-                    ),
-                    4.verticalSpace,
-                    Row(
-                      mainAxisSize: MainAxisSize.max,
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Text('10', style: themeData.textTheme.displayMedium),
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
-                        4.horizontalSpace,
-                        Text('2', style: themeData.textTheme.displayMedium),
-                        IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
-                      ],
-                    ),
-                    12.verticalSpace,
-                  ],
-                );
+    return BlocProvider<ReputationBloc>(
+      create: (context) => ReputationBloc(feedbackUseCase: instance.call<FeedbackUseCase>())
+        ..add(ReputationLoad())
+        ..add(FeedbackLoad()),
+      child: CommonScaffold(
+        appBar: const AppBarCenterWidget(center: Text('Reputation')),
+        body: BlocConsumer<ReputationBloc, ReputationState>(
+          listener: (context, state) {},
+          buildWhen: (previous, current) => true,
+          listenWhen: (previous, current) => true,
+          builder: (context, state) {
+            final ReputationEntity reputationEntity = state.reputationEntity;
+            final List<FeedbackEntity> feedbacks = state.feedbacks;
+
+            return RefreshIndicator(
+              onRefresh: () async {
+                context.read<ReputationBloc>().add(ReputationLoad());
+                context.read<ReputationBloc>().add(FeedbackLoad());
               },
-              itemCount: 4,
-            ),
-          ],
+              child: SingleChildScrollView(
+                controller: _scrollController,
+                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'Rating are verified by Wflow. You can rate your experience with other users.',
+                      style: themeData.textTheme.displayLarge!,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    8.verticalSpace,
+                    Center(
+                      child: Visibility(
+                        visible: reputationEntity.totalFeedback > 0,
+                        replacement: Shimmer.fromColors(
+                          baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                          child: const RatingSummary(
+                            counter: 1,
+                            label: 'Total Rating',
+                            average: 0,
+                            averageStyle: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            counterOneStars: 0,
+                            counterTwoStars: 0,
+                            counterThreeStars: 0,
+                            counterFourStars: 0,
+                            counterFiveStars: 0,
+                            color: AppColors.primary,
+                          ),
+                        ),
+                        child: RatingSummary(
+                          counter: reputationEntity.totalFeedback,
+                          label: 'Total Rating',
+                          average: reputationEntity.reputation,
+                          averageStyle: const TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          counterOneStars: reputationEntity.countStarOne,
+                          counterTwoStars: reputationEntity.countStarTwo,
+                          counterThreeStars: reputationEntity.countStarThree,
+                          counterFourStars: reputationEntity.countStarFour,
+                          counterFiveStars: reputationEntity.countStarFive,
+                          color: AppColors.primary,
+                        ),
+                      ),
+                    ),
+                    4.verticalSpace,
+                    Visibility(
+                      visible: feedbacks.isNotEmpty,
+                      replacement: Shimmer.fromColors(
+                        baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                        highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                        child: ListView.builder(
+                          itemBuilder: (context, index) {
+                            return Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Header(
+                                  leadingPhotoUrl: '',
+                                  title: const Text(''),
+                                  subtitle: const Text(''),
+                                  actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
+                                ),
+                                4.verticalSpace,
+                                RatingBar.builder(
+                                  initialRating: 0,
+                                  minRating: 1,
+                                  direction: Axis.horizontal,
+                                  allowHalfRating: true,
+                                  itemCount: 5,
+                                  itemBuilder: (context, _) => const Icon(
+                                    Icons.star,
+                                    color: AppColors.primary,
+                                  ),
+                                  onRatingUpdate: (rating) {},
+                                  glow: false,
+                                  itemSize: 16,
+                                  tapOnlyMode: false,
+                                  ignoreGestures: true,
+                                ),
+                                4.verticalSpace,
+                                TextMore(
+                                  '',
+                                  style: themeData.textTheme.displayMedium!,
+                                  trimLines: 5,
+                                  trimMode: TrimMode.Line,
+                                ),
+                                4.verticalSpace,
+                                Row(
+                                  mainAxisSize: MainAxisSize.max,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
+                                    2.horizontalSpace,
+                                    IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
+                                  ],
+                                ),
+                                8.verticalSpace,
+                              ],
+                            );
+                          },
+                          itemCount: 5,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                        ),
+                      ),
+                      child: ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemBuilder: (context, index) {
+                          final FeedbackEntity feedbackEntity = feedbacks[index];
+                          final date =
+                              DateFormat('dd/MM/yyyy').format(DateTime.parse(feedbackEntity.createdAt.toString()));
+                          final time =
+                              DateFormat('HH:mm:ss').format(DateTime.parse(feedbackEntity.createdAt.toString()));
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              Header(
+                                leadingPhotoUrl: feedbackEntity.businessLogo,
+                                title: Text(feedbackEntity.businessName, style: themeData.textTheme.displayMedium),
+                                subtitle: Text(
+                                  '$date $time',
+                                  style: themeData.textTheme.displaySmall,
+                                ),
+                                actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
+                              ),
+                              4.verticalSpace,
+                              RatingBar.builder(
+                                initialRating: feedbackEntity.star.toDouble(),
+                                minRating: 1,
+                                direction: Axis.horizontal,
+                                allowHalfRating: true,
+                                itemCount: 5,
+                                itemBuilder: (context, _) => const Icon(
+                                  Icons.star,
+                                  color: AppColors.primary,
+                                ),
+                                onRatingUpdate: (rating) {},
+                                glow: false,
+                                itemSize: 16,
+                                tapOnlyMode: false,
+                                ignoreGestures: true,
+                              ),
+                              4.verticalSpace,
+                              TextMore(
+                                feedbackEntity.description,
+                                style: themeData.textTheme.displayMedium!,
+                                trimLines: 5,
+                                trimMode: TrimMode.Line,
+                              ),
+                              4.verticalSpace,
+                              Row(
+                                mainAxisSize: MainAxisSize.max,
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
+                                  2.horizontalSpace,
+                                  IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
+                                ],
+                              ),
+                              8.verticalSpace,
+                            ],
+                          );
+                        },
+                        itemCount: feedbacks.length,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
         ),
       ),
     );

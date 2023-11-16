@@ -32,6 +32,8 @@ import 'package:wflow/modules/main/data/media/media_repository_impl.dart';
 import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/data/report/report_repository_impl.dart';
+import 'package:wflow/modules/main/data/report/report_service.dart';
 import 'package:wflow/modules/main/data/room/room_repository_impl.dart';
 import 'package:wflow/modules/main/data/room/room_service.dart';
 import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
@@ -56,6 +58,8 @@ import 'package:wflow/modules/main/domain/media/media_repository.dart';
 import 'package:wflow/modules/main/domain/media/media_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/report/report_repository.dart';
+import 'package:wflow/modules/main/domain/report/report_usecase.dart';
 import 'package:wflow/modules/main/domain/room/room_repository.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
@@ -163,6 +167,12 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<TrackingUseCase>(
       () => TrackingUseCaseImpl(trackingRepository: instance.get<TrackingRepository>()));
 
+  // report
+  instance.registerLazySingleton<ReportService>(() => ReportServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<ReportRepository>(
+      () => ReportRepositoryImpl(reportService: instance.get<ReportService>()));
+  instance.registerLazySingleton<ReportUseCase>(
+      () => ReportUseCaseImpl(reportRepository: instance.get<ReportRepository>()));
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));

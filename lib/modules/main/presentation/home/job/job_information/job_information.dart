@@ -97,7 +97,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 insetPadding: EdgeInsets.all(12.r),
                 title: const Text('Introduction'),
                 content: Container(
-                  color: themeData.colorScheme.background,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,

@@ -19,71 +19,73 @@ class ContractEntity extends BaseEntity with EquatableMixin {
   final bool workerSigned;
   final Worker worker;
   final Business business;
+  final num progress;
   final List<TaskEntity> tasks;
 
-  const ContractEntity({
-    required super.id,
-    required super.createdAt,
-    required super.updatedAt,
-    required super.deletedAt,
-    required this.cv,
-    required this.title,
-    required this.content,
-    required this.state,
-    required this.introduction,
-    required this.salary,
-    required this.businessSigned,
-    required this.workerSigned,
-    required this.worker,
-    required this.business,
-    required this.tasks,
-  });
+  const ContractEntity(
+      {required super.id,
+      required super.createdAt,
+      required super.updatedAt,
+      required super.deletedAt,
+      required this.cv,
+      required this.title,
+      required this.content,
+      required this.state,
+      required this.introduction,
+      required this.salary,
+      required this.businessSigned,
+      required this.workerSigned,
+      required this.worker,
+      required this.business,
+      required this.tasks,
+      required this.progress});
 
   factory ContractEntity.fromJson(Map<String, dynamic> json) => _$ContractEntityFromJson(json);
 
   @override
   Map<String, dynamic> toJson() => _$ContractEntityToJson(this);
 
-  ContractEntity copyWith({
-    String? cv,
-    int? id,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-    DateTime? deletedAt,
-    String? title,
-    String? content,
-    dynamic state,
-    String? introduction,
-    String? salary,
-    bool? workerSigned,
-    bool? businessSigned,
-    Worker? worker,
-    Business? business,
-    List<TaskEntity>? tasks,
-  }) {
+  ContractEntity copyWith(
+      {String? cv,
+      int? id,
+      DateTime? createdAt,
+      DateTime? updatedAt,
+      DateTime? deletedAt,
+      String? title,
+      String? content,
+      dynamic state,
+      String? introduction,
+      String? salary,
+      bool? workerSigned,
+      bool? businessSigned,
+      Worker? worker,
+      Business? business,
+      List<TaskEntity>? tasks,
+      num? progress}) {
     return ContractEntity(
-      cv: cv ?? this.cv,
-      id: id ?? this.id,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-      deletedAt: deletedAt ?? this.deletedAt,
-      title: title ?? this.title,
-      content: content ?? this.content,
-      state: state ?? this.state,
-      introduction: introduction ?? this.introduction,
-      salary: salary ?? this.salary,
-      businessSigned: businessSigned ?? this.businessSigned,
-      workerSigned: workerSigned ?? this.workerSigned,
-      worker: worker ?? this.worker,
-      business: business ?? this.business,
-      tasks: tasks ?? this.tasks,
-    );
+        cv: cv ?? this.cv,
+        id: id ?? this.id,
+        createdAt: createdAt ?? this.createdAt,
+        updatedAt: updatedAt ?? this.updatedAt,
+        deletedAt: deletedAt ?? this.deletedAt,
+        title: title ?? this.title,
+        content: content ?? this.content,
+        state: state ?? this.state,
+        introduction: introduction ?? this.introduction,
+        salary: salary ?? this.salary,
+        businessSigned: businessSigned ?? this.businessSigned,
+        workerSigned: workerSigned ?? this.workerSigned,
+        worker: worker ?? this.worker,
+        business: business ?? this.business,
+        tasks: tasks ?? this.tasks,
+        progress: progress ?? this.progress);
   }
 
   factory ContractEntity.empty() {
     return ContractEntity(
       cv: '',
       id: 0,
+      progress: 0,
       createdAt: DateTime.now(),
       deletedAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -146,5 +148,6 @@ class ContractEntity extends BaseEntity with EquatableMixin {
         worker,
         business,
         tasks,
+        progress
       ];
 }

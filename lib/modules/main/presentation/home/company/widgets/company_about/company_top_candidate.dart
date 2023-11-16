@@ -85,6 +85,7 @@ class _CompanyTopCandidateState extends State<CompanyTopCandidate> {
                           height: constraints.maxHeight,
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           child: JobCard(
+                            jobId: job.id,
                             isHorizontal: true,
                             boxDecoration: BoxDecoration(
                               color: themeData.colorScheme.background,

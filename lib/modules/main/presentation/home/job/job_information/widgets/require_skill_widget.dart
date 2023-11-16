@@ -26,7 +26,7 @@ class _RequireSkillState extends State<RequireSkill> {
             child: Text(
               '📌 Require skills',
               style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 18,
               )),
             ),

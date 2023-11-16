@@ -29,9 +29,8 @@ class TaskScreen extends StatefulWidget {
 class _TaskScreenState extends State<TaskScreen> {
   @override
   void dispose() {
-    // TODO: implement dispose
-    super.dispose();
     instance.get<TaskBloc>().add(CleanEvent());
+    super.dispose();
   }
 
   @override

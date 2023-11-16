@@ -20,7 +20,7 @@ class DescWidget extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: themeData.textTheme.displayLarge!.merge(
               TextStyle(
-                color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
+                color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 18,
               ),
             ),

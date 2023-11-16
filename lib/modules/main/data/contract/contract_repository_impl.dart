@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
@@ -107,7 +106,10 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.checkContractAndTransfer(id);
       return Left(response);
-    } on ServerFailure catch (exception) {
+    } on ServerException catch (exception) {
+      print('ServerException ${exception.message}');
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));
     }
   }

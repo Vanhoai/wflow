@@ -10,14 +10,15 @@ part 'verification_state.dart';
 
 class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
   VerificationBloc() : super(const VerificationInitial()) {
-    on<VerificationPhoneStartEvent>(onVerification);
+    on<VerificationPhoneStartEvent>(onVerificationPhone);
+    on<VerificationEmailStartEvent>(onVerificationEmail);
   }
 
-  Future onVerification(VerificationPhoneStartEvent event, Emitter<VerificationState> emit) async {
+  Future onVerificationPhone(VerificationPhoneStartEvent event, Emitter<VerificationState> emit) async {
     try {
       instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
-      emit(state.copyWith(message: 'Loading', isError: false));
+      emit(state.copyWith(message: 'Loading', isError: false, isSuccess: false));
 
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: event.verification,
@@ -53,6 +54,17 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
           return;
         }
       }
+    } finally {
+      instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+    }
+  }
+
+  Future onVerificationEmail(VerificationEmailStartEvent event, Emitter<VerificationState> emit) async {
+    try {
+      instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+      throw Error();
+    } catch (e) {
+      instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
     } finally {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
     }

@@ -5,7 +5,6 @@ import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
-import 'package:wflow/modules/auth/presentation/register/widgets/widgets.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
@@ -49,7 +48,7 @@ class AppRoutes {
       case RouteKeys.introScreen:
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case RouteKeys.verificationScreen:
-        final args = settings.arguments as FormPhoneArgument;
+        final args = settings.arguments as FormRegisterArgument;
         return MaterialPageRoute(builder: (_) => VerificationScreen(arguments: args));
       case RouteKeys.roomsScreen:
         return MaterialPageRoute(builder: (_) => const RoomsScreen());

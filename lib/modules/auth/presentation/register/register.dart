@@ -198,3 +198,20 @@ Widget _tabSelect({String? icon, String? title}) {
     ),
   );
 }
+
+class FormRegisterArgument {
+  final String username;
+  final String password;
+  final String type;
+
+  FormRegisterArgument({
+    required this.username,
+    required this.password,
+    required this.type,
+  });
+
+  @override
+  String toString() {
+    return 'FormRegisterArgument(username: $username, password: $password, type: $type)';
+  }
+}

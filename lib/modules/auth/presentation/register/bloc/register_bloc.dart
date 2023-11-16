@@ -35,9 +35,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       final result = await authUseCase.register(request);
       result.fold((String l) {
         if (registerEvent.type == 'phone') {
-          emit(const RegisterPhoneSuccessState(message: 'Please check your phone for OTP code'));
+          emit(const RegisterPhoneSuccessState(message: 'Register phone success'));
         } else {
-          emit(const RegisterEmailSuccessState(message: 'Please check your email for OTP code'));
+          emit(const RegisterEmailSuccessState(message: 'Register email success'));
         }
         return l;
       }, (r) {

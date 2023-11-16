@@ -51,3 +51,12 @@ class SendPhotoFromCameraEvent extends PhotoEvent {
   @override
   List<Object?> get props => [file];
 }
+
+class SendPhotosFromCameraEvent extends PhotoEvent {
+  final List<File>? files;
+
+  SendPhotosFromCameraEvent({this.files});
+
+  @override
+  List<Object?> get props => [files];
+}

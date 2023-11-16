@@ -60,6 +60,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                 return Container(
                   constraints: const BoxConstraints(maxHeight: 270),
                   child: JobCard(
+                    jobId: job.id,
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     cardPressed: () => pressCard(job.id),
                     boxDecoration: BoxDecoration(

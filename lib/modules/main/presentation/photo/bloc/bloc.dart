@@ -12,6 +12,7 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
     on<UnSelectPhotoEvent>(unSelectPhoto);
     on<SendPhotoEvent>(sendPhoto);
     on<SendPhotoFromCameraEvent>(sendPhotoFromCamera);
+    on<SendPhotosFromCameraEvent>(sendPhotosFromCamera);
   }
 
   FutureOr<void> onSelectMultiple(OnSelectMultipleEvent event, Emitter<PhotoState> emit) {
@@ -63,6 +64,12 @@ class PhotoBloc extends Bloc<PhotoEvent, PhotoState> {
   FutureOr<void> sendPhotoFromCamera(SendPhotoFromCameraEvent event, Emitter<PhotoState> emit) {
     if (event.file != null) {
       emit(SendSinglePhotoState(file: event.file!));
+    }
+  }
+
+  FutureOr<void> sendPhotosFromCamera(SendPhotosFromCameraEvent event, Emitter<PhotoState> emit) {
+    if (event.files != null) {
+      emit(SendMultiplePhotoState(photoFile: event.files!));
     }
   }
 }

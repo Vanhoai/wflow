@@ -169,25 +169,22 @@ class _PhotoScreenState extends State<PhotoScreen> {
           appBar: AppHeader(text: 'Chọn ảnh', actions: [
             Builder(
               builder: (context) {
-                if (!widget.argumentsPhoto.multiple && widget.argumentsPhoto.onlyImage) {
-                  return Container(
-                    margin: const EdgeInsets.only(right: 10, top: 4),
-                    child: InkWell(
-                      borderRadius: BorderRadius.circular(20),
-                      onTap: () {
-                        _getImageFromCamera(context: context);
-                      },
-                      child: Ink(
-                          padding: const EdgeInsets.all(6),
-                          decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
-                          child: const Icon(
-                            Icons.camera,
-                            color: Colors.white,
-                          )),
-                    ),
-                  );
-                }
-                return const SizedBox();
+                return Container(
+                  margin: const EdgeInsets.only(right: 10, top: 4),
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () {
+                      _getImageFromCamera(context: context);
+                    },
+                    child: Ink(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
+                        child: const Icon(
+                          Icons.camera,
+                          color: Colors.white,
+                        )),
+                  ),
+                );
               },
             )
           ]),
@@ -204,8 +201,10 @@ class _PhotoScreenState extends State<PhotoScreen> {
     XFile? result = await ImagePicker().pickImage(source: ImageSource.camera);
     if (result == null) return;
     File file = File(result.path);
-    if (context.mounted) {
+    if (!widget.argumentsPhoto.multiple && context.mounted) {
       BlocProvider.of<PhotoBloc>(context).add(SendPhotoFromCameraEvent(file: file));
+    } else if (widget.argumentsPhoto.multiple && context.mounted) {
+      BlocProvider.of<PhotoBloc>(context).add(SendPhotosFromCameraEvent(files: [file]));
     }
   }
 }

@@ -158,7 +158,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: InkWell(
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.of(context).pushNamed(RouteKeys.editProfileScreen);
+                              },
                               borderRadius: BorderRadius.circular(4.r),
                               child: Center(
                                 child: Text(

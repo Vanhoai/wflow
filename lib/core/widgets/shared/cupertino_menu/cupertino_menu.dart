@@ -1,10 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:wflow/common/app/bloc.app.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/enum.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_report.dart';
+import 'package:wflow/core/routes/keys.dart';
 
-class ContextMenu extends StatelessWidget {
-  ContextMenu({super.key, required this.child, this.margin = const EdgeInsets.all(20)});
+class PostMenu extends StatelessWidget {
+  PostMenu({super.key, required this.child, this.margin = const EdgeInsets.all(20), required this.jobId});
   final Widget child;
   final EdgeInsets margin;
+  final num jobId;
   final DecorationTween _tween = DecorationTween(
     begin: BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
@@ -35,30 +41,21 @@ class ContextMenu extends StatelessWidget {
             onPressed: () {
               Navigator.pop(context);
             },
-            isDefaultAction: true,
-            trailingIcon: CupertinoIcons.doc_on_clipboard_fill,
-            child: const Text('Copy'),
-          ),
-          CupertinoContextMenuAction(
-            onPressed: () {
-              Navigator.pop(context);
-            },
             trailingIcon: CupertinoIcons.share,
             child: const Text('Share'),
           ),
           CupertinoContextMenuAction(
             onPressed: () {
               Navigator.pop(context);
-            },
-            trailingIcon: CupertinoIcons.heart,
-            child: const Text('Favorite'),
-          ),
-          CupertinoContextMenuAction(
-            onPressed: () {
-              Navigator.pop(context);
+              if (instance.get<AppBloc>().state.userEntity.isVerify) {
+                Navigator.of(context).pushNamed(RouteKeys.reportScreen,
+                    arguments: ArgumentsReport(type: ReportEnum.POST, target: jobId));
+              } else {
+                Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
+              }
             },
             isDestructiveAction: true,
-            trailingIcon: CupertinoIcons.delete,
+            trailingIcon: CupertinoIcons.exclamationmark_circle_fill,
             child: const Text('Report'),
           ),
         ],

@@ -34,6 +34,7 @@ class JobCard extends StatefulWidget {
     this.margin = const EdgeInsets.all(0),
     this.cardPressed,
     this.isHorizontal = false,
+    required this.jobId,
   });
 
   final Widget header;
@@ -47,7 +48,7 @@ class JobCard extends StatefulWidget {
   final EdgeInsets margin;
   final Function()? cardPressed;
   final bool isHorizontal;
-
+  final num jobId;
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -113,7 +114,8 @@ class _JobCardState extends State<JobCard> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return ContextMenu(
+    return PostMenu(
+      jobId: widget.jobId,
       margin: widget.margin,
       child: Container(
         decoration: widget.boxDecoration,

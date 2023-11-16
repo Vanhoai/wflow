@@ -78,6 +78,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                       return Container(
                         constraints: const BoxConstraints(maxHeight: 270),
                         child: JobCard(
+                          jobId: job.id,
                           boxDecoration: BoxDecoration(
                             color: themeData.colorScheme.background,
                             borderRadius: BorderRadius.circular(8.r),

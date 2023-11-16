@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
+import 'package:wflow/core/routes/arguments_model/arguments_report.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
@@ -23,12 +24,14 @@ import 'package:wflow/modules/main/presentation/home/contract_signed/contract_si
 import 'package:wflow/modules/main/presentation/home/cv/cv.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
+import 'package:wflow/modules/main/presentation/home/report/report.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/editprofile/editprofile.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
@@ -136,6 +139,11 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const RemoveCollaboratorScreen());
       case RouteKeys.completedContractScreen:
         return MaterialPageRoute(builder: (_) => const CompletedContractScreen());
+      case RouteKeys.reportScreen:
+        final report = settings.arguments as ArgumentsReport;
+        return MaterialPageRoute(builder: (_) => ReportScreen(argumentsReport: report));
+      case RouteKeys.editProfileScreen:
+        return MaterialPageRoute(builder: (_) => EditProfileScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

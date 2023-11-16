@@ -157,6 +157,7 @@ class _ListWorksState extends State<ListWorks> {
                           return Container(
                             constraints: const BoxConstraints(maxHeight: 270),
                             child: JobCard(
+                              jobId: post.id,
                               cardPressed: () => pressCard(post.id),
                               margin: const EdgeInsets.symmetric(horizontal: 20.0),
                               boxDecoration: BoxDecoration(

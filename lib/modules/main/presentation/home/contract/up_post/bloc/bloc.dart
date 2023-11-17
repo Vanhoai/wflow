@@ -23,6 +23,8 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     on<UpPostAddTaskEvent>(onAddTask);
     on<RemoveLastTaskEvent>(onRemoveLastTask);
     on<UpPostInitialEvent>(onInitialUpPost);
+    on<ToggleSkillEvent>(onToggleSkill);
+    on<ToggleCategoryEvent>(onToggleCategory);
   }
 
   FutureOr<void> onInitialUpPost(UpPostInitialEvent event, Emitter<UpPostState> emit) async {
@@ -37,6 +39,26 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
 
     emit(state.copyWith(categories: categories, skills: skills));
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  FutureOr<void> onToggleSkill(ToggleSkillEvent event, Emitter<UpPostState> emit) {
+    final List<CategoryEntity> skills = [...state.skills];
+    if (skills.contains(event.categoryEntity)) {
+      skills.remove(event.categoryEntity);
+    } else {
+      skills.add(event.categoryEntity);
+    }
+    emit(state.copyWith(skills: skills));
+  }
+
+  FutureOr<void> onToggleCategory(ToggleCategoryEvent event, Emitter<UpPostState> emit) {
+    final List<CategoryEntity> categories = [...state.categories];
+    if (categories.contains(event.categoryEntity)) {
+      categories.remove(event.categoryEntity);
+    } else {
+      categories.add(event.categoryEntity);
+    }
+    emit(state.copyWith(categories: categories));
   }
 
   FutureOr<void> onAddTask(UpPostAddTaskEvent event, Emitter<UpPostState> emit) async {

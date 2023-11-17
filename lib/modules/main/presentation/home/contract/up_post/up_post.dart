@@ -56,7 +56,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
             style: themeData.textTheme.displayMedium,
           ),
         ),
-        hideKeyboardWhenTouchOutside: true,
+        hideKeyboardWhenTouchOutside: false,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -71,67 +71,80 @@ class _UpPostScreenState extends State<UpPostScreen> {
                 physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Title',
-                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: titleController,
-                            maxLines: 2,
-                            minLines: 1,
-                            hintText: 'Enter project title',
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Describe',
-                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: descriptionController,
-                            maxLines: 5,
-                            minLines: 3,
-                            hintText: 'Enter basic description for project',
-                          ),
-                          const SizedBox(height: 20),
-                          const SkillAndCategory(),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Budget',
-                            style: themeData.textTheme.displayMedium!.merge(
-                              TextStyle(
-                                color: themeData.colorScheme.onBackground,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Title',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
                               ),
-                            ),
+                              const SizedBox(height: 8),
+                              TextFieldHelper(
+                                controller: titleController,
+                                maxLines: 2,
+                                minLines: 1,
+                                hintText: 'Enter project title',
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                'Describe',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              const SizedBox(height: 8),
+                              TextFieldHelper(
+                                controller: descriptionController,
+                                maxLines: 5,
+                                minLines: 3,
+                                hintText: 'Enter basic description for project',
+                              ),
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: budgetController,
-                            maxLines: 1,
-                            minLines: 1,
-                            hintText: 'Enter budget for project',
-                            keyboardType: TextInputType.number,
-                            suffixIcon: const Icon(Icons.attach_money_sharp),
+                        ),
+                        20.verticalSpace,
+                        const SkillAndCategory(),
+                        20.verticalSpace,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Budget',
+                                style: themeData.textTheme.displayMedium!.merge(
+                                  TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 8),
+                              TextFieldHelper(
+                                controller: budgetController,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter budget for project',
+                                keyboardType: TextInputType.number,
+                                suffixIcon: const Icon(Icons.attach_money_sharp),
+                              ),
+                              20.verticalSpace,
+                              const TaskCreatePost(),
+                              20.verticalSpace,
+                              ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                              80.verticalSpace,
+                            ],
                           ),
-                          20.verticalSpace,
-                          const TaskCreatePost(),
-                          20.verticalSpace,
-                          ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                          80.verticalSpace,
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 ],
@@ -149,7 +162,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                       color: themeData.colorScheme.background,
                     ),
                     child: PrimaryButton(
-                      label: 'Create',
+                      label: 'Post',
                       onPressed: () {},
                       width: double.infinity,
                     ),

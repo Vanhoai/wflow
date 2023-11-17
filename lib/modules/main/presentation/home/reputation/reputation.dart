@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
@@ -21,14 +20,12 @@ class ReputationScreen extends StatefulWidget {
 }
 
 class _ReputationScreenState extends State<ReputationScreen> {
-  final ScrollController _scrollController = ScrollController();
+  final ScrollController scrollController = ScrollController();
 
   @override
-  void initState() {
-    super.initState();
-    _scrollController.addListener(() {
-      print(_scrollController.offset);
-    });
+  void dispose() {
+    scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -39,7 +36,12 @@ class _ReputationScreenState extends State<ReputationScreen> {
         ..add(ReputationLoad())
         ..add(FeedbackLoad()),
       child: CommonScaffold(
-        appBar: const AppBarCenterWidget(center: Text('Reputation')),
+        appBar: AppHeader(
+          text: Text(
+            'Reputation',
+            style: themeData.textTheme.displayLarge,
+          ),
+        ),
         body: BlocConsumer<ReputationBloc, ReputationState>(
           listener: (context, state) {},
           buildWhen: (previous, current) => true,
@@ -48,87 +50,163 @@ class _ReputationScreenState extends State<ReputationScreen> {
             final ReputationEntity reputationEntity = state.reputationEntity;
             final List<FeedbackEntity> feedbacks = state.feedbacks;
 
-            return RefreshIndicator(
-              onRefresh: () async {
-                context.read<ReputationBloc>().add(ReputationLoad());
-                context.read<ReputationBloc>().add(FeedbackLoad());
-              },
-              child: SingleChildScrollView(
-                controller: _scrollController,
-                padding: EdgeInsets.symmetric(horizontal: 16.w),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Center(
-                      child: Visibility(
-                        visible: reputationEntity.totalFeedback > 0,
-                        replacement: Shimmer.fromColors(
-                          baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                          highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
-                          child: const RatingSummary(
-                            counter: 1,
-                            label: 'Total Rating',
-                            average: 0,
-                            averageStyle: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            counterOneStars: 0,
-                            counterTwoStars: 0,
-                            counterThreeStars: 0,
-                            counterFourStars: 0,
-                            counterFiveStars: 0,
-                            color: AppColors.primary,
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Visibility(
+                  visible: reputationEntity.totalFeedback > 0,
+                  replacement: Shimmer.fromColors(
+                    baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                    highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                    child: RatingSummary(
+                      counter: 1,
+                      label: 'Total Rating',
+                      average: 0,
+                      averageStyle: TextStyle(
+                        fontSize: 24.sp,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      counterOneStars: 0,
+                      counterTwoStars: 0,
+                      counterThreeStars: 0,
+                      counterFourStars: 0,
+                      counterFiveStars: 0,
+                      color: const Color.fromARGB(255, 255, 204, 64),
+                    ),
+                  ),
+                  child: RatingSummary(
+                    counter: reputationEntity.totalFeedback,
+                    label: 'Total Rating',
+                    average: reputationEntity.reputation,
+                    averageStyle: TextStyle(
+                      fontSize: 26.sp,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    counterOneStars: reputationEntity.countStarOne,
+                    counterTwoStars: reputationEntity.countStarTwo,
+                    counterThreeStars: reputationEntity.countStarThree,
+                    counterFourStars: reputationEntity.countStarFour,
+                    counterFiveStars: reputationEntity.countStarFive,
+                    color: const Color.fromARGB(255, 255, 204, 64),
+                  ),
+                ),
+                Padding(
+                    padding: EdgeInsets.all(20.r),
+                    child: Visibility(
+                      visible: reputationEntity.totalFeedback > 0,
+                      replacement: Shimmer.fromColors(
+                        baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                        highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                        child: Container(
+                          height: 20.h,
+                          width: 100.w,
+                          decoration: BoxDecoration(
+                            color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                            borderRadius: BorderRadius.circular(4.r),
                           ),
-                        ),
-                        child: RatingSummary(
-                          counter: reputationEntity.totalFeedback,
-                          label: 'Total Rating',
-                          average: reputationEntity.reputation,
-                          averageStyle: const TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          counterOneStars: reputationEntity.countStarOne,
-                          counterTwoStars: reputationEntity.countStarTwo,
-                          counterThreeStars: reputationEntity.countStarThree,
-                          counterFourStars: reputationEntity.countStarFour,
-                          counterFiveStars: reputationEntity.countStarFive,
-                          color: AppColors.primary,
                         ),
                       ),
-                    ),
-                    4.verticalSpace,
-                    Visibility(
+                      child: Text('Recent', style: themeData.textTheme.displayLarge),
+                    )),
+                Expanded(
+                  child: RefreshIndicator(
+                    onRefresh: () async {
+                      context.read<ReputationBloc>().add(ReputationLoad());
+                      context.read<ReputationBloc>().add(FeedbackLoad());
+                    },
+                    child: Visibility(
                       visible: feedbacks.isNotEmpty,
                       replacement: Shimmer.fromColors(
                         baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
                         highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
-                        child: ListView.builder(
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => 20.verticalSpace,
                           itemBuilder: (context, index) {
-                            return Column(
+                            return Container(
+                              margin: EdgeInsets.symmetric(horizontal: 20.w),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Header(
+                                    leadingPhotoUrl: '',
+                                    title: const Text(''),
+                                    subtitle: const Text(''),
+                                    actions: [
+                                      IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert)),
+                                    ],
+                                  ),
+                                  4.verticalSpace,
+                                  RatingBar.builder(
+                                    initialRating: 0,
+                                    minRating: 1,
+                                    direction: Axis.horizontal,
+                                    allowHalfRating: true,
+                                    itemCount: 5,
+                                    itemBuilder: (context, _) => const Icon(
+                                      Icons.star,
+                                      color: Color.fromARGB(255, 255, 204, 64),
+                                    ),
+                                    onRatingUpdate: (rating) {},
+                                    glow: false,
+                                    itemSize: 16,
+                                    tapOnlyMode: false,
+                                    ignoreGestures: true,
+                                  ),
+                                  4.verticalSpace,
+                                  TextMore(
+                                    '',
+                                    style: themeData.textTheme.displayMedium!,
+                                    trimLines: 5,
+                                    trimMode: TrimMode.Line,
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          itemCount: 5,
+                          shrinkWrap: true,
+                          physics: const BouncingScrollPhysics(),
+                        ),
+                      ),
+                      child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: const BouncingScrollPhysics(),
+                        separatorBuilder: (context, index) => 20.verticalSpace,
+                        itemBuilder: (context, index) {
+                          final FeedbackEntity feedbackEntity = feedbacks[index];
+                          final date =
+                              DateFormat('dd/MM/yyyy').format(DateTime.parse(feedbackEntity.createdAt.toString()));
+                          final time =
+                              DateFormat('HH:mm:ss').format(DateTime.parse(feedbackEntity.createdAt.toString()));
+
+                          return Container(
+                            margin: EdgeInsets.symmetric(horizontal: 20.w),
+                            child: Column(
                               mainAxisSize: MainAxisSize.min,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
                                 Header(
-                                  leadingPhotoUrl: '',
-                                  title: const Text(''),
-                                  subtitle: const Text(''),
+                                  leadingPhotoUrl: feedbackEntity.businessLogo,
+                                  title: Text(feedbackEntity.businessName, style: themeData.textTheme.displayMedium),
+                                  subtitle: Text(
+                                    '$date $time',
+                                    style: themeData.textTheme.displaySmall,
+                                  ),
                                   actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
                                 ),
                                 4.verticalSpace,
                                 RatingBar.builder(
-                                  initialRating: 0,
+                                  initialRating: feedbackEntity.star.toDouble(),
                                   minRating: 1,
                                   direction: Axis.horizontal,
                                   allowHalfRating: true,
                                   itemCount: 5,
                                   itemBuilder: (context, _) => const Icon(
                                     Icons.star,
-                                    color: AppColors.primary,
+                                    color: Color.fromARGB(255, 255, 204, 64),
                                   ),
                                   onRatingUpdate: (rating) {},
                                   glow: false,
@@ -138,77 +216,21 @@ class _ReputationScreenState extends State<ReputationScreen> {
                                 ),
                                 4.verticalSpace,
                                 TextMore(
-                                  '',
+                                  feedbackEntity.description,
                                   style: themeData.textTheme.displayMedium!,
                                   trimLines: 5,
                                   trimMode: TrimMode.Line,
                                 ),
-                                8.verticalSpace,
                               ],
-                            );
-                          },
-                          itemCount: 5,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                        ),
-                      ),
-                      child: ListView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          final FeedbackEntity feedbackEntity = feedbacks[index];
-                          final date =
-                              DateFormat('dd/MM/yyyy').format(DateTime.parse(feedbackEntity.createdAt.toString()));
-                          final time =
-                              DateFormat('HH:mm:ss').format(DateTime.parse(feedbackEntity.createdAt.toString()));
-                          return Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Header(
-                                leadingPhotoUrl: feedbackEntity.businessLogo,
-                                title: Text(feedbackEntity.businessName, style: themeData.textTheme.displayMedium),
-                                subtitle: Text(
-                                  '$date $time',
-                                  style: themeData.textTheme.displaySmall,
-                                ),
-                                actions: [IconButton(onPressed: () {}, icon: const Icon(Icons.more_vert))],
-                              ),
-                              4.verticalSpace,
-                              RatingBar.builder(
-                                initialRating: feedbackEntity.star.toDouble(),
-                                minRating: 1,
-                                direction: Axis.horizontal,
-                                allowHalfRating: true,
-                                itemCount: 5,
-                                itemBuilder: (context, _) => const Icon(
-                                  Icons.star,
-                                  color: AppColors.primary,
-                                ),
-                                onRatingUpdate: (rating) {},
-                                glow: false,
-                                itemSize: 16,
-                                tapOnlyMode: false,
-                                ignoreGestures: true,
-                              ),
-                              4.verticalSpace,
-                              TextMore(
-                                feedbackEntity.description,
-                                style: themeData.textTheme.displayMedium!,
-                                trimLines: 5,
-                                trimMode: TrimMode.Line,
-                              ),
-                              8.verticalSpace,
-                            ],
+                            ),
                           );
                         },
                         itemCount: feedbacks.length,
                       ),
                     ),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             );
           },
         ),

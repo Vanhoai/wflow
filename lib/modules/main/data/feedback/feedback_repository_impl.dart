@@ -14,7 +14,6 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
 
   @override
   Future<Either<HttpResponse, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) {
-    // TODO: implement businessSendFeedback
     throw UnimplementedError();
   }
 

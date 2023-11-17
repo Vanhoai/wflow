@@ -3,6 +3,7 @@ part of 'reputation_bloc.dart';
 class ReputationState extends Equatable {
   final ReputationEntity reputationEntity;
   final List<FeedbackEntity> feedbacks;
+
   const ReputationState({
     required this.reputationEntity,
     required this.feedbacks,

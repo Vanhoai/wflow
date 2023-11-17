@@ -1,7 +1,13 @@
+import 'package:chips_choice/chips_choice.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:textfield_tags/textfield_tags.dart';
+import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
+import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
 
 class SkillAndCategory extends StatefulWidget {
@@ -31,12 +37,76 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
     _controller = TextfieldTagsController();
   }
 
-  void addSkill() {
+  void addSkill(UpPostBloc bloc) {
     showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12),
+        ),
+      ),
       context: context,
-      builder: (context) {
-        return Container();
-      },
+      builder: (_) => BlocProvider<UpPostBloc>.value(
+        value: bloc,
+        child: FractionallySizedBox(
+          heightFactor: 0.8,
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
+            ),
+            child: Stack(
+              children: [
+                BlocBuilder<UpPostBloc, UpPostState>(
+                  builder: (context, state) {
+                    return ChipsChoice<CategoryEntity>.multiple(
+                      wrapped: true,
+                      value: state.skillSelected,
+                      onChanged: (val) {},
+                      choiceItems: C2Choice.listFrom<CategoryEntity, CategoryEntity>(
+                        source: state.skills,
+                        value: (i, v) => v,
+                        label: (i, v) => v.name,
+                      ),
+                      choiceBuilder: (item, index) {
+                        return Container(
+                          margin: const EdgeInsets.all(4),
+                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(4),
+                            color: AppColors.primary.withOpacity(0.1),
+                          ),
+                          child: Text(
+                            item.value.name,
+                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+                                  color: AppColors.primary,
+                                ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                  child: PrimaryButton(
+                    label: 'Done',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -44,7 +114,10 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
     showModalBottomSheet(
       context: context,
       builder: (context) {
-        return Container();
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: Container(),
+        );
       },
     );
   }
@@ -56,164 +129,168 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
     return BlocBuilder<UpPostBloc, UpPostState>(
       builder: (context, state) {
         return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Skills',
-                  style: themeData.textTheme.displayMedium!.merge(
-                    TextStyle(
-                      color: themeData.colorScheme.onBackground,
-                    ),
-                  ),
-                ),
-                InkWell(
-                  onTap: () {},
-                  borderRadius: BorderRadius.circular(4),
-                  child: Text(
-                    'Add Skills',
-                    style: themeData.textTheme.displayMedium!.copyWith(
-                      color: AppColors.primary,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SizedBox(height: 8),
-            Autocomplete(
-              optionsViewBuilder: (context, onSelected, options) {
-                return Container(
-                  child: Align(
-                    alignment: Alignment.topCenter,
-                    child: Material(
-                      elevation: 4.0,
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 200),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          itemCount: options.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final dynamic option = options.elementAt(index);
-                            return TextButton(
-                              onPressed: () {
-                                onSelected(option);
-                              },
-                              child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Padding(
-                                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                                  child: Text(
-                                    '# $option',
-                                    textAlign: TextAlign.left,
-                                    style: TextStyle(
-                                      color: AppColors.primary.withOpacity(0.8),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            );
-                          },
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Skills',
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(
+                            color: themeData.colorScheme.onBackground,
+                          ),
                         ),
                       ),
-                    ),
-                  ),
-                );
-              },
-              optionsBuilder: (TextEditingValue textEditingValue) {
-                if (textEditingValue.text == '') {
-                  return const Iterable<String>.empty();
-                }
-                return state.skills.map((e) => e.name).where((String option) {
-                  return option.contains(textEditingValue.text.toLowerCase());
-                });
-              },
-              onSelected: (String selectedTag) {
-                _controller.addTag = selectedTag;
-              },
-              fieldViewBuilder: (context, textEditingController, tfn, onFieldSubmitted) {
-                return TextFieldTags(
-                  textEditingController: textEditingController,
-                  focusNode: tfn,
-                  textfieldTagsController: _controller,
-                  initialTags: const [],
-                  textSeparators: const [' ', ','],
-                  letterCase: LetterCase.normal,
-                  validator: (String tag) {
-                    return null;
-                  },
-                  inputfieldBuilder: (context, tec, fn, error, onChanged, onSubmitted) {
-                    return (context, scrollController, tags, onTagDelete) {
-                      return TextField(
-                        controller: tec,
-                        focusNode: fn,
-                        decoration: InputDecoration(
-                          border: const UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                      InkWell(
+                        onTap: () {
+                          addSkill(context.read<UpPostBloc>());
+                        },
+                        borderRadius: BorderRadius.circular(4),
+                        child: Text(
+                          'Add',
+                          style: themeData.textTheme.displayMedium!.copyWith(
+                            color: AppColors.primary,
                           ),
-                          focusedBorder: const UnderlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.all(Radius.circular(4.0)),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-                          fillColor: Colors.grey[100],
-                          filled: true,
-                          hintText: _controller.hasTags ? '' : 'Enter skills required',
-                          errorText: error,
-                          errorStyle: const TextStyle(fontSize: 12.0),
-                          prefixIconConstraints: BoxConstraints(maxWidth: MediaQuery.of(context).size.width),
-                          prefixIcon: tags.isNotEmpty
-                              ? SingleChildScrollView(
-                                  controller: scrollController,
-                                  padding: const EdgeInsets.symmetric(horizontal: 12),
-                                  scrollDirection: Axis.horizontal,
-                                  child: Row(
-                                      children: tags.map((String tag) {
-                                    return Container(
-                                      decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(4),
-                                        color: const Color.fromARGB(255, 74, 137, 92),
-                                      ),
-                                      margin: const EdgeInsets.only(right: 4),
-                                      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 4.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          InkWell(
-                                            child: Text(
-                                              '# $tag',
-                                              style: const TextStyle(color: Colors.white),
-                                            ),
-                                            onTap: () {},
-                                          ),
-                                          const SizedBox(width: 4.0),
-                                          InkWell(
-                                            child: const Icon(
-                                              Icons.cancel,
-                                              size: 14.0,
-                                              color: Color.fromARGB(255, 233, 233, 233),
-                                            ),
-                                            onTap: () {
-                                              onTagDelete(tag);
-                                            },
-                                          )
-                                        ],
-                                      ),
-                                    );
-                                  }).toList()),
-                                )
-                              : null,
                         ),
-                        onChanged: onChanged,
-                        onSubmitted: onSubmitted,
+                      )
+                    ],
+                  ),
+                ),
+                8.verticalSpace,
+                SizedBox(
+                  height: 40.h,
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, state) => 12.horizontalSpace,
+                    itemCount: state.skillSelected.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 4.h),
+                        padding: EdgeInsets.symmetric(horizontal: 12.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: themeData.colorScheme.background,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            Text(state.skillSelected[index].name),
+                            4.horizontalSpace,
+                            InkWell(
+                              onTap: () {
+                                print('remove skill');
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(4.r),
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  AppConstants.close,
+                                  height: 14.w,
+                                  width: 14.w,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
                       );
-                    };
-                  },
-                );
-              },
-            )
+                    },
+                  ),
+                ),
+              ],
+            ),
+            24.verticalSpace,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 20.w),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Categories',
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(
+                            color: themeData.colorScheme.onBackground,
+                          ),
+                        ),
+                      ),
+                      InkWell(
+                        onTap: () {},
+                        borderRadius: BorderRadius.circular(4),
+                        child: Text(
+                          'Add',
+                          style: themeData.textTheme.displayMedium!.copyWith(
+                            color: AppColors.primary,
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                8.verticalSpace,
+                SizedBox(
+                  height: 40.h,
+                  child: ListView.separated(
+                    padding: EdgeInsets.symmetric(horizontal: 20.w),
+                    physics: const BouncingScrollPhysics(),
+                    separatorBuilder: (context, state) => 12.horizontalSpace,
+                    itemCount: 20,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, state) {
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 4.h),
+                        padding: EdgeInsets.symmetric(horizontal: 12.h),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4.r),
+                          color: themeData.colorScheme.background,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                        child: Row(
+                          children: [
+                            const Text('# Dart'),
+                            4.horizontalSpace,
+                            InkWell(
+                              onTap: () {
+                                print('remove skill');
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(4.r),
+                                alignment: Alignment.center,
+                                child: SvgPicture.asset(
+                                  AppConstants.close,
+                                  height: 14.w,
+                                  width: 14.w,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
           ],
         );
       },

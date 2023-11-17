@@ -69,8 +69,6 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
   }
 
   Future<void> onRefreshAddBusiness(RefreshAddBusinessEvent event, Emitter emit) async {
-    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
-
     final result = await userUseCase.getUsersNotBusiness(getUserNotBusinessModel: const GetUserNotBusinessModel());
     result.fold(
       (HttpResponseWithPagination<UserEntity> users) {
@@ -82,8 +80,6 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
         });
       },
     );
-
-    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onUserCheckedAddBusiness(UserCheckedAddBusinessEvent event, Emitter emit) async {

@@ -1,7 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/reputation_entity.dart';
 import 'package:wflow/modules/main/domain/feedback/feedback_usecase.dart';
@@ -20,42 +19,26 @@ class ReputationBloc extends Bloc<ReputationEvent, ReputationState> {
   }
 
   Future onReputationLoad(ReputationLoad event, Emitter<ReputationState> emit) async {
-    try {
-      instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
-      final response = await feedbackUseCase.findReputation();
-      response.fold(
-        (reputationEntity) {
-          emit(state.copyWith(
-            reputationEntity: reputationEntity,
-          ));
-        },
-        (failure) {},
-      );
-    } catch (e) {
-      instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
-    } finally {
-      instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
-    }
+    final response = await feedbackUseCase.findReputation();
+    response.fold(
+      (reputationEntity) {
+        emit(state.copyWith(reputationEntity: reputationEntity));
+      },
+      (failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
+    );
   }
 
   Future onFeedbackLoad(FeedbackLoad event, Emitter<ReputationState> emit) async {
-    try {
-      instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
-      final response = await feedbackUseCase.findFeedbackOfUser();
-      response.fold(
-        (list) {
-          emit(state.copyWith(feedbacks: list));
-        },
-        (failure) {
-          emit(state.copyWith(
-            feedbacks: const [],
-          ));
-        },
-      );
-    } catch (e) {
-      instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
-    } finally {
-      instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
-    }
+    final response = await feedbackUseCase.findFeedbackOfUser();
+    response.fold(
+      (list) {
+        emit(state.copyWith(feedbacks: list));
+      },
+      (failure) {
+        AlertUtils.showMessage('Notification', failure.message);
+      },
+    );
   }
 }

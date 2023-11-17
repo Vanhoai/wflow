@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/core/theme/them.dart';
 
 class RatingSummary extends StatelessWidget {
   const RatingSummary({
@@ -21,16 +23,11 @@ class RatingSummary extends StatelessWidget {
     this.labelCounterThreeStars = '3',
     this.labelCounterTwoStars = '2',
     this.labelCounterOneStars = '1',
-    this.labelCounterFiveStarsStyle = const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-    this.labelCounterFourStarsStyle = const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-    this.labelCounterThreeStarsStyle = const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-    this.labelCounterTwoStarsStyle = const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-    this.labelCounterOneStarsStyle = const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
     this.label = 'Ratings',
-    this.labelStyle = const TextStyle(fontWeight: FontWeight.w600),
     this.color = Colors.amber,
     this.backgroundColor = const Color(0xFFEEEEEE),
   }) : super(key: key);
+
   final int counter;
   final double average;
   final bool showAverage;
@@ -45,67 +42,56 @@ class RatingSummary extends StatelessWidget {
   final String labelCounterThreeStars;
   final String labelCounterTwoStars;
   final String labelCounterOneStars;
-  final TextStyle labelCounterFiveStarsStyle;
-  final TextStyle labelCounterFourStarsStyle;
-  final TextStyle labelCounterThreeStarsStyle;
-  final TextStyle labelCounterTwoStarsStyle;
-  final TextStyle labelCounterOneStarsStyle;
   final String label;
-  final TextStyle labelStyle;
   final Color color;
   final Color backgroundColor;
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Flexible(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _ReviewBar(
-                label: labelCounterFiveStars,
-                labelStyle: labelCounterFiveStarsStyle,
-                value: counterFiveStars / counter,
-                color: color,
-                backgroundColor: backgroundColor,
-              ),
-              _ReviewBar(
-                label: labelCounterFourStars,
-                labelStyle: labelCounterFourStarsStyle,
-                value: counterFourStars / counter,
-                color: color,
-                backgroundColor: backgroundColor,
-              ),
-              _ReviewBar(
-                label: labelCounterThreeStars,
-                labelStyle: labelCounterThreeStarsStyle,
-                value: counterThreeStars / counter,
-                color: color,
-                backgroundColor: backgroundColor,
-              ),
-              _ReviewBar(
-                label: labelCounterTwoStars,
-                labelStyle: labelCounterTwoStarsStyle,
-                value: counterTwoStars / counter,
-                color: color,
-                backgroundColor: backgroundColor,
-              ),
-              _ReviewBar(
-                label: labelCounterOneStars,
-                labelStyle: labelCounterOneStarsStyle,
-                value: counterOneStars / counter,
-                color: color,
-                backgroundColor: backgroundColor,
-              ),
-            ],
-          ),
-        ),
-        if (showAverage) ...[
-          const SizedBox(width: 30),
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 20.w),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
           Flexible(
             child: Column(
+              children: [
+                ReviewBar(
+                  label: labelCounterFiveStars,
+                  value: counterFiveStars / counter,
+                  color: color,
+                  backgroundColor: backgroundColor,
+                ),
+                ReviewBar(
+                  label: labelCounterFourStars,
+                  value: counterFourStars / counter,
+                  color: color,
+                  backgroundColor: backgroundColor,
+                ),
+                ReviewBar(
+                  label: labelCounterThreeStars,
+                  value: counterThreeStars / counter,
+                  color: color,
+                  backgroundColor: backgroundColor,
+                ),
+                ReviewBar(
+                  label: labelCounterTwoStars,
+                  value: counterTwoStars / counter,
+                  color: color,
+                  backgroundColor: backgroundColor,
+                ),
+                ReviewBar(
+                  label: labelCounterOneStars,
+                  value: counterOneStars / counter,
+                  color: color,
+                  backgroundColor: backgroundColor,
+                ),
+              ],
+            ),
+          ),
+          if (showAverage) ...[
+            24.horizontalSpace,
+            Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(average.toStringAsFixed(1), style: averageStyle),
@@ -117,32 +103,31 @@ class RatingSummary extends StatelessWidget {
                     return Icon(Icons.star, color: color);
                   },
                 ),
-                const SizedBox(height: 10),
+                12.verticalSpace,
                 Text(
                   '$counter $label',
-                  style: const TextStyle(fontWeight: FontWeight.w600),
+                  style: themeData.textTheme.displayMedium,
                   overflow: TextOverflow.fade,
                 ),
               ],
             ),
-          ),
+          ],
         ],
-      ],
+      ),
     );
   }
 }
 
-class _ReviewBar extends StatelessWidget {
-  const _ReviewBar({
+class ReviewBar extends StatelessWidget {
+  const ReviewBar({
     Key? key,
     required this.label,
     required this.value,
     this.color = Colors.amber,
     this.backgroundColor = const Color(0xFFEEEEEE),
-    this.labelStyle = const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
   }) : super(key: key);
+
   final String label;
-  final TextStyle labelStyle;
   final double value;
   final Color color;
   final Color backgroundColor;
@@ -150,21 +135,21 @@ class _ReviewBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 2),
+      padding: EdgeInsets.symmetric(vertical: 4.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             label,
-            style: labelStyle,
+            style: Theme.of(context).textTheme.displayMedium,
           ),
-          const SizedBox(width: 20),
+          12.horizontalSpace,
           Expanded(
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: SizedBox(
-                height: 10,
+                height: 12.h,
                 child: LinearProgressIndicator(
                   value: value,
                   valueColor: AlwaysStoppedAnimation<Color>(color),

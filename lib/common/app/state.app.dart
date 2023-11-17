@@ -55,11 +55,11 @@ class AppState extends Equatable {
     return {
       'isDarkMode': isDarkMode,
       'languageCode': languageCode,
-      'authEntity': authEntity,
+      'authEntity': authEntity.toJson(),
       'isFirstTime': isFirstTime,
       'role': role,
       'rememberMe': rememberMe,
-      'userEntity': userEntity,
+      'userEntity': userEntity.toJson(),
     };
   }
 

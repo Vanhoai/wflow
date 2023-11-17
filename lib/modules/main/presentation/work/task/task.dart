@@ -149,11 +149,11 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                           ),
-                          PrimaryButton(
-                              label: 'Rate',
-                              onPressed: () {
-                                _displayTextInputDialog(context);
-                              }),
+                          // PrimaryButton(
+                          //     label: 'Rate',
+                          //     onPressed: () {
+                          //       _displayTextInputDialog(context);
+                          //     }),
                           Builder(
                             builder: (context) {
                               if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) {

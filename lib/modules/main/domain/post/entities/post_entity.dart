@@ -43,7 +43,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
   final String companyLogo;
 
   @JsonKey(name: 'isBookmarked', defaultValue: false)
-  final bool isBookmark;
+  final bool isBookmarked;
 
   @JsonKey(name: 'skills', defaultValue: [])
   final List<String> skills;
@@ -67,7 +67,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
     required this.creatorAvatar,
     required this.companyName,
     required this.companyLogo,
-    required this.isBookmark,
+    required this.isBookmarked,
     required this.skills,
     required this.tasks,
     required this.numberApplied,
@@ -94,7 +94,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
         creatorAvatar: '',
         companyName: '',
         companyLogo: '',
-        isBookmark: false,
+        isBookmarked: false,
         skills: [],
         tasks: [],
         numberApplied: 0,
@@ -112,7 +112,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
     String? creatorAvatar,
     String? companyName,
     String? companyLogo,
-    bool? isBookmark,
+    bool? isBookmarked,
     List<String>? skills,
     List<String>? tasks,
     num? numberApplied,
@@ -133,7 +133,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
       creatorAvatar: creatorAvatar ?? this.creatorAvatar,
       companyName: companyName ?? this.companyName,
       companyLogo: companyLogo ?? this.companyLogo,
-      isBookmark: isBookmark ?? this.isBookmark,
+      isBookmarked: isBookmarked ?? this.isBookmarked,
       skills: skills ?? this.skills,
       tasks: tasks ?? this.tasks,
       numberApplied: numberApplied ?? this.numberApplied,
@@ -155,7 +155,7 @@ class PostEntity extends BaseEntity with EquatableMixin {
         creatorAvatar,
         companyName,
         companyLogo,
-        isBookmark,
+        isBookmarked,
         skills,
         tasks,
       ];

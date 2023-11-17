@@ -26,8 +26,7 @@ class _ListWorksState extends State<ListWorks> {
   }
 
   void pressCard(num work) {
-    Navigator.pushNamed(context, RouteKeys.jobInformationScreen,
-        arguments: work);
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen, arguments: work);
   }
 
   @override
@@ -35,8 +34,7 @@ class _ListWorksState extends State<ListWorks> {
     final ThemeData themeData = Theme.of(context);
 
     scrollController.addListener(() {
-      if (scrollController.position.pixels ==
-          scrollController.position.maxScrollExtent) {
+      if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
         context.read<WorkBloc>().add(LoadMoreEvent());
       }
     });
@@ -64,8 +62,7 @@ class _ListWorksState extends State<ListWorks> {
                     padding: const EdgeInsets.symmetric(horizontal: 20),
                     scrollDirection: Axis.horizontal,
                     itemCount: state.categories.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 12),
+                    separatorBuilder: (context, index) => const SizedBox(width: 12),
                     itemBuilder: (context, index) {
                       final category = state.categories[index].name;
                       final selected = category == state.categorySelected;
@@ -78,23 +75,17 @@ class _ListWorksState extends State<ListWorks> {
                           ),
                           label: Text(category),
                           selected: selected,
-                          onSelected: (value) => context
-                              .read<WorkBloc>()
-                              .add(OnSelectCategoryEvent(category: category)),
+                          onSelected: (value) =>
+                              context.read<WorkBloc>().add(OnSelectCategoryEvent(category: category)),
                           showCheckmark: false,
-                          labelPadding:
-                              const EdgeInsets.symmetric(horizontal: 12),
+                          labelPadding: const EdgeInsets.symmetric(horizontal: 12),
                           visualDensity: VisualDensity.compact,
                           labelStyle: themeData.textTheme.labelMedium!.copyWith(
-                            color: selected
-                                ? Colors.white
-                                : themeData.colorScheme.onBackground,
+                            color: selected ? Colors.white : themeData.colorScheme.onBackground,
                           ),
                           color: selected
-                              ? const MaterialStatePropertyAll(
-                                  AppColors.primary)
-                              : MaterialStatePropertyAll(
-                                  themeData.colorScheme.background),
+                              ? const MaterialStatePropertyAll(AppColors.primary)
+                              : MaterialStatePropertyAll(themeData.colorScheme.background),
                           elevation: 2,
                         ),
                       );
@@ -104,18 +95,7 @@ class _ListWorksState extends State<ListWorks> {
               );
             },
           ),
-          BlocConsumer<WorkBloc, WorkState>(
-            listener: (context, state) {
-              if (state.isFinal) {
-                // Fluttertoast.showToast(
-                //   msg: 'Đã hiển thị hết bài đăng',
-                //   toastLength: Toast.LENGTH_SHORT,
-                //   gravity: ToastGravity.CENTER,
-                //   timeInSecForIosWeb: 1,
-                //   fontSize: 16.0,
-                // );
-              }
-            },
+          BlocBuilder<WorkBloc, WorkState>(
             buildWhen: (prev, cur) =>
                 prev.isLoading != cur.isLoading ||
                 prev.isLoadMore != cur.isLoadMore ||
@@ -136,13 +116,11 @@ class _ListWorksState extends State<ListWorks> {
                         width: double.infinity,
                         scrollDirection: Axis.vertical,
                         padding: EdgeInsets.zero,
-                        margin: const EdgeInsets.only(
-                            bottom: 20, left: 20, right: 20),
+                        margin: const EdgeInsets.only(bottom: 20, left: 20, right: 20),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: themeData.colorScheme.onBackground
-                                .withOpacity(0.8),
+                            color: themeData.colorScheme.onBackground.withOpacity(0.8),
                             width: 1,
                           ),
                         ),
@@ -173,21 +151,18 @@ class _ListWorksState extends State<ListWorks> {
                             child: JobCard(
                               jobId: post.id,
                               cardPressed: () => pressCard(post.id),
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
+                              margin: const EdgeInsets.symmetric(horizontal: 20.0),
                               boxDecoration: BoxDecoration(
                                 color: themeData.colorScheme.background,
                                 borderRadius: BorderRadius.circular(8.0),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: themeData.colorScheme.onBackground
-                                        .withOpacity(0.1),
+                                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
                                     blurRadius: 4,
                                     offset: const Offset(0, 2),
                                   ),
                                   BoxShadow(
-                                    color: themeData.colorScheme.onBackground
-                                        .withOpacity(0.1),
+                                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
                                     blurRadius: 4,
                                     offset: const Offset(0, 2),
                                   ),
@@ -198,28 +173,22 @@ class _ListWorksState extends State<ListWorks> {
                                 leadingPhotoUrl: post.companyLogo,
                                 title: Text(
                                   post.position,
-                                  style: themeData.textTheme.displayLarge!
-                                      .merge(TextStyle(
+                                  style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                     color: themeData.colorScheme.onBackground,
                                   )),
                                 ),
                                 onTapLeading: () {},
                                 subtitle: Text(
                                   post.companyName,
-                                  style: themeData.textTheme.displayMedium!
-                                      .merge(TextStyle(
+                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                     color: themeData.colorScheme.onBackground,
                                   )),
                                 ),
                                 leadingSize: 30,
                                 actions: [
                                   InkWell(
-                                    onTap: () => context.read<WorkBloc>().add(
-                                        ToggleBookmarkWorkEvent(
-                                            id: post.id,
-                                            index: index,
-                                            isBookmarked:
-                                                !state.bookmarks[index])),
+                                    onTap: () => context.read<WorkBloc>().add(ToggleBookmarkWorkEvent(
+                                        id: post.id, index: index, isBookmarkeded: !state.bookmarks[index])),
                                     child: SvgPicture.asset(
                                       AppConstants.bookmark,
                                       height: 24,
@@ -227,8 +196,7 @@ class _ListWorksState extends State<ListWorks> {
                                       colorFilter: ColorFilter.mode(
                                         state.bookmarks[index]
                                             ? themeData.colorScheme.primary
-                                            : themeData.colorScheme.onBackground
-                                                .withOpacity(0.5),
+                                            : themeData.colorScheme.onBackground.withOpacity(0.5),
                                         BlendMode.srcIn,
                                       ),
                                     ),

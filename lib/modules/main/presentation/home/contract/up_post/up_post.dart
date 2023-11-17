@@ -7,6 +7,7 @@ import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
+import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/skill_category.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/task_create_post.dart';
@@ -20,15 +21,19 @@ class UpPostScreen extends StatefulWidget {
 }
 
 class _UpPostScreenState extends State<UpPostScreen> {
-  late final TextEditingController titleController;
-  late final TextEditingController descriptionController;
-  late final TextEditingController budgetController;
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late TextEditingController budgetController;
+  late TextEditingController duration;
+  late TextEditingController position;
 
   @override
   void initState() {
     titleController = TextEditingController();
     descriptionController = TextEditingController();
     budgetController = TextEditingController();
+    duration = TextEditingController();
+    position = TextEditingController();
     super.initState();
   }
 
@@ -37,6 +42,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
     titleController.dispose();
     descriptionController.dispose();
     budgetController.dispose();
+    duration.dispose();
     super.dispose();
   }
 
@@ -48,6 +54,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
       create: (_) => UpPostBloc(
         categoryUseCase: instance.get<CategoryUseCase>(),
         contractUseCase: instance.get<ContractUseCase>(),
+        postUseCase: instance.get<PostUseCase>(),
       )..add(UpPostInitialEvent()),
       child: CommonScaffold(
         appBar: AppHeader(
@@ -87,27 +94,74 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                   color: themeData.colorScheme.onBackground,
                                 )),
                               ),
-                              const SizedBox(height: 8),
+                              8.verticalSpace,
                               TextFieldHelper(
                                 controller: titleController,
                                 maxLines: 2,
                                 minLines: 1,
                                 hintText: 'Enter project title',
                               ),
-                              const SizedBox(height: 20),
+                              20.verticalSpace,
                               Text(
                                 'Describe',
                                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                   color: themeData.colorScheme.onBackground,
                                 )),
                               ),
-                              const SizedBox(height: 8),
+                              8.verticalSpace,
                               TextFieldHelper(
                                 controller: descriptionController,
                                 maxLines: 5,
                                 minLines: 3,
-                                hintText: 'Enter basic description for project',
+                                hintText: 'Enter basic description',
                               ),
+                              20.verticalSpace,
+                              Text(
+                                'Duration',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: duration,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter duration (optional)',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Position',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: position,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter position',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Budget',
+                                style: themeData.textTheme.displayMedium!.merge(
+                                  TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: budgetController,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter budget',
+                                keyboardType: TextInputType.number,
+                                suffixIcon: const Icon(Icons.attach_money_sharp),
+                              ),
+                              20.verticalSpace,
                             ],
                           ),
                         ),
@@ -119,24 +173,6 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
-                              Text(
-                                'Budget',
-                                style: themeData.textTheme.displayMedium!.merge(
-                                  TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(height: 8),
-                              TextFieldHelper(
-                                controller: budgetController,
-                                maxLines: 1,
-                                minLines: 1,
-                                hintText: 'Enter budget for project',
-                                keyboardType: TextInputType.number,
-                                suffixIcon: const Icon(Icons.attach_money_sharp),
-                              ),
-                              20.verticalSpace,
                               const TaskCreatePost(),
                               20.verticalSpace,
                               ActionHelper(onUpload: () {}, onWatchVideo: () {}),
@@ -149,26 +185,40 @@ class _UpPostScreenState extends State<UpPostScreen> {
                   ),
                 ],
               ),
-              Visibility(
-                visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-                child: Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: themeData.colorScheme.background,
+              BlocBuilder<UpPostBloc, UpPostState>(
+                builder: (context, state) {
+                  return Visibility(
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+                    child: Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: themeData.colorScheme.background,
+                        ),
+                        child: PrimaryButton(
+                          label: 'Post',
+                          onPressed: () {
+                            context.read<UpPostBloc>().add(
+                                  UpPostSubmitEvent(
+                                    budget: budgetController.text,
+                                    description: descriptionController.text,
+                                    title: titleController.text,
+                                    duration: duration.text,
+                                    position: position.text,
+                                  ),
+                                );
+                          },
+                          width: double.infinity,
+                        ),
+                      ),
                     ),
-                    child: PrimaryButton(
-                      label: 'Post',
-                      onPressed: () {},
-                      width: double.infinity,
-                    ),
-                  ),
-                ),
-              ),
+                  );
+                },
+              )
             ],
           ),
         ),

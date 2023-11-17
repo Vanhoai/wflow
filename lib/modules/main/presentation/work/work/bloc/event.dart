@@ -17,11 +17,11 @@ class RefreshEvent extends WorkEvent {}
 class ToggleBookmarkWorkEvent extends WorkEvent {
   final int id;
   final int index;
-  final bool isBookmarked;
+  final bool isBookmarkeded;
 
   ToggleBookmarkWorkEvent({
     required this.id,
     required this.index,
-    required this.isBookmarked,
+    required this.isBookmarkeded,
   });
 }

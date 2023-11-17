@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:textfield_tags/textfield_tags.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -18,25 +17,6 @@ class SkillAndCategory extends StatefulWidget {
 }
 
 class _SkillAndCategoryState extends State<SkillAndCategory> {
-  late final TextfieldTagsController _controller;
-
-  @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
-  void dispose() {
-    _controller.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = TextfieldTagsController();
-  }
-
   void addSkill(UpPostBloc bloc) {
     showModalBottomSheet(
       isScrollControlled: true,
@@ -73,18 +53,42 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         label: (i, v) => v.name,
                       ),
                       choiceBuilder: (item, index) {
-                        return Container(
-                          margin: const EdgeInsets.all(4),
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: AppColors.primary.withOpacity(0.1),
-                          ),
-                          child: Text(
-                            item.value.name,
-                            style: Theme.of(context).textTheme.bodyMedium!.copyWith(
-                                  color: AppColors.primary,
+                        final selected = state.skillSelected.contains(item.value);
+
+                        return InkWell(
+                          onTap: () {
+                            context.read<UpPostBloc>().add(ToggleSkillEvent(item.value));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: selected ? AppColors.primary : AppColors.primary.withOpacity(0.7),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  item.value.name,
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
                                 ),
+                                6.horizontalSpace,
+                                Visibility(
+                                  visible: selected,
+                                  child: SvgPicture.asset(
+                                    AppConstants.close,
+                                    height: 16,
+                                    width: 16,
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -110,15 +114,100 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
     );
   }
 
-  void addCategory() {
+  void addCategory(UpPostBloc bloc) {
     showModalBottomSheet(
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(12),
+        ),
+      ),
       context: context,
-      builder: (context) {
-        return FractionallySizedBox(
-          heightFactor: 0.7,
-          child: Container(),
-        );
-      },
+      builder: (_) => BlocProvider<UpPostBloc>.value(
+        value: bloc,
+        child: FractionallySizedBox(
+          heightFactor: 0.8,
+          child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(12),
+              ),
+            ),
+            child: Stack(
+              children: [
+                BlocBuilder<UpPostBloc, UpPostState>(
+                  builder: (context, state) {
+                    return ChipsChoice<CategoryEntity>.multiple(
+                      wrapped: true,
+                      value: state.categorySelected,
+                      onChanged: (val) {},
+                      choiceItems: C2Choice.listFrom<CategoryEntity, CategoryEntity>(
+                        source: state.categories,
+                        value: (i, v) => v,
+                        label: (i, v) => v.name,
+                      ),
+                      choiceBuilder: (item, index) {
+                        final selected = state.categorySelected.contains(item.value);
+
+                        return InkWell(
+                          onTap: () {
+                            context.read<UpPostBloc>().add(ToggleCategoryEvent(item.value));
+                          },
+                          child: Container(
+                            margin: const EdgeInsets.all(4),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(4),
+                              color: selected ? AppColors.primary : AppColors.primary.withOpacity(0.7),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  item.value.name,
+                                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(color: Colors.white),
+                                ),
+                                6.horizontalSpace,
+                                Visibility(
+                                  visible: selected,
+                                  child: SvgPicture.asset(
+                                    AppConstants.close,
+                                    height: 16,
+                                    width: 16,
+                                    colorFilter: const ColorFilter.mode(
+                                      Colors.white,
+                                      BlendMode.srcIn,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  },
+                ),
+                Positioned(
+                  bottom: 20,
+                  left: 20,
+                  right: 20,
+                  child: PrimaryButton(
+                    label: 'Done',
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -147,9 +236,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {
-                          addSkill(context.read<UpPostBloc>());
-                        },
+                        onTap: () => addSkill(context.read<UpPostBloc>()),
                         borderRadius: BorderRadius.circular(4),
                         child: Text(
                           'Add',
@@ -179,7 +266,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                           color: themeData.colorScheme.background,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: AppColors.primary.withOpacity(0.2),
                               blurRadius: 4,
                               offset: const Offset(0, 2),
                             ),
@@ -191,7 +278,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                             4.horizontalSpace,
                             InkWell(
                               onTap: () {
-                                print('remove skill');
+                                context.read<UpPostBloc>().add(ToggleSkillEvent(state.skillSelected[index]));
                               },
                               child: Container(
                                 padding: EdgeInsets.all(4.r),
@@ -229,7 +316,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         ),
                       ),
                       InkWell(
-                        onTap: () {},
+                        onTap: () => addCategory(context.read<UpPostBloc>()),
                         borderRadius: BorderRadius.circular(4),
                         child: Text(
                           'Add',
@@ -248,9 +335,9 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                     padding: EdgeInsets.symmetric(horizontal: 20.w),
                     physics: const BouncingScrollPhysics(),
                     separatorBuilder: (context, state) => 12.horizontalSpace,
-                    itemCount: 20,
+                    itemCount: state.categorySelected.length,
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, state) {
+                    itemBuilder: (context, index) {
                       return Container(
                         margin: EdgeInsets.symmetric(vertical: 4.h),
                         padding: EdgeInsets.symmetric(horizontal: 12.h),
@@ -259,7 +346,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                           color: themeData.colorScheme.background,
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.1),
+                              color: AppColors.primary.withOpacity(0.2),
                               blurRadius: 4,
                               offset: const Offset(0, 2),
                             ),
@@ -267,12 +354,10 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         ),
                         child: Row(
                           children: [
-                            const Text('# Dart'),
+                            Text(state.categorySelected[index].name),
                             4.horizontalSpace,
                             InkWell(
-                              onTap: () {
-                                print('remove skill');
-                              },
+                              onTap: () {},
                               child: Container(
                                 padding: EdgeInsets.all(4.r),
                                 alignment: Alignment.center,

@@ -3,6 +3,7 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
+import 'package:wflow/modules/main/data/post/models/request/up_post_rqst.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
@@ -32,8 +33,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
-      GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
     try {
       final response = await postService.getPostWithCategory(request);
       return response;
@@ -53,8 +53,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>>
-      getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getSearchWorks(GetWorkModel getWorkModel) async {
     try {
       final posts = await postService.getSearchWorks(getWorkModel);
       return Left(posts);
@@ -65,8 +64,7 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
-      GetWorkModel req) async {
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(GetWorkModel req) async {
     try {
       final posts = await postService.getPostsSaved(req);
       return Left(posts);
@@ -81,6 +79,16 @@ class PostRepositoryImpl implements PostRepository {
       final res = await postService.toggleBookmark(id);
 
       return Left(res);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> upPost({required UpPostRequest request}) async {
+    try {
+      final response = await postService.upPost(request: request);
+      return Left(response);
     } catch (exception) {
       return const Right(ServerFailure());
     }

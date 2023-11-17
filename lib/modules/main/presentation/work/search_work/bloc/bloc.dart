@@ -35,9 +35,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
 
     result.fold(
         (HttpResponseWithPagination<PostEntity> httpResponseWithPagination) => {
-              bookmarks = [
-                ...httpResponseWithPagination.data.map((e) => e.isBookmark)
-              ],
+              bookmarks = [...httpResponseWithPagination.data.map((e) => e.isBookmarked)],
               emit(state.copyWith(
                 meta: httpResponseWithPagination.meta,
                 postsData: httpResponseWithPagination.data,
@@ -48,8 +46,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
-  Future<void> onChangedSearchWork(
-      ChangedSearchWorkEvent event, Emitter emit) async {
+  Future<void> onChangedSearchWork(ChangedSearchWorkEvent event, Emitter emit) async {
     List<bool> bookmarks = [];
     GetWorkModel getWorkModel = GetWorkModel(
       page: 1,
@@ -60,9 +57,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
 
     result.fold(
         (HttpResponseWithPagination<PostEntity> httpResponseWithPagination) => {
-              bookmarks = [
-                ...httpResponseWithPagination.data.map((e) => e.isBookmark)
-              ],
+              bookmarks = [...httpResponseWithPagination.data.map((e) => e.isBookmarked)],
               emit(state.copyWith(
                 txtSearch: event.txtSearch,
                 meta: httpResponseWithPagination.meta,
@@ -73,10 +68,8 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
         (Failure failure) => {});
   }
 
-  Future<void> onScrollSearchWork(
-      ScrollSearchWorkEvent event, Emitter emit) async {
-    if (state.meta.currentPage < state.meta.totalPage ||
-        state.meta.currentPage == 1) {
+  Future<void> onScrollSearchWork(ScrollSearchWorkEvent event, Emitter emit) async {
+    if (state.meta.currentPage < state.meta.totalPage || state.meta.currentPage == 1) {
       List<bool> bookmarks = [];
       emit(state.copyWith(isLoadMore: true));
       List<PostEntity> newPosts = [];
@@ -87,17 +80,11 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
       );
       final result = await postUseCase.getSearchWorks(getWorkModel);
       result.fold(
-          (HttpResponseWithPagination<PostEntity> httpResponseWithPagination) =>
-              {
-                bookmarks = [
-                  ...state.bookmarks,
-                  ...httpResponseWithPagination.data.map((e) => e.isBookmark)
-                ],
+          (HttpResponseWithPagination<PostEntity> httpResponseWithPagination) => {
+                bookmarks = [...state.bookmarks, ...httpResponseWithPagination.data.map((e) => e.isBookmarked)],
                 newPosts = [
-                  ...state.postsData
-                      .map((e) => PostEntity.fromJson(e.toJson())),
-                  ...httpResponseWithPagination.data
-                      .map((e) => PostEntity.fromJson(e.toJson()))
+                  ...state.postsData.map((e) => PostEntity.fromJson(e.toJson())),
+                  ...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e.toJson()))
                 ],
                 emit(state.copyWith(
                   isLoadMore: false,
@@ -112,8 +99,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
     }
   }
 
-  Future<void> onRefreshSearchWork(
-      RefreshSearchWorkEvent event, Emitter emit) async {
+  Future<void> onRefreshSearchWork(RefreshSearchWorkEvent event, Emitter emit) async {
     List<bool> bookmarks = [];
     GetWorkModel getWorkModel = GetWorkModel(
       page: 1,
@@ -124,9 +110,7 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
 
     result.fold(
         (HttpResponseWithPagination<PostEntity> httpResponseWithPagination) => {
-              bookmarks = [
-                ...httpResponseWithPagination.data.map((e) => e.isBookmark)
-              ],
+              bookmarks = [...httpResponseWithPagination.data.map((e) => e.isBookmarked)],
               emit(state.copyWith(
                 postsData: httpResponseWithPagination.data,
                 meta: httpResponseWithPagination.meta,
@@ -136,17 +120,15 @@ class SearchWorkBloc extends Bloc<SearchWorkEvent, SearchWorkState> {
         (Failure failure) => {});
   }
 
-  Future<void> onChangedIconClearSearchWorkEvent(
-      ChangedIconClearSearchWorkEvent event, Emitter emit) async {
+  Future<void> onChangedIconClearSearchWorkEvent(ChangedIconClearSearchWorkEvent event, Emitter emit) async {
     emit(state.copyWith(isHiddenSuffixIcon: event.txtSearch.isEmpty));
   }
 
-  Future<void> onToggleBookmarkSearchWorkEvent(
-      ToggleBookmarkSearchWorkEvent event, Emitter emit) async {
+  Future<void> onToggleBookmarkSearchWorkEvent(ToggleBookmarkSearchWorkEvent event, Emitter emit) async {
     instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
 
     List<bool> newBookmarks = [...state.bookmarks];
-    newBookmarks[event.index] = event.isBookmarked;
+    newBookmarks[event.index] = event.isBookmarkeded;
     emit(state.copyWith(bookmarks: newBookmarks));
   }
 }

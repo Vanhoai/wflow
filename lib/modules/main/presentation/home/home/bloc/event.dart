@@ -13,23 +13,23 @@ class OnSelectCategoryEvent extends HomeEvent {
 class ToggleBookmarkHomeEvent extends HomeEvent {
   final int id;
   final int index;
-  final bool isBookmarked;
+  final bool isBookmarkeded;
 
   ToggleBookmarkHomeEvent({
     required this.id,
     required this.index,
-    required this.isBookmarked,
+    required this.isBookmarkeded,
   });
 }
 
 class ToggleBookmarkRecentHomeEvent extends HomeEvent {
   final int id;
   final int index;
-  final bool isBookmarked;
+  final bool isBookmarkeded;
 
   ToggleBookmarkRecentHomeEvent({
     required this.id,
     required this.index,
-    required this.isBookmarked,
+    required this.isBookmarkeded,
   });
 }

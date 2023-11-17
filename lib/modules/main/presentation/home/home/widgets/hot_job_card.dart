@@ -11,26 +11,20 @@ class HotJobCard extends StatefulWidget {
     required this.constraints,
     required this.pressCard,
     this.onToggleBookmark,
-    required this.isBookmarked,
+    required this.isBookmarkeded,
   });
 
   final PostEntity job;
   final BoxConstraints constraints;
   final Function(int id) pressCard;
   final void Function()? onToggleBookmark;
-  final bool isBookmarked;
+  final bool isBookmarkeded;
 
   @override
   State<HotJobCard> createState() => _HotJobCardState();
 }
 
 class _HotJobCardState extends State<HotJobCard> {
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -91,7 +85,7 @@ class _HotJobCardState extends State<HotJobCard> {
                 height: 24,
                 width: 24,
                 colorFilter: ColorFilter.mode(
-                  widget.isBookmarked
+                  widget.isBookmarkeded
                       ? themeData.colorScheme.primary
                       : themeData.colorScheme.onBackground.withOpacity(0.5),
                   BlendMode.srcIn,

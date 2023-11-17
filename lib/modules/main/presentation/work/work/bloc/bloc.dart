@@ -30,10 +30,9 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     on<ToggleBookmarkWorkEvent>(onToggleBookmark);
   }
 
-  FutureOr<void> getPost(GetPostWithCategory request, Emitter<WorkState> emit,
-      String category) async {
+  FutureOr<void> getPost(GetPostWithCategory request, Emitter<WorkState> emit, String category) async {
     final response = await postUseCase.getPostWithCategory(request);
-    final List<bool> bookmarks = [...response.data.map((e) => e.isBookmark)];
+    final List<bool> bookmarks = [...response.data.map((e) => e.isBookmarked)];
     emit(
       state.copyWith(
         posts: response.data,
@@ -44,16 +43,13 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     );
   }
 
-  FutureOr<void> onInitial(
-      WorkInitialEvent event, Emitter<WorkState> emit) async {
+  FutureOr<void> onInitial(WorkInitialEvent event, Emitter<WorkState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     final categories = await categoryUseCase.getPostCategory();
-    emit(state.copyWith(
-        categories: categories, categorySelected: categories.first.name));
+    emit(state.copyWith(categories: categories, categorySelected: categories.first.name));
     await getPost(
-      GetPostWithCategory(
-          page: 1, pageSize: 10, category: categories.first.name),
+      GetPostWithCategory(page: 1, pageSize: 10, category: categories.first.name),
       emit,
       categories.first.name,
     );
@@ -61,8 +57,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     emit(state.copyWith(isLoading: false));
   }
 
-  FutureOr<void> onSelectCategory(
-      OnSelectCategoryEvent event, Emitter<WorkState> emit) async {
+  FutureOr<void> onSelectCategory(OnSelectCategoryEvent event, Emitter<WorkState> emit) async {
     emit(state.copyWith(isLoading: true));
 
     emit(state.copyWith(categorySelected: event.category));
@@ -79,8 +74,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     emit(state.copyWith(isLoading: true));
 
     await getPost(
-      GetPostWithCategory(
-          page: 1, pageSize: 10, category: state.categorySelected),
+      GetPostWithCategory(page: 1, pageSize: 10, category: state.categorySelected),
       emit,
       state.categorySelected,
     );
@@ -90,8 +84,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     ));
   }
 
-  FutureOr<void> onLoadMore(
-      LoadMoreEvent event, Emitter<WorkState> emit) async {
+  FutureOr<void> onLoadMore(LoadMoreEvent event, Emitter<WorkState> emit) async {
     emit(state.copyWith(isLoadMore: true));
 
     if (state.meta.currentPage >= state.meta.totalPage) {
@@ -118,12 +111,12 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     );
   }
 
-  Future<void> onToggleBookmark(ToggleBookmarkWorkEvent event , Emitter emit)async{
+  Future<void> onToggleBookmark(ToggleBookmarkWorkEvent event, Emitter emit) async {
     instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
 
     List<bool> newBookmarks = [...state.bookmarks];
-    newBookmarks[event.index] = event.isBookmarked;
-    
+    newBookmarks[event.index] = event.isBookmarkeded;
+
     emit(state.copyWith(bookmarks: newBookmarks));
   }
 }

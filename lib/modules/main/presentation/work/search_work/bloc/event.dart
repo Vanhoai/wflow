@@ -34,14 +34,14 @@ class ChangedIconClearSearchWorkEvent extends SearchWorkEvent {
 class ToggleBookmarkSearchWorkEvent extends SearchWorkEvent {
   final int id;
   final int index;
-  final bool isBookmarked;
+  final bool isBookmarkeded;
 
   const ToggleBookmarkSearchWorkEvent({
     required this.id,
     required this.index,
-    required this.isBookmarked,
+    required this.isBookmarkeded,
   });
 
   @override
-  List get props => [id, index, isBookmarked];
+  List get props => [id, index, isBookmarkeded];
 }

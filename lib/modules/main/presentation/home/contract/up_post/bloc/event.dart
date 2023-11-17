@@ -26,3 +26,19 @@ class EditTaskEvent extends UpPostEvent {
 }
 
 class RemoveLastTaskEvent extends UpPostEvent {}
+
+class UpPostSubmitEvent extends UpPostEvent {
+  final String title;
+  final String description;
+  final String budget;
+  final String duration;
+  final String position;
+
+  UpPostSubmitEvent({
+    required this.title,
+    required this.description,
+    required this.budget,
+    required this.duration,
+    required this.position,
+  });
+}

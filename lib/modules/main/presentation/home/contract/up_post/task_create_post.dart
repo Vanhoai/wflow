@@ -13,7 +13,7 @@ class TaskCreatePost extends StatefulWidget {
 }
 
 class _TaskCreatePostState extends State<TaskCreatePost> {
-  final TextEditingController taskController = TextEditingController();
+  late TextEditingController taskController;
 
   void onTapTask(int index, BuildContext parentContext) {
     showDialog(
@@ -49,6 +49,12 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
         );
       },
     );
+  }
+
+  @override
+  void initState() {
+    taskController = TextEditingController();
+    super.initState();
   }
 
   @override

@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
+import 'package:wflow/modules/main/data/user/models/request/update_profile.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 
 abstract class UserPath {
@@ -13,6 +15,7 @@ abstract class UserPath {
   static const String getAllCollaborator = '/business/members-in-my-business';
   static const String removeCollaborator = '/business/remove-collaborator';
   static String findUserByID(String id) => '/user/find/$id';
+  static const String updateProfile = '/user/update-profile';
 }
 
 abstract class UserService {
@@ -22,6 +25,7 @@ abstract class UserService {
   Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
   Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
   Future<UserModel> findUserByID({required String id});
+  Future<String> updateProfile({required RequestUpdateProfile request});
 }
 
 class UserServiceImpl implements UserService {
@@ -143,6 +147,33 @@ class UserServiceImpl implements UserService {
       }
 
       return UserModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> updateProfile({required RequestUpdateProfile request}) async {
+    try {
+      var formData = FormData.fromMap({
+        'avatar': request.avatar != null ? await MultipartFile.fromFile((request.avatar!.path)) : null,
+        'background': request.background != null ? await MultipartFile.fromFile(request.background!.path) : null,
+        'address': request.address,
+        'bio': request.bio,
+        'dob': request.dob,
+        'age': request.age
+      });
+      final response = await agent.dio.put(
+        UserPath.updateProfile,
+        data: formData,
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.data;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

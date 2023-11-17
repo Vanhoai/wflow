@@ -122,6 +122,10 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                                   },
                                   onTapCv: () {},
                                   onTapName: () {},
+                                  onTapLeading: () {
+                                    Navigator.of(context).pushNamed(RouteKeys.detailUserScreen,
+                                        arguments: state.candidateEntities[index].worker.id);
+                                  },
                                 );
                               },
                             );

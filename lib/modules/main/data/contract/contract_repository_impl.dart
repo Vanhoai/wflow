@@ -107,7 +107,6 @@ class ContractRepositoryImpl implements ContractRepository {
       final response = await contactService.checkContractAndTransfer(id);
       return Left(response);
     } on ServerException catch (exception) {
-      print('ServerException ${exception.message}');
       return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(ServerFailure(message: exception.toString()));

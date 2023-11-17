@@ -72,6 +72,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         }
         break;
       case 1:
+        Navigator.of(context).pushNamed(RouteKeys.reputationScreen);
         break;
       case 2:
         if (isUser) {

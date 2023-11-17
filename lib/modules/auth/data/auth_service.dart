@@ -37,14 +37,14 @@ class AuthServiceImpl implements AuthService {
       final json = await agent.dio.post('/auth/create-account', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
-        return throw ServerFailure(message: httpResponse.message.toString());
+        return throw ServerException(message: httpResponse.message.toString());
       } else {
         return httpResponse.message;
       }
-    } on ServerFailure catch (exception) {
-      return throw ServerFailure(message: exception.message.toString());
+    } on ServerException catch (exception) {
+      return throw ServerException(message: exception.message.toString());
     } catch (exception) {
-      return throw const ServerFailure();
+      return throw ServerException();
     }
   }
 

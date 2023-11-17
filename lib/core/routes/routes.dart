@@ -102,7 +102,8 @@ class AppRoutes {
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:
-        return MaterialPageRoute(builder: (_) => const AddBusinessScreen());
+        final business = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => AddBusinessScreen(business: business));
       case RouteKeys.chatBusinessScreen:
         return MaterialPageRoute(builder: (_) => const ChatBusinessScreen());
       case RouteKeys.contractScreen:
@@ -136,14 +137,15 @@ class AppRoutes {
       case RouteKeys.graphScreen:
         return MaterialPageRoute(builder: (_) => const GraphScreen());
       case RouteKeys.removeCollaboratorScreen:
-        return MaterialPageRoute(builder: (_) => const RemoveCollaboratorScreen());
+        final business = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => RemoveCollaboratorScreen(business: business));
       case RouteKeys.completedContractScreen:
         return MaterialPageRoute(builder: (_) => const CompletedContractScreen());
       case RouteKeys.reportScreen:
         final report = settings.arguments as ArgumentsReport;
         return MaterialPageRoute(builder: (_) => ReportScreen(argumentsReport: report));
       case RouteKeys.editProfileScreen:
-        return MaterialPageRoute(builder: (_) => EditProfileScreen());
+        return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

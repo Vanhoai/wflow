@@ -28,6 +28,20 @@ class GetCandidateApplied {
   });
 }
 
+class GetContractOfUserAndBusiness {
+  final num page;
+  final num pageSize;
+  final String search;
+  final bool isBusiness;
+
+  GetContractOfUserAndBusiness({
+    this.page = 1,
+    this.pageSize = 10,
+    this.search = '',
+    this.isBusiness = false,
+  });
+}
+
 class CreateContractModel {
   final num contract;
   final String title;

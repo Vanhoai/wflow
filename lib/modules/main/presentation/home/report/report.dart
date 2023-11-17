@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
@@ -57,7 +56,10 @@ class _ReportScreenState extends State<ReportScreen> {
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
             appBar: AppHeader(
-              text: 'Report ${widget.argumentsReport.type.name}',
+              text: Text(
+                'Report ${widget.argumentsReport.type.name}',
+                style: themeData.textTheme.displayMedium,
+              ),
             ),
             body: Container(
               width: MediaQuery.of(context).size.width,

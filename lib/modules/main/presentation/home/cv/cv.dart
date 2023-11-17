@@ -43,40 +43,46 @@ class _CVScreenState extends State<CVScreen> {
         builder: (context, state) {
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
-            appBar: AppHeader(text: 'My CV', actions: [
-              Builder(
-                builder: (context) {
-                  if (state.selectCvEntities.isEmpty) {
+            appBar: AppHeader(
+              text: Text(
+                'My CV',
+                style: themeData.textTheme.displayMedium,
+              ),
+              actions: [
+                Builder(
+                  builder: (context) {
+                    if (state.selectCvEntities.isEmpty) {
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(6),
+                        onTap: () => Navigator.of(context).pushNamed(RouteKeys.addCVScreen),
+                        child: Ink(
+                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                          child: Text(
+                            'Add',
+                            style: themeData.textTheme.displayMedium!.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
                     return InkWell(
                       borderRadius: BorderRadius.circular(6),
-                      onTap: () => Navigator.of(context).pushNamed(RouteKeys.addCVScreen),
+                      onTap: () {},
                       child: Ink(
-                        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                         child: Text(
-                          'Add',
-                          style: themeData.textTheme.displayMedium!.copyWith(
-                            color: AppColors.primary,
-                            fontWeight: FontWeight.normal,
-                          ),
+                          'Remove',
+                          style: themeData.textTheme.displayMedium!
+                              .copyWith(color: AppColors.primary, fontWeight: FontWeight.normal),
                         ),
                       ),
                     );
-                  }
-                  return InkWell(
-                    borderRadius: BorderRadius.circular(6),
-                    onTap: () {},
-                    child: Ink(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                      child: Text(
-                        'Remove',
-                        style: themeData.textTheme.displayMedium!
-                            .copyWith(color: AppColors.primary, fontWeight: FontWeight.normal),
-                      ),
-                    ),
-                  );
-                },
-              )
-            ]),
+                  },
+                )
+              ],
+            ),
             body: RefreshIndicator(
               onRefresh: () async {},
               child: Visibility(

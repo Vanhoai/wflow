@@ -1,11 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
-import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -21,10 +19,14 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
       hideKeyboardWhenTouchOutside: true,
-      appBar: const AppHeader(
-        text: 'Edit Profile',
+      appBar: AppHeader(
+        text: Text(
+          'Edit Profile',
+          style: themeData.textTheme.displayMedium,
+        ),
       ),
       body: SingleChildScrollView(
         child: Column(

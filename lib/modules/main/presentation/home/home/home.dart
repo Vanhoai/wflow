@@ -21,23 +21,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ScrollController _scrollController;
-  late ScrollController _hotJobScrollController;
-  late ScrollController _selectionScrollController;
+  late ScrollController scrollController;
+  late ScrollController hotJobScrollController;
+  late ScrollController selectionScrollController;
 
   @override
   void initState() {
-    _selectionScrollController = ScrollController();
-    _hotJobScrollController = ScrollController();
-    _scrollController = ScrollController();
+    selectionScrollController = ScrollController();
+    hotJobScrollController = ScrollController();
+    scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _selectionScrollController.dispose();
-    _hotJobScrollController.dispose();
-    _scrollController.dispose();
+    selectionScrollController.dispose();
+    hotJobScrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -110,7 +110,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            HowJobListWidget(scrollController: _hotJobScrollController),
+            HowJobListWidget(scrollController: hotJobScrollController),
             SliverPadding(
               padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
@@ -123,14 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
             ),
-            SelectionListWidget(scrollController: _selectionScrollController),
+            SelectionListWidget(scrollController: selectionScrollController),
             const RecentJobListWidget(),
           ],
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
-          controller: _scrollController,
+          controller: scrollController,
           scrollDirection: Axis.vertical,
         ),
       ),

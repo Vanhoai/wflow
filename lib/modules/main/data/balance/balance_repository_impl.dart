@@ -12,8 +12,9 @@ class BalanceRepositoryImpl implements BalanceRepository {
   BalanceRepositoryImpl({required this.balanceService});
 
   @override
-  Future<Either<CreatePaymentSheetResponse, Failure>> createPaymentSheet(
-      {required CreatePaymentSheetRequest request}) async {
+  Future<Either<CreatePaymentSheetResponse, Failure>> createPaymentSheet({
+    required CreatePaymentSheetRequest request,
+  }) async {
     try {
       final response = await balanceService.createPaymentSheet(request: request);
       return Left(response);

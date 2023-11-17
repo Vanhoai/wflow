@@ -35,12 +35,18 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocBuilder<TaskBloc, TaskState>(
       bloc: instance.get<TaskBloc>()..add(GetTaskEvent(idContract: widget.idContract)),
       buildWhen: (previous, current) => true,
       builder: (context, state) {
         return CommonScaffold(
-          appBar: const AppHeader(text: 'Tasks'),
+          appBar: AppHeader(
+            text: Text(
+              'Tasks',
+              style: themeData.textTheme.displayMedium,
+            ),
+          ),
           body: RefreshIndicator(
             onRefresh: () async => instance.get<TaskBloc>().add(GetTaskEvent(idContract: widget.idContract)),
             child: Stack(

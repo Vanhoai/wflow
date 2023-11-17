@@ -25,53 +25,70 @@ class UserRepositoryImpl extends UserRepository {
   }
 
   @override
-  Future<Either<List<UserEntity>, Failure>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<Either<HttpResponseWithPagination<UserEntity>, Failure>> getUsersNotBusiness({
+    required GetUserNotBusinessModel getUserNotBusinessModel,
+  }) async {
     try {
-      final List<UserModel> users = await userService.getUsersNotBusiness(getUserNotBusinessModel);
-      return Left([...users.map((e) => UserEntity.fromJson(e.toJson()))]);
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+      final response = await userService.getUsersNotBusiness(getUserNotBusinessModel: getUserNotBusinessModel);
+      final List<UserEntity> users = [...response.data.map((e) => UserEntity.fromJson(e.toJson()))];
+      return Left(
+        HttpResponseWithPagination<UserEntity>(
+          data: users,
+          meta: response.meta,
+          message: response.message,
+          statusCode: response.statusCode,
+        ),
+      );
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
   @override
-  Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
+  Future<Either<String, Failure>> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
     try {
-      return await userService.addCollaborator(addCollaboratorModel);
-    } catch (e) {
-      return false;
+      final String message = await userService.addCollaborator(addCollaboratorModel);
+      return Left(message);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
   @override
-  Future<Either<List<UserEntity>, Failure>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel) async {
+  Future<Either<HttpResponseWithPagination<UserEntity>, Failure>> getAllCollaborator(
+    GetAllCollaboratorModel getAllCollaboratorModel,
+  ) async {
     try {
-      final List<UserModel> users = await userService.getAllCollaborator(getAllCollaboratorModel);
-
-      return Left([...users.map((e) => UserEntity.fromJson(e.toJson()))]);
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+      final response = await userService.getAllCollaborator(getAllCollaboratorModel);
+      final List<UserEntity> users = [...response.data.map((e) => UserEntity.fromJson(e.toJson()))];
+      return Left(
+        HttpResponseWithPagination<UserEntity>(
+          data: users,
+          meta: response.meta,
+          message: response.message,
+          statusCode: response.statusCode,
+        ),
+      );
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
   @override
-  Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
+  Future<Either<String, Failure>> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
     try {
-      return await userService.removeCollaborator(removeCollaboratorModel);
-    } catch (e) {
-      return false;
+      final String message = await userService.removeCollaborator(removeCollaboratorModel);
+      return Left(message);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(CommonFailure(message: exception.toString()));
     }
   }
 

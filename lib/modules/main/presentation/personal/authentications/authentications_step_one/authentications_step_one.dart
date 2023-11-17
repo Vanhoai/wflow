@@ -27,9 +27,13 @@ class AuthStepOneScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Theme.of(context).copyWith(primaryColor: AppColors.blueColor);
+    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
         appBar: AppHeader(
-          text: 'Verify Account',
+          text: Text(
+            'Verify Account',
+            style: themeData.textTheme.displayMedium,
+          ),
           onBack: () => instance.get<AuthenticationsBloc>().add(CleanData()),
         ),
         body: BlocBuilder<AuthenticationsBloc, AuthenticationsState>(

@@ -32,7 +32,7 @@ class _FormState extends State<FormSignIn> {
   void initState() {
     // business: hoaitvps22068@gmail.com
     // user: tvhoai241223@gmail.com
-    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
+    emailController = TextEditingController(text: 'freelancervn@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }

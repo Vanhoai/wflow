@@ -47,8 +47,8 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.ic_signed,
       },
       {
-        'title': isUser ? 'Cv' : 'Completed',
-        'icon': isUser ? AppConstants.ic_cv : AppConstants.history,
+        'title': isUser ? 'Cv' : 'Up Post',
+        'icon': isUser ? AppConstants.ic_cv : AppConstants.more,
       },
       {
         'title': 'Graph',
@@ -109,7 +109,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.cvScreen);
         } else {
-          Navigator.of(context).pushNamed(RouteKeys.completedContractScreen);
+          Navigator.of(context).pushNamed(RouteKeys.upPostScreen);
         }
         break;
       case 7:

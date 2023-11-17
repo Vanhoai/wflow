@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/entities/models/worker.dart';
@@ -38,6 +37,8 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return BlocProvider(
       create: (_) => CandidateListBloc(
         contractUseCase: instance.get<ContractUseCase>(),
@@ -52,7 +53,12 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
           });
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
-            appBar: const AppHeader(text: 'Candidates'),
+            appBar: AppHeader(
+              text: Text(
+                'Candidates',
+                style: themeData.textTheme.displayMedium,
+              ),
+            ),
             body: RefreshIndicator(
               onRefresh: () async {
                 context.read<CandidateListBloc>().add(GetCandidateAppliedListEvent(post: widget.post));

@@ -19,13 +19,20 @@ class ContractWaitingSignScreen extends StatefulWidget {
 class _ContractWaitingSignScreenState extends State<ContractWaitingSignScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return BlocProvider(
       create: (_) => ContractWaitingSignBloc(
         contractUseCase: instance.get<ContractUseCase>(),
       )..add(ContractWaitingSignEventFetch()),
       child: CommonScaffold(
         hideKeyboardWhenTouchOutside: true,
-        appBar: const AppHeader(text: 'Contract Waiting Sign'),
+        appBar: AppHeader(
+          text: Text(
+            'Contract Waiting Sign',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         body: SizedBox(
           height: double.infinity,
           width: double.infinity,

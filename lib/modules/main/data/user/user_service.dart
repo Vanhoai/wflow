@@ -17,10 +17,11 @@ abstract class UserPath {
 
 abstract class UserService {
   Future<UserModel> myProfile();
-  Future<List<UserModel>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel);
-  Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
-  Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
-  Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
+  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness(
+      {required GetUserNotBusinessModel getUserNotBusinessModel});
+  Future<String> addCollaborator(AddCollaboratorModel addCollaboratorModel);
+  Future<HttpResponseWithPagination<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
+  Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
   Future<UserModel> findUserByID({required String id});
 }
 
@@ -45,7 +46,9 @@ class UserServiceImpl implements UserService {
   }
 
   @override
-  Future<List<UserModel>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness({
+    required GetUserNotBusinessModel getUserNotBusinessModel,
+  }) async {
     try {
       final response = await agent.dio.get(
         UserPath.getUsersNotBusiness,
@@ -55,42 +58,47 @@ class UserServiceImpl implements UserService {
           'search': getUserNotBusinessModel.search,
         },
       );
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        List<UserModel> users = [];
-        httpResponse.data.forEach((user) {
-          users.add(UserModel.fromJson(user));
-        });
 
-        return users;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
       }
-    } catch (e) {
-      if (e is CommonFailure) {
-        return throw CommonFailure(message: e.message, statusCode: e.statusCode);
+
+      List<UserModel> users = [];
+      for (var user in httpResponse.data) {
+        users.add(UserModel.fromJson(user));
       }
-      return throw const ServerFailure();
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: users,
+      );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 
   @override
-  Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
+  Future<String> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
     try {
       final response = await agent.dio.patch(UserPath.addCollaborator, data: addCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return true;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 
   @override
-  Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel) async {
+  Future<HttpResponseWithPagination<UserModel>> getAllCollaborator(
+    GetAllCollaboratorModel getAllCollaboratorModel,
+  ) async {
     try {
       final response = await agent.dio.get(
         UserPath.getAllCollaborator,
@@ -99,36 +107,40 @@ class UserServiceImpl implements UserService {
           'pageSize': getAllCollaboratorModel.pageSize,
         },
       );
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        List<UserModel> users = [];
-        httpResponse.data.forEach((user) {
-          users.add(UserModel.fromJson(user));
-        });
-        return users;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+
+      HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
       }
-    } catch (e) {
-      if (e is CommonFailure) {
-        return throw CommonFailure(message: e.message, statusCode: e.statusCode);
+
+      List<UserModel> users = [];
+      for (var user in httpResponse.data) {
+        users.add(UserModel.fromJson(user));
       }
-      return throw const ServerFailure();
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: users,
+      );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 
   @override
-  Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
+  Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
     try {
       final response = await agent.dio.patch(UserPath.removeCollaborator, data: removeCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return true;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
     }
   }
 

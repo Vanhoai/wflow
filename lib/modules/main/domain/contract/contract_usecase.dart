@@ -11,7 +11,7 @@ abstract class ContractUseCase {
   Future<Either<String, Failure>> applyPost(ApplyPostRequest request);
   Future<Either<ContractEntity, Failure>> candidateAppliedDetail(String id);
   Future<Either<String, Failure>> createContract(CreateContractModel request);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetContractOfUserAndBusiness request);
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<Either<String, Failure>> workerSignContract(int id);
   Future<Either<String, Failure>> businessSignContract(int id);
@@ -45,7 +45,8 @@ class ContractUseCaseImpl implements ContractUseCase {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(
+      GetContractOfUserAndBusiness request) async {
     return await contactRepository.findContractAcceptedOfUser(request);
   }
 

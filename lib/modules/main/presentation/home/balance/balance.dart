@@ -108,8 +108,11 @@ class _BalanceScreenState extends State<BalanceScreen> {
         ),
       child: CommonScaffold(
         isSafe: true,
-        appBar: const AppHeader(
-          text: 'Balance',
+        appBar: AppHeader(
+          text: Text(
+            'Balance',
+            style: themeData.textTheme.displayMedium,
+          ),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,

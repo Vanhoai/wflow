@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -19,23 +20,23 @@ class UpPostScreen extends StatefulWidget {
 }
 
 class _UpPostScreenState extends State<UpPostScreen> {
-  late final TextEditingController _titleController;
-  late final TextEditingController _descriptionController;
-  late final TextEditingController _budgetController;
+  late final TextEditingController titleController;
+  late final TextEditingController descriptionController;
+  late final TextEditingController budgetController;
 
   @override
   void initState() {
-    _titleController = TextEditingController(text: '');
-    _descriptionController = TextEditingController(text: '');
-    _budgetController = TextEditingController(text: '');
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    budgetController = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _budgetController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    budgetController.dispose();
     super.dispose();
   }
 
@@ -49,7 +50,12 @@ class _UpPostScreenState extends State<UpPostScreen> {
         contractUseCase: instance.get<ContractUseCase>(),
       )..add(UpPostInitialEvent()),
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Up Post'),
+        appBar: AppHeader(
+          text: Text(
+            'Up Post',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         hideKeyboardWhenTouchOutside: true,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
@@ -80,7 +86,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           ),
                           const SizedBox(height: 8),
                           TextFieldHelper(
-                            controller: _titleController,
+                            controller: titleController,
                             maxLines: 2,
                             minLines: 1,
                             hintText: 'Enter project title',
@@ -94,7 +100,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           ),
                           const SizedBox(height: 8),
                           TextFieldHelper(
-                            controller: _descriptionController,
+                            controller: descriptionController,
                             maxLines: 5,
                             minLines: 3,
                             hintText: 'Enter basic description for project',
@@ -112,18 +118,18 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           ),
                           const SizedBox(height: 8),
                           TextFieldHelper(
-                            controller: _budgetController,
+                            controller: budgetController,
                             maxLines: 1,
                             minLines: 1,
                             hintText: 'Enter budget for project',
                             keyboardType: TextInputType.number,
                             suffixIcon: const Icon(Icons.attach_money_sharp),
                           ),
-                          const SizedBox(height: 20),
+                          20.verticalSpace,
                           const TaskCreatePost(),
-                          const SizedBox(height: 20),
+                          20.verticalSpace,
                           ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                          const SizedBox(height: 80),
+                          80.verticalSpace,
                         ],
                       ),
                     ),

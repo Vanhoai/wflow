@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -91,11 +92,20 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
       child: CommonScaffold(
         isSafe: true,
         appBar: AppHeader(
-          text: 'TheFlow',
+          text: BlocBuilder<MyCompanyBloc, MyCompanyState>(
+            builder: (context, state) {
+              return Text(
+                state.companyEntity.name,
+                style: themeData.textTheme.displayMedium,
+              );
+            },
+          ),
           actions: [
             BlocBuilder<MyCompanyBloc, MyCompanyState>(
               builder: (context, state) {
                 final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                final isOwner = instance.get<AppBloc>().state.userEntity.id == state.companyEntity.creator;
+
                 return Padding(
                   padding: EdgeInsets.only(right: 20.w),
                   child: InkWell(
@@ -107,13 +117,33 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                             value: bloc,
                             child: CupertinoActionSheet(
                               actions: [
-                                CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                      ..pop()
-                                      ..pushNamed(RouteKeys.addBusinessScreen);
-                                  },
-                                  child: const Text('Add Collaborator'),
+                                Visibility(
+                                  visible: isOwner,
+                                  child: CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                        ..pop()
+                                        ..pushReplacementNamed(
+                                          RouteKeys.addBusinessScreen,
+                                          arguments: widget.companyID,
+                                        );
+                                    },
+                                    child: const Text('Add Collaborator'),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: isOwner,
+                                  child: CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                        ..pop()
+                                        ..pushReplacementNamed(
+                                          RouteKeys.removeCollaboratorScreen,
+                                          arguments: widget.companyID,
+                                        );
+                                    },
+                                    child: const Text('Remove Collaborator'),
+                                  ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () {},

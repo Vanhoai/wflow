@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/security/bloc.dart';
@@ -12,6 +13,8 @@ import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/event.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/state.dart';
+
+enum ForgotType { email, phone }
 
 class FormSignIn extends StatefulWidget {
   const FormSignIn({Key? key}) : super(key: key);
@@ -32,7 +35,7 @@ class _FormState extends State<FormSignIn> {
   void initState() {
     // business: hoaitvps22068@gmail.com
     // user: tvhoai241223@gmail.com
-    emailController = TextEditingController(text: 'tvhoai241223@gmail.com');
+    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
@@ -42,6 +45,173 @@ class _FormState extends State<FormSignIn> {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
+  }
+
+  _buildModalForgot(BuildContext context) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        final ThemeData themeData = Theme.of(context);
+        ForgotType forgotType = ForgotType.email;
+        return StatefulBuilder(
+          builder: (context, setState) => Container(
+            height: 400.h,
+            width: MediaQuery.of(context).size.width,
+            constraints: BoxConstraints(maxHeight: 400.h),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            decoration: const BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                20.verticalSpace,
+                Text(
+                  'Forgot password?',
+                  style: TextStyle(
+                    fontSize: 26.sp,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
+                  ),
+                ),
+                4.verticalSpace,
+                Text(
+                  'Don’t worry ! It happens. Please enter the phone number or email address you used to register your account and we will send you an OTP to reset your password.',
+                  style: themeData.textTheme.displayMedium,
+                  maxLines: 10,
+                ),
+                20.verticalSpace,
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      forgotType = ForgotType.email;
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: themeData.colorScheme.background,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: forgotType == ForgotType.email
+                            ? themeData.colorScheme.primary
+                            : themeData.colorScheme.onSurface.withOpacity(0.2),
+                      ),
+                    ),
+                    height: 70,
+                    child: Row(
+                      children: [
+                        12.horizontalSpace,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(99),
+                          ),
+                          width: 50,
+                          height: 50,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              AppConstants.email,
+                              height: 24,
+                              width: 24,
+                              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                            ),
+                          ),
+                        ),
+                        12.horizontalSpace,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('via Email', style: themeData.textTheme.displayMedium),
+                            4.verticalSpace,
+                            Text('example@gmail.com', style: themeData.textTheme.displayMedium)
+                          ],
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+                20.verticalSpace,
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      forgotType = ForgotType.phone;
+                    });
+                  },
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: themeData.colorScheme.background,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: forgotType == ForgotType.phone
+                            ? themeData.colorScheme.primary
+                            : themeData.colorScheme.onSurface.withOpacity(0.2),
+                      ),
+                    ),
+                    height: 70,
+                    child: Row(
+                      children: [
+                        12.horizontalSpace,
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.grey.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(99),
+                          ),
+                          width: 50,
+                          height: 50,
+                          child: Center(
+                            child: SvgPicture.asset(
+                              AppConstants.email,
+                              height: 24,
+                              width: 24,
+                              colorFilter: const ColorFilter.mode(Colors.black, BlendMode.srcIn),
+                            ),
+                          ),
+                        ),
+                        12.horizontalSpace,
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text('via Phone', style: themeData.textTheme.displayMedium),
+                            4.verticalSpace,
+                            Text('+84 123 456 789', style: themeData.textTheme.displayMedium)
+                          ],
+                        ),
+                        const Spacer(),
+                      ],
+                    ),
+                  ),
+                ),
+                20.verticalSpace,
+                Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: PrimaryButton(
+                        onPressed: () {
+                          Navigator.of(context)
+                            ..pop()
+                            ..pushNamed(RouteKeys.forgotPasswordScreen, arguments: forgotType);
+                        },
+                        label: 'Send OTP',
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
   }
 
   Future<void> listener(BuildContext context, SignInState state) async {
@@ -152,7 +322,7 @@ class _FormState extends State<FormSignIn> {
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
-                    onTap: () {},
+                    onTap: () => _buildModalForgot(context),
                   )
                 ],
               ),

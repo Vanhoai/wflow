@@ -43,4 +43,5 @@ class RouteKeys {
   static const String removeCollaboratorScreen = '/remove_collaborator_screen';
   static const String completedContractScreen = '/completed_contract_screen';
   static const String reputationScreen = '/reputation_screen';
+  static const String forgotPasswordScreen = '/forgot_password_screen';
 }

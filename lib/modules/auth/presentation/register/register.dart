@@ -8,6 +8,25 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:wflow/modules/auth/presentation/register/widgets/widgets.dart';
 
+class VerificationArgument {
+  final String username;
+  final String password;
+  final String type;
+  final String otpCode;
+
+  VerificationArgument({
+    required this.username,
+    required this.password,
+    required this.type,
+    required this.otpCode,
+  });
+
+  @override
+  String toString() {
+    return 'FormRegisterArgument(username: $username, password: $password, type: $type, otpCode: $otpCode)';
+  }
+}
+
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
 
@@ -197,21 +216,4 @@ Widget _tabSelect({String? icon, String? title}) {
       ],
     ),
   );
-}
-
-class FormRegisterArgument {
-  final String username;
-  final String password;
-  final String type;
-
-  FormRegisterArgument({
-    required this.username,
-    required this.password,
-    required this.type,
-  });
-
-  @override
-  String toString() {
-    return 'FormRegisterArgument(username: $username, password: $password, type: $type)';
-  }
 }

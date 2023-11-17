@@ -69,4 +69,24 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(ServerFailure(message: exception.toString()));
     }
   }
+
+  @override
+  Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await authService.sendCodeOtpMail(email: email, otpCode: otpCode);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await authService.verifyCodeOtpMail(email: email, otpCode: otpCode);
+      return Left(response);
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
+    }
+  }
 }

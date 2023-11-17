@@ -6,6 +6,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
+import 'package:wflow/modules/auth/presentation/forgot_password/function.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 
@@ -127,10 +128,11 @@ class _FormState extends State<FormRegisterPhone> {
                     Navigator.pushNamed(
                       context,
                       RouteKeys.verificationScreen,
-                      arguments: FormRegisterArgument(
+                      arguments: VerificationArgument(
                         username: phoneController.text,
                         password: passwordController.text,
                         type: 'phone',
+                        otpCode: OtpHelper.randOtp(),
                       ),
                     );
                   }

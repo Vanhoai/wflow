@@ -9,6 +9,8 @@ abstract class AuthService {
   Future<String> register(AuthNormalRegisterRequest request);
   Future<String> registerWithGoogle({required AuthWithGoogleModel request});
   Future<AuthSignInResponse> signInWithGoogle({required AuthWithGoogleModel request});
+  Future<String> sendCodeOtpMail({required String email, required String otpCode});
+  Future<String> verifyCodeOtpMail({required String email, required String otpCode});
 }
 
 class AuthServiceImpl implements AuthService {
@@ -79,6 +81,42 @@ class AuthServiceImpl implements AuthService {
       }
 
       return AuthSignInResponse.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> sendCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await agent.dio.post('/auth/send-code-otp-mail', data: {
+        'email': email,
+        'code': otpCode,
+      });
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.message;
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<String> verifyCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await agent.dio.post('/auth/verify-code-otp-mail', data: {
+        'email': email,
+        'otp': otpCode,
+      });
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(message: httpResponse.message);
+      }
+
+      return httpResponse.message;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

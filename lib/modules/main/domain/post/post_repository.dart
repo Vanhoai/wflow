@@ -11,7 +11,8 @@ abstract class PostRepository {
   Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
       GetPostWithCategory request);
   Future<Either<PostEntity, Failure>> getPostId(String id);
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>>
+      getSearchWorks(GetWorkModel getWorkModel);
   Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
       GetWorkModel req);
   Future<Either<HttpResponse, Failure>> toggleBookmark(int id);

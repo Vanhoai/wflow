@@ -12,7 +12,8 @@ abstract class PostUseCase {
   Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
       GetPostWithCategory request);
   Future<Either<PostEntity, Failure>> getPostId(String id);
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>>
+      getSearchWorks(GetWorkModel getWorkModel);
   Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(
       GetWorkModel req);
   Future<Either<HttpResponse, Failure>> toggleBookmark(int id);
@@ -46,7 +47,8 @@ class PostUseCaseImpl implements PostUseCase {
   }
 
   @override
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>>
+      getSearchWorks(GetWorkModel getWorkModel) async {
     return await postRepository.getSearchWorks(getWorkModel);
   }
 

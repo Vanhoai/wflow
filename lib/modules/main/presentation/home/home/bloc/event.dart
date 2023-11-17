@@ -21,3 +21,15 @@ class ToggleBookmarkHomeEvent extends HomeEvent {
     required this.isBookmarked,
   });
 }
+
+class ToggleBookmarkRecentHomeEvent extends HomeEvent {
+  final int id;
+  final int index;
+  final bool isBookmarked;
+
+  ToggleBookmarkRecentHomeEvent({
+    required this.id,
+    required this.index,
+    required this.isBookmarked,
+  });
+}

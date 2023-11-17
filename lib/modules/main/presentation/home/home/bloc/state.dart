@@ -8,6 +8,7 @@ class HomeState extends Equatable {
   final bool isLoading;
   final bool loadingCategory;
   final List<bool> bookmarks;
+  final List<bool> bookmarksRecent;
 
   const HomeState({
     required this.recentJobs,
@@ -17,6 +18,7 @@ class HomeState extends Equatable {
     this.isLoading = false,
     this.loadingCategory = false,
     this.bookmarks = const [],
+    this.bookmarksRecent = const [],
   });
 
   HomeState copyWith({
@@ -27,6 +29,7 @@ class HomeState extends Equatable {
     bool? isLoading,
     bool? loadingCategory,
     List<bool>? bookmarks,
+    List<bool>? bookmarksRecent,
   }) {
     return HomeState(
       recentJobs: recentJobs ?? this.recentJobs,
@@ -36,6 +39,7 @@ class HomeState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       loadingCategory: loadingCategory ?? this.loadingCategory,
       bookmarks: bookmarks ?? this.bookmarks,
+      bookmarksRecent: bookmarksRecent ?? this.bookmarksRecent,
     );
   }
 
@@ -48,5 +52,6 @@ class HomeState extends Equatable {
         isLoading,
         loadingCategory,
         bookmarks,
+        bookmarksRecent,
       ];
 }

@@ -32,6 +32,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     on<HomeInitialEvent>(onInit);
     on<OnSelectCategoryEvent>(onSelectCategory);
     on<ToggleBookmarkHomeEvent>(onToggleBookmark);
+    on<ToggleBookmarkRecentHomeEvent>(onToggleBookmarkRecent);
   }
 
   Future<void> getMyProfile() async {
@@ -74,7 +75,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final hotJobs = future[0];
     final recentJobs = future[1];
 
-    final List<bool> bookmarks = [...hotJobs.map((e) => e.isBookmark).toList()];
+    final List<bool> bookmarks = [...hotJobs.map((e) => e.isBookmark)];
+    final List<bool> bookmarksRecent = [...recentJobs.map((e) => e.isBookmark)];
 
     emit(
       state.copyWith(
@@ -84,6 +86,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         isLoading: false,
         categorySelected: categories.first.name,
         bookmarks: bookmarks,
+        bookmarksRecent: bookmarksRecent,
       ),
     );
   }
@@ -93,7 +96,11 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     emit(state.copyWith(
         categorySelected: event.category, loadingCategory: true));
     final posts = await postUseCase.getRecentJobs(event.category);
-    emit(state.copyWith(recentJobs: posts));
+    List<bool> bookmarksRecent = [...posts.map((e) => e.isBookmark)];
+    emit(state.copyWith(
+      recentJobs: posts,
+      bookmarksRecent: bookmarksRecent,
+    ));
 
     emit(state.copyWith(loadingCategory: false));
   }
@@ -104,8 +111,17 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     List<bool> newBookmarks = [...state.bookmarks];
     newBookmarks[event.index] = event.isBookmarked;
-    print('my log ${event.isBookmarked}');
 
     emit(state.copyWith(bookmarks: newBookmarks));
+  }
+
+  Future<void> onToggleBookmarkRecent(
+      ToggleBookmarkRecentHomeEvent event, Emitter emit) async {
+    instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
+
+    List<bool> newBookmarksRecent = [...state.bookmarksRecent];
+    newBookmarksRecent[event.index] = event.isBookmarked;
+
+    emit(state.copyWith(bookmarksRecent: newBookmarksRecent));
   }
 }

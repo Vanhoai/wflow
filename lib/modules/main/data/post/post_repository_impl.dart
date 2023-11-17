@@ -53,12 +53,14 @@ class PostRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>>
+      getSearchWorks(GetWorkModel getWorkModel) async {
     try {
       final posts = await postService.getSearchWorks(getWorkModel);
-      return posts;
+      return Left(posts);
     } catch (exception) {
-      return [];
+      print('my log 3');
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 

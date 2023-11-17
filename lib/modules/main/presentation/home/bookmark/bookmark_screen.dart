@@ -84,75 +84,80 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                 const SizedBox(height: 12),
                             physics: const BouncingScrollPhysics(),
                             itemCount: state.posts.length,
-                            itemBuilder: (context, index) => JobCard(
-                              margin:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              boxDecoration: BoxDecoration(
-                                color: themeData.colorScheme.background,
-                                borderRadius: BorderRadius.circular(8.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: themeData.colorScheme.onBackground
-                                        .withOpacity(0.1),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                  BoxShadow(
-                                    color: themeData.colorScheme.onBackground
-                                        .withOpacity(0.1),
-                                    blurRadius: 4,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              padding: const EdgeInsets.all(12),
-                              header: Header(
-                                leadingPhotoUrl: state.posts[index].companyLogo,
-                                title: Text(
-                                  state.posts[index].position,
-                                  style: themeData.textTheme.displayLarge!
-                                      .merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
+                            itemBuilder: (context, index) => Container(
+                              constraints: const BoxConstraints(maxHeight: 270),
+                              child: JobCard(
+                                jobId: state.posts[index].id,
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                boxDecoration: BoxDecoration(
+                                  color: themeData.colorScheme.background,
+                                  borderRadius: BorderRadius.circular(8.0),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: themeData.colorScheme.onBackground
+                                          .withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                    BoxShadow(
+                                      color: themeData.colorScheme.onBackground
+                                          .withOpacity(0.1),
+                                      blurRadius: 4,
+                                      offset: const Offset(0, 2),
+                                    ),
+                                  ],
                                 ),
-                                onTapLeading: () {},
-                                subtitle: Text(
-                                  state.posts[index].companyName,
-                                  style: themeData.textTheme.displayMedium!
-                                      .merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
-                                ),
-                                leadingSize: 30,
-                                actions: [
-                                  InkWell(
-                                    onTap: () =>
-                                        BlocProvider.of<BookmarkBloc>(context)
-                                            .add(ToggleBookmarkEvent(
-                                                id: state.posts[index].id)),
-                                    child: SvgPicture.asset(
-                                      AppConstants.bookmark,
-                                      height: 24,
-                                      width: 24,
-                                      colorFilter: ColorFilter.mode(
-                                        themeData.colorScheme.primary
-                                            .withOpacity(0.5),
-                                        BlendMode.srcIn,
+                                padding: const EdgeInsets.all(12),
+                                header: Header(
+                                  leadingPhotoUrl:
+                                      state.posts[index].companyLogo,
+                                  title: Text(
+                                    state.posts[index].position,
+                                    style: themeData.textTheme.displayLarge!
+                                        .merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                  ),
+                                  onTapLeading: () {},
+                                  subtitle: Text(
+                                    state.posts[index].companyName,
+                                    style: themeData.textTheme.displayMedium!
+                                        .merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                  ),
+                                  leadingSize: 30,
+                                  actions: [
+                                    InkWell(
+                                      onTap: () =>
+                                          BlocProvider.of<BookmarkBloc>(context)
+                                              .add(ToggleBookmarkEvent(
+                                                  id: state.posts[index].id)),
+                                      child: SvgPicture.asset(
+                                        AppConstants.bookmark,
+                                        height: 24,
+                                        width: 24,
+                                        colorFilter: ColorFilter.mode(
+                                          themeData.colorScheme.primary,
+                                          BlendMode.srcIn,
+                                        ),
                                       ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 8.0),
-                                ],
-                              ),
-                              cost: '${state.posts[index].salary} VND',
-                              duration: state.posts[index].duration,
-                              description: TextMore(
-                                state.posts[index].content,
-                                trimMode: TrimMode.Hidden,
-                                trimHiddenMaxLines: 3,
-                                style: themeData.textTheme.displayMedium!.merge(
-                                  TextStyle(
-                                    color: themeData.colorScheme.onBackground,
+                                    const SizedBox(width: 8.0),
+                                  ],
+                                ),
+                                cost: '${state.posts[index].salary} VND',
+                                duration: state.posts[index].duration,
+                                description: TextMore(
+                                  state.posts[index].content,
+                                  trimMode: TrimMode.Hidden,
+                                  trimHiddenMaxLines: 3,
+                                  style:
+                                      themeData.textTheme.displayMedium!.merge(
+                                    TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    ),
                                   ),
                                 ),
                               ),

@@ -10,7 +10,8 @@ abstract class PostService {
   Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
       GetPostWithCategory request);
   Future<PostEntity> getPostId(String id);
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
+  Future<HttpResponseWithPagination<PostEntity>> getSearchWorks(
+      GetWorkModel getWorkModel);
   Future<HttpResponseWithPagination<PostEntity>> getPostsSaved(
       GetWorkModel req);
   Future<HttpResponse> toggleBookmark(int id);
@@ -115,23 +116,34 @@ class PostServiceImpl implements PostService {
   }
 
   @override
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<HttpResponseWithPagination<PostEntity>> getSearchWorks(
+      GetWorkModel getWorkModel) async {
     try {
-      final response = await agent.dio.get(
-          '/post/find-and-filter?page=${getWorkModel.page}&pageSize=${getWorkModel.pageSize}&search=${getWorkModel.search}');
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      final response =
+          await agent.dio.get('/post/find-and-filter', queryParameters: {
+        'page': getWorkModel.page,
+        'pageSize': getWorkModel.pageSize,
+        'search': getWorkModel.search,
+      });
+      HttpResponseWithPagination<dynamic> httpResponseWithPagination =
+          HttpResponseWithPagination.fromJson(response.data);
 
-      if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+      if (httpResponseWithPagination.statusCode != 200) {
+        throw ServerException(message: httpResponseWithPagination.message);
       }
 
-      List<PostEntity> posts = [];
-      httpResponse.data.forEach((post) {
-        posts.add(PostEntity.fromJson(post));
-      });
+      final posts = [
+        ...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e))
+      ];
 
-      return posts;
+      return HttpResponseWithPagination(
+        statusCode: httpResponseWithPagination.statusCode,
+        message: httpResponseWithPagination.message,
+        meta: httpResponseWithPagination.meta,
+        data: posts,
+      );
     } catch (exception) {
+      print('my log 2');
       throw ServerException(message: exception.toString());
     }
   }
@@ -175,8 +187,6 @@ class PostServiceImpl implements PostService {
       final response = await agent.dio.post('/bookmark/toggle/$id');
 
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-
-      print('my log ${httpResponse.message}');
 
       return httpResponse;
     } catch (exception) {

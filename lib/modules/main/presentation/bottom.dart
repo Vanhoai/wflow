@@ -6,7 +6,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
-import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/videocall/bloc/bloc.dart';
@@ -70,12 +69,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     Future<void> redirectFlash() async {
-      int role = instance.get<AppBloc>().state.role.toInt();
-      if (role == 2) {
-        instance.get<NavigationService>().pushNamed(RouteKeys.upPostScreen);
-      } else {
-        instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
-      }
+      instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
     }
 
     return BlocListener(

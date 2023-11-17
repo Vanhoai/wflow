@@ -67,13 +67,19 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocProvider(
       create: (_) => UpgradeBusinessBloc(
         companyUseCase: instance.get<CompanyUseCase>(),
         mediaUseCase: instance.get<MediaUseCase>(),
       ),
       child: Scaffold(
-        appBar: const AppHeader(text: 'Upgrade business'),
+        appBar: AppHeader(
+          text: Text(
+            'Upgrade business',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         body: SizedBox(
           height: double.infinity,
           width: double.infinity,

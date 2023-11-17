@@ -23,7 +23,12 @@ class _SettingScreenState extends State<SettingScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
-      appBar: const AppHeader(text: 'Setting'),
+      appBar: AppHeader(
+        text: Text(
+          'Setting',
+          style: themeData.textTheme.displayMedium,
+        ),
+      ),
       hideKeyboardWhenTouchOutside: true,
       body: RefreshIndicator(
         onRefresh: () async {

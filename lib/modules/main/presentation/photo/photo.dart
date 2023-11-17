@@ -162,32 +162,39 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocProvider(
       lazy: true,
       create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.argumentsPhoto.multiple)),
       child: CommonScaffold(
-          appBar: AppHeader(text: 'Chọn ảnh', actions: [
-            Builder(
-              builder: (context) {
-                return Container(
-                  margin: const EdgeInsets.only(right: 10, top: 4),
-                  child: InkWell(
-                    borderRadius: BorderRadius.circular(20),
-                    onTap: () {
-                      _getImageFromCamera(context: context);
-                    },
-                    child: Ink(
-                        padding: const EdgeInsets.all(6),
-                        decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
-                        child: const Icon(
-                          Icons.camera,
-                          color: Colors.white,
-                        )),
-                  ),
-                );
-              },
-            )
-          ]),
+          appBar: AppHeader(
+            text: Text(
+              'Chọn ảnh',
+              style: themeData.textTheme.displayMedium,
+            ),
+            actions: [
+              Builder(
+                builder: (context) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 10, top: 4),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        _getImageFromCamera(context: context);
+                      },
+                      child: Ink(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
+                          child: const Icon(
+                            Icons.camera,
+                            color: Colors.white,
+                          )),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
           body: Column(
             children: [
               Expanded(child: _buildBody(context)),

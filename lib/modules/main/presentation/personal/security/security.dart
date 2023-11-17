@@ -33,7 +33,12 @@ class _SecurityScreenState extends State<SecurityScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
-      appBar: const AppHeader(text: 'Security'),
+      appBar: AppHeader(
+        text: Text(
+          'Security',
+          style: themeData.textTheme.displayMedium,
+        ),
+      ),
       hideKeyboardWhenTouchOutside: true,
       body: RefreshIndicator(
         onRefresh: () async {

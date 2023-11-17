@@ -52,9 +52,10 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(
+      GetContractOfUserAndBusiness request) async {
     try {
-      final response = await contactService.findContractAcceptedOfUser(request);
+      final response = await contactService.findContractAccepted(request);
       return response;
     } catch (exception) {
       return HttpResponseWithPagination.empty();

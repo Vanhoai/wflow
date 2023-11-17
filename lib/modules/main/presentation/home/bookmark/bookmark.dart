@@ -11,8 +11,14 @@ class BookMarkScreen extends StatefulWidget {
 class _BookMarkScreenState extends State<BookMarkScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
-      appBar: const AppHeader(text: 'Bookmark  Works'),
+      appBar: AppHeader(
+        text: Text(
+          'Bookmark  Works',
+          style: themeData.textTheme.displayMedium,
+        ),
+      ),
       body: Container(),
     );
   }

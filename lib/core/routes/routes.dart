@@ -25,6 +25,7 @@ import 'package:wflow/modules/main/presentation/home/cv/cv.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/report/report.dart';
+import 'package:wflow/modules/main/presentation/home/reputation/reputation.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
@@ -103,7 +104,8 @@ class AppRoutes {
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:
-        return MaterialPageRoute(builder: (_) => const AddBusinessScreen());
+        final business = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => AddBusinessScreen(business: business));
       case RouteKeys.chatBusinessScreen:
         return MaterialPageRoute(builder: (_) => const ChatBusinessScreen());
       case RouteKeys.contractScreen:
@@ -137,7 +139,8 @@ class AppRoutes {
       case RouteKeys.graphScreen:
         return MaterialPageRoute(builder: (_) => const GraphScreen());
       case RouteKeys.removeCollaboratorScreen:
-        return MaterialPageRoute(builder: (_) => const RemoveCollaboratorScreen());
+        final business = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) => RemoveCollaboratorScreen(business: business));
       case RouteKeys.completedContractScreen:
         return MaterialPageRoute(builder: (_) => const CompletedContractScreen());
       case RouteKeys.reportScreen:
@@ -148,6 +151,8 @@ class AppRoutes {
       case RouteKeys.detailUserScreen:
         final idUser = settings.arguments as num;
         return MaterialPageRoute(builder: (_) => DetailUserScreen(id: idUser));
+      case RouteKeys.reputationScreen:
+        return MaterialPageRoute(builder: (_) => const ReputationScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

@@ -91,11 +91,17 @@ class _AddCVScreenState extends State<AddCVScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocProvider(
       create: (context) => AddCVBloc(cvUseCase: instance.get<CVUseCase>()),
       lazy: true,
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Add CV'),
+        appBar: AppHeader(
+          text: Text(
+            'Add CV',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         body: SizedBox(
           height: double.infinity,
           width: double.infinity,

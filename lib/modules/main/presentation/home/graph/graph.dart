@@ -21,8 +21,15 @@ class GraphScreen extends StatefulWidget {
 class _GraphScreenState extends State<GraphScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return CommonScaffold(
-      appBar: const AppHeader(text: 'Graph Works'),
+      appBar: AppHeader(
+        text: Text(
+          'Graph Works',
+          style: themeData.textTheme.displayMedium,
+        ),
+      ),
       body: SizedBox(
         height: 300.h,
         child: SfCartesianChart(

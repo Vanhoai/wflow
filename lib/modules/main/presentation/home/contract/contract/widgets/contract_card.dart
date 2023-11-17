@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -20,7 +21,7 @@ class ContractCard extends StatefulWidget {
 class _ContractCardState extends State<ContractCard> {
   @override
   Widget build(BuildContext context) {
-    final noSimbolInUSFormat = NumberFormat.currency(locale: "vi_VN", symbol: "");
+    final noSimbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
     return Container(
       margin: const EdgeInsets.only(
         left: AppSize.paddingScreenDefault,
@@ -81,7 +82,10 @@ class _ContractCardState extends State<ContractCard> {
                       radius: 25,
                       percent: widget.contractEntity.progress / 100,
                       center: Text(
-                        '${widget.contractEntity.progress / 100}%',
+                        '${widget.contractEntity.progress}%',
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                        ),
                       ),
                       progressColor: _progressColor(widget.contractEntity.progress / 100),
                     )

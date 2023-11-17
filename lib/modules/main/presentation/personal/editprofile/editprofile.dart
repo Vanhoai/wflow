@@ -58,7 +58,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       child: CommonScaffold(
           hideKeyboardWhenTouchOutside: true,
           isSafe: true,
-          appBar: const AppHeader(
+          appBar:  const AppHeader(
             text: 'Edit Profile',
           ),
           body: BlocBuilder<EditProfileBloc, EditProfileState>(

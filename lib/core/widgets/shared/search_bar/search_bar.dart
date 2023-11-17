@@ -67,6 +67,7 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
           hintText: widget.placeHolder,
           hintStyle: themeData.textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,
+            fontWeight: FontWeight.w400,
           ),
           labelStyle: themeData.textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,

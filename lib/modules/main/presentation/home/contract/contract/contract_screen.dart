@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/bloc/bloc.dart';
@@ -18,16 +18,17 @@ class ContractScreen extends StatefulWidget {
 }
 
 class _ContractScreenState extends State<ContractScreen> {
-  late ScrollController _scrollController;
+  late ScrollController scrollController;
+
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController();
+    scrollController = ScrollController();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -39,15 +40,20 @@ class _ContractScreenState extends State<ContractScreen> {
       child: BlocBuilder<ContractListBloc, ContractListState>(
         buildWhen: (previous, current) => previous != current,
         builder: (context, state) {
-          _scrollController.addListener(() {
+          scrollController.addListener(() {
             if (state.meta.currentPage >= state.meta.totalPage) return;
-            if (_scrollController.position.pixels == _scrollController.position.maxScrollExtent) {
+            if (scrollController.position.pixels == scrollController.position.maxScrollExtent) {
               context.read<ContractListBloc>().add(GetListContractMoreEvent());
             }
           });
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
-            appBar: const AppHeader(text: 'Works'),
+            appBar: AppHeader(
+              text: Text(
+                'Works',
+                style: themeData.textTheme.displayMedium,
+              ),
+            ),
             body: RefreshIndicator(
               onRefresh: () async {
                 context.read<ContractListBloc>().add(GetListContractEvent());
@@ -71,7 +77,7 @@ class _ContractScreenState extends State<ContractScreen> {
                           }
                           return ListView.builder(
                             physics: const BouncingScrollPhysics(),
-                            controller: _scrollController,
+                            controller: scrollController,
                             itemCount: state.contractEntities.length,
                             itemBuilder: (context, index) => ContractCard(
                               contractEntity: state.contractEntities[index],

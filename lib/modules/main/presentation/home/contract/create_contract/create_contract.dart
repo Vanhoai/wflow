@@ -79,7 +79,12 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
         taskUseCase: instance.get<TaskUseCase>(),
       )..add(CreateContractInitEvent(contract: widget.contract)),
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Create Contract'),
+        appBar: AppHeader(
+          text: Text(
+            'Create Contract',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         hideKeyboardWhenTouchOutside: true,
         body: SizedBox(
           height: double.infinity,

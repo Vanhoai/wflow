@@ -11,9 +11,15 @@ class ApplyScreen extends StatefulWidget {
 class _ApplyScreenState extends State<ApplyScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
       isSafe: true,
-      appBar: const AppHeader(text: 'Applied'),
+      appBar: AppHeader(
+        text: Text(
+          'Applied',
+          style: themeData.textTheme.displayMedium,
+        ),
+      ),
       body: Container(),
     );
   }

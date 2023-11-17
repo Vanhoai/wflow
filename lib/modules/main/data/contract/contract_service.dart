@@ -10,7 +10,7 @@ abstract class ContractService {
   Future<String> businessSignContract(int id);
   Future<ContractEntity> candidateAppliedDetail(String id);
   Future<String> createContract(CreateContractModel request);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAccepted(GetContractOfUserAndBusiness request);
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
@@ -24,6 +24,7 @@ class ContractPaths {
   static String getPathCandidateAppliedDetail(String id) => '/contract/candidate-applied-detail/$id';
   static const String createContract = '/contract/update-contract';
   static const String findContractAcceptedOfUser = '/contract/find-contract-accepted-of-user';
+  static const String findContractAcceptedOfBusiness = '/contract/find-contract-accepted-of-business';
   static const String findContractWaitingSignOfUser = '/contract/find-contract-waiting-sign-of-user';
   static const String findContractWaitingSignOfBusiness = '/contract/find-contract-waiting-sign-of-business';
   static String getPathCandidateApplied(num id) => '/contract/candidate-applied/$id';
@@ -104,10 +105,15 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAcceptedOfUser(GetCandidateApplied request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAccepted(
+    GetContractOfUserAndBusiness request,
+  ) async {
     try {
+      final path =
+          request.isBusiness ? ContractPaths.findContractAcceptedOfBusiness : ContractPaths.findContractAcceptedOfUser;
+
       final response = await agent.dio.get(
-        ContractPaths.findContractAcceptedOfUser,
+        path,
         queryParameters: {
           'page': request.page,
           'pageSize': request.pageSize,

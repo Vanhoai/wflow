@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -11,7 +12,6 @@ import 'package:wflow/modules/main/presentation/work/search_work/bloc/bloc.dart'
 import 'package:wflow/modules/main/presentation/work/search_work/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/bloc/state.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/widgets/search_work_bar.dart';
-import 'package:flutter_svg/svg.dart';
 
 class SearchWorkScreen extends StatefulWidget {
   const SearchWorkScreen({super.key});
@@ -50,7 +50,12 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
           const InitSearchWorkEvent(),
         ),
       child: Scaffold(
-        appBar: const AppHeader(text: 'Works'),
+        appBar: AppHeader(
+          text: Text(
+            'Works',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         body: BlocBuilder<SearchWorkBloc, SearchWorkState>(
           builder: (context, state) {
             _scrollController.addListener(() {

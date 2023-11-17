@@ -13,6 +13,8 @@ import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/event.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -29,6 +31,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }) : super(const HomeState(recentJobs: [], hotJobs: [], categories: [])) {
     on<HomeInitialEvent>(onInit);
     on<OnSelectCategoryEvent>(onSelectCategory);
+    on<ToggleBookmarkHomeEvent>(onToggleBookmark);
+    on<ToggleBookmarkRecentHomeEvent>(onToggleBookmarkRecent);
   }
 
   Future<void> getMyProfile() async {
@@ -39,7 +43,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       (UserEntity userEntity) {
         final authEntity = instance.get<AppBloc>().state.authEntity;
         instance.get<AppBloc>().add(AppChangeUser(userEntity: userEntity));
-        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: userEntity.role));
+        instance
+            .get<AppBloc>()
+            .add(AppChangeAuth(authEntity: authEntity, role: userEntity.role));
 
         topicBusiness = userEntity.business;
       },
@@ -69,6 +75,9 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final hotJobs = future[0];
     final recentJobs = future[1];
 
+    final List<bool> bookmarks = [...hotJobs.map((e) => e.isBookmark)];
+    final List<bool> bookmarksRecent = [...recentJobs.map((e) => e.isBookmark)];
+
     emit(
       state.copyWith(
         recentJobs: recentJobs,
@@ -76,15 +85,43 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         categories: categories,
         isLoading: false,
         categorySelected: categories.first.name,
+        bookmarks: bookmarks,
+        bookmarksRecent: bookmarksRecent,
       ),
     );
   }
 
-  FutureOr onSelectCategory(OnSelectCategoryEvent event, Emitter<HomeState> emit) async {
-    emit(state.copyWith(categorySelected: event.category, loadingCategory: true));
+  FutureOr onSelectCategory(
+      OnSelectCategoryEvent event, Emitter<HomeState> emit) async {
+    emit(state.copyWith(
+        categorySelected: event.category, loadingCategory: true));
     final posts = await postUseCase.getRecentJobs(event.category);
-    emit(state.copyWith(recentJobs: posts));
+    List<bool> bookmarksRecent = [...posts.map((e) => e.isBookmark)];
+    emit(state.copyWith(
+      recentJobs: posts,
+      bookmarksRecent: bookmarksRecent,
+    ));
 
     emit(state.copyWith(loadingCategory: false));
+  }
+
+  Future<void> onToggleBookmark(
+      ToggleBookmarkHomeEvent event, Emitter emit) async {
+    instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
+
+    List<bool> newBookmarks = [...state.bookmarks];
+    newBookmarks[event.index] = event.isBookmarked;
+
+    emit(state.copyWith(bookmarks: newBookmarks));
+  }
+
+  Future<void> onToggleBookmarkRecent(
+      ToggleBookmarkRecentHomeEvent event, Emitter emit) async {
+    instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
+
+    List<bool> newBookmarksRecent = [...state.bookmarksRecent];
+    newBookmarksRecent[event.index] = event.isBookmarked;
+
+    emit(state.copyWith(bookmarksRecent: newBookmarksRecent));
   }
 }

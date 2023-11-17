@@ -16,7 +16,8 @@ class RecentJobListWidget extends StatefulWidget {
 
 class _RecentJobListWidgetState extends State<RecentJobListWidget> {
   void pressCard(num work) {
-    Navigator.pushNamed(context, RouteKeys.jobInformationScreen, arguments: work);
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen,
+        arguments: work);
   }
 
   @override
@@ -26,7 +27,8 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
       buildWhen: (previous, current) =>
           previous.isLoading != current.isLoading ||
           previous.loadingCategory != current.loadingCategory ||
-          previous.categorySelected != current.categorySelected,
+          previous.categorySelected != current.categorySelected ||
+          previous.bookmarksRecent != current.bookmarksRecent,
       builder: (context, state) {
         return SliverPadding(
           padding: const EdgeInsets.symmetric(vertical: 20),
@@ -68,12 +70,14 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                       borderRadius: BorderRadius.circular(8.0),
                       boxShadow: [
                         BoxShadow(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
                         BoxShadow(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.1),
                           blurRadius: 4,
                           offset: const Offset(0, 2),
                         ),
@@ -84,7 +88,8 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                       leadingPhotoUrl: job.companyLogo,
                       title: Text(
                         job.position,
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                        style:
+                            themeData.textTheme.displayLarge!.merge(TextStyle(
                           fontSize: 18,
                           color: themeData.colorScheme.onBackground,
                         )),
@@ -92,19 +97,29 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                       onTapLeading: () {},
                       subtitle: Text(
                         job.companyName,
-                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                        style:
+                            themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.colorScheme.onBackground
+                              .withOpacity(0.5),
                         )),
                       ),
                       leadingSize: 30,
                       actions: [
                         InkWell(
+                          onTap: () => context.read<HomeBloc>().add(
+                              ToggleBookmarkRecentHomeEvent(
+                                  id: job.id,
+                                  index: index,
+                                  isBookmarked: !state.bookmarksRecent[index])),
                           child: SvgPicture.asset(
                             AppConstants.bookmark,
                             height: 24,
                             width: 24,
                             colorFilter: ColorFilter.mode(
-                              themeData.colorScheme.onBackground.withOpacity(0.5),
+                              state.bookmarksRecent[index]
+                                  ? themeData.colorScheme.primary
+                                  : themeData.colorScheme.onBackground
+                                      .withOpacity(0.5),
                               BlendMode.srcIn,
                             ),
                           ),

@@ -16,7 +16,8 @@ class HowJobListWidget extends StatefulWidget {
 
 class _HowJobListWidgetState extends State<HowJobListWidget> {
   void pressCard(num work) {
-    Navigator.pushNamed(context, RouteKeys.jobInformationScreen, arguments: work);
+    Navigator.pushNamed(context, RouteKeys.jobInformationScreen,
+        arguments: work);
   }
 
   @override
@@ -26,7 +27,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 280),
         child: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+         
           builder: (context, state) {
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -38,28 +39,35 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8.0),
                       border: Border.all(
-                        color: themeData.colorScheme.onBackground.withOpacity(0.8),
+                        color:
+                            themeData.colorScheme.onBackground.withOpacity(0.8),
                         width: 2,
                       ),
                     ),
                   ),
                   child: ListView.separated(
-                    separatorBuilder: (context, index) => const SizedBox(width: 20),
-                    controller: widget.scrollController,
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.horizontal,
-                    shrinkWrap: true,
-                    itemCount: state.hotJobs.length,
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                    itemBuilder: (context, index) {
-                      final job = state.hotJobs[index];
-                      return HotJobCard(
-                        job: job,
-                        constraints: constraints,
-                        pressCard: pressCard,
-                      );
-                    },
-                  ),
+                      separatorBuilder: (context, index) =>
+                          const SizedBox(width: 20),
+                      controller: widget.scrollController,
+                      physics: const BouncingScrollPhysics(),
+                      scrollDirection: Axis.horizontal,
+                      shrinkWrap: true,
+                      itemCount: state.hotJobs.length,
+                      padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                      itemBuilder: (context, index) {
+                        final job = state.hotJobs[index];
+                        return HotJobCard(
+                            job: job,
+                            constraints: constraints,
+                            pressCard: pressCard,
+                            isBookmarked: state.bookmarks[index],
+                            onToggleBookmark: () => context
+                                .read<HomeBloc>()
+                                .add(ToggleBookmarkHomeEvent(
+                                    id: job.id,
+                                    index: index,
+                                    isBookmarked: !state.bookmarks[index])));
+                      }),
                 );
               },
             );

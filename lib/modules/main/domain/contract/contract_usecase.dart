@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/modules/main/data/contract/model/request_apply_model.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
@@ -15,6 +16,9 @@ abstract class ContractUseCase {
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<Either<String, Failure>> workerSignContract(int id);
   Future<Either<String, Failure>> businessSignContract(int id);
+  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>> getContractApplies(
+    RequestApplyModel requestApplyModel,
+  );
   Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
   Future<Either<String, Failure>> checkContractAndTransfer(int id);
 }
@@ -68,6 +72,12 @@ class ContractUseCaseImpl implements ContractUseCase {
   @override
   Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request) async {
     return await contactRepository.findContractSigned(request);
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>> getContractApplies(
+      RequestApplyModel requestApplyModel) async {
+    return await contactRepository.getContractApplies(requestApplyModel);
   }
 
   @override

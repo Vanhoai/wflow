@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/contract/contract_service.dart';
+import 'package:wflow/modules/main/data/contract/model/request_apply_model.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
@@ -99,6 +100,17 @@ class ContractRepositoryImpl implements ContractRepository {
       return response;
     } catch (exception) {
       return HttpResponseWithPagination.empty();
+    }
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>> getContractApplies(
+      RequestApplyModel requestApplyModel) async {
+    try {
+      final result = await contactService.getContractApplies(requestApplyModel);
+      return Left(result);
+    } catch (exception) {
+      return const Right(ServerFailure());
     }
   }
 

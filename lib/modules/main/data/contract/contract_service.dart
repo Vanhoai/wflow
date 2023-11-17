@@ -1,6 +1,7 @@
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/exception.http.dart';
 import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/modules/main/data/contract/model/request_apply_model.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
@@ -14,6 +15,8 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
+
+  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(RequestApplyModel requestApplyModel);
   Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
   Future<String> checkContractAndTransfer(int id);
 }
@@ -32,6 +35,7 @@ class ContractPaths {
   static const String findContractSignedOfUser = '/contract/find-contract-signed-of-user';
   static const String findContractSignedOfBusiness = '/contract/find-contract-signed-of-business';
   static String checkContractAndTransfer(int id) => '/contract/check-contract-and-transfer/$id';
+  static const String getContractApplies = '/contract/find-post-applied';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -104,6 +108,7 @@ class ContractServiceImpl implements ContractService {
     }
   }
 
+  @override
   @override
   Future<HttpResponseWithPagination<ContractEntity>> findContractAccepted(
     GetContractOfUserAndBusiness request,
@@ -244,6 +249,35 @@ class ContractServiceImpl implements ContractService {
         message: httpResponse.message,
         meta: httpResponse.meta,
         data: contracts,
+      );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(RequestApplyModel requestApplyModel) async {
+    try {
+      final response = await agent.dio.get(ContractPaths.getContractApplies, queryParameters: {
+        'page': requestApplyModel.page,
+        'pageSize': requestApplyModel.pageSize,
+        'search': requestApplyModel.search,
+      });
+
+      HttpResponseWithPagination<dynamic> httpResponseWithPagination =
+          HttpResponseWithPagination.fromJson(response.data);
+
+      if (httpResponseWithPagination.statusCode != 200) {
+        throw ServerException(message: httpResponseWithPagination.message);
+      }
+
+      final applies = [...httpResponseWithPagination.data.map((e) => ContractEntity.fromJson(e))];
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponseWithPagination.statusCode,
+        message: httpResponseWithPagination.message,
+        meta: httpResponseWithPagination.meta,
+        data: applies,
       );
     } catch (exception) {
       throw ServerException(message: exception.toString());

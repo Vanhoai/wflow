@@ -7,9 +7,14 @@ import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 abstract class PostService {
   Future<List<PostEntity>> getRecentJob(String category);
   Future<List<PostEntity>> getHotJob();
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request);
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request);
   Future<PostEntity> getPostId(String id);
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel);
+  Future<HttpResponseWithPagination<PostEntity>> getSearchWorks(
+      GetWorkModel getWorkModel);
+  Future<HttpResponseWithPagination<PostEntity>> getPostsSaved(
+      GetWorkModel req);
+  Future<HttpResponse> toggleBookmark(int id);
 }
 
 class PostServiceImpl implements PostService {
@@ -20,7 +25,8 @@ class PostServiceImpl implements PostService {
   @override
   Future<List<PostEntity>> getRecentJob(String category) async {
     try {
-      final response = await agent.dio.get('/post/recent-jobs', queryParameters: {
+      final response =
+          await agent.dio.get('/post/recent-jobs', queryParameters: {
         'category': category,
       });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
@@ -62,7 +68,8 @@ class PostServiceImpl implements PostService {
   }
 
   @override
-  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(GetPostWithCategory request) async {
+  Future<HttpResponseWithPagination<PostEntity>> getPostWithCategory(
+      GetPostWithCategory request) async {
     try {
       final response = await agent.dio.get(
         '/post/finds-by-category',
@@ -73,12 +80,14 @@ class PostServiceImpl implements PostService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(message: httpResponse.message);
       }
 
-      List<PostEntity> posts = httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
+      List<PostEntity> posts =
+          httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -107,22 +116,79 @@ class PostServiceImpl implements PostService {
   }
 
   @override
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<HttpResponseWithPagination<PostEntity>> getSearchWorks(
+      GetWorkModel getWorkModel) async {
     try {
-      final response = await agent.dio.get(
-          '/post/find-and-filter?page=${getWorkModel.page}&pageSize=${getWorkModel.pageSize}&search=${getWorkModel.search}');
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      final response =
+          await agent.dio.get('/post/find-and-filter', queryParameters: {
+        'page': getWorkModel.page,
+        'pageSize': getWorkModel.pageSize,
+        'search': getWorkModel.search,
+      });
+      HttpResponseWithPagination<dynamic> httpResponseWithPagination =
+          HttpResponseWithPagination.fromJson(response.data);
 
-      if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+      if (httpResponseWithPagination.statusCode != 200) {
+        throw ServerException(message: httpResponseWithPagination.message);
       }
 
-      List<PostEntity> posts = [];
-      httpResponse.data.forEach((post) {
-        posts.add(PostEntity.fromJson(post));
+      final posts = [
+        ...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e))
+      ];
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponseWithPagination.statusCode,
+        message: httpResponseWithPagination.message,
+        meta: httpResponseWithPagination.meta,
+        data: posts,
+      );
+    } catch (exception) {
+      print('my log 2');
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<PostEntity>> getPostsSaved(
+      GetWorkModel req) async {
+    try {
+      final response =
+          await agent.dio.get('/post/find-post-bookmarked', queryParameters: {
+        'page': req.page,
+        'pageSize': req.pageSize,
+        'search': req.search,
       });
 
-      return posts;
+      HttpResponseWithPagination<dynamic> httpResponseWithPagination =
+          HttpResponseWithPagination.fromJson(response.data);
+
+      if (httpResponseWithPagination.statusCode != 200) {
+        throw ServerException(message: httpResponseWithPagination.message);
+      }
+
+      final posts = [
+        ...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e))
+      ];
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponseWithPagination.statusCode,
+        message: httpResponseWithPagination.message,
+        meta: httpResponseWithPagination.meta,
+        data: posts,
+      );
+    } catch (exception) {
+      throw ServerException(message: exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponse> toggleBookmark(int id) async {
+    try {
+      final response = await agent.dio.post('/bookmark/toggle/$id');
+
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      return httpResponse;
     } catch (exception) {
       throw ServerException(message: exception.toString());
     }

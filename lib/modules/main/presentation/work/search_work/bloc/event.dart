@@ -30,3 +30,18 @@ class ChangedIconClearSearchWorkEvent extends SearchWorkEvent {
   @override
   List<Object?> get props => [txtSearch];
 }
+
+class ToggleBookmarkSearchWorkEvent extends SearchWorkEvent {
+  final int id;
+  final int index;
+  final bool isBookmarked;
+
+  const ToggleBookmarkSearchWorkEvent({
+    required this.id,
+    required this.index,
+    required this.isBookmarked,
+  });
+
+  @override
+  List get props => [id, index, isBookmarked];
+}

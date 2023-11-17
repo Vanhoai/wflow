@@ -8,6 +8,7 @@ class SearchWorkState extends Equatable {
   final String txtSearch;
   final bool isLoadMore;
   final Meta meta;
+  final List<bool> bookmarks;
 
   const SearchWorkState({
     this.postsData = const [],
@@ -16,6 +17,7 @@ class SearchWorkState extends Equatable {
     this.isLoadMore = false,
     this.meta =
         const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
+    this.bookmarks = const [],
   });
 
   SearchWorkState copyWith({
@@ -24,6 +26,7 @@ class SearchWorkState extends Equatable {
     String? txtSearch,
     bool? isLoadMore,
     Meta? meta,
+    List<bool>? bookmarks,
   }) {
     return SearchWorkState(
       postsData: postsData ?? this.postsData,
@@ -31,6 +34,7 @@ class SearchWorkState extends Equatable {
       txtSearch: txtSearch ?? this.txtSearch,
       isLoadMore: isLoadMore ?? this.isLoadMore,
       meta: meta ?? this.meta,
+      bookmarks: bookmarks ?? this.bookmarks,
     );
   }
 
@@ -41,6 +45,7 @@ class SearchWorkState extends Equatable {
         txtSearch,
         isLoadMore,
         meta,
+        bookmarks,
       ];
 }
 

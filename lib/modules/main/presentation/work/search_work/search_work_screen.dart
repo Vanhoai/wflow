@@ -153,13 +153,23 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                     leadingSize: 30,
                                     actions: [
                                       InkWell(
+                                        onTap: () => context
+                                            .read<SearchWorkBloc>()
+                                            .add(ToggleBookmarkSearchWorkEvent(
+                                                id: state.postsData[index].id,
+                                                index: index,
+                                                isBookmarked:
+                                                    !state.bookmarks[index])),
                                         child: SvgPicture.asset(
                                           AppConstants.bookmark,
                                           height: 24,
                                           width: 24,
                                           colorFilter: ColorFilter.mode(
-                                            themeData.colorScheme.onBackground
-                                                .withOpacity(0.5),
+                                            state.bookmarks[index]
+                                                ? themeData.colorScheme.primary
+                                                : themeData
+                                                    .colorScheme.onBackground
+                                                    .withOpacity(0.5),
                                             BlendMode.srcIn,
                                           ),
                                         ),

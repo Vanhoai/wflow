@@ -5,19 +5,9 @@ abstract class BookmarkEvent extends Equatable {
   List get props => [];
 }
 
-class InitBookmarkEvent extends BookmarkEvent {
-  InitBookmarkEvent();
+class InitBookmarkEvent extends BookmarkEvent {}
 
-  @override
-  List get props => [];
-}
-
-class ScrollBookmarkEvent extends BookmarkEvent {
-  ScrollBookmarkEvent();
-
-  @override
-  List get props => [];
-}
+class ScrollBookmarkEvent extends BookmarkEvent {}
 
 class ToggleBookmarkEvent extends BookmarkEvent {
   final int id;

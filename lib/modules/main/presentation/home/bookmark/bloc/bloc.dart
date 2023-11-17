@@ -1,6 +1,4 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
@@ -32,8 +30,10 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
 
   Future<void> onScrollPostSaved(
       ScrollBookmarkEvent event, Emitter emit) async {
-    if (state.meta.currentPage < state.meta.totalPage) {
-      emit(LoadMoreBookmarkState());
+    if (state.meta.currentPage < state.meta.totalPage ||
+        state.meta.currentPage == 1) {
+      print('my log scroll');
+      emit(state.copyWith(isLoadMore: true));
 
       List<PostEntity> newPosts = [];
       GetWorkModel req = GetWorkModel(
@@ -53,7 +53,9 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
                       .map((e) => PostEntity.fromJson(e.toJson()))
                 ],
                 emit(BookmarkState(
-                    posts: newPosts, meta: httpResponseWithPagination.meta)),
+                    posts: newPosts,
+                    meta: httpResponseWithPagination.meta,
+                    isLoadMore: false)),
               },
           (Failure failure) => {});
     }

@@ -79,6 +79,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                             }
                           },
                           child: ListView.separated(
+                            controller: _scrollController,
                             padding: const EdgeInsets.only(bottom: 20, top: 4),
                             separatorBuilder: (context, index) =>
                                 const SizedBox(height: 12),
@@ -172,8 +173,9 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                   ),
                   Builder(
                     builder: (context) {
-                      if (state is LoadMoreBookmarkState) {
+                      if (state.isLoadMore) {
                         return Visibility(
+                          visible: state.isLoadMore,
                           child: SizedBox(
                             width: MediaQuery.of(context).size.width,
                             height: 40,

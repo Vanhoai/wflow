@@ -31,7 +31,7 @@ class _MessageScreenState extends State<MessageScreen> {
       RouteKeys.callScreen,
       arguments: ArgumentsCall(
         client: instance.get<StringeeClient>(),
-        toUserId: '${widget.argumentsMessage.userEntity.name}_${widget.argumentsMessage.userEntity.id}',
+        toUserId: '${widget.argumentsMessage.userEntity.id}',
         fromUserId: instance.get<StringeeClient>().userId!,
         callType: callType,
         showIncomingUi: false,

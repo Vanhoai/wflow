@@ -32,6 +32,7 @@ import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
+import 'package:wflow/modules/main/presentation/personal/detail_user/detail_user.dart';
 import 'package:wflow/modules/main/presentation/personal/editprofile/editprofile.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/notification_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
@@ -147,6 +148,9 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => ReportScreen(argumentsReport: report));
       case RouteKeys.editProfileScreen:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
+      case RouteKeys.detailUserScreen:
+        final idUser = settings.arguments as num;
+        return MaterialPageRoute(builder: (_) => DetailUserScreen(id: idUser));
       case RouteKeys.reputationScreen:
         return MaterialPageRoute(builder: (_) => const ReputationScreen());
       default:

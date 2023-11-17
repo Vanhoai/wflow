@@ -4,6 +4,7 @@ import 'package:wflow/modules/main/data/user/models/request/add_collaborator_mod
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
+import 'package:wflow/modules/main/data/user/models/request/update_profile.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -101,6 +102,18 @@ class UserRepositoryImpl extends UserRepository {
       return Right(ServerFailure(message: exception.message));
     } catch (exception) {
       return Right(CommonFailure(message: exception.toString()));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> updateProfile({required RequestUpdateProfile request}) async {
+    try {
+      final response = await userService.updateProfile(request: request);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    } catch (exception) {
+      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

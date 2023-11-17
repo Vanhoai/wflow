@@ -239,9 +239,7 @@ class _TaskScreenState extends State<TaskScreen> {
             alignment: Alignment.centerRight,
             child: Text(
               instance.get<Time>().getDayMonthYear(task.endTime.toString()),
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    color: task.state == TaskStatus.Accepted.name ? AppColors.greenColor : AppColors.redColor,
-                  ),
+              style: Theme.of(context).textTheme.displayMedium!,
             ),
           ),
           const SizedBox(

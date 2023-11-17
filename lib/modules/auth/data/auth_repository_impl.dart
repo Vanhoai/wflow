@@ -18,7 +18,7 @@ class AuthRepositoryImpl implements AuthRepository {
       final AuthEntity authEntity = AuthEntity(
         accessToken: authResponse.accessToken,
         refreshToken: authResponse.refreshToken,
-        stringeeToken: 'authResponse.stringeeToken',
+        stringeeToken: authResponse.stringeeToken,
         isSignIn: true,
       );
 

@@ -61,13 +61,6 @@ class _ReputationScreenState extends State<ReputationScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(
-                      'Rating are verified by Wflow. You can rate your experience with other users.',
-                      style: themeData.textTheme.displayLarge!,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    8.verticalSpace,
                     Center(
                       child: Visibility(
                         visible: reputationEntity.totalFeedback > 0,
@@ -150,17 +143,6 @@ class _ReputationScreenState extends State<ReputationScreen> {
                                   trimLines: 5,
                                   trimMode: TrimMode.Line,
                                 ),
-                                4.verticalSpace,
-                                Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
-                                    2.horizontalSpace,
-                                    IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
-                                  ],
-                                ),
                                 8.verticalSpace,
                               ],
                             );
@@ -216,17 +198,6 @@ class _ReputationScreenState extends State<ReputationScreen> {
                                 style: themeData.textTheme.displayMedium!,
                                 trimLines: 5,
                                 trimMode: TrimMode.Line,
-                              ),
-                              4.verticalSpace,
-                              Row(
-                                mainAxisSize: MainAxisSize.max,
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_up)),
-                                  2.horizontalSpace,
-                                  IconButton(onPressed: () {}, icon: const Icon(Icons.thumb_down)),
-                                ],
                               ),
                               8.verticalSpace,
                             ],

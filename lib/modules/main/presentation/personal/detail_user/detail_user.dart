@@ -34,8 +34,11 @@ class _DetailUserScreenState extends State<DetailUserScreen> {
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
             isSafe: true,
-            appBar: const AppHeader(
-              text: 'Profile',
+            appBar: AppHeader(
+              text: Text(
+                'Edit Profile',
+                style: themeData.textTheme.displayMedium,
+              ),
             ),
             body: Visibility(
               visible: (state is GetDetailUserSuccess),

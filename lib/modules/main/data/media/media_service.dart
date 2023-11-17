@@ -28,12 +28,12 @@ class MediaServiceImpl implements MediaService {
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return FileEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

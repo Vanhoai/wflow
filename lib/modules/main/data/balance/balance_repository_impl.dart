@@ -20,8 +20,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -32,8 +30,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -44,8 +40,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -56,8 +50,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

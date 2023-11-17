@@ -6,7 +6,6 @@ import 'package:wflow/modules/main/domain/room/entities/room_entity.dart';
 
 abstract class RoomService {
   Future<HttpResponseWithPagination<RoomEntity>> getListRoom(PaginationModel request);
-
   Future<HttpResponseWithPagination<MessagesEntity>> getListMessage(PaginationModel request, num idRoom);
 }
 
@@ -29,7 +28,7 @@ class RoomServiceImpl implements RoomService {
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<RoomEntity> rooms = httpResponse.data.map((e) => RoomEntity.fromJson(e)).toList();
@@ -41,7 +40,7 @@ class RoomServiceImpl implements RoomService {
         data: rooms,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -59,7 +58,7 @@ class RoomServiceImpl implements RoomService {
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<MessagesEntity> messages = httpResponse.data.map((e) => MessagesEntity.fromJson(e)).toList();
@@ -71,7 +70,7 @@ class RoomServiceImpl implements RoomService {
         data: messages,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

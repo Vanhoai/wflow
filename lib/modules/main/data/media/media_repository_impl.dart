@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/media/models/upload_file_rqst.dart';
 import 'package:wflow/modules/main/domain/media/entities/file_entity.dart';
@@ -14,8 +14,8 @@ class MediaRepositoryImpl implements MediaRepository {
     try {
       final response = await mediaService.uploadFile(request: request);
       return Left(response);
-    } catch (e) {
-      return Right(ServerFailure(message: e.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

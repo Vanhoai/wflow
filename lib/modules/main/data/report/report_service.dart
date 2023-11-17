@@ -11,7 +11,6 @@ abstract class ReportService {
 
 class ReportServiceImpl implements ReportService {
   final Agent agent;
-
   ReportServiceImpl({required this.agent});
 
   @override
@@ -27,12 +26,12 @@ class ReportServiceImpl implements ReportService {
       final response = await agent.dio.post('/report/', data: formData);
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return ReportEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

@@ -12,7 +12,6 @@ import 'package:wflow/modules/main/domain/user/user_repository.dart';
 
 class UserRepositoryImpl extends UserRepository {
   final UserService userService;
-
   UserRepositoryImpl({required this.userService});
 
   @override
@@ -20,8 +19,8 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final UserModel userModel = await userService.myProfile();
       return Left(UserEntity.fromJson(userModel.toJson()));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -42,8 +41,6 @@ class UserRepositoryImpl extends UserRepository {
       );
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
@@ -54,8 +51,6 @@ class UserRepositoryImpl extends UserRepository {
       return Left(message);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
@@ -76,8 +71,6 @@ class UserRepositoryImpl extends UserRepository {
       );
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
@@ -88,8 +81,6 @@ class UserRepositoryImpl extends UserRepository {
       return Left(message);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
@@ -100,8 +91,6 @@ class UserRepositoryImpl extends UserRepository {
       return Left(UserEntity.fromJson(userModel.toJson()));
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(CommonFailure(message: exception.toString()));
     }
   }
 
@@ -112,8 +101,6 @@ class UserRepositoryImpl extends UserRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

@@ -20,8 +20,9 @@ abstract class UserPath {
 
 abstract class UserService {
   Future<UserModel> myProfile();
-  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness(
-      {required GetUserNotBusinessModel getUserNotBusinessModel});
+  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness({
+    required GetUserNotBusinessModel getUserNotBusinessModel,
+  });
   Future<String> addCollaborator(AddCollaboratorModel addCollaboratorModel);
   Future<HttpResponseWithPagination<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
   Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
@@ -39,13 +40,13 @@ class UserServiceImpl implements UserService {
     try {
       final response = await agent.dio.get(UserPath.myProfile);
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return UserModel.fromJson(httpResponse.data);
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return UserModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -65,7 +66,7 @@ class UserServiceImpl implements UserService {
 
       HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<UserModel> users = [];
@@ -80,7 +81,7 @@ class UserServiceImpl implements UserService {
         data: users,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -90,12 +91,12 @@ class UserServiceImpl implements UserService {
       final response = await agent.dio.patch(UserPath.addCollaborator, data: addCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -114,7 +115,7 @@ class UserServiceImpl implements UserService {
 
       HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<UserModel> users = [];
@@ -129,7 +130,7 @@ class UserServiceImpl implements UserService {
         data: users,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -139,12 +140,12 @@ class UserServiceImpl implements UserService {
       final response = await agent.dio.patch(UserPath.removeCollaborator, data: removeCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -155,12 +156,12 @@ class UserServiceImpl implements UserService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+        throw ServerException(httpResponse.message);
       }
 
       return UserModel.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -182,12 +183,12 @@ class UserServiceImpl implements UserService {
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

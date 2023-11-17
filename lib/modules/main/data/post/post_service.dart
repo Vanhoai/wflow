@@ -44,7 +44,7 @@ class PostServiceImpl implements PostService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<PostEntity> posts = [];
@@ -54,7 +54,7 @@ class PostServiceImpl implements PostService {
 
       return posts;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -65,7 +65,7 @@ class PostServiceImpl implements PostService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<PostEntity> posts = [];
@@ -75,7 +75,7 @@ class PostServiceImpl implements PostService {
 
       return posts;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -93,7 +93,7 @@ class PostServiceImpl implements PostService {
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<PostEntity> posts = httpResponse.data.map((e) => PostEntity.fromJson(e)).toList();
@@ -104,7 +104,7 @@ class PostServiceImpl implements PostService {
         data: posts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -116,11 +116,11 @@ class PostServiceImpl implements PostService {
       );
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
       return PostEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -139,7 +139,7 @@ class PostServiceImpl implements PostService {
           HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponseWithPagination.statusCode != 200) {
-        throw ServerException(message: httpResponseWithPagination.message);
+        throw ServerException(httpResponseWithPagination.message);
       }
 
       final posts = [...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e))];
@@ -151,7 +151,7 @@ class PostServiceImpl implements PostService {
         data: posts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -171,7 +171,7 @@ class PostServiceImpl implements PostService {
           HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponseWithPagination.statusCode != 200) {
-        throw ServerException(message: httpResponseWithPagination.message);
+        throw ServerException(httpResponseWithPagination.message);
       }
 
       final posts = [...httpResponseWithPagination.data.map((e) => PostEntity.fromJson(e))];
@@ -183,7 +183,7 @@ class PostServiceImpl implements PostService {
         data: posts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -198,7 +198,7 @@ class PostServiceImpl implements PostService {
 
       return httpResponse;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -213,12 +213,12 @@ class PostServiceImpl implements PostService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.message;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

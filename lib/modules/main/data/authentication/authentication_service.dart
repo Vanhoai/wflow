@@ -15,7 +15,6 @@ abstract class AuthenticationService {
 
 class AuthenticationServiceImpl extends AuthenticationService {
   final Agent agent;
-
   AuthenticationServiceImpl({required this.agent});
 
   @override
@@ -24,12 +23,20 @@ class AuthenticationServiceImpl extends AuthenticationService {
       var formData = FormData.fromMap({'file': await MultipartFile.fromFile(file.path)});
       final response = await agent.dio.post('/fpt-ai/id-recognition', data: formData);
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
       List<dynamic> list = httpResponse.data['data'];
       List<BackID> backIDs = list.map((e) => BackID.fromJson(e)).toList();
       return AuthenticationEntity(
-          errorCode: httpResponse.data['errorCode'], errorMessage: httpResponse.data['errorMessage'], data: backIDs);
+        errorCode: httpResponse.data['errorCode'],
+        errorMessage: httpResponse.data['errorMessage'],
+        data: backIDs,
+      );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -40,12 +47,16 @@ class AuthenticationServiceImpl extends AuthenticationService {
       final response = await agent.dio.post('/fpt-ai/id-recognition', data: formData);
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
       List<dynamic> list = httpResponse.data['data'];
       List<FrontID> fontIDs = list.map((e) => FrontID.fromJson(e)).toList();
       return AuthenticationEntity(
           errorCode: httpResponse.data['errorCode'], errorMessage: httpResponse.data['errorMessage'], data: fontIDs);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -64,7 +75,7 @@ class AuthenticationServiceImpl extends AuthenticationService {
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       return httpResponse;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

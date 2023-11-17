@@ -32,13 +32,11 @@ class FeedbackServiceImpl implements FeedbackService {
       HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message.toString());
+        throw ServerException(httpResponse.message);
       }
       return httpResponse.data.map((e) => FeedbackEntity.fromJson(e)).toList();
-    } on ServerException catch (e) {
-      throw ServerException(message: e.message.toString());
-    } catch (e) {
-      throw ServerException();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -49,14 +47,12 @@ class FeedbackServiceImpl implements FeedbackService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message.toString());
+        throw ServerException(httpResponse.message);
       }
 
       return ReputationEntity.fromJson(httpResponse.data);
-    } on ServerException catch (e) {
-      throw ServerException(message: e.message.toString());
-    } catch (e) {
-      throw ServerException();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 }

@@ -20,7 +20,7 @@ class TrackingServiceImpl implements TrackingService {
       final response = await agent.dio.get(TrackingPaths.findContractInBalance(id: id));
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<TrackingEntity> trackingEntity = [];
@@ -30,7 +30,7 @@ class TrackingServiceImpl implements TrackingService {
 
       return trackingEntity;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

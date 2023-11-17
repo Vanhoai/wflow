@@ -25,12 +25,12 @@ class TaskServiceImpl implements TaskService {
       final response = await agent.dio.post('/task/add-task-to-contract', data: model.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return TaskEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -40,12 +40,12 @@ class TaskServiceImpl implements TaskService {
       final response = await agent.dio.delete('/task/delete-task-in-contract/$id');
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.message;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -55,12 +55,12 @@ class TaskServiceImpl implements TaskService {
       final response = await agent.dio.put('/task/update-task-in-contract', data: model.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return TaskEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -73,7 +73,7 @@ class TaskServiceImpl implements TaskService {
 
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
       List<TaskEntity> tasks = [];
       httpResponse.data.forEach((element) {
@@ -81,7 +81,7 @@ class TaskServiceImpl implements TaskService {
       });
       return tasks;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -91,12 +91,12 @@ class TaskServiceImpl implements TaskService {
       final response = await agent.dio.patch('/task/worker-update-status-task-in-contract', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return TaskEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -106,12 +106,12 @@ class TaskServiceImpl implements TaskService {
       final response = await agent.dio.patch('/task/business-update-status-task-in-contract', data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return TaskEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

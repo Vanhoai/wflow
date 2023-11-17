@@ -17,8 +17,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final messageRespond = await contactService.applyPost(request);
       return Left(messageRespond);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -27,8 +27,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final candidateDetail = await contactService.candidateAppliedDetail(id);
       return Left(candidateDetail);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -47,8 +47,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.createContract(request);
       return Left(response);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -68,7 +68,7 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.findContractWaitingSign(request);
       return response;
-    } catch (exception) {
+    } on ServerException {
       return HttpResponseWithPagination.empty();
     }
   }
@@ -78,8 +78,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.businessSignContract(id);
       return Left(response);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -88,8 +88,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.workerSignContract(id);
       return Left(response);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -109,8 +109,8 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final result = await contactService.getContractApplies(requestApplyModel);
       return Left(result);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -121,8 +121,6 @@ class ContractRepositoryImpl implements ContractRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

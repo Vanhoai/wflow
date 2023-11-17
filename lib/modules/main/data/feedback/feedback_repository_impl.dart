@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/feedback/feedback_service.dart';
 import 'package:wflow/modules/main/data/feedback/models/business_send_feedback_model.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
@@ -22,8 +21,8 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
     try {
       final response = await feedbackService.findFeedbackOfUser();
       return Left(response);
-    } catch (e) {
-      return Right(ServerFailure(message: e.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -32,8 +31,8 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
     try {
       final response = await feedbackService.findReputation();
       return Left(response);
-    } catch (e) {
-      return Right(ServerFailure(message: e.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

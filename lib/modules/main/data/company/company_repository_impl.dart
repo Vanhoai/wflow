@@ -16,16 +16,8 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.getCompanyById(id);
       return Left(CompanyEntity.fromJson(response.toJson()));
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -34,16 +26,8 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.myCompany();
       return Left(CompanyEntity.fromJson(response.toJson()));
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -52,16 +36,8 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.myCompanyMember(page, pageSize);
       return Left(response.map((e) => UserEntity.fromJson(e.toJson())).toList());
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -70,16 +46,8 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.myCompanyJob(page, pageSize);
       return Left(response.map((e) => PostEntity.fromJson(e.toJson())).toList());
-    } catch (e) {
-      if (e is CommonFailure) {
-        return Right(CommonFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is ServerFailure) {
-        return Right(ServerFailure(message: e.message, statusCode: e.statusCode));
-      } else if (e is CacheFailure) {
-        return Right(CacheFailure(message: e.message, statusCode: e.statusCode));
-      } else {
-        return const Right(ServerFailure());
-      }
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -88,8 +56,8 @@ class CompanyRepositoryImpl extends CompanyRepository {
     try {
       final response = await companyService.upgradeBusiness(request: request);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -100,8 +68,6 @@ class CompanyRepositoryImpl extends CompanyRepository {
       return Left(CompanyEntity.fromJson(response.toJson()));
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

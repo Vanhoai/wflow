@@ -15,7 +15,6 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
-
   Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(RequestApplyModel requestApplyModel);
   Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
   Future<String> checkContractAndTransfer(int id);
@@ -50,7 +49,7 @@ class ContractServiceImpl implements ContractService {
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       return httpResponse.message;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -63,12 +62,12 @@ class ContractServiceImpl implements ContractService {
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -80,12 +79,12 @@ class ContractServiceImpl implements ContractService {
       );
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return ContractEntity.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -99,12 +98,12 @@ class ContractServiceImpl implements ContractService {
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.message;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -128,7 +127,7 @@ class ContractServiceImpl implements ContractService {
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
@@ -139,7 +138,7 @@ class ContractServiceImpl implements ContractService {
         data: contracts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -161,7 +160,7 @@ class ContractServiceImpl implements ContractService {
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
@@ -172,7 +171,7 @@ class ContractServiceImpl implements ContractService {
         data: contracts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -190,7 +189,7 @@ class ContractServiceImpl implements ContractService {
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<CandidateEntity> posts = httpResponse.data.map((e) => CandidateEntity.fromJson(e)).toList();
@@ -201,7 +200,7 @@ class ContractServiceImpl implements ContractService {
         data: posts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -214,12 +213,12 @@ class ContractServiceImpl implements ContractService {
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -240,7 +239,7 @@ class ContractServiceImpl implements ContractService {
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
@@ -251,7 +250,7 @@ class ContractServiceImpl implements ContractService {
         data: contracts,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -268,7 +267,7 @@ class ContractServiceImpl implements ContractService {
           HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponseWithPagination.statusCode != 200) {
-        throw ServerException(message: httpResponseWithPagination.message);
+        throw ServerException(httpResponseWithPagination.message);
       }
 
       final applies = [...httpResponseWithPagination.data.map((e) => ContractEntity.fromJson(e))];
@@ -280,7 +279,7 @@ class ContractServiceImpl implements ContractService {
         data: applies,
       );
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -293,12 +292,12 @@ class ContractServiceImpl implements ContractService {
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
@@ -23,9 +23,9 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return Left(authEntity);
-    } catch (exception) {
-      print(exception.toString());
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      print('ServerException: ${exception.message}');
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -48,8 +48,8 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.registerWithGoogle(request: request);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -65,8 +65,8 @@ class AuthRepositoryImpl implements AuthRepository {
       );
 
       return Left(authEntity);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

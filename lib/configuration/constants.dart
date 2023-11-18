@@ -76,6 +76,7 @@ class AppConstants {
   static const String ic_cv = '${commonIconPath}ic.cv.svg';
   static const String ic_graph = '${commonIconPath}ic.graph.svg';
   static const String ic_bookmark_navigate = '${commonIconPath}ic.bookmark_navigate.svg';
+  static const String ic_available = '${commonIconPath}ic.available.svg';
 
   //image
   static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';

@@ -48,6 +48,7 @@ class _SearchRoomsScreenState extends State<SearchRoomsScreen> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: SharedSearchBar(
+                      placeHolder: 'Search',
                       decoration: BoxDecoration(
                         color: themeData.colorScheme.background,
                       ),

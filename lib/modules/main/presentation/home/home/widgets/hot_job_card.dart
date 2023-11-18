@@ -13,14 +13,16 @@ class HotJobCard extends StatefulWidget {
     required this.constraints,
     required this.pressCard,
     this.onToggleBookmark,
-    required this.isBookmarkeded,
+    required this.isBookmarked,
+    required this.paymentAvailable,
   });
 
   final PostEntity job;
   final BoxConstraints constraints;
   final Function(int id) pressCard;
   final void Function()? onToggleBookmark;
-  final bool isBookmarkeded;
+  final bool isBookmarked;
+  final bool paymentAvailable;
 
   @override
   State<HotJobCard> createState() => _HotJobCardState();
@@ -37,6 +39,7 @@ class _HotJobCardState extends State<HotJobCard> {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: JobCard(
         time: widget.job.updatedAt!,
+        paymentAvailable: widget.paymentAvailable,
         jobId: widget.job.id,
         isHorizontal: true,
         boxDecoration: BoxDecoration(
@@ -88,7 +91,7 @@ class _HotJobCardState extends State<HotJobCard> {
                 height: 24,
                 width: 24,
                 colorFilter: ColorFilter.mode(
-                  widget.isBookmarkeded
+                  widget.isBookmarked
                       ? themeData.colorScheme.primary
                       : themeData.colorScheme.onBackground.withOpacity(0.5),
                   BlendMode.srcIn,

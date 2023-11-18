@@ -79,5 +79,14 @@
   "Success": "Thành công",
   "Apply": "Đã ứng tuyển",
   "Created": "Đã tạo",
-  "contractWillCancelAfter": "Hợp đồng sẽ bị hủy sau"
+  "contractWillCancelAfter": "Hợp đồng sẽ bị hủy sau",
+  "paymentAvailable": "Có thể thanh toán",
+  "paymentUnavailable": "Chưa đủ tiền trả",
+  "recentAgo": "vừa xong",
+  "minuteAgo": "phút trước",
+  "hourAgo": "giờ trước",
+  "dayAgo": "ngày trước",
+  "weekAgo": "tuần trước",
+  "monthAgo": "tháng trước",
+  "yearAgo": "năm trước"
 }

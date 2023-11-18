@@ -56,7 +56,8 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                         job: job,
                         constraints: constraints,
                         pressCard: pressCard,
-                        isBookmarkeded: state.bookmarks[index],
+                        paymentAvailable: job.paymentAvailable,
+                        isBookmarked: state.bookmarks[index],
                         onToggleBookmark: () => context.read<HomeBloc>().add(
                               ToggleBookmarkHomeEvent(
                                 id: job.id,

@@ -1,6 +1,7 @@
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/exception.http.dart';
 import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/data/contract/model/request_apply_model.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
@@ -138,6 +139,7 @@ class ContractServiceImpl implements ContractService {
         data: contracts,
       );
     } catch (exception) {
+      AlertUtils.showMessage('Error', exception.toString());
       throw ServerException(exception.toString());
     }
   }

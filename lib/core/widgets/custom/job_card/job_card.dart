@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
-import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/cupertino_menu/cupertino_menu.dart';
@@ -29,7 +28,8 @@ class JobCard extends StatefulWidget {
     this.cardPressed,
     this.isHorizontal = false,
     required this.jobId,
-    required this.time
+    required this.time,
+    this.paymentAvailable = false,
   });
 
   final Widget header;
@@ -45,6 +45,8 @@ class JobCard extends StatefulWidget {
   final bool isHorizontal;
   final num jobId;
   final DateTime time;
+  final bool paymentAvailable;
+
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -58,6 +60,7 @@ class _JobCardState extends State<JobCard> {
       '⏰ ${instance.get<AppLocalization>().translate("duration")}',
       '💰 ${instance.get<AppLocalization>().translate("budget")}',
       '📘 ${instance.get<AppLocalization>().translate("description")}',
+      '📅 ${instance.get<AppLocalization>().translate("updatedAt")}'
     ];
     super.initState();
   }
@@ -70,36 +73,12 @@ class _JobCardState extends State<JobCard> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.max,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              AppConstants.checkFill,
-              height: 16,
-              width: 16,
-              colorFilter: const ColorFilter.mode(
-                Colors.greenAccent,
-                BlendMode.srcIn,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Payment variable',
-              style: Theme.of(context).textTheme.displaySmall!.merge(
-                    TextStyle(
-                      color: Colors.greenAccent[800],
-                      fontSize: 14,
-                    ),
-                  ),
-              textAlign: TextAlign.start,
-              maxLines: 1,
-            ),
-          ],
+        Text(
+          staticTitle[3],
+          style: themeData.textTheme.displayMedium,
         ),
         Text(
-          '⏳ ${instance.get<ConvertString>().timeFormat(value: widget.time)}',
+          instance.get<ConvertString>().timeFormat(value: widget.time),
           textAlign: TextAlign.end,
           style: Theme.of(context).textTheme.displaySmall!.merge(
                 const TextStyle(

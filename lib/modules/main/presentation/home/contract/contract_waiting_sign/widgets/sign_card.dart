@@ -3,8 +3,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
 
 class SignCard extends StatelessWidget {
@@ -61,7 +63,7 @@ class SignCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(contractEntity.business.name, style: themeData.textTheme.labelLarge),
-                      Text('${contractEntity.salary} VND', style: themeData.textTheme.labelMedium),
+                      Text(instance.get<ConvertString>().moneyFormat(value: contractEntity.salary), style: themeData.textTheme.labelMedium),
                     ],
                   ),
                 ),

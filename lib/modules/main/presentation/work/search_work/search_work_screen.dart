@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
@@ -102,6 +103,7 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                               itemBuilder: (context, index) => Container(
                                 constraints: const BoxConstraints(maxHeight: 270),
                                 child: JobCard(
+                                   time: state.postsData[index].updatedAt!,
                                   jobId: state.postsData[index].id,
                                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                   boxDecoration: BoxDecoration(
@@ -158,7 +160,7 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                       const SizedBox(width: 8.0),
                                     ],
                                   ),
-                                  cost: '${state.postsData[index].salary} VND',
+                                  cost: instance.get<ConvertString>().moneyFormat(value: state.postsData[index].salary),
                                   duration: state.postsData[index].duration,
                                   description: TextMore(
                                     state.postsData[index].content,

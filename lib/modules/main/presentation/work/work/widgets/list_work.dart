@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/work/work/bloc/bloc.dart';
@@ -149,6 +151,7 @@ class _ListWorksState extends State<ListWorks> {
                           return Container(
                             constraints: const BoxConstraints(maxHeight: 270),
                             child: JobCard(
+                              time: post.updatedAt!,
                               jobId: post.id,
                               cardPressed: () => pressCard(post.id),
                               margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -204,7 +207,7 @@ class _ListWorksState extends State<ListWorks> {
                                   const SizedBox(width: 8.0),
                                 ],
                               ),
-                              cost: '${post.salary} VND',
+                              cost: instance.get<ConvertString>().moneyFormat(value: post.salary),
                               duration: post.duration,
                               description: TextMore(
                                 post.content,

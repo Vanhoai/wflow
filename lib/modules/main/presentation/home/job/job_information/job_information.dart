@@ -10,7 +10,7 @@ import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/them.dart';
-import 'package:wflow/core/utils/time.util.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -271,7 +271,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                               width: 20,
                                               height: 20,
                                             ),
-                                            Text(Time().getDayMonthYear(state.postEntity.createdAt.toString()),
+                                            Text(instance.get<ConvertString>().timeFormat(value: state.postEntity.updatedAt!),
                                                 style: themeData.textTheme.displayMedium!
                                                     .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],

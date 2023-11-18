@@ -44,6 +44,10 @@ class CreateNewContractEvent extends CreateContractEvent {
   });
 }
 
+class GetMoney extends CreateContractEvent{
+
+}
+
 class ContractCreatedWorkerSignEvent extends CreateContractEvent {}
 
 class ContractCreatedBusinessSignEvent extends CreateContractEvent {}

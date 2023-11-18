@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
@@ -61,6 +63,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                 return Container(
                   constraints: const BoxConstraints(maxHeight: 270),
                   child: JobCard(
+                    time: job.updatedAt!,
                     jobId: job.id,
                     margin: const EdgeInsets.symmetric(horizontal: 20),
                     cardPressed: () => pressCard(job.id),
@@ -117,7 +120,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                         const SizedBox(width: 8.0),
                       ],
                     ),
-                    cost: '${job.salary} VND',
+                    cost: instance.get<ConvertString>().moneyFormat(value: job.salary),
                     duration: job.duration,
                     description: TextMore(
                       job.content,

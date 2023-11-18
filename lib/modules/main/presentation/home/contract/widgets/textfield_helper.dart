@@ -11,6 +11,7 @@ class TextFieldHelper extends StatelessWidget {
     this.suffixIcon,
     this.keyboardType,
     this.validator,
+    this.onChange
   });
 
   final bool enabled;
@@ -21,7 +22,7 @@ class TextFieldHelper extends StatelessWidget {
   final Icon? suffixIcon;
   final TextInputType? keyboardType;
   final String Function(String?)? validator;
-
+  final Function(String)? onChange;
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -30,6 +31,7 @@ class TextFieldHelper extends StatelessWidget {
       enabled: enabled,
       validator: validator,
       controller: controller,
+      onChanged: onChange,
       scrollPhysics: const BouncingScrollPhysics(),
       keyboardType: keyboardType,
       textInputAction: TextInputAction.next,

@@ -65,6 +65,7 @@ dependencies:
   fluttertoast: ^8.2.4
   flutter_rating_bar: ^4.0.1
   chips_choice: ^3.0.1
+  flutter_masked_text2: ^0.9.1
 
 dev_dependencies:
   flutter_test:

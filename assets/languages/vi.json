@@ -64,5 +64,20 @@
   "topUp": "Nạp tiền",
   "payOut": "Rút tiền",
   "transactionHistory": "Lịch sử giao dịch",
-  "feedback": "Phản hồi"
+  "feedback": "Phản hồi",
+  "waitingAccept": "Chờ chấp nhận",
+  "accepted": "Đã chấp nhận",
+  "searchHere": "Tìm kiếm ở đây",
+  "searchByWorkNameOrCompany": "Tìm kiếm công việc hoặc công ty",
+  "createdAt": "Ngày tạo",
+  "updatedAt": "Ngày cập nhật",
+  "candidate": "Ứng viên",
+  "status": "Trạng thái",
+  "WaitingSign": "Chờ ký",
+  "Accepted": "Đã chấp nhận",
+  "Rejected": "Đã từ chối",
+  "Success": "Thành công",
+  "Apply": "Đã ứng tuyển",
+  "Created": "Đã tạo",
+  "contractWillCancelAfter": "Hợp đồng sẽ bị hủy sau"
 }

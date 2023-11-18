@@ -14,7 +14,7 @@ class SharedSearchBar extends StatefulWidget {
     this.margin,
     this.onClear,
     this.onSearch,
-    this.placeHolder = 'Search here',
+    required this.placeHolder,
   });
 
   final BoxDecoration? decoration;

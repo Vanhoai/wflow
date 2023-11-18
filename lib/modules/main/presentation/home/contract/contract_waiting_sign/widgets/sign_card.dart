@@ -2,10 +2,29 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/extensions/number.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
+
+Color changeColorWithStatus(String status) {
+  switch (status) {
+    case 'WaitingSign':
+      return Colors.orange;
+    case 'Apply':
+      return Colors.green;
+    case 'Reject':
+      return Colors.red;
+    case 'Success':
+      return Colors.green;
+    case 'Accepted':
+      return Colors.green;
+    default:
+      return Colors.orange;
+  }
+}
 
 class SignCard extends StatelessWidget {
   const SignCard({super.key, required this.contractEntity});
@@ -61,37 +80,103 @@ class SignCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(contractEntity.business.name, style: themeData.textTheme.labelLarge),
-                      Text('${contractEntity.salary} VND', style: themeData.textTheme.labelMedium),
+                      Text(contractEntity.position, style: themeData.textTheme.labelMedium),
                     ],
                   ),
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    SvgPicture.asset(
-                      AppConstants.ic_clock,
-                      height: 16.w,
-                      width: 16.w,
+                    Text(
+                      instance.get<AppLocalization>().translate('status') ?? 'Status',
+                      style: themeData.textTheme.labelMedium,
                     ),
-                    const Text('2 min ago'),
+                    4.verticalSpace,
+                    Text(
+                      instance.get<AppLocalization>().translate(contractEntity.state) ?? 'Not Found',
+                      style: themeData.textTheme.labelMedium!.copyWith(
+                        color: changeColorWithStatus(contractEntity.state),
+                      ),
+                    ),
                   ],
                 )
               ],
             ),
-            12.verticalSpace,
-            Text(
-              'Google has just created a contract and is waiting for you to accept the job 🤑️',
-              maxLines: 2,
-              style: themeData.textTheme.labelMedium,
-            ),
-            12.verticalSpace,
+            20.verticalSpace,
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                SvgPicture.asset(AppConstants.ic_money, height: 16.w, width: 16.w),
-                8.horizontalSpace,
-                Text('Not money available', style: themeData.textTheme.labelMedium),
+                Text(
+                  "🙍️ ${instance.get<AppLocalization>().translate('candidate')}",
+                  style: themeData.textTheme.labelMedium,
+                ),
+                Text(
+                  contractEntity.worker.name,
+                  style: themeData.textTheme.labelMedium,
+                ),
               ],
             ),
+            6.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "🤑️ ${instance.get<AppLocalization>().translate('budget')}",
+                  style: themeData.textTheme.labelMedium,
+                ),
+                Text(
+                  num.parse(contractEntity.salary).toVND(),
+                  style: themeData.textTheme.labelMedium,
+                ),
+              ],
+            ),
+            6.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "⏰️ ${instance.get<AppLocalization>().translate('createdAt')}",
+                  style: themeData.textTheme.labelMedium,
+                ),
+                Text(
+                  Time().getDayMonthYear(contractEntity.createdAt.toString()),
+                  style: themeData.textTheme.labelMedium,
+                ),
+              ],
+            ),
+            6.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "📅️ ${instance.get<AppLocalization>().translate('updatedAt')}",
+                  style: themeData.textTheme.labelMedium,
+                ),
+                Text(
+                  Time().getDayMonthYear(contractEntity.updatedAt.toString()),
+                  style: themeData.textTheme.labelMedium,
+                ),
+              ],
+            ),
+            4.verticalSpace,
+            Divider(
+              color: themeData.colorScheme.onBackground.withOpacity(0.1),
+              thickness: 1,
+            ),
+            4.verticalSpace,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  '⌛️ ${instance.get<AppLocalization>().translate('contractWillCancelAfter')}',
+                  style: themeData.textTheme.labelMedium,
+                ),
+                Text(
+                  Time().getDayMonthYear(contractEntity.updatedAt.toString()),
+                  style: themeData.textTheme.labelMedium,
+                ),
+              ],
+            )
           ],
         ),
       ),

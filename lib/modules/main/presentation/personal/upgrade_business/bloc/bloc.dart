@@ -7,6 +7,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -70,7 +71,7 @@ class UpgradeBusinessBloc extends Bloc<UpgradeBusinessEvent, UpgradeBusinessStat
       },
       (Failure failure) {
         instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
         emit(UpgradeBusinessState());
       },
     );
@@ -80,13 +81,13 @@ class UpgradeBusinessBloc extends Bloc<UpgradeBusinessEvent, UpgradeBusinessStat
     final response = await companyUseCase.upgradeBusiness(request: request);
     response.fold(
       (String message) {
-        AlertUtils.showMessage('Notification', message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), message, callback: () {
           instance.get<NavigationService>().navigatorKey.currentState!.pop();
         });
       },
       (Failure failure) {
         instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
         emit(UpgradeBusinessState());
       },
     );

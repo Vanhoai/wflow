@@ -5,6 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
@@ -38,7 +39,7 @@ class _ReputationScreenState extends State<ReputationScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Reputation',
+            instance.get<AppLocalization>().translate('reputation') ?? 'Reputation',
             style: themeData.textTheme.displayLarge,
           ),
         ),
@@ -60,7 +61,7 @@ class _ReputationScreenState extends State<ReputationScreen> {
                     highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
                     child: RatingSummary(
                       counter: 1,
-                      label: 'Total Rating',
+                      label: instance.get<AppLocalization>().translate('totalRating') ?? 'Total Rating',
                       average: 0,
                       averageStyle: TextStyle(
                         fontSize: 24.sp,
@@ -76,7 +77,7 @@ class _ReputationScreenState extends State<ReputationScreen> {
                   ),
                   child: RatingSummary(
                     counter: reputationEntity.totalFeedback,
-                    label: 'Total Rating',
+                    label: instance.get<AppLocalization>().translate('totalRating') ?? 'Total Rating',
                     average: reputationEntity.reputation,
                     averageStyle: TextStyle(
                       fontSize: 26.sp,
@@ -106,7 +107,10 @@ class _ReputationScreenState extends State<ReputationScreen> {
                           ),
                         ),
                       ),
-                      child: Text('Recent', style: themeData.textTheme.displayLarge),
+                      child: Text(
+                        '${reputationEntity.totalFeedback} ${instance.get<AppLocalization>().translate('feedback') ?? 'Feedbacks'}',
+                        style: themeData.textTheme.displayLarge,
+                      ),
                     )),
                 Expanded(
                   child: RefreshIndicator(

@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logger/logger.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/firebase/firebase.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -17,7 +19,6 @@ import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 import 'package:wflow/modules/auth/presentation/verification/bloc/verification_bloc.dart';
-import 'package:logger/logger.dart';
 
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key, this.arguments});
@@ -81,7 +82,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
         verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (error) {
           instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-          AlertUtils.showMessage('Notification', error.message!);
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), error.message!);
 
           Logger().d(error.toString());
         },
@@ -130,7 +131,8 @@ class _VerificationScreenState extends State<VerificationScreen> {
             child: BlocConsumer<VerificationBloc, VerificationState>(
               listener: (context, state) {
                 if (state.isSuccess && !state.isError) {
-                  AlertUtils.showMessage('Notification', state.message, callback: () {
+                  AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
+                      callback: () {
                     registerBloc.add(RegisterTypeEvent(
                       username: widget.arguments!.username,
                       password: widget.arguments!.password,
@@ -138,7 +140,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     ));
                   });
                 } else if (!state.isSuccess && state.isError) {
-                  AlertUtils.showMessage('Notification', state.message);
+                  AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message);
                 }
               },
               buildWhen: (previous, current) => true,
@@ -148,15 +150,18 @@ class _VerificationScreenState extends State<VerificationScreen> {
                 return BlocConsumer<RegisterBloc, RegisterState>(
                   listener: (context, state) {
                     if (state is RegisterPhoneSuccessState) {
-                      AlertUtils.showMessage('Notification', state.message, callback: () {
+                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
+                          callback: () {
                         Navigator.popAndPushNamed(context, RouteKeys.signInScreen);
                       });
                     } else if (state is RegisterEmailSuccessState) {
-                      AlertUtils.showMessage('Notification', state.message, callback: () {
+                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
+                          callback: () {
                         Navigator.popAndPushNamed(context, RouteKeys.signInScreen);
                       });
                     } else if (state is RegisterErrorState) {
-                      AlertUtils.showMessage('Notification', state.message, callback: () {
+                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
+                          callback: () {
                         Navigator.pop(context);
                       });
                     }
@@ -234,12 +239,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           _otpController4.text.isEmpty ||
                                           _otpController5.text.isEmpty ||
                                           _otpController6.text.isEmpty) {
-                                        AlertUtils.showMessage('Notification', 'Please enter OTP');
+                                        AlertUtils.showMessage(
+                                            instance.get<AppLocalization>().translate('notification'),
+                                            'Please enter OTP');
                                         return;
                                       }
 
                                       if (verificationId == null) {
-                                        AlertUtils.showMessage('Notification', 'Something went wrong');
+                                        AlertUtils.showMessage(
+                                            instance.get<AppLocalization>().translate('notification'),
+                                            'Something went wrong');
                                         return;
                                       }
 

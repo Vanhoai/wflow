@@ -1,5 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/feedback_entity.dart';
 import 'package:wflow/modules/main/domain/feedback/entities/reputation_entity.dart';
@@ -25,7 +27,7 @@ class ReputationBloc extends Bloc<ReputationEvent, ReputationState> {
         emit(state.copyWith(reputationEntity: reputationEntity));
       },
       (failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -37,7 +39,7 @@ class ReputationBloc extends Bloc<ReputationEvent, ReputationState> {
         emit(state.copyWith(feedbacks: list));
       },
       (failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }

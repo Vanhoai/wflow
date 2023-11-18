@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -76,7 +77,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: tasks));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -89,7 +90,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: state.tasks.sublist(0, state.tasks.length - 1)));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -110,7 +111,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: tasks));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }

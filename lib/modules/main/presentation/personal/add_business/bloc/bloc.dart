@@ -4,6 +4,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/core/models/models.dart';
@@ -43,7 +44,8 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
         emit(state.copyWith(users: users.data, meta: users.meta));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message,
+            callback: () {
           instance.get<NavigationService>().pop();
         });
       },
@@ -61,7 +63,8 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
         emit(state.copyWith(users: users.data, meta: users.meta));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message,
+            callback: () {
           instance.get<NavigationService>().pop();
         });
       },
@@ -75,7 +78,8 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
         emit(state.copyWith(users: users.data, meta: users.meta));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message,
+            callback: () {
           instance.get<NavigationService>().pop();
         });
       },
@@ -95,7 +99,8 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
 
   Future<void> onAddCollaboratorAddBusiness(AddCollaboratorAddBusinessEvent event, Emitter emit) async {
     if (state.usersChecked.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Please select at least one user');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Please select at least one user');
       return;
     }
 
@@ -105,11 +110,12 @@ class AddBusinessBloc extends Bloc<AddBusinessEvent, AddBusinessState> {
     final response = await userUseCase.addCollaborator(addCollaboratorModel);
     response.fold(
       (String message) {
-        AlertUtils.showMessage('Notification', message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), message);
         add(RefreshAddBusinessEvent());
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message,
+            callback: () {
           add(RefreshAddBusinessEvent());
         });
       },

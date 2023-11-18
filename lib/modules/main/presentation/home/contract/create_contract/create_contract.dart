@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/extensions/regex.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -33,17 +34,18 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
 
   bool validator() {
     if (titleController.text.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Please enter title');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Please enter title');
       return false;
     }
 
     if (budgetController.text.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Something went wrong with budget');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Something went wrong with budget');
       return false;
     }
 
     if (!budgetController.text.isNumber()) {
-      AlertUtils.showMessage('Notification', 'Budget must be a number');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Budget must be a number');
       return false;
     }
 

@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -44,11 +46,11 @@ class _FormState extends State<FormRegisterEmail> {
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Email is required');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is required');
       return 'Email is required';
     }
     if (!StringsUtil.isEmail(value)) {
-      AlertUtils.showMessage('Notification', 'Email is invalid');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is invalid');
       return 'Email is invalid';
     }
     return null;
@@ -56,15 +58,17 @@ class _FormState extends State<FormRegisterEmail> {
 
   String? validatePassword(String? value, String? secondValue) {
     if (value == null || value.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Password is required');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Password is required');
       return 'Password is required';
     }
     if (!StringsUtil.isPassword(value)) {
-      AlertUtils.showMessage('Notification', 'Password must be at least 8 characters');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password must be at least 8 characters');
       return 'Password must be at least 8 characters';
     }
     if (!StringsUtil.isComparePassword(value, secondValue!)) {
-      AlertUtils.showMessage('Notification', 'Password and confirm password must be the same');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password and confirm password must be the same');
       return 'Password and confirm password must be the same';
     }
     return null;
@@ -87,7 +91,7 @@ class _FormState extends State<FormRegisterEmail> {
                 TextFieldFrom(
                   label: 'Email',
                   controller: emailController,
-                  placeholder: 'Enter your email',
+                  placeholder: instance.get<AppLocalization>().translate('enterEmail') ?? 'Enter your email',
                   textInputAction: TextInputAction.next,
                   prefixIcon: const Icon(Icons.email, size: 24),
                   suffixIcon: Padding(
@@ -101,8 +105,9 @@ class _FormState extends State<FormRegisterEmail> {
                 ),
                 TextFieldFrom(
                   controller: passwordController,
-                  label: 'Password',
-                  placeholder: 'Enter your password',
+                  label: instance.get<AppLocalization>().translate('password') ?? 'Password',
+                  placeholder:
+                      instance.get<AppLocalization>().translate('placeholderPassword') ?? 'Enter your password',
                   textInputAction: TextInputAction.next,
                   prefixIcon: const Icon(
                     Icons.lock,
@@ -112,8 +117,9 @@ class _FormState extends State<FormRegisterEmail> {
                 ),
                 TextFieldFrom(
                   controller: rePasswordController,
-                  label: 'Confirm password',
-                  placeholder: 'Enter confirm password',
+                  label: instance.get<AppLocalization>().translate('confirmPassword') ?? 'Confirm password',
+                  placeholder: instance.get<AppLocalization>().translate('placeholderConfirmPassword') ??
+                      'Enter your confirm password',
                   textInputAction: TextInputAction.done,
                   prefixIcon: const Icon(
                     Icons.lock,
@@ -127,7 +133,7 @@ class _FormState extends State<FormRegisterEmail> {
                     if (validateEmail(emailController.text) == null &&
                         validatePassword(passwordController.text, rePasswordController.text) == null) {}
                   },
-                  label: 'Sign Up',
+                  label: instance.get<AppLocalization>().translate('signUp') ?? 'Sign Up',
                 ),
               ],
             ),

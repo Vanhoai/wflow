@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -22,18 +23,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  @override
-  void initState() {
-    super.initState();
-    localization.init(
-      mapLocales: [
-        const MapLocale('en', AppLocale.EN),
-        const MapLocale('vn', AppLocale.VN),
-      ],
-      initLanguageCode: 'en',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -69,17 +58,23 @@ class _AppState extends State<App> {
 
                         return child!;
                       },
-                      navigatorKey:
-                          instance.get<NavigationService>().navigatorKey,
-                      supportedLocales: localization.supportedLocales,
-                      localizationsDelegates:
-                          localization.localizationsDelegates,
+                      locale: instance.get<AppLocalization>().locale,
+                      supportedLocales: const [
+                        Locale('vi', 'VN'),
+                        Locale('en', 'EN'),
+                      ],
+                      localizationsDelegates: const [
+                        AppLocalization.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
+                      navigatorKey: instance.get<NavigationService>().navigatorKey,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,
                       darkTheme: themeDataDark,
-                      themeMode:
-                          parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                      themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
                       initialRoute: RouteKeys.signInScreen,
                     ),

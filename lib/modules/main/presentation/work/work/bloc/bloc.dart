@@ -107,6 +107,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         meta: response.meta,
         isLoadMore: false,
         isFinal: isFinal,
+        bookmarks: [...state.bookmarks, ...response.data.map((e) => e.isBookmarked)],
       ),
     );
   }

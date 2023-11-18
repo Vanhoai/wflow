@@ -1,19 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/cupertino_menu/cupertino_menu.dart';
-
-const List<String> staticTitle = [
-  '⏰ Duration',
-  '💰 Budget',
-  '📘 Description',
-  '📚 Skills',
-  '# Poster',
-  '# Progress',
-];
 
 class JobCard extends StatefulWidget {
   const JobCard({
@@ -54,8 +47,15 @@ class JobCard extends StatefulWidget {
 }
 
 class _JobCardState extends State<JobCard> {
+  late List<String> staticTitle;
+
   @override
   void initState() {
+    staticTitle = [
+      '⏰ ${instance.get<AppLocalization>().translate("duration")}',
+      '💰 ${instance.get<AppLocalization>().translate("budget")}',
+      '📘 ${instance.get<AppLocalization>().translate("description")}',
+    ];
     super.initState();
   }
 

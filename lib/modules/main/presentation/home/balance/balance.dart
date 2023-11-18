@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/extensions/number.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -110,7 +111,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
         isSafe: true,
         appBar: AppHeader(
           text: Text(
-            'Balance',
+            instance.get<AppLocalization>().translate('balance') ?? 'Balance',
             style: themeData.textTheme.displayMedium,
           ),
         ),
@@ -174,7 +175,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Top Up',
+                                              instance.get<AppLocalization>().translate('topUp') ?? 'Top Up',
                                               style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -195,7 +196,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Pay Out',
+                                              instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out',
                                               style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -271,7 +272,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Recent Transactions',
+                      instance.get<AppLocalization>().translate('transactionHistory') ?? 'Transaction History',
                       style: themeData.textTheme.displayMedium,
                     ),
                   ],

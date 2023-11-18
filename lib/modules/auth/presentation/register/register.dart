@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
@@ -49,7 +50,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                     Container(
                       margin: const EdgeInsets.only(top: 20),
                       child: Text(
-                        'Sign up an account',
+                        instance.get<AppLocalization>().translate('register') ?? 'Sign up an account',
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
@@ -102,7 +103,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             color: Colors.white,
                             child: Text(
-                              'or',
+                              instance.get<AppLocalization>().translate('or') ?? 'or',
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
                           )
@@ -134,7 +135,8 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                                     Align(
                                       alignment: Alignment.center,
                                       child: Text(
-                                        'Sign up with Google',
+                                        instance.get<AppLocalization>().translate('signUpWithGoogle') ??
+                                            'Sign up with Google',
                                         style: Theme.of(context).textTheme.displayMedium,
                                       ),
                                     )
@@ -151,7 +153,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Already have an account ?',
+                            instance.get<AppLocalization>().translate('alreadyHaveAccount') ?? 'Already have account?',
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
                           InkWell(
@@ -160,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> with SingleTickerProvid
                             child: Padding(
                               padding: const EdgeInsets.all(2),
                               child: Text(
-                                'Sign In',
+                                instance.get<AppLocalization>().translate('signIn') ?? 'Sign in',
                                 style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                               ),
                             ),

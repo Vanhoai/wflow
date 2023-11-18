@@ -207,9 +207,7 @@ class ContractServiceImpl implements ContractService {
   @override
   Future<String> workerSignContract(int id) async {
     try {
-      final response = await agent.dio.patch(
-        ContractPaths.getPathWorkerSignContract(id),
-      );
+      final response = await agent.dio.patch(ContractPaths.getPathWorkerSignContract(id));
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {

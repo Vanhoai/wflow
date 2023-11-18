@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -50,7 +51,7 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
           return Scaffold(
             appBar: AppHeader(
               text: Text(
-                'Members',
+                instance.get<AppLocalization>().translate('removeCollaborator') ?? 'Remove Collaborator',
                 style: themeData.textTheme.displayMedium,
               ),
               onBack: () {
@@ -67,7 +68,7 @@ class _RemoveCollaboratorScreenState extends State<RemoveCollaboratorScreen> {
                       BlocProvider.of<RemoveCollaboratorBloc>(context).add(DeleteCollaboratorEvent());
                     },
                     child: Text(
-                      'Remove',
+                      instance.get<AppLocalization>().translate('remove') ?? 'Remove',
                       style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                     ),
                   ),

@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -37,7 +38,7 @@ class _AddCVScreenState extends State<AddCVScreen> {
         this.file = file;
       });
     } else {
-      AlertUtils.showMessage('Notification', 'No file selected');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
     }
   }
 

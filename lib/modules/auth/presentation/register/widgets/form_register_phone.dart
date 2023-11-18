@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -41,11 +43,11 @@ class _FormState extends State<FormRegisterPhone> {
 
   String? validatePhone(String? value) {
     if (value == null || value.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Phone number is required');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Phone number is required');
       return 'Phone number is required';
     }
     if (!StringsUtil.isPhoneNumber(value)) {
-      AlertUtils.showMessage('Notification', 'Phone number is invalid');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Phone number is invalid');
       return 'Phone number is invalid';
     }
     return null;
@@ -53,15 +55,17 @@ class _FormState extends State<FormRegisterPhone> {
 
   String? validatePassword(String? value, String? secondValue) {
     if (value == null || value.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Password is required');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Password is required');
       return 'Password is required';
     }
     if (!StringsUtil.isPassword(value)) {
-      AlertUtils.showMessage('Notification', 'Password must be at least 8 characters');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password must be at least 8 characters');
       return 'Password must be at least 8 characters';
     }
     if (!StringsUtil.isComparePassword(value, secondValue!)) {
-      AlertUtils.showMessage('Notification', 'Password and confirm password must be the same');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password and confirm password must be the same');
       return 'Password and confirm password must be the same';
     }
     return null;

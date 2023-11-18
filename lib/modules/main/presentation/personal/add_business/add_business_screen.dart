@@ -1,10 +1,8 @@
-import 'dart:async';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -41,35 +39,6 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
     super.dispose();
   }
 
-  Future<void> showDialog(String message, Function()? onPressed) async {
-    await showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text(
-            'Notification',
-            textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium,
-          ),
-          content: Text(message),
-          actions: [
-            TextButton(
-              onPressed: onPressed,
-              child: const Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Center(
-                    child: Text('OK'),
-                  )
-                ],
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -89,7 +58,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
           return Scaffold(
             appBar: AppHeader(
               text: Text(
-                'Add to business',
+                instance.get<AppLocalization>().translate('addCollaborator') ?? 'Add Collaborator',
                 style: themeData.textTheme.displayMedium,
               ),
               onBack: () {
@@ -106,7 +75,7 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
                       BlocProvider.of<AddBusinessBloc>(context).add(AddCollaboratorAddBusinessEvent());
                     },
                     child: Text(
-                      'Add',
+                      instance.get<AppLocalization>().translate('add') ?? 'Add',
                       style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                     ),
                   ),
@@ -119,7 +88,8 @@ class _AddBusinessScreenState extends State<AddBusinessScreen> {
               child: Column(
                 children: [
                   SharedSearchBar(
-                    placeHolder: 'Search by name or email',
+                    placeHolder:
+                        instance.get<AppLocalization>().translate('searchByNameOrEmail') ?? 'Search by name or email',
                     onSearch: (value) {
                       BlocProvider.of<AddBusinessBloc>(context).add(SearchAddBusinessEvent(search: value));
                     },

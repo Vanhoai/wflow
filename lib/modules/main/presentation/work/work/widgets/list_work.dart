@@ -139,7 +139,7 @@ class _ListWorksState extends State<ListWorks> {
                               visible: !state.isFinal && state.isLoadMore,
                               replacement: const SizedBox(),
                               child: const CupertinoActivityIndicator(
-                                radius: 12,
+                                radius: 16,
                               ),
                             );
                           }

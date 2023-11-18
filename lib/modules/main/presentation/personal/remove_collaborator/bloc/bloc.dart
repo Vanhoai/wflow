@@ -2,6 +2,7 @@ import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/core/models/models.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -35,7 +36,7 @@ class RemoveCollaboratorBloc extends Bloc<RemoveCollaboratorEvent, RemoveCollabo
         emit(state.copyWith(users: users.data, meta: users.meta));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
 
@@ -58,7 +59,8 @@ class RemoveCollaboratorBloc extends Bloc<RemoveCollaboratorEvent, RemoveCollabo
 
   Future<void> onDeleteCollaborator(DeleteCollaboratorEvent event, Emitter emit) async {
     if (state.usersChecked.isEmpty) {
-      AlertUtils.showMessage('Notification', 'Please select at least one collaborator');
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Please select at least one collaborator');
       return;
     }
 
@@ -71,11 +73,11 @@ class RemoveCollaboratorBloc extends Bloc<RemoveCollaboratorEvent, RemoveCollabo
 
     response.fold(
       (String message) {
-        AlertUtils.showMessage('Notification', message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), message);
         add(GetAllCollaboratorEvent());
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
 

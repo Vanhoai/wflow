@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
@@ -48,7 +49,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         topicBusiness = userEntity.business;
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
         return null;
       },
     );

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/data/balance/models/create_payment_rqst.dart';
@@ -39,7 +41,7 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
         emit(state.copyWith(balanceEntity: l));
       },
       (Failure r) {
-        AlertUtils.showMessage('Notification', r.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), r.message);
       },
     );
 
@@ -57,14 +59,14 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
           await initPaymentSheet(createPaymentSheetResponse, event.amount, emit);
         },
         (Failure failure) async {
-          AlertUtils.showMessage('Notification', failure.message);
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
         },
       );
     } on StripeException catch (exception) {
       print('exception: $exception');
-      AlertUtils.showMessage('Notification', exception.toString());
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
     } catch (exception) {
-      AlertUtils.showMessage('Notification', exception.toString());
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
     }
   }
 
@@ -84,7 +86,7 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
 
       await Stripe.instance.presentPaymentSheet();
     } catch (exception) {
-      AlertUtils.showMessage('Notification', exception.toString());
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
     } finally {
       await checkPaymentStatus(
         emit,
@@ -111,13 +113,14 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
       (BalanceEntity l) async {
         print('BalanceEntity: $l');
         emit(state.copyWith(balanceEntity: l));
-        AlertUtils.showMessage('Notification', 'Top up success', callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Top up success',
+            callback: () {
           // instance.get<NavigationService>().pop();
         });
       },
       (Failure r) async {
         print('Failure: $r');
-        AlertUtils.showMessage('Notification', r.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), r.message);
       },
     );
   }

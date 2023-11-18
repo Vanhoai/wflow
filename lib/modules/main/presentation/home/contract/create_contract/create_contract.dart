@@ -4,11 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
-import 'package:wflow/core/extensions/regex.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/utils/utils.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -27,50 +25,15 @@ class CreateContractScreen extends StatefulWidget {
 }
 
 class _CreateContractScreenState extends State<CreateContractScreen> {
-  late final TextEditingController titleController;
-  late final TextEditingController descriptionController;
-  late final TextEditingController budgetController;
   late final bool isBusiness;
-
-  bool validator() {
-    if (titleController.text.isEmpty) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Please enter title');
-      return false;
-    }
-
-    if (budgetController.text.isEmpty) {
-      AlertUtils.showMessage(
-          instance.get<AppLocalization>().translate('notification'), 'Something went wrong with budget');
-      return false;
-    }
-
-    if (!budgetController.text.isNumber()) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Budget must be a number');
-      return false;
-    }
-
-    return true;
-  }
 
   @override
   void initState() {
     super.initState();
-
-    titleController = TextEditingController(text: '');
-    descriptionController = TextEditingController(text: '');
-    budgetController = TextEditingController(text: '');
-
     isBusiness = instance.get<AppBloc>().state.role == RoleEnum.business.index + 1;
   }
 
-  @override
-  void dispose() {
-    titleController.dispose();
-    descriptionController.dispose();
-    budgetController.dispose();
-    super.dispose();
-  }
-
+  
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -106,13 +69,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                   physics: const BouncingScrollPhysics(),
                   slivers: [
                     BlocConsumer<CreateContractBloc, CreateContractState>(
-                      listener: (context, state) {
-                        if (state.initSuccess) {
-                          titleController.text = state.contractEntity.title;
-                          descriptionController.text = state.contractEntity.content;
-                          budgetController.text = state.contractEntity.salary;
-                        }
-                      },
+                      listener: (context, state) {},
                       builder: (context, state) {
                         return SliverToBoxAdapter(
                           child: Padding(
@@ -131,7 +88,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
                                   enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: titleController,
+                                  controller: context.read<CreateContractBloc>().titleController,
                                   maxLines: 2,
                                   minLines: 1,
                                   hintText: 'Enter project title',
@@ -146,14 +103,14 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
                                   enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: descriptionController,
+                                  controller: context.read<CreateContractBloc>().descriptionController,
                                   maxLines: 5,
                                   minLines: 3,
                                   hintText: 'Enter description (optional)',
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
-                                  'Budget',
+                                  'Budget (VNĐ)',
                                   style: themeData.textTheme.displayMedium!.merge(
                                     TextStyle(
                                       color: themeData.colorScheme.onBackground,
@@ -163,10 +120,39 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 const SizedBox(height: 8),
                                 TextFieldHelper(
                                   enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: budgetController,
+                                  controller: context.read<CreateContractBloc>().budgetController,
                                   maxLines: 1,
                                   minLines: 1,
                                   hintText: 'Enter budget for project',
+                                  keyboardType: TextInputType.number,
+                                  onChange: (value) {
+                                   context.read<CreateContractBloc>().add(GetMoney());
+                                  },
+                                ),
+                                const SizedBox(height: 20),
+
+                                Text(
+                                  'Budget The Worker have (VNĐ)',
+                                  style: themeData.textTheme.displayMedium!.merge(
+                                    TextStyle(
+                                      color: themeData.primaryColor,
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 8),
+                                Container(
+                                  width: MediaQuery.of(context).size.width,
+                                  padding: const EdgeInsets.fromLTRB(13, 15, 13, 15),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8),
+                                    color: Colors.grey[100],
+                                  ),
+                                  child: Text(
+                                    state.money,
+                                    style: themeData.textTheme.displayMedium!.merge(const TextStyle(
+                                      color: AppColors.greenColor,
+                                    )),
+                                  ),
                                 ),
                                 const SizedBox(height: 20),
                                 TaskCreateContract(
@@ -285,14 +271,15 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                   label: 'Create',
                                   width: double.infinity,
                                   onPressed: () {
-                                    final bool isValid = validator();
+                                    final bool isValid = context.read<CreateContractBloc>().validator();
                                     if (isValid) {
                                       context.read<CreateContractBloc>().add(
                                             CreateNewContractEvent(
                                               contract: int.parse(widget.contract),
-                                              title: titleController.text,
-                                              description: descriptionController.text,
-                                              budget: num.parse(budgetController.text),
+                                              title: context.read<CreateContractBloc>().titleController.text,
+                                              description:
+                                                  context.read<CreateContractBloc>().descriptionController.text,
+                                              budget: context.read<CreateContractBloc>().budgetController.numberValue,
                                             ),
                                           );
                                     }

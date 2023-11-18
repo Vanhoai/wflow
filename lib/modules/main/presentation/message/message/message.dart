@@ -28,7 +28,7 @@ class _MessageScreenState extends State<MessageScreen> {
   void callTapped({required bool isVideoCall, required StringeeObjectEventType callType}) {
     if (!instance.get<StringeeClient>().hasConnected) return;
     Navigator.of(context).pushNamed(
-      RouteKeys.callScreen,
+    RouteKeys.callScreen,
       arguments: ArgumentsCall(
         client: instance.get<StringeeClient>(),
         toUserId: '${widget.argumentsMessage.userEntity.id}',

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
@@ -11,6 +12,7 @@ import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
@@ -210,6 +212,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<FeedbackUseCase>(
       () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
 
+  //Money Format 
+   instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));
+   instance.registerLazySingleton<ConvertString>(() => ConvertString());
   // ! FOR DEBUG ONLY
   bool isDebug = false;
   assert(() {

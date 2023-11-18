@@ -13,7 +13,7 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/balance/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
-
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({super.key, required this.balanceID});
 
@@ -24,7 +24,7 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  final TextEditingController amountController = TextEditingController();
+  final MoneyMaskedTextController amountController =  MoneyMaskedTextController(decimalSeparator: '',precision: 0,initialValue: 0,thousandSeparator: '.');
 
   @override
   void dispose() {
@@ -83,7 +83,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       onPressed: () {
                         if (amountController.text.isNotEmpty) {
                           if (option == 1) {
-                            parentContext.read<BalanceBloc>().add(BalanceTopUpEvent(int.parse(amountController.text)));
+                            parentContext.read<BalanceBloc>().add(BalanceTopUpEvent(amountController.numberValue.toInt()));
                           } else {}
                           Navigator.pop(context);
                         }

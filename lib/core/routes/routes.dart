@@ -28,6 +28,7 @@ import 'package:wflow/modules/main/presentation/home/report/report.dart';
 import 'package:wflow/modules/main/presentation/home/reputation/reputation.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
+import 'package:wflow/modules/main/presentation/message/rooms/search_room.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
@@ -158,6 +159,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => DetailUserScreen(id: idUser));
       case RouteKeys.reputationScreen:
         return MaterialPageRoute(builder: (_) => const ReputationScreen());
+        case RouteKeys.searchRoomScreen:
+        return MaterialPageRoute(builder: (_) => const SearchRoomsScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

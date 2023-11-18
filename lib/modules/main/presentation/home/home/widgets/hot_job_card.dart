@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 
@@ -34,6 +36,7 @@ class _HotJobCardState extends State<HotJobCard> {
       height: widget.constraints.maxHeight,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: JobCard(
+        time: widget.job.updatedAt!,
         jobId: widget.job.id,
         isHorizontal: true,
         boxDecoration: BoxDecoration(
@@ -95,7 +98,7 @@ class _HotJobCardState extends State<HotJobCard> {
             const SizedBox(width: 8.0),
           ],
         ),
-        cost: '${widget.job.salary} VND',
+        cost: instance.get<ConvertString>().moneyFormat(value: widget.job.salary),
         duration: widget.job.duration,
         description: TextMore(
           widget.job.content,

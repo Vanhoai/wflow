@@ -5,6 +5,7 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/cupertino_menu/cupertino_menu.dart';
 
@@ -28,6 +29,7 @@ class JobCard extends StatefulWidget {
     this.cardPressed,
     this.isHorizontal = false,
     required this.jobId,
+    required this.time
   });
 
   final Widget header;
@@ -42,6 +44,7 @@ class JobCard extends StatefulWidget {
   final Function()? cardPressed;
   final bool isHorizontal;
   final num jobId;
+  final DateTime time;
   @override
   State<JobCard> createState() => _JobCardState();
 }
@@ -96,7 +99,7 @@ class _JobCardState extends State<JobCard> {
           ],
         ),
         Text(
-          '⏳ 2m ago',
+          '⏳ ${instance.get<ConvertString>().timeFormat(value: widget.time)}',
           textAlign: TextAlign.end,
           style: Theme.of(context).textTheme.displaySmall!.merge(
                 const TextStyle(

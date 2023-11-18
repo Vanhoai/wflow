@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -23,15 +24,15 @@ class UpPostScreen extends StatefulWidget {
 class _UpPostScreenState extends State<UpPostScreen> {
   late TextEditingController titleController;
   late TextEditingController descriptionController;
-  late TextEditingController budgetController;
+  late MoneyMaskedTextController budgetController;
   late TextEditingController duration;
   late TextEditingController position;
-
+      
   @override
   void initState() {
     titleController = TextEditingController();
     descriptionController = TextEditingController();
-    budgetController = TextEditingController();
+    budgetController = MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
     duration = TextEditingController();
     position = TextEditingController();
     super.initState();
@@ -159,7 +160,6 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 minLines: 1,
                                 hintText: 'Enter budget',
                                 keyboardType: TextInputType.number,
-                                suffixIcon: const Icon(Icons.attach_money_sharp),
                               ),
                               20.verticalSpace,
                             ],
@@ -204,7 +204,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           onPressed: () {
                             context.read<UpPostBloc>().add(
                                   UpPostSubmitEvent(
-                                    budget: budgetController.text,
+                                    budget: budgetController.numberValue.toInt().toString(),
                                     description: descriptionController.text,
                                     title: titleController.text,
                                     duration: duration.text,

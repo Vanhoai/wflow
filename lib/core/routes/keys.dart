@@ -46,4 +46,5 @@ class RouteKeys {
   static const String editProfileScreen = '/edit_profile_screen';
   static const String detailUserScreen = '/detail_user_screen';
   static const String reputationScreen = '/reputation_screen';
+    static const String searchRoomScreen = '/search_room_screen';
 }

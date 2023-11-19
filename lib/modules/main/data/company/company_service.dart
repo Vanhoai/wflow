@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/company/company_model.dart';
@@ -12,6 +13,7 @@ class CompanyPath {
   static const String myCompanyJob = '/post/post-in-my-business';
   static const String upgradeBusiness = '/user/upgrade-to-business';
   static findCompany({required String id}) => '/business/find/$id';
+  static const String updateBusiness = '/business/update-business';
 }
 
 abstract class CompanyService {
@@ -21,6 +23,8 @@ abstract class CompanyService {
   Future<List<PostModel>> myCompanyJob(int page, int pageSize);
   Future<String> upgradeBusiness({required UpgradeBusinessRequest request});
   Future<CompanyModel> findCompany({required String id});
+  Future<String> updateBusiness({required RequestUpdateBusiness request});
+
 }
 
 class CompanyServiceImpl implements CompanyService {
@@ -119,6 +123,34 @@ class CompanyServiceImpl implements CompanyService {
       }
 
       return CompanyModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<String> updateBusiness({required RequestUpdateBusiness request}) async {
+    try {
+      var formData = FormData.fromMap({
+        'logo': request.logo != null ? await MultipartFile.fromFile((request.logo!.path)) : null,
+        'background': request.background != null ? await MultipartFile.fromFile(request.background!.path) : null,
+        'overview': request.companyEntity.overview,
+        'address': request.companyEntity.address,
+        'longitude': request.companyEntity.longitude,
+        'latitude': request.companyEntity.latitude,
+        'id' : request.companyEntity.id
+      });
+      final response = await agent.dio.put(
+        CompanyPath.updateBusiness,
+        data: formData,
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
+      return httpResponse.data;
     } catch (exception) {
       throw ServerException(exception.toString());
     }

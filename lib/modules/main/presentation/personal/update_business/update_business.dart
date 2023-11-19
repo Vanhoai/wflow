@@ -6,27 +6,31 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/them.dart';
+import 'package:wflow/core/utils/search.utils.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
-import 'package:wflow/modules/main/domain/user/user_usecase.dart';
-import 'package:wflow/modules/main/presentation/personal/editprofile/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/personal/editprofile/bloc/event.dart';
-import 'package:wflow/modules/main/presentation/personal/editprofile/bloc/state.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
+import 'package:wflow/modules/main/presentation/personal/update_business/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/personal/update_business/bloc/event.dart';
+import 'package:wflow/modules/main/presentation/personal/update_business/bloc/state.dart';
+import 'package:wflow/modules/main/presentation/personal/update_business/widget/location.dart';
 
-class EditProfileScreen extends StatefulWidget {
-  const EditProfileScreen({super.key});
+class UpdateBusinessScreen extends StatefulWidget {
+  const UpdateBusinessScreen({super.key});
 
   @override
-  State<StatefulWidget> createState() => _EditProfileScreenState();
+  State<StatefulWidget> createState() => _UpdateBusinessScreenState();
 }
 
-class _EditProfileScreenState extends State<EditProfileScreen> {
+class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
   @override
   void initState() {
     super.initState();
@@ -44,27 +48,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     file as File;
     if (context.mounted) {
       if (isAvatar) {
-        BlocProvider.of<EditProfileBloc>(context).add(AddAvatar(avatar: file));
+        BlocProvider.of<UpdateBusinessBloc>(context).add(AddAvatar(avatar: file));
       } else {
-        BlocProvider.of<EditProfileBloc>(context).add(AddBackground(background: file));
+        BlocProvider.of<UpdateBusinessBloc>(context).add(AddBackground(background: file));
       }
+    }
+  }
+
+  final Debounce debounce = Debounce(duration: const Duration(milliseconds: 500));
+
+  void onChange(String value, BuildContext context) {
+    
+    if (BlocProvider.of<UpdateBusinessBloc>(context).addressController.text.isNotEmpty) {
+      debounce.call(() {
+        BlocProvider.of<UpdateBusinessBloc>(context).add(OnSearchLocation(show: true));
+      });
+    } else {
+      BlocProvider.of<UpdateBusinessBloc>(context).add(OnSearchLocation(show: false));
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => EditProfileBloc(userUseCase: instance.get<UserUseCase>())..add(GetProfile()),
+      create: (context) => UpdateBusinessBloc(companyUseCase: instance.get<CompanyUseCase>())..add(GetProfile()),
       child: CommonScaffold(
           hideKeyboardWhenTouchOutside: true,
           isSafe: true,
           appBar: AppHeader(
             text: Text(
-              'Edit Profile',
+              'Update Business',
               style: themeData.textTheme.displayMedium,
             ),
           ),
-          body: BlocBuilder<EditProfileBloc, EditProfileState>(
+          body: BlocBuilder<UpdateBusinessBloc, UpdateBusinessState>(
             builder: (context, state) {
               return SizedBox(
                 width: MediaQuery.of(context).size.width,
@@ -99,9 +116,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                         );
                                       }
                                       return CachedNetworkImage(
-                                        imageUrl: state.userEntity.background.isEmpty
+                                        imageUrl: state.companyEntity.background.isEmpty
                                             ? 'https://picsum.photos/200'
-                                            : state.userEntity.background,
+                                            : state.companyEntity.background,
                                         fit: BoxFit.cover,
                                         placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
                                       );
@@ -160,9 +177,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                       return ClipRRect(
                                         borderRadius: BorderRadius.circular(60),
                                         child: CachedNetworkImage(
-                                          imageUrl: state.userEntity.avatar.isEmpty
+                                          imageUrl: state.companyEntity.logo.isEmpty
                                               ? 'https://picsum.photos/200'
-                                              : state.userEntity.avatar,
+                                              : state.companyEntity.logo,
                                           fit: BoxFit.cover,
                                           placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
                                         ),
@@ -170,26 +187,26 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     },
                                   )),
                                 ),
-                                 Positioned(
-                              bottom: -5,
-                              right: -5,
-                              child: InkWell(
-                                onTap: () => _pickImage(context: context, isAvatar: true),
-                                child: Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
+                                Positioned(
+                                  bottom: -5,
+                                  right: -5,
+                                  child: InkWell(
+                                    onTap: () => _pickImage(context: context, isAvatar: true),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: const Icon(Icons.camera_alt_rounded, size: 16),
+                                    ),
                                   ),
-                                  child: const Icon(Icons.camera_alt_rounded, size: 16),
-                                ),
-                              ),
-                            )
+                                )
                               ],
                             ),
                             8.horizontalSpace,
                             Text(
-                              state.userEntity.name,
+                              state.companyEntity.name,
                               style: themeData.textTheme.displayMedium,
                             ),
                           ],
@@ -204,30 +221,82 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               TextFieldFrom(
-                                controller: context.read<EditProfileBloc>().addressController,
-                                label: 'Address',
-                                placeholder: 'Type your address',
-                                textInputAction: TextInputAction.next,
-                                prefixIcon: const Icon(
-                                  Icons.location_on_sharp,
-                                  size: 24,
-                                ),
-                              ),
-                              TextFieldFrom(
-                                controller: context.read<EditProfileBloc>().bioController,
-                                label: 'Bio',
+                                controller: context.read<UpdateBusinessBloc>().overviewController,
+                                label: 'Overview',
                                 maxLines: 5,
                                 placeholder: 'Type your bio',
                                 textInputAction: TextInputAction.next,
                                 contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                               ),
-                              const SizedBox(height: 24),
+                              Stack(
+                                children: [
+                                  Column(
+                                    children: [
+                                      TextFieldFrom(
+                                        controller: context.read<UpdateBusinessBloc>().addressController,
+                                        label: 'Address',
+                                        placeholder: 'Type your address',
+                                        textInputAction: TextInputAction.next,
+                                        prefixIcon: const Icon(
+                                          Icons.location_on_sharp,
+                                          size: 24,
+                                        ),
+                                        suffixIcon: InkWell(
+                                          onTap: () {
+                                            context.read<UpdateBusinessBloc>().add(SearchLocation());
+                                          },
+                                          borderRadius: BorderRadius.circular(8.r),
+                                          child: Padding(
+                                            padding: EdgeInsets.all(16.w),
+                                            child: SvgPicture.asset(
+                                              AppConstants.more,
+                                            ),
+                                          ),
+                                        ),
+                                        onChange: (val) {
+                                          onChange(val, context);
+                                        },
+                                      ),
+                                      const SizedBox(height: 24),
+                                      Container(
+                                        decoration: BoxDecoration(
+                                          color: Colors.grey[100],
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 300,
+                                        child: const BusinessLocation(),
+                                      ),
+                                      const SizedBox(height: 24),
+                                    ],
+                                  ),
+                                  Visibility(
+                                    visible: state.listLocationShow,
+                                    child: Positioned(
+                                      top: 110,
+                                      child: Container(
+                                        width: MediaQuery.of(context).size.width,
+                                        height: 200,
+                                        padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                        color: Colors.grey[100],
+                                        child: ListView.builder(
+                                          itemCount: state.location.length,
+                                          itemBuilder: (context, index) {
+                                            return _location(state.location[index], context);
+                                          },
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                               PrimaryButton(
                                 onPressed: () {
-                                  context.read<EditProfileBloc>().add(EditProfile());
+                                  context.read<UpdateBusinessBloc>().add(UpdateBusiness());
                                 },
                                 label: 'Edit',
                               ),
+                              const SizedBox(height: 50,),
                             ],
                           ),
                         ),
@@ -238,6 +307,39 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               );
             },
           )),
+    );
+  }
+
+  Widget _location(String value, BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 0, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.grey[100],
+        borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+      ),
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onTap: () {
+            BlocProvider.of<UpdateBusinessBloc>(context).add(OnSelect(location: value));
+          },
+          borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Icon(Icons.location_on),
+              Expanded(
+                child: Text(
+                value,
+                style: themeData.textTheme.labelMedium,
+                overflow: TextOverflow.ellipsis,
+                            ),
+              ),
+              const SizedBox(width: 45)
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

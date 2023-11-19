@@ -3,11 +3,11 @@ import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/domain/tracking/entities/tracking_entity.dart';
 
 class TrackingPaths {
-  static String findContractInBalance({required num id}) => '/tracking/find-all-tracking/$id';
+  static String findContractInBalance({required String id}) => '/tracking/find-all-tracking/$id';
 }
 
 abstract class TrackingService {
-  Future<List<TrackingEntity>> findTrackingInBalance({required num id});
+  Future<List<TrackingEntity>> findTrackingInBalance({required String id});
 }
 
 class TrackingServiceImpl implements TrackingService {
@@ -15,7 +15,7 @@ class TrackingServiceImpl implements TrackingService {
   TrackingServiceImpl({required this.agent});
 
   @override
-  Future<List<TrackingEntity>> findTrackingInBalance({required num id}) async {
+  Future<List<TrackingEntity>> findTrackingInBalance({required String id}) async {
     try {
       final response = await agent.dio.get(TrackingPaths.findContractInBalance(id: id));
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);

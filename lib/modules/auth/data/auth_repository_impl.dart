@@ -34,12 +34,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.register(request);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
     } catch (exception) {
-      if (exception is ServerFailure) {
-        return Right(ServerFailure(message: exception.message));
-      } else {
-        return const Right(ServerFailure());
-      }
+      return const Right(ServerFailure());
     }
   }
 
@@ -67,6 +65,42 @@ class AuthRepositoryImpl implements AuthRepository {
       return Left(authEntity);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await authService.sendCodeOtpMail(email: email, otpCode: otpCode);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode}) async {
+    try {
+      final response = await authService.verifyCodeOtpMail(email: email, otpCode: otpCode);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword}) async {
+    try {
+      final response = await authService.changeNewPassword(oldPassword: oldPassword, newPassword: newPassword);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
+    } catch (exception) {
+      return const Right(ServerFailure());
     }
   }
 }

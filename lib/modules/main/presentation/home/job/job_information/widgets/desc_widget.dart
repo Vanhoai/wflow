@@ -10,6 +10,11 @@ class DescWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+
+    List<String> desc = description.split('.');
+
+    desc.removeWhere((element) => element.isEmpty);
+
     return SliverToBoxAdapter(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -27,13 +32,25 @@ class DescWidget extends StatelessWidget {
               ),
             ),
           ),
-          12.verticalSpace,
-          Text(
-            description,
-            style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color: Theme.of(context).colorScheme.onBackground,
-              fontSize: 18,
-            )),
+          6.verticalSpace,
+          Flexible(
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              padding: EdgeInsets.only(left: 4.w),
+              itemBuilder: (context, index) {
+                return TextMore(
+                  '⦁ ${desc[index].trim()}',
+                  style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                    color: Theme.of(context).colorScheme.onBackground,
+                    fontSize: 16,
+                  )),
+                  trimMode: TrimMode.Line,
+                  trimLines: 7,
+                );
+              },
+              itemCount: desc.length,
+            ),
           ),
         ],
       ),

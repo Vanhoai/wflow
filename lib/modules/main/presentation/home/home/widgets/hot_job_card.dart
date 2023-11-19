@@ -48,13 +48,13 @@ class _HotJobCardState extends State<HotJobCard> {
           boxShadow: [
             BoxShadow(
               color: themeData.colorScheme.onBackground.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              blurRadius: 1,
+              offset: const Offset(-1, 1),
             ),
             BoxShadow(
               color: themeData.colorScheme.onBackground.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              blurRadius: 1,
+              offset: const Offset(-0.5, -0.5),
             ),
           ],
         ),
@@ -103,11 +103,9 @@ class _HotJobCardState extends State<HotJobCard> {
         ),
         cost: instance.get<ConvertString>().moneyFormat(value: widget.job.salary),
         duration: widget.job.duration,
-        description: TextMore(
+        description: Text(
           widget.job.content,
-          trimLines: 3,
-          trimMode: TrimMode.Hidden,
-          trimHiddenMaxLines: 3,
+          maxLines: 4,
           style: themeData.textTheme.displayMedium!.merge(
             TextStyle(
               color: themeData.colorScheme.onBackground,

@@ -1,70 +1,94 @@
 part of 'verification_bloc.dart';
 
-class VerificationEvent extends Equatable {
+sealed class VerificationEvent extends Equatable {
   const VerificationEvent();
 
   @override
   List<Object> get props => [];
 }
 
-class VerificationPhoneInitEvent extends VerificationEvent {
-  final String phoneNumber;
+final class VerificationInitialEvent extends VerificationEvent {}
 
-  const VerificationPhoneInitEvent({
-    required this.phoneNumber,
-  });
-
-  @override
-  List<Object> get props => [phoneNumber];
-}
-
-class VerificationPhoneStartEvent extends VerificationEvent {
-  final String otpNumber;
-  final String verification;
-
-  const VerificationPhoneStartEvent({required this.otpNumber, required this.verification});
-
-  VerificationPhoneStartEvent copyWith(
-    String? otpNumber,
-    String? verification,
-  ) {
-    return VerificationPhoneStartEvent(
-      otpNumber: otpNumber ?? this.otpNumber,
-      verification: verification ?? this.verification,
-    );
-  }
-
-  @override
-  List<Object> get props => [otpNumber, verification];
-}
-
-class VerificationEmailInitEvent extends VerificationEvent {
+final class VerificationEmailInitEvent extends VerificationEvent {
   final String email;
+  final String otpCode;
 
   const VerificationEmailInitEvent({
     required this.email,
+    required this.otpCode,
   });
 
   @override
-  List<Object> get props => [email];
+  List<Object> get props => [email, otpCode];
 }
 
-class VerificationEmailStartEvent extends VerificationEvent {
-  final String otpNumber;
-  final String verification;
+final class VerificationEmailResetInitEvent extends VerificationEvent {
+  final String email;
+  final String otpCode;
 
-  const VerificationEmailStartEvent({required this.otpNumber, required this.verification});
-
-  VerificationEmailStartEvent copyWith(
-    String? otpNumber,
-    String? verification,
-  ) {
-    return VerificationEmailStartEvent(
-      otpNumber: otpNumber ?? this.otpNumber,
-      verification: verification ?? this.verification,
-    );
-  }
+  const VerificationEmailResetInitEvent({
+    required this.email,
+    required this.otpCode,
+  });
 
   @override
-  List<Object> get props => [otpNumber, verification];
+  List<Object> get props => [email, otpCode];
+}
+
+final class VerificationPhoneRegisterEvent extends VerificationEvent {
+  final String username;
+  final String password;
+  final String verificationId;
+  final String smsCode;
+
+  const VerificationPhoneRegisterEvent({
+    required this.username,
+    required this.password,
+    required this.verificationId,
+    required this.smsCode,
+  });
+
+  @override
+  List<Object> get props => [username, password, verificationId, smsCode];
+}
+
+final class VerificationEmailRegisterEvent extends VerificationEvent {
+  final String username;
+  final String password;
+  final String otpCode;
+
+  const VerificationEmailRegisterEvent({
+    required this.username,
+    required this.otpCode,
+    required this.password,
+  });
+
+  @override
+  List<Object> get props => [username, otpCode, password];
+}
+
+final class VerificationPhoneForgotPasswordEvent extends VerificationEvent {
+  final String verificationId;
+  final String otpCode;
+
+  const VerificationPhoneForgotPasswordEvent({
+    required this.verificationId,
+    required this.otpCode,
+  });
+
+  @override
+  List<Object> get props => [verificationId, otpCode];
+}
+
+final class VerificationEmailForgotPasswordEvent extends VerificationEvent {
+  final String email;
+  final String otpCode;
+
+  const VerificationEmailForgotPasswordEvent({
+    required this.email,
+    required this.otpCode,
+  });
+
+  @override
+  List<Object> get props => [email, otpCode];
 }

@@ -9,4 +9,9 @@ class StringsUtil {
       RegExp(r'^[a-zA-Z0-9@!#$%^&*()_+`~\-=\[\]\\{}|;’:\",./<>?]{8,}$').hasMatch(password);
 
   static bool isComparePassword(String password, String rePassword) => password == rePassword;
+
+  static String parseMoney(String money) {
+    if (money.isEmpty) return '0';
+    return money.replaceAllMapped(RegExp(r'(\d{1,3})(?=(\d{3})+(?!\d))'), (match) => '${match[1]},');
+  }
 }

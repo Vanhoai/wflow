@@ -6,10 +6,13 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
+import 'package:wflow/modules/auth/presentation/forgot_password/function.dart';
 import 'package:wflow/modules/auth/presentation/register/bloc/register_bloc.dart';
+import 'package:wflow/modules/auth/presentation/register/register.dart';
 
 class FormRegisterEmail extends StatefulWidget {
   const FormRegisterEmail({Key? key}) : super(key: key);
@@ -131,7 +134,18 @@ class _FormState extends State<FormRegisterEmail> {
                 PrimaryButton(
                   onPressed: () {
                     if (validateEmail(emailController.text) == null &&
-                        validatePassword(passwordController.text, rePasswordController.text) == null) {}
+                        validatePassword(passwordController.text, rePasswordController.text) == null) {
+                      Navigator.pushNamed(
+                        context,
+                        RouteKeys.verificationScreen,
+                        arguments: VerificationArgument(
+                          username: emailController.text,
+                          password: passwordController.text,
+                          type: 'email',
+                          otpCode: OtpHelper.randOtp(),
+                        ),
+                      );
+                    }
                   },
                   label: instance.get<AppLocalization>().translate('signUp') ?? 'Sign Up',
                 ),

@@ -28,6 +28,7 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     on<RefreshEvent>(onRefresh);
     on<LoadMoreEvent>(onLoadMore);
     on<ToggleBookmarkWorkEvent>(onToggleBookmark);
+    on<GetRelationPostEvent>(getRelationPost);
   }
 
   FutureOr<void> getPost(GetPostWithCategory request, Emitter<WorkState> emit, String category) async {
@@ -41,6 +42,14 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         bookmarks: bookmarks,
       ),
     );
+  }
+
+  FutureOr getRelationPost(GetRelationPostEvent event, Emitter<WorkState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final categories = await categoryUseCase.getPostCategory();
+    emit(state.copyWith(categories: categories, categorySelected: ''));
+    await getPost(const GetPostWithCategory(page: 1, pageSize: 10, category: ''), emit, '');
+    emit(state.copyWith(isLoading: false));
   }
 
   FutureOr<void> onInitial(WorkInitialEvent event, Emitter<WorkState> emit) async {

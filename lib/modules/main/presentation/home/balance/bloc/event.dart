@@ -12,3 +12,8 @@ class BalanceTopUpEvent extends BalanceEvent {
   final num amount;
   BalanceTopUpEvent(this.amount);
 }
+
+class TrackingEventFetch extends BalanceEvent {
+  final String id;
+  TrackingEventFetch({required this.id});
+}

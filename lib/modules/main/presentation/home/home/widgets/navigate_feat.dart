@@ -162,6 +162,13 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
                     decoration: BoxDecoration(
                       color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
                       borderRadius: BorderRadius.circular(6.r),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                          blurRadius: 4,
+                          offset: const Offset(0, 1),
+                        ),
+                      ],
                     ),
                     child: SvgPicture.asset(
                       staticMenuSelection[index]['icon'],

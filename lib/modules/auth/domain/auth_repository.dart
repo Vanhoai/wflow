@@ -9,4 +9,7 @@ abstract class AuthRepository {
   Future<Either<String, Failure>> register(AuthNormalRegisterRequest request);
   Future<Either<String, Failure>> registerWithGoogle({required AuthWithGoogleModel request});
   Future<Either<AuthEntity, Failure>> signInWithGoogle({required AuthWithGoogleModel request});
+  Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode});
+  Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode});
+  Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword});
 }

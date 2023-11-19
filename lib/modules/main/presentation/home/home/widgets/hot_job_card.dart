@@ -105,7 +105,7 @@ class _HotJobCardState extends State<HotJobCard> {
         duration: widget.job.duration,
         description: Text(
           widget.job.content,
-          maxLines: 4,
+          maxLines: 3,
           style: themeData.textTheme.displayMedium!.merge(
             TextStyle(
               color: themeData.colorScheme.onBackground,

@@ -31,14 +31,16 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: SizedBox(
-                        height: 210,
-                        width: MediaQuery.of(context).size.width,
-                        child: CachedNetworkImage(
-                          imageUrl: userEntity.background == '' ? 'https://picsum.photos/200' : userEntity.background,
-                          placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
-                          filterQuality: FilterQuality.high,
-                          errorWidget: (context, url, error) => const Icon(Icons.error),
-                        )),
+                      height: 210,
+                      width: MediaQuery.of(context).size.width,
+                      child: CachedNetworkImage(
+                        imageUrl: userEntity.background == '' ? 'https://picsum.photos/200' : userEntity.background,
+                        placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
+                        filterQuality: FilterQuality.high,
+                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                   Positioned(
                     bottom: 0,

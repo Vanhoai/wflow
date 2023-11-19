@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 
 class DescWidget extends StatelessWidget {
   final String description;

@@ -70,4 +70,14 @@ class CompanyRepositoryImpl extends CompanyRepository {
       return Right(ServerFailure(message: exception.message));
     }
   }
+  
+  @override
+  Future<Either<String, Failure>> updateBusiness({required RequestUpdateBusiness request}) async {
+     try {
+      final response = await companyService.updateBusiness(request: request);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
 }

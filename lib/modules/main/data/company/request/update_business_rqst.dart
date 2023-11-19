@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
+
 class UpgradeBusinessRequest {
   final String email;
   final String phone;
@@ -32,3 +36,16 @@ class UpgradeBusinessRequest {
     };
   }
 }
+
+class RequestUpdateBusiness {
+  final File? logo;
+  final File? background;
+  final CompanyEntity companyEntity;
+
+  RequestUpdateBusiness(
+      {required this.logo,
+      required this.background,
+      required this.companyEntity
+      });
+}
+

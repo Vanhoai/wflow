@@ -160,7 +160,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                   ),
                                 ),
                                 CupertinoActionSheetAction(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(RouteKeys.updateBusinessScreen);
+                                  },
                                   child: Text(
                                     instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
                                   ),

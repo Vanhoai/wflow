@@ -39,6 +39,7 @@ import 'package:wflow/modules/main/presentation/personal/notification/notificati
 import 'package:wflow/modules/main/presentation/personal/remove_collaborator/remove_collaborator_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/security/security.dart';
 import 'package:wflow/modules/main/presentation/personal/setting/setting.dart';
+import 'package:wflow/modules/main/presentation/personal/update_business/update_business.dart';
 import 'package:wflow/modules/main/presentation/personal/upgrade_business/upgrade_business_screen.dart';
 import 'package:wflow/modules/main/presentation/photo/photo.dart';
 import 'package:wflow/modules/main/presentation/work/search_work/search_work_screen.dart';
@@ -161,6 +162,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ReputationScreen());
         case RouteKeys.searchRoomScreen:
         return MaterialPageRoute(builder: (_) => const SearchRoomsScreen());
+      case RouteKeys.updateBusinessScreen:
+        return MaterialPageRoute(builder: (_) => const UpdateBusinessScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

@@ -120,7 +120,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                       Expanded(
                         child: Material(
                           color: themeData.colorScheme.background,
-                          elevation: 3.0,
+                          elevation: 2.0,
                           shadowColor: themeData.colorScheme.onBackground,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
@@ -150,7 +150,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                       Expanded(
                         child: Material(
                           color: themeData.colorScheme.background,
-                          elevation: 3.0,
+                          elevation: 2.0,
                           shadowColor: themeData.colorScheme.onBackground,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),
@@ -181,7 +181,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                       Expanded(
                         child: Material(
                           color: themeData.colorScheme.background,
-                          elevation: 3.0,
+                          elevation: 2.0,
                           shadowColor: themeData.colorScheme.onBackground,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(4.r),

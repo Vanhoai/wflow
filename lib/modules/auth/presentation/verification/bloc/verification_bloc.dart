@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/firebase/firebase.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/auth/domain/auth_usecase.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
 
@@ -24,7 +26,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
     if (arguments.type == 'email') {
       add(VerificationEmailInitEvent(email: arguments.username, otpCode: arguments.otpCode));
     } else if (arguments.type == 'reset_password') {
-      if (arguments.username == 'email') {
+      if (StringsUtil.isEmail(arguments.username)) {
         add(VerificationEmailResetInitEvent(email: arguments.username, otpCode: arguments.otpCode));
       }
     }
@@ -34,9 +36,12 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
     try {
       instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
       final response = await authUseCase.sendCodeOtpMail(email: event.email, otpCode: event.otpCode);
+
       response.fold(
         (success) {},
-        (failure) {},
+        (failure) {
+          AlertUtils.showMessage('Notification', failure.message);
+        },
       );
     } catch (e) {
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -49,11 +54,12 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
       VerificationEmailResetInitEvent event, Emitter<VerificationState> emit) async {
     try {
       instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
-      instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
       final response = await authUseCase.sendCodeOtpMail(email: event.email, otpCode: event.otpCode);
       response.fold(
         (success) {},
-        (failure) {},
+        (failure) {
+          AlertUtils.showMessage('Notification', failure.message);
+        },
       );
     } catch (e) {
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -70,7 +76,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
         verificationId: event.verificationId,
         smsCode: event.smsCode,
       );
-      final UserCredential userCredential = await instance.call<FirebaseAuth>().signInWithCredential(credential);
+      final UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
       final User? user = userCredential.user;
       if (user != null) {
         emit(
@@ -86,6 +92,7 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
         );
       }
     } catch (e) {
+      AlertUtils.showMessage('Notification', e.toString());
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
     } finally {
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -123,26 +130,26 @@ class VerificationBloc extends Bloc<VerificationEvent, VerificationState> {
       VerificationPhoneForgotPasswordEvent event, Emitter<VerificationState> emit) async {
     try {
       instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
-
       final PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: event.phoneNumber,
+        verificationId: event.verificationId,
         smsCode: event.otpCode,
       );
-      final UserCredential userCredential = await instance.call<FirebaseAuth>().signInWithCredential(credential);
+
+      final UserCredential userCredential = await firebaseAuth.signInWithCredential(credential);
+
+      print(userCredential.user?.phoneNumber);
+
       final User? user = userCredential.user;
       if (user != null) {
         emit(
           VerificationPhoneForgotPasswordSuccessState(
-            message: 'Verification phone register success',
-            phoneNumber: event.phoneNumber,
-          ),
+              message: 'Verification phone forgot password success', phoneNumber: user.phoneNumber!),
         );
       } else {
-        emit(
-          const VerificationPhoneForgotPasswordFailureState(message: 'Verification phone register failure'),
-        );
+        emit(const VerificationPhoneForgotPasswordFailureState(message: 'Verification phone register failure'));
       }
     } catch (e) {
+      AlertUtils.showMessage('Notification', e.toString());
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
     } finally {
       instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());

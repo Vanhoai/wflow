@@ -95,12 +95,14 @@ class AuthServiceImpl implements AuthService {
       });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        return throw ServerException(message: httpResponse.message);
       }
 
       return httpResponse.message;
+    } on ServerException catch (exception) {
+      return throw ServerException(message: exception.message);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      return throw ServerException();
     }
   }
 
@@ -113,12 +115,14 @@ class AuthServiceImpl implements AuthService {
       });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        return throw ServerException(message: httpResponse.message);
       }
 
       return httpResponse.message;
+    } on ServerException catch (exception) {
+      return throw ServerException(message: exception.message);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      return throw ServerException();
     }
   }
 }

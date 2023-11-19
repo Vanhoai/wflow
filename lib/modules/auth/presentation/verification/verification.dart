@@ -55,7 +55,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
     if (widget.arguments!.type == 'phone') {
       _initVerificationPhone();
     } else if (widget.arguments!.type == 'reset_password') {
-      if (widget.arguments!.username == 'phone') {
+      if (StringsUtil.isPhoneNumber(widget.arguments!.username)) {
         _initVerificationPhoneResetPassword();
       }
     }
@@ -96,7 +96,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
       );
     } catch (e) {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-      AlertUtils.showMessage('Notification', e.toString());
+      AlertUtils.showMessage('Notification', e.toString(), callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
@@ -135,13 +137,19 @@ class _VerificationScreenState extends State<VerificationScreen> {
       );
     } catch (e) {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-      AlertUtils.showMessage('Notification', e.toString());
+      AlertUtils.showMessage('Notification', e.toString(), callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
   _handleVerificationPhoneResetPassword(VerificationBloc verificationBloc, String otp) async {
     // add event to send otp from server to verify
-    verificationBloc.add(VerificationPhoneForgotPasswordEvent(phoneNumber: widget.arguments!.username, otpCode: otp));
+    if (verificationId == null) {
+      return AlertUtils.showMessage('Notification', 'Something went wrong');
+    } else {
+      verificationBloc.add(VerificationPhoneForgotPasswordEvent(verificationId: verificationId!, otpCode: otp));
+    }
   }
 
   _logicOtp(BuildContext context) {
@@ -174,7 +182,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               _otpController5.text +
               _otpController6.text);
     } else if (widget.arguments!.type == 'reset_password') {
-      if (widget.arguments!.username == 'email') {
+      if (StringsUtil.isEmail(widget.arguments!.username)) {
         _handleVerificationEmailResetPassword(
           verificationBloc,
           _otpController1.text +
@@ -184,7 +192,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
               _otpController5.text +
               _otpController6.text,
         );
-      } else if (widget.arguments!.username == 'phone') {
+      } else if (StringsUtil.isPhoneNumber(widget.arguments!.username)) {
         _handleVerificationPhoneResetPassword(
           verificationBloc,
           _otpController1.text +
@@ -203,7 +211,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
   _listenerVerification(BuildContext context, VerificationState state) {
     if (state is VerificationPhoneRegisterSuccessState) {
       AlertUtils.showMessage('Notification', state.message, callback: () {
-        Navigator.pop(context);
         context
             .read<RegisterBloc>()
             .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
@@ -212,14 +219,14 @@ class _VerificationScreenState extends State<VerificationScreen> {
       AlertUtils.showMessage('Notification', state.message);
     } else if (state is VerificationEmailRegisterSuccessState) {
       AlertUtils.showMessage('Notification', state.message, callback: () {
-        Navigator.pop(context);
-        // navigate to register screen
         context
             .read<RegisterBloc>()
             .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
       });
     } else if (state is VerificationEmailRegisterFailureState) {
-      AlertUtils.showMessage('Notification', state.message);
+      AlertUtils.showMessage('Notification', state.message, callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
@@ -227,23 +234,34 @@ class _VerificationScreenState extends State<VerificationScreen> {
     if (state is RegisterPhoneSuccessState) {
       AlertUtils.showMessage('Notification', state.message, callback: () {
         Navigator.pop(context);
-        Navigator.pushNamed(context, RouteKeys.signInScreen);
       });
     } else if (state is RegisterEmailSuccessState) {
       AlertUtils.showMessage('Notification', state.message, callback: () {
         Navigator.pop(context);
-        Navigator.pushNamed(context, RouteKeys.signInScreen);
       });
     } else if (state is RegisterErrorState) {
-      AlertUtils.showMessage('Notification', state.message);
+      AlertUtils.showMessage('Notification', state.message, callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
   _listenerForgotPasswordVerification(BuildContext context, VerificationState state) {
     if (state is VerificationPhoneForgotPasswordSuccessState) {
+      AlertUtils.showMessage('Notification', state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
     } else if (state is VerificationPhoneForgotPasswordFailureState) {
+      AlertUtils.showMessage('Notification', state.message);
     } else if (state is VerificationEmailForgotSuccessPasswordState) {
-    } else if (state is VerificationEmailForgotFailurePasswordState) {}
+      AlertUtils.showMessage('Notification', state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
+    } else if (state is VerificationEmailForgotFailurePasswordState) {
+      AlertUtils.showMessage('Notification', state.message, callback: () {
+        Navigator.pop(context);
+      });
+    }
   }
 
   @override
@@ -285,131 +303,123 @@ class _VerificationScreenState extends State<VerificationScreen> {
                     listenWhen: (previous, current) => true,
                   ),
                 ],
-                child: BlocBuilder<VerificationBloc, VerificationState>(
-                  buildWhen: (previous, current) => true,
-                  bloc: verificationBloc,
-                  builder: (context, state) {
-                    return Scaffold(
-                      resizeToAvoidBottomInset: false,
-                      body: Container(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Column(
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  body: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(top: 80),
+                          child: SvgPicture.asset(
+                            AppConstants.app,
+                            semanticsLabel: 'Logo',
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 49),
+                          child: Text(
+                            'Nhập mã xác nhận',
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(top: 80),
-                              child: SvgPicture.asset(
-                                AppConstants.app,
-                                semanticsLabel: 'Logo',
-                              ),
+                            TextFieldVerification(controller: _otpController1),
+                            TextFieldVerification(controller: _otpController2),
+                            TextFieldVerification(controller: _otpController3),
+                            TextFieldVerification(controller: _otpController4),
+                            TextFieldVerification(controller: _otpController5),
+                            TextFieldVerification(controller: _otpController6),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Mã xác nhận sẽ gửi lại sau',
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            Text(widget.arguments!.username + widget.arguments!.password,
-                                style: Theme.of(context).textTheme.displayMedium),
-                            Container(
-                              margin: const EdgeInsets.only(top: 49),
-                              child: Text(
-                                'Nhập mã xác nhận',
-                                style: Theme.of(context).textTheme.displayLarge,
-                              ),
+                            Text(
+                              '${count}s',
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            const SizedBox(
-                              height: 60,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextFieldVerification(controller: _otpController1),
-                                TextFieldVerification(controller: _otpController2),
-                                TextFieldVerification(controller: _otpController3),
-                                TextFieldVerification(controller: _otpController4),
-                                TextFieldVerification(controller: _otpController5),
-                                TextFieldVerification(controller: _otpController6),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 17,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Mã xác nhận sẽ gửi lại sau',
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                                Text(
-                                  '${count}s',
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Builder(
-                              builder: (context) {
-                                return Flexible(
-                                  fit: FlexFit.tight,
-                                  child: Stack(
-                                    alignment: Alignment.center,
-                                    children: [
-                                      PrimaryButton(
-                                        label: 'Xác nhận',
-                                        onPressed: () {
-                                          if (_otpController1.text.isEmpty ||
-                                              _otpController2.text.isEmpty ||
-                                              _otpController3.text.isEmpty ||
-                                              _otpController4.text.isEmpty ||
-                                              _otpController5.text.isEmpty ||
-                                              _otpController6.text.isEmpty) {
-                                            AlertUtils.showMessage('Notification', 'Please enter OTP');
-                                            return;
-                                          }
-
-                                          if (verificationId == null) {
-                                            AlertUtils.showMessage('Notification', 'Something went wrong');
-                                            return;
-                                          }
-                                          _logicOtp(context);
-                                        },
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              },
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Builder(
+                          builder: (context) {
+                            return Flexible(
+                              fit: FlexFit.tight,
+                              child: Stack(
+                                alignment: Alignment.center,
                                 children: [
-                                  Text(
-                                    'Bạn đã có tài khoản? ',
-                                    style: Theme.of(context).textTheme.displayMedium,
-                                  ),
-                                  InkWell(
-                                    borderRadius: BorderRadius.circular(4),
-                                    onTap: () => {Navigator.pop(context)},
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2),
-                                      child: Text(
-                                        'Đăng nhập',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium!
-                                            .merge(const TextStyle(color: AppColors.primary)),
-                                      ),
-                                    ),
+                                  PrimaryButton(
+                                    label: 'Xác nhận',
+                                    onPressed: () {
+                                      if (_otpController1.text.isEmpty ||
+                                          _otpController2.text.isEmpty ||
+                                          _otpController3.text.isEmpty ||
+                                          _otpController4.text.isEmpty ||
+                                          _otpController5.text.isEmpty ||
+                                          _otpController6.text.isEmpty) {
+                                        AlertUtils.showMessage('Notification', 'Please enter OTP');
+                                        return;
+                                      }
+
+                                      if (verificationId == null) {
+                                        AlertUtils.showMessage('Notification', 'Something went wrong');
+                                        return;
+                                      }
+                                      _logicOtp(context);
+                                    },
                                   ),
                                 ],
                               ),
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
+                        Container(
+                          margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Bạn đã có tài khoản? ',
+                                style: Theme.of(context).textTheme.displayMedium,
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(4),
+                                onTap: () => {Navigator.pop(context)},
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(
+                                    'Đăng nhập',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium!
+                                        .merge(const TextStyle(color: AppColors.primary)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

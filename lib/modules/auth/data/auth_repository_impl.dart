@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:wflow/core/http/exception.http.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
 import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
@@ -24,7 +25,6 @@ class AuthRepositoryImpl implements AuthRepository {
 
       return Left(authEntity);
     } catch (exception) {
-      print(exception.toString());
       return Right(ServerFailure(message: exception.toString()));
     }
   }
@@ -34,12 +34,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.register(request);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
     } catch (exception) {
-      if (exception is ServerFailure) {
-        return Right(ServerFailure(message: exception.message));
-      } else {
-        return const Right(ServerFailure());
-      }
+      return const Right(ServerFailure());
     }
   }
 
@@ -75,8 +73,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.sendCodeOtpMail(email: email, otpCode: otpCode);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
     } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+      return const Right(ServerFailure());
     }
   }
 
@@ -85,8 +85,10 @@ class AuthRepositoryImpl implements AuthRepository {
     try {
       final response = await authService.verifyCodeOtpMail(email: email, otpCode: otpCode);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
     } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+      return const Right(ServerFailure());
     }
   }
 }

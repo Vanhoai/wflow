@@ -33,7 +33,7 @@ class _ForgotEmailWidgetState extends State<ForgotEmailWidget> {
       arguments: VerificationArgument(
         password: '',
         type: 'reset_password',
-        username: 'email',
+        username: _emailController.text,
         otpCode: otp,
       ),
     );

@@ -6,6 +6,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/develop/develop.dart';
 import 'package:wflow/modules/auth/presentation/forgot_password/forgot_password.dart';
 import 'package:wflow/modules/auth/presentation/register/register.dart';
+import 'package:wflow/modules/auth/presentation/reset_password/reset_password.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/widgets/form_signin.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
@@ -144,6 +145,8 @@ class AppRoutes {
       case RouteKeys.forgotPasswordScreen:
         final arg = settings.arguments as ForgotType;
         return MaterialPageRoute(builder: (_) => ForgotPasswordScreen(forgotType: arg));
+      case RouteKeys.resetPasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

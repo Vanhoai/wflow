@@ -68,16 +68,16 @@ final class VerificationEmailRegisterEvent extends VerificationEvent {
 }
 
 final class VerificationPhoneForgotPasswordEvent extends VerificationEvent {
-  final String phoneNumber;
+  final String verificationId;
   final String otpCode;
 
   const VerificationPhoneForgotPasswordEvent({
-    required this.phoneNumber,
+    required this.verificationId,
     required this.otpCode,
   });
 
   @override
-  List<Object> get props => [phoneNumber, otpCode];
+  List<Object> get props => [verificationId, otpCode];
 }
 
 final class VerificationEmailForgotPasswordEvent extends VerificationEvent {

@@ -33,7 +33,7 @@ class _ForgotPhoneWidgetState extends State<ForgotPhoneWidget> {
       arguments: VerificationArgument(
         password: '',
         type: 'reset_password',
-        username: 'phone',
+        username: _phoneController.text,
         otpCode: otp,
       ),
     );

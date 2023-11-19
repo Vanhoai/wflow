@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
-import 'package:wflow/core/widgets/custom/circular_percent/circular_percent.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
 
 class ContractCardHistory extends StatefulWidget {
@@ -25,6 +25,11 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
   Widget build(BuildContext context) {
     final noSimbolInUSFormat =
         NumberFormat.currency(locale: 'vi_VN', symbol: '');
+    final createdTimer =
+        widget.contractEntity.createdAt.toString().split(' ')[0];
+    final closedTimer =
+        widget.contractEntity.updatedAt.toString().split(' ')[0];
+
     return Container(
       margin: const EdgeInsets.only(
         left: AppSize.paddingScreenDefault,
@@ -88,13 +93,17 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
-                      widget.contractEntity.content,
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
-                        overflow: TextOverflow.ellipsis,
+                    Expanded(
+                      child: Text(
+                        widget.contractEntity.content,
+                        style: themeData.textTheme.displayMedium!.copyWith(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w300,
+                          overflow: TextOverflow.ellipsis,
+                          color: AppColors.fadeText,
+                        ),
+                        maxLines: 2,
                       ),
-                      maxLines: 4,
                     ),
                   ],
                 ),
@@ -105,21 +114,22 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Total task',
+                      instance.get<AppLocalization>().translate('totalTask') ??
+                          'Total task',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                     Text(
                       widget.contractEntity.tasks.length.toString(),
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 6,
                 ),
                 Builder(
                   builder: (context) {
@@ -129,9 +139,12 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Business',
+                            instance
+                                    .get<AppLocalization>()
+                                    .translate('business') ??
+                                'Business',
                             style: themeData.textTheme.displayMedium!.copyWith(
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.normal,
                             ),
                           ),
                           InkWell(
@@ -147,7 +160,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                                 widget.contractEntity.business.name,
                                 style: themeData.textTheme.displayMedium!
                                     .copyWith(
-                                        fontWeight: FontWeight.w500,
+                                        fontWeight: FontWeight.normal,
                                         color: themeData.primaryColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -160,9 +173,10 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Worker',
+                          instance.get<AppLocalization>().translate('worker') ??
+                              'Worker',
                           style: themeData.textTheme.displayMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.normal,
                           ),
                         ),
                         const SizedBox(
@@ -180,7 +194,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                               widget.contractEntity.worker.name,
                               style: themeData.textTheme.displayMedium!
                                   .copyWith(
-                                      fontWeight: FontWeight.w500,
+                                      fontWeight: FontWeight.normal,
                                       color: themeData.primaryColor),
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -191,62 +205,69 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   },
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 6,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Status',
+                      instance.get<AppLocalization>().translate('status') ??
+                          'Status',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                     Text(
-                      widget.contractEntity.state,
+                      instance.get<AppLocalization>().translate(widget
+                              .contractEntity.state
+                              .toString()
+                              .toLowerCase()) ??
+                          widget.contractEntity.state,
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                         color: AppColors.greenColor,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 6,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Contract created',
+                      instance.get<AppLocalization>().translate('createAt') ??
+                          'Contract created',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                     Text(
-                      widget.contractEntity.createdAt.toString().split(' ')[0],
+                      '${createdTimer.split('-')[2]}/${createdTimer.split('-')[1]}/${createdTimer.split('-')[0]}',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
                 ),
                 const SizedBox(
-                  height: 9,
+                  height: 6,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Contract closed',
+                      instance.get<AppLocalization>().translate('endDateAt') ??
+                          'Contract closed',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                     Text(
-                      widget.contractEntity.updatedAt.toString().split(' ')[0],
+                      '${closedTimer.split('-')[2]}/${closedTimer.split('-')[1]}/${closedTimer.split('-')[0]}',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.normal,
                       ),
                     ),
                   ],
@@ -257,18 +278,6 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
         ),
       ),
     );
-  }
-
-  Color _progressColor(double value) {
-    if (value < 0.3) {
-      return Colors.red;
-    } else if (value < 0.6) {
-      return Colors.orange;
-    } else if (value < 0.9) {
-      return Colors.yellow;
-    } else {
-      return Colors.green;
-    }
   }
 
   Widget _buildAvatar() {

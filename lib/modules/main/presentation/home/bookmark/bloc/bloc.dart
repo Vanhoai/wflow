@@ -1,4 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
@@ -15,6 +17,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
   }
 
   Future<void> onInitPostSaved(InitBookmarkEvent event, Emitter emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     final result = await postUseCase
         .getPostsSaved(const GetWorkModel(page: 1, pageSize: 10, search: ''));
 
@@ -26,6 +29,7 @@ class BookmarkBloc extends Bloc<BookmarkEvent, BookmarkState> {
               )),
             },
         (Failure failure) => {});
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onScrollPostSaved(

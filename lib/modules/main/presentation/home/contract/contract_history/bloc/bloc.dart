@@ -1,6 +1,7 @@
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -15,10 +16,14 @@ class ContractHistoryBloc
       : super(const ContractHistoryState()) {
     on<InitContractHistoryEvent>(onInitContractHistoryEvent);
     on<ScrollContractHistoryEvent>(onScrollContractHistoryEvent);
+    on<SearchContractHistoryEvent>(onSearchContractHistoryEvent);
+    on<ChangedIconClearSearchContractHistoryEvent>(
+        onChangedIconClearSearchContractHistoryEvent);
   }
 
   Future<void> onInitContractHistoryEvent(
       InitContractHistoryEvent event, Emitter emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     isBusiness = instance.get<AppBloc>().state.userEntity.role !=
         RoleEnum.user.index + 1;
 
@@ -35,6 +40,7 @@ class ContractHistoryBloc
                   meta: httpResponseWithPagination.meta))
             },
         (failure) => {});
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   Future<void> onScrollContractHistoryEvent(
@@ -56,5 +62,15 @@ class ContractHistoryBloc
               },
           (failure) => {});
     }
+  }
+
+  Future<void> onSearchContractHistoryEvent(
+      SearchContractHistoryEvent event, Emitter emit) async {
+    emit(state.copyWith(txtSearch: event.txtSearch));
+  }
+
+  Future<void> onChangedIconClearSearchContractHistoryEvent(
+      ChangedIconClearSearchContractHistoryEvent event, Emitter emit) async {
+    emit(state.copyWith(isHiddenClearIconSearch: event.txtSearch.isEmpty));
   }
 }

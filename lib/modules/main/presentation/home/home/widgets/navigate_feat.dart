@@ -63,7 +63,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       },
       {
         'title':
-            instance.get<AppLocalization>().translate('done') ?? 'Completed',
+            instance.get<AppLocalization>().translate('completed') ?? 'Completed',
         'icon': AppConstants.history
       },
     ];

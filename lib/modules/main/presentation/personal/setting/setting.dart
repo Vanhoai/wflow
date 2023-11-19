@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -51,8 +52,8 @@ class _SettingScreenState extends State<SettingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Dark mode',
-                      style: themeData.textTheme.displayLarge!.merge(
+                      instance.get<AppLocalization>().translate('darkMode') ?? 'Dark mode',
+                      style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
                     ),

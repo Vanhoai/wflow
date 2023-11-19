@@ -111,5 +111,6 @@
   "signOut": "Đăng xuất",
   "changeLanguage": "Thay đổi ngôn ngữ",
   "showMore": "Xem thêm",
-  "showLess": "Thu gọn"
+  "showLess": "Thu gọn",
+  "darkMode": "Chế độ tối"
 }

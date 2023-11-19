@@ -9,8 +9,6 @@ sealed class ResetPasswordState extends Equatable {
 
 final class ResetPasswordInitial extends ResetPasswordState {}
 
-final class ResetPasswordLoading extends ResetPasswordState {}
-
 final class ResetPasswordSuccess extends ResetPasswordState {
   const ResetPasswordSuccess({required this.message});
 
@@ -21,10 +19,10 @@ final class ResetPasswordSuccess extends ResetPasswordState {
 }
 
 final class ResetPasswordFailure extends ResetPasswordState {
-  const ResetPasswordFailure({required this.error});
+  const ResetPasswordFailure({required this.message});
 
-  final String error;
+  final String message;
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [message];
 }

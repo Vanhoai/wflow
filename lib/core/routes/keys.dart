@@ -49,4 +49,5 @@ class RouteKeys {
   static const String forgotPasswordScreen = '/forgot_password_screen';
   static const String resetPasswordScreen = '/reset_password_screen';
   static const String searchRoomScreen = '/search_room_screen';
+  static const String changePasswordScreen = '/change_password_screen';
 }

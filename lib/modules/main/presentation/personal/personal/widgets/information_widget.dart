@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
@@ -65,7 +67,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Reputation',
+                            instance.get<AppLocalization>().translate('reputation') ?? 'Reputation',
                             style: themeData.textTheme.displayMedium!
                                 .copyWith(color: Theme.of(context).colorScheme.onBackground),
                           ),
@@ -92,7 +94,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                         mainAxisSize: MainAxisSize.min,
                         children: [
                           Text(
-                            'Worked',
+                            instance.get<AppLocalization>().translate('worked') ?? 'Work done',
                             style: themeData.textTheme.displayMedium!
                                 .copyWith(color: Theme.of(context).colorScheme.onBackground),
                           ),
@@ -129,11 +131,12 @@ class _InformationWidgetState extends State<InformationWidget> {
                               borderRadius: BorderRadius.circular(4.r),
                             ),
                             child: InkWell(
-                              onTap: () => Navigator.of(context).pushNamed(RouteKeys.securityScreen),
+                              onTap: () => Navigator.of(context)
+                                  .pushNamed(RouteKeys.securityScreen, arguments: userEntity.isVerify),
                               borderRadius: BorderRadius.circular(4.r),
                               child: Center(
                                 child: Text(
-                                  'Security',
+                                  instance.get<AppLocalization>().translate('security') ?? 'Security',
                                   style: themeData.textTheme.displayMedium!.copyWith(
                                     color: Theme.of(context).colorScheme.onBackground,
                                   ),
@@ -164,9 +167,9 @@ class _InformationWidgetState extends State<InformationWidget> {
                               borderRadius: BorderRadius.circular(4.r),
                               child: Center(
                                 child: Text(
-                                  'Edit',
-                                  style: themeData.textTheme.displayLarge!.copyWith(
-                                    fontSize: 16.sp,
+                                  instance.get<AppLocalization>().translate('edit') ?? 'Edit',
+                                  style: themeData.textTheme.displayMedium!.copyWith(
+                                    color: Theme.of(context).colorScheme.onBackground,
                                   ),
                                 ),
                               ),
@@ -193,7 +196,7 @@ class _InformationWidgetState extends State<InformationWidget> {
                               borderRadius: BorderRadius.circular(4.r),
                               child: Center(
                                 child: Text(
-                                  'More',
+                                  instance.get<AppLocalization>().translate('more') ?? 'More',
                                   style: themeData.textTheme.displayMedium!.copyWith(
                                     color: Theme.of(context).colorScheme.onBackground,
                                   ),

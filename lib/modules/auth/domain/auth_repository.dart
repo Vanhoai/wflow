@@ -11,4 +11,5 @@ abstract class AuthRepository {
   Future<Either<AuthEntity, Failure>> signInWithGoogle({required AuthWithGoogleModel request});
   Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode});
   Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode});
+  Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword});
 }

@@ -35,6 +35,7 @@ import 'package:wflow/modules/main/presentation/message/rooms/search_room.dart';
 import 'package:wflow/modules/main/presentation/message/video_call/call.dart';
 import 'package:wflow/modules/main/presentation/personal/add_business/add_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/index.dart';
+import 'package:wflow/modules/main/presentation/personal/change_password/change_password.dart';
 import 'package:wflow/modules/main/presentation/personal/chat_business/chat_business_screen.dart';
 import 'package:wflow/modules/main/presentation/personal/detail_user/detail_user.dart';
 import 'package:wflow/modules/main/presentation/personal/editprofile/editprofile.dart';
@@ -95,7 +96,8 @@ class AppRoutes {
       case RouteKeys.settingScreen:
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case RouteKeys.securityScreen:
-        return MaterialPageRoute(builder: (_) => const SecurityScreen());
+        final bool isVerify = settings.arguments as bool;
+        return MaterialPageRoute(builder: (_) => SecurityScreen(isVerify: isVerify));
       case RouteKeys.auStepOneScreen:
         return MaterialPageRoute(builder: (_) => const AuthStepOneScreen());
       case RouteKeys.auStepTwoScreen:
@@ -164,6 +166,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       case RouteKeys.searchRoomScreen:
         return MaterialPageRoute(builder: (_) => const SearchRoomsScreen());
+      case RouteKeys.changePasswordScreen:
+        return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

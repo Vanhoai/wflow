@@ -17,6 +17,7 @@ abstract class AuthService {
   Future<AuthSignInResponse> signInWithGoogle({required AuthWithGoogleModel request});
   Future<String> sendCodeOtpMail({required String email, required String otpCode});
   Future<String> verifyCodeOtpMail({required String email, required String otpCode});
+  Future<String> changeNewPassword({required String oldPassword, required String newPassword});
 }
 
 class AuthServiceImpl implements AuthService {
@@ -123,6 +124,26 @@ class AuthServiceImpl implements AuthService {
       final response = await agent.dio.post('/auth/verify-code-otp-mail', data: {
         'email': email,
         'otp': otpCode,
+      });
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        return throw ServerException(httpResponse.message);
+      }
+
+      return httpResponse.message;
+    } on ServerException catch (exception) {
+      return throw ServerException(exception.message);
+    } catch (exception) {
+      return throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<String> changeNewPassword({required String oldPassword, required String newPassword}) async {
+    try {
+      final response = await agent.dio.post('/auth/change-password', data: {
+        'oldPassword': oldPassword,
+        'newPassword': newPassword,
       });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {

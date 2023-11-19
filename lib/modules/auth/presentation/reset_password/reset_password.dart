@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/auth/presentation/reset_password/bloc/reset_password_bloc.dart';
@@ -25,9 +26,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   }
 
   _listenerResetPasswordBloc(BuildContext context, ResetPasswordState state) {
-    if (state is ResetPasswordLoading) {
-    } else if (state is ResetPasswordSuccess) {
-    } else if (state is ResetPasswordFailure) {}
+    if (state is ResetPasswordSuccess) {
+      AlertUtils.showMessage('Notification', state.message);
+    } else if (state is ResetPasswordFailure) {
+      AlertUtils.showMessage('Notification', state.message);
+    }
   }
 
   @override
@@ -68,10 +71,11 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 Expanded(
                   flex: 1,
                   child: PrimaryButton(
-                      onPressed: () {
-                        Navigator.pushReplacementNamed(context, RouteKeys.signInScreen);
-                      },
-                      label: 'Reset Password'),
+                    onPressed: () {
+                      Navigator.pushReplacementNamed(context, RouteKeys.signInScreen);
+                    },
+                    label: 'Reset Password',
+                  ),
                 ),
               ],
             ),

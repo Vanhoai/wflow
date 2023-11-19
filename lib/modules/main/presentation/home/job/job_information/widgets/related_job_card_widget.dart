@@ -42,13 +42,13 @@ class _RelatedJobCardWidgetState extends State<RelatedJobCardWidget> {
           boxShadow: [
             BoxShadow(
               color: themeData.colorScheme.onBackground.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              blurRadius: 1,
+              offset: const Offset(-1, 1),
             ),
             BoxShadow(
               color: themeData.colorScheme.onBackground.withOpacity(0.1),
-              blurRadius: 4,
-              offset: const Offset(0, 2),
+              blurRadius: 1,
+              offset: const Offset(-0.5, -0.5),
             ),
           ],
         ),

@@ -38,8 +38,11 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _otpController4 = TextEditingController();
   final TextEditingController _otpController5 = TextEditingController();
   final TextEditingController _otpController6 = TextEditingController();
+
   int? count = 120;
+
   Timer? _everySecond;
+
   String? verificationId;
 
   @override

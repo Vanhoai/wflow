@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -77,36 +78,38 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                     onPressed: () => Navigator.of(context)
                                       ..pop(context)
                                       ..pushNamed(RouteKeys.upgradeBusinessScreen),
-                                    child: const Text('Upgrade'),
+                                    child: Text(instance.get<AppLocalization>().translate('upgradeToBusiness') ??
+                                        'Upgrade to business'),
                                   ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () => Navigator.of(context)
                                     ..pop(context)
                                     ..pushNamed(RouteKeys.contractScreen),
-                                  child: const Text('Works'),
+                                  child: Text(instance.get<AppLocalization>().translate('work') ?? 'Works'),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () => Navigator.of(context)
                                     ..pop()
                                     ..pushNamed(RouteKeys.notificationScreen),
-                                  child: const Text('Notification'),
+                                  child: Text(
+                                      instance.get<AppLocalization>().translate('notification') ?? 'Notifications'),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () => Navigator.of(context)
                                     ..pop()
                                     ..pushNamed(RouteKeys.settingScreen),
-                                  child: const Text('Settings'),
+                                  child: Text(instance.get<AppLocalization>().translate('setting') ?? 'Settings'),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () => personalBloc.add(const SignOutEvent()),
                                   isDestructiveAction: true,
-                                  child: const Text('Sign out'),
+                                  child: Text(instance.get<AppLocalization>().translate('signOut') ?? 'Sign out'),
                                 ),
                               ],
                               cancelButton: CupertinoActionSheetAction(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('Cancel'),
+                                child: Text(instance.get<AppLocalization>().translate('cancel') ?? 'Cancel'),
                               ),
                             ),
                           );

@@ -42,10 +42,10 @@ final class ResetPasswordSuccessEvent extends ResetPasswordEvent {
 }
 
 final class ResetPasswordFailureEvent extends ResetPasswordEvent {
-  const ResetPasswordFailureEvent({required this.error});
+  const ResetPasswordFailureEvent({required this.message});
 
-  final String error;
+  final String message;
 
   @override
-  List<Object> get props => [error];
+  List<Object> get props => [message];
 }

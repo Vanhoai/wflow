@@ -103,7 +103,7 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                               itemBuilder: (context, index) => Container(
                                 constraints: const BoxConstraints(maxHeight: 270),
                                 child: JobCard(
-                                   time: state.postsData[index].updatedAt!,
+                                  time: state.postsData[index].updatedAt!,
                                   jobId: state.postsData[index].id,
                                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
                                   boxDecoration: BoxDecoration(
@@ -112,13 +112,13 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                     boxShadow: [
                                       BoxShadow(
                                         color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 2),
+                                        blurRadius: 1,
+                                        offset: const Offset(-1, 1),
                                       ),
                                       BoxShadow(
                                         color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                        blurRadius: 4,
-                                        offset: const Offset(0, 2),
+                                        blurRadius: 1,
+                                        offset: const Offset(-0.5, -0.5),
                                       ),
                                     ],
                                   ),
@@ -162,10 +162,9 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                   ),
                                   cost: instance.get<ConvertString>().moneyFormat(value: state.postsData[index].salary),
                                   duration: state.postsData[index].duration,
-                                  description: TextMore(
+                                  description: Text(
                                     state.postsData[index].content,
-                                    trimMode: TrimMode.Hidden,
-                                    trimHiddenMaxLines: 3,
+                                    maxLines: 4,
                                     style: themeData.textTheme.displayMedium!.merge(
                                       TextStyle(
                                         color: themeData.colorScheme.onBackground,

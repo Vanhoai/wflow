@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 
 const String _kProgress = '\u2022';
 
@@ -15,7 +17,7 @@ class TaskWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '📑 Task',
+            '📑 ${instance.get<AppLocalization>().translate("task")}',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,

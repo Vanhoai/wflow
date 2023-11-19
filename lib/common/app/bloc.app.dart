@@ -18,6 +18,7 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
     on<AppChangeAuth>(onAppChangeAuth);
     on<RefreshTokenEvent>(onRefreshToken);
     on<AppChangeUser>(onChangeUserEntity);
+    on<AppLogoutEvent>(onLogout);
   }
 
   static AppState onInit() {
@@ -63,6 +64,20 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
 
   FutureOr<void> onChangeUserEntity(AppChangeUser event, Emitter<AppState> emit) {
     emit(state.copyWith(userEntity: event.userEntity));
+  }
+
+  FutureOr onLogout(AppLogoutEvent event, Emitter<AppState> emit) {
+    emit(state.copyWith(
+      authEntity: const AuthEntity(
+        accessToken: '',
+        refreshToken: '',
+        stringeeToken: '',
+        isSignIn: false,
+      ),
+      userEntity: UserEntity.createEmpty(),
+      rememberMe: false,
+      role: 0,
+    ));
   }
 
   @override

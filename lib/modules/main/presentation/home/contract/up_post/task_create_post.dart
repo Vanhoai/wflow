@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timelines/timelines.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
@@ -25,13 +27,13 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(8),
           ),
-          title: const Text('Enter task'),
+          title: Text(instance.get<AppLocalization>().translate('task') ?? 'Task'),
           content: SizedBox(
             width: 300,
             child: TextFormField(
               controller: taskController,
-              decoration: const InputDecoration(
-                hintText: 'Enter task',
+              decoration: InputDecoration(
+                hintText: instance.get<AppLocalization>().translate('enterTask') ?? 'Enter task',
               ),
             ),
           ),
@@ -73,7 +75,7 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Task',
+              instance.get<AppLocalization>().translate('task') ?? 'Task',
               style: themeData.textTheme.displayMedium!.merge(TextStyle(
                 color: themeData.colorScheme.onBackground,
               )),
@@ -81,9 +83,9 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
             BlocBuilder<UpPostBloc, UpPostState>(
               builder: (context, state) {
                 return InkWell(
-                  onTap: () => context.read<UpPostBloc>().add(UpPostAddTaskEvent()),
+                  onTap: () => context.read<UpPostBloc>().add(UpPostAddTaskEvent(task: 'Công việc')),
                   child: Text(
-                    'Add Task',
+                    instance.get<AppLocalization>().translate('addTask') ?? 'Add Task',
                     style: themeData.textTheme.displayMedium!.merge(
                       TextStyle(
                         color: themeData.colorScheme.primary,
@@ -196,7 +198,7 @@ class _TaskCreatePostState extends State<TaskCreatePost> {
             return InkWell(
               onTap: () => context.read<UpPostBloc>().add(RemoveLastTaskEvent()),
               child: Text(
-                'Remove Task',
+                instance.get<AppLocalization>().translate('removeTask') ?? 'Remove Task',
                 style: themeData.textTheme.displayMedium!.merge(
                   const TextStyle(
                     color: AppColors.redColor,

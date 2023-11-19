@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 
 class ActionHelper extends StatelessWidget {
   const ActionHelper({super.key, required this.onUpload, required this.onWatchVideo});
@@ -32,16 +34,16 @@ class ActionHelper extends StatelessWidget {
               width: 90,
               height: 30,
               alignment: Alignment.center,
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Upload',
-                    style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
+                    instance.get<AppLocalization>().translate('upload') ?? 'Upload',
+                    style: const TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.w600),
                   ),
-                  Icon(
+                  const Icon(
                     Icons.upload_rounded,
                     color: Colors.white,
                     size: 20,
@@ -70,7 +72,7 @@ class ActionHelper extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   Text(
-                    'Watch Video',
+                    instance.get<AppLocalization>().translate('watchDemo') ?? 'Watch Video',
                     style: themeData.textTheme.displayMedium!.merge(
                       const TextStyle(
                         color: Color.fromRGBO(27, 118, 255, 1),

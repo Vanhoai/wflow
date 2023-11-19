@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
@@ -38,8 +37,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _pickImage({required BuildContext context, required bool isAvatar}) async {
-    dynamic file = await Navigator.of(context)
-        .pushNamed(RouteKeys.photoScreen, arguments: ArgumentsPhoto(multiple: false, onlyImage: true));
+    dynamic file = await Navigator.of(context).pushNamed(
+      RouteKeys.photoScreen,
+      arguments: ArgumentsPhoto(multiple: false, onlyImage: true),
+    );
     if (file == null) return;
     file as File;
     if (context.mounted) {

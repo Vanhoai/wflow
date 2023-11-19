@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 
 class DescWidget extends StatelessWidget {
   final String description;
@@ -15,7 +17,7 @@ class DescWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '📘 Description',
+            '📘 ${instance.get<AppLocalization>().translate("description")}',
             maxLines: 4,
             overflow: TextOverflow.ellipsis,
             style: themeData.textTheme.displayLarge!.merge(

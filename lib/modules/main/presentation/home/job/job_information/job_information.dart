@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -34,8 +35,8 @@ class JobInformationScreen extends StatefulWidget {
 
 class _JobInformationScreenState extends State<JobInformationScreen> {
   int choiceValue = 0;
-  late ScrollController _skillScrollController;
-  late TextEditingController _dialogInputController;
+  late ScrollController skillScrollController;
+  late TextEditingController dialogInputController;
 
   late bool isUser;
   bool isYourBusiness = false;
@@ -43,17 +44,17 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   @override
   void initState() {
     super.initState();
-    _skillScrollController = ScrollController(
+    skillScrollController = ScrollController(
       initialScrollOffset: 0.0,
     );
-    _dialogInputController = TextEditingController();
+    dialogInputController = TextEditingController();
     isUser = instance.get<AppBloc>().state.role == 1;
   }
 
   @override
   void dispose() {
-    _skillScrollController.dispose();
-    _dialogInputController.dispose();
+    skillScrollController.dispose();
+    dialogInputController.dispose();
     super.dispose();
   }
 
@@ -78,8 +79,8 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
       var getIntroduction = await _displayTextInputDialog(context);
       if (getIntroduction != null && context.mounted) {
         BlocProvider.of<JobInformationBloc>(context)
-            .add(ApplyPostEvent(post: widget.work, cv: (result as int), introduction: _dialogInputController.text));
-        _dialogInputController.clear();
+            .add(ApplyPostEvent(post: widget.work, cv: (result as int), introduction: dialogInputController.text));
+        dialogInputController.clear();
       }
     }
   }
@@ -96,7 +97,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 surfaceTintColor: Colors.transparent,
                 insetPadding: EdgeInsets.all(12.r),
                 title: const Text('Introduction'),
-                content: Container(
+                content: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -105,7 +106,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         style: Theme.of(context).textTheme.bodyLarge,
                         minLines: 3,
                         maxLines: 5,
-                        controller: _dialogInputController,
+                        controller: dialogInputController,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
                           hintText: 'Type your introduction',
@@ -233,7 +234,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (state is GetJobInformationSuccessState) {
-                        // final date = DateTime.fromMillisecondsSinceEpoch((int.parse(state.postEntity.updatedAt)));
                         return Stack(
                           children: [
                             CustomScrollView(
@@ -243,7 +243,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
-                                        'Company',
+                                        instance.get<AppLocalization>().translate('business') ?? 'Company',
                                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                           color: themeData.colorScheme.onBackground,
                                         )),
@@ -271,7 +271,10 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                               width: 20,
                                               height: 20,
                                             ),
-                                            Text(instance.get<ConvertString>().timeFormat(value: state.postEntity.updatedAt!),
+                                            Text(
+                                                instance
+                                                    .get<ConvertString>()
+                                                    .timeFormat(value: state.postEntity.updatedAt!),
                                                 style: themeData.textTheme.displayMedium!
                                                     .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],
@@ -304,7 +307,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                   ),
                                 ),
                                 RequireSkill(
-                                  scrollController: _skillScrollController,
+                                  scrollController: skillScrollController,
                                   onSelected: callBackSetChoiceValue,
                                   skills: state.postEntity.skills,
                                 ),
@@ -313,7 +316,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
-                                        'Creator 😎',
+                                        '${instance.get<AppLocalization>().translate("creator")} 😎',
                                         style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                           color: themeData.colorScheme.onBackground,
                                         )),
@@ -354,7 +357,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Apply',
+                                        label: instance.get<AppLocalization>().translate('apply') ?? 'Apply',
                                         onPressed: () {
                                           if (instance.get<AppBloc>().state.userEntity.isVerify) {
                                             _showSelectCV(context, widget.work);
@@ -369,7 +372,8 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'View Candidate',
+                                        label: instance.get<AppLocalization>().translate('viewCandidate') ??
+                                            'View Candidate',
                                         onPressed: () {
                                           Navigator.of(context).pushNamed(
                                             RouteKeys.candidateListScreen,

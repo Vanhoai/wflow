@@ -38,7 +38,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
   Future<void> getMyProfile() async {
     final response = await userUseCase.myProfile();
-    late int topicBusiness = 0;
+    int topicBusiness = 0;
 
     response.fold(
       (UserEntity userEntity) {
@@ -56,7 +56,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     if (topicBusiness != 0) {
       await FirebaseMessagingService.subscribeToTopic(topicBusiness.toString());
-      print('Subscribed to topic ${topicBusiness.toString()}');
     }
   }
 
@@ -76,8 +75,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final List<bool> bookmarks = [...hotJobs.map((e) => e.isBookmarked)];
     final List<bool> bookmarksRecent = [...recentJobs.map((e) => e.isBookmarked)];
-
-    print('Bookmark ${hotJobs.toList()}');
 
     emit(
       state.copyWith(
@@ -108,7 +105,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
 
     List<bool> newBookmarks = [...state.bookmarks];
-    newBookmarks[event.index] = event.isBookmarkeded;
+    newBookmarks[event.index] = event.isBookmarked;
 
     emit(state.copyWith(bookmarks: newBookmarks));
   }

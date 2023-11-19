@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 
 class RequireSkill extends StatefulWidget {
   final List<String> skills;
@@ -24,7 +26,7 @@ class _RequireSkillState extends State<RequireSkill> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: Text(
-              '📌 Require skills',
+              '📌 ${instance.get<AppLocalization>().translate("requireSkills")}',
               style: themeData.textTheme.displayLarge!.merge(TextStyle(
                 color: Theme.of(context).colorScheme.onBackground,
                 fontSize: 18,

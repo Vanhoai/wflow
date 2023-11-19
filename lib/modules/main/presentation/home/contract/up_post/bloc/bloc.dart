@@ -26,7 +26,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     required this.categoryUseCase,
     required this.contractUseCase,
     required this.postUseCase,
-  }) : super(const UpPostState(tasks: ['Simple task'], categories: [], skills: [])) {
+  }) : super(const UpPostState(tasks: [], categories: [], skills: [])) {
     on<EditTaskEvent>(onEditTask);
     on<UpPostAddTaskEvent>(onAddTask);
     on<RemoveLastTaskEvent>(onRemoveLastTask);
@@ -73,7 +73,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
   }
 
   FutureOr<void> onAddTask(UpPostAddTaskEvent event, Emitter<UpPostState> emit) async {
-    final List<String> tasks = [...state.tasks, 'Simple task'];
+    final List<String> tasks = [...state.tasks, event.task];
     emit(state.copyWith(tasks: tasks));
   }
 
@@ -93,7 +93,11 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
   Future<void> onUpPostSubmit(UpPostSubmitEvent event, Emitter<UpPostState> emit) async {
     final [isValid, message] = validate(event);
     if (!isValid) {
-      AlertUtils.showMessage('Thông báo', message);
+      AlertUtils.showMessage('Thông báo', message, callback: () {
+        if (state.categorySelected.isNotEmpty && state.tasks.isEmpty) {
+          add(UpPostAddTaskEvent(task: event.title));
+        }
+      });
       return;
     }
 
@@ -129,6 +133,12 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
   List<dynamic> validate(UpPostSubmitEvent event) {
     bool isValid = true;
     String message = '';
+
+    if (state.tasks.isEmpty) {
+      isValid = false;
+      message =
+          'Nếu bạn không nhập đầu việc nào cho công việc thì chúng tôi sẽ tạo mặt định 1 đầu việc chính là công việc này !!';
+    }
 
     if (state.skillSelected.isEmpty) {
       isValid = false;

@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
@@ -27,12 +28,13 @@ class _UpPostScreenState extends State<UpPostScreen> {
   late MoneyMaskedTextController budgetController;
   late TextEditingController duration;
   late TextEditingController position;
-      
+
   @override
   void initState() {
     titleController = TextEditingController();
     descriptionController = TextEditingController();
-    budgetController = MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
+    budgetController =
+        MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
     duration = TextEditingController();
     position = TextEditingController();
     super.initState();
@@ -60,8 +62,8 @@ class _UpPostScreenState extends State<UpPostScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Up Post',
-            style: themeData.textTheme.displayMedium,
+            instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
+            style: themeData.textTheme.displayLarge,
           ),
         ),
         hideKeyboardWhenTouchOutside: false,
@@ -90,7 +92,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Text(
-                                'Title',
+                                instance.get<AppLocalization>().translate('title') ?? 'Title',
                                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                   color: themeData.colorScheme.onBackground,
                                 )),
@@ -100,11 +102,12 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 controller: titleController,
                                 maxLines: 2,
                                 minLines: 1,
-                                hintText: 'Enter project title',
+                                hintText:
+                                    instance.get<AppLocalization>().translate('enterProjectTitle') ?? 'Enter title',
                               ),
                               20.verticalSpace,
                               Text(
-                                'Describe',
+                                instance.get<AppLocalization>().translate('description') ?? 'Description',
                                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                   color: themeData.colorScheme.onBackground,
                                 )),
@@ -114,11 +117,12 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 controller: descriptionController,
                                 maxLines: 5,
                                 minLines: 3,
-                                hintText: 'Enter basic description',
+                                hintText: instance.get<AppLocalization>().translate('enterProjectDescribe') ??
+                                    'Enter basic description',
                               ),
                               20.verticalSpace,
                               Text(
-                                'Duration',
+                                instance.get<AppLocalization>().translate('duration')!,
                                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                   color: themeData.colorScheme.onBackground,
                                 )),
@@ -128,11 +132,12 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 controller: duration,
                                 maxLines: 1,
                                 minLines: 1,
-                                hintText: 'Enter duration (optional)',
+                                hintText: instance.get<AppLocalization>().translate('enterDuration') ??
+                                    'Enter duration (optional)',
                               ),
                               20.verticalSpace,
                               Text(
-                                'Position',
+                                instance.get<AppLocalization>().translate('position') ?? 'Position',
                                 style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                   color: themeData.colorScheme.onBackground,
                                 )),
@@ -142,11 +147,12 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 controller: position,
                                 maxLines: 1,
                                 minLines: 1,
-                                hintText: 'Enter position',
+                                hintText:
+                                    instance.get<AppLocalization>().translate('enterPosition') ?? 'Enter position',
                               ),
                               20.verticalSpace,
                               Text(
-                                'Budget',
+                                instance.get<AppLocalization>().translate('budget') ?? 'Budget',
                                 style: themeData.textTheme.displayMedium!.merge(
                                   TextStyle(
                                     color: themeData.colorScheme.onBackground,
@@ -158,7 +164,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                 controller: budgetController,
                                 maxLines: 1,
                                 minLines: 1,
-                                hintText: 'Enter budget',
+                                hintText: instance.get<AppLocalization>().translate('enterBudget') ?? 'Enter budget',
                                 keyboardType: TextInputType.number,
                               ),
                               20.verticalSpace,
@@ -200,7 +206,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
                           color: themeData.colorScheme.background,
                         ),
                         child: PrimaryButton(
-                          label: 'Post',
+                          label: instance.get<AppLocalization>().translate('up') ?? 'Up',
                           onPressed: () {
                             context.read<UpPostBloc>().add(
                                   UpPostSubmitEvent(

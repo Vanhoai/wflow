@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -100,7 +102,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                   left: 20,
                   right: 20,
                   child: PrimaryButton(
-                    label: 'Done',
+                    label: instance.get<AppLocalization>().translate('done') ?? 'Done',
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -197,7 +199,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                   left: 20,
                   right: 20,
                   child: PrimaryButton(
-                    label: 'Done',
+                    label: instance.get<AppLocalization>().translate('done') ?? 'Done',
                     onPressed: () {
                       Navigator.pop(context);
                     },
@@ -228,7 +230,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Skills',
+                        instance.get<AppLocalization>().translate('skills') ?? 'Skills',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(
                             color: themeData.colorScheme.onBackground,
@@ -239,7 +241,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         onTap: () => addSkill(context.read<UpPostBloc>()),
                         borderRadius: BorderRadius.circular(4),
                         child: Text(
-                          'Add',
+                          instance.get<AppLocalization>().translate('add') ?? 'Add',
                           style: themeData.textTheme.displayMedium!.copyWith(
                             color: AppColors.primary,
                           ),
@@ -308,7 +310,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Categories',
+                        instance.get<AppLocalization>().translate('categories') ?? 'Categories',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(
                             color: themeData.colorScheme.onBackground,
@@ -319,7 +321,7 @@ class _SkillAndCategoryState extends State<SkillAndCategory> {
                         onTap: () => addCategory(context.read<UpPostBloc>()),
                         borderRadius: BorderRadius.circular(4),
                         child: Text(
-                          'Add',
+                          instance.get<AppLocalization>().translate('add') ?? 'Add',
                           style: themeData.textTheme.displayMedium!.copyWith(
                             color: AppColors.primary,
                           ),

@@ -62,7 +62,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                               ToggleBookmarkHomeEvent(
                                 id: job.id,
                                 index: index,
-                                isBookmarkeded: !state.bookmarks[index],
+                                isBookmarked: !state.bookmarks[index],
                               ),
                             ),
                       );

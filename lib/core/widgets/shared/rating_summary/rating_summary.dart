@@ -58,31 +58,31 @@ class RatingSummary extends StatelessWidget {
               children: [
                 ReviewBar(
                   label: labelCounterFiveStars,
-                  value: counterFiveStars / counter,
+                  value: counterFiveStars == 0 ? 0 : counterFiveStars / counter,
                   color: color,
                   backgroundColor: backgroundColor,
                 ),
                 ReviewBar(
                   label: labelCounterFourStars,
-                  value: counterFourStars / counter,
+                  value: counterFourStars == 0 ? 0 : counterFourStars / counter,
                   color: color,
                   backgroundColor: backgroundColor,
                 ),
                 ReviewBar(
                   label: labelCounterThreeStars,
-                  value: counterThreeStars / counter,
+                  value: counterThreeStars == 0 ? 0 : counterThreeStars / counter,
                   color: color,
                   backgroundColor: backgroundColor,
                 ),
                 ReviewBar(
                   label: labelCounterTwoStars,
-                  value: counterTwoStars / counter,
+                  value: counterTwoStars == 0 ? 0 : counterTwoStars / counter,
                   color: color,
                   backgroundColor: backgroundColor,
                 ),
                 ReviewBar(
                   label: labelCounterOneStars,
-                  value: counterOneStars / counter,
+                  value: counterOneStars == 0 ? 0 : counterOneStars / counter,
                   color: color,
                   backgroundColor: backgroundColor,
                 ),

@@ -35,10 +35,7 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                         width: MediaQuery.of(context).size.width,
                         child: CachedNetworkImage(
                           imageUrl: userEntity.background == '' ? 'https://picsum.photos/200' : userEntity.background,
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) => const Center(
-                            child: CupertinoActivityIndicator(),
-                          ),
+                          placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
                           filterQuality: FilterQuality.high,
                           errorWidget: (context, url, error) => const Icon(Icons.error),
                         )),

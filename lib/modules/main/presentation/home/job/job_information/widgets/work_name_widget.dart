@@ -16,18 +16,21 @@ class WorkNameWidget extends StatelessWidget {
         children: [
           Text(
             '🚚 Work Name',
-            style: themeData.textTheme.displayLarge!.merge(TextStyle(
-              color: Theme.of(context).colorScheme.onBackground,
-              fontSize: 18,
-            )),
+            style: themeData.textTheme.displayLarge!.merge(
+              TextStyle(
+                color: Theme.of(context).colorScheme.onBackground,
+                fontSize: 18,
+              ),
+            ),
           ),
-          12.verticalSpace,
+          6.verticalSpace,
           Text(
             workName,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,
             )),
+            maxLines: 5,
           ),
         ],
       ),

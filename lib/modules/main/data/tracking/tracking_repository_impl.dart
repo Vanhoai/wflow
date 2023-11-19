@@ -9,7 +9,7 @@ class TrackingRepositoryImpl implements TrackingRepository {
   TrackingRepositoryImpl({required this.trackingService});
 
   @override
-  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required num id}) async {
+  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required String id}) async {
     try {
       final response = await trackingService.findTrackingInBalance(id: id);
       return Left(response);

@@ -65,7 +65,6 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
     PolylineId id = const PolylineId('poly');
     Polyline polyline = Polyline(polylineId: id, color: Colors.red, points: polylineCoordinates);
     polylines[id] = polyline;
-    setState(() {});
   }
 
   getPolyline() async {

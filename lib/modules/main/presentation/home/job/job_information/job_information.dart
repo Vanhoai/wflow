@@ -16,6 +16,7 @@ import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/related_job_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/select_cv_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
 
@@ -36,6 +37,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   int choiceValue = 0;
   late ScrollController _skillScrollController;
   late TextEditingController _dialogInputController;
+  late ScrollController _relatedJobScrollController;
 
   late bool isUser;
   bool isYourBusiness = false;
@@ -43,9 +45,8 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   @override
   void initState() {
     super.initState();
-    _skillScrollController = ScrollController(
-      initialScrollOffset: 0.0,
-    );
+    _skillScrollController = ScrollController(initialScrollOffset: 0.0);
+    _relatedJobScrollController = ScrollController(initialScrollOffset: 0.0);
     _dialogInputController = TextEditingController();
     isUser = instance.get<AppBloc>().state.role == 1;
   }
@@ -96,7 +97,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 surfaceTintColor: Colors.transparent,
                 insetPadding: EdgeInsets.all(12.r),
                 title: const Text('Introduction'),
-                content: Container(
+                content: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -239,11 +240,11 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                             CustomScrollView(
                               slivers: [
                                 SliverPadding(
-                                  padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
-                                        'Company',
+                                        state.postEntity.companyName,
                                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                           color: themeData.colorScheme.onBackground,
                                         )),
@@ -251,7 +252,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       subtitle: Text(
-                                        state.postEntity.companyName,
+                                        state.postEntity.creatorName,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
@@ -271,7 +272,10 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                               width: 20,
                                               height: 20,
                                             ),
-                                            Text(instance.get<ConvertString>().timeFormat(value: state.postEntity.updatedAt!),
+                                            Text(
+                                                instance
+                                                    .get<ConvertString>()
+                                                    .timeFormat(value: state.postEntity.updatedAt!),
                                                 style: themeData.textTheme.displayMedium!
                                                     .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],
@@ -288,16 +292,14 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       shrinkWrap: true,
                                       slivers: [
                                         WorkNameWidget(workName: state.postEntity.title),
-                                        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                                         DescWidget(description: state.postEntity.content),
-                                        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                                         BudgetWidget(budget: state.postEntity.salary),
-                                        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                                         TaskWidget(tasks: state.postEntity.tasks),
-                                        const SliverToBoxAdapter(child: SizedBox(height: 40)),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                                       ],
-                                      clipBehavior: Clip.none,
-                                      cacheExtent: 1000,
                                       dragStartBehavior: DragStartBehavior.start,
                                       keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                                     ),
@@ -309,7 +311,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                   skills: state.postEntity.skills,
                                 ),
                                 SliverPadding(
-                                  padding: const EdgeInsets.symmetric(vertical: 35, horizontal: 20),
+                                  padding: const EdgeInsets.all(20),
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
@@ -334,10 +336,26 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                     ),
                                   ),
                                 ),
-                                const SliverToBoxAdapter(child: SizedBox(height: 60)),
+                                SliverToBoxAdapter(child: 6.verticalSpace),
+                                SliverPadding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  sliver: SliverToBoxAdapter(
+                                    child: Text(
+                                      '🔧 Related Jobs',
+                                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                        color: Theme.of(context).colorScheme.onBackground,
+                                        fontSize: 18,
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                                SliverToBoxAdapter(child: 6.verticalSpace),
+                                RelatedJobWidget(
+                                  scrollController: _relatedJobScrollController,
+                                  currentJobId: widget.work,
+                                ),
+                                const SliverToBoxAdapter(child: SizedBox(height: 100)),
                               ],
-                              clipBehavior: Clip.none,
-                              cacheExtent: 1000,
                               dragStartBehavior: DragStartBehavior.start,
                               keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                               shrinkWrap: true,

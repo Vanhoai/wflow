@@ -53,90 +53,98 @@ class _HomeScreenState extends State<HomeScreen> {
         categoryUseCase: instance.get<CategoryUseCase>(),
         userUseCase: instance.get<UserUseCase>(),
       )..add(HomeInitialEvent()),
-      child: CommonScaffold(
-        isSafe: true,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
-              sliver: SliverToBoxAdapter(
-                child: BlocBuilder<AppBloc, AppState>(
-                  bloc: instance.get<AppBloc>(),
-                  builder: (context, state) {
-                    final name = state.userEntity.name;
-                    final email = state.userEntity.email;
+      child: BlocBuilder<HomeBloc, HomeState>(
+        buildWhen: (previous, current) => previous != current,
+        builder: (context, state) {
+          return CommonScaffold(
+            isSafe: true,
+            body: RefreshIndicator(
+              onRefresh: () async => context.read<HomeBloc>().add(HomeInitialEvent()),
+              child: CustomScrollView(
+                slivers: <Widget>[
+                  SliverPadding(
+                    padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: BlocBuilder<AppBloc, AppState>(
+                        bloc: instance.get<AppBloc>(),
+                        builder: (context, state) {
+                          final name = state.userEntity.name;
+                          final email = state.userEntity.email;
 
-                    return Header(
-                      leadingPhotoUrl: state.userEntity.avatar,
-                      title: Text(
-                        'Chào $name 👋🏻',
-                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground,
-                          fontWeight: FontWeight.w400,
-                        )),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                          return Header(
+                            leadingPhotoUrl: state.userEntity.avatar,
+                            title: Text(
+                              'Chào $name 👋🏻',
+                              style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground,
+                                fontWeight: FontWeight.w400,
+                              )),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            subtitle: Text(
+                              email,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                                fontWeight: FontWeight.w400,
+                              )),
+                            ),
+                            onTapLeading: () {},
+                            leadingBadge: true,
+                            actions: [
+                              HeaderIcon(
+                                icon: AppConstants.ic_notification,
+                                onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+                              ),
+                            ],
+                          );
+                        },
                       ),
-                      subtitle: Text(
-                        email,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
+                    ),
+                  ),
+                  const NavigateFeatWidget(),
+                  SliverPadding(
+                    padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        instance.get<AppLocalization>().translate('hotWork') ?? 'Hot Work',
                         style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                          color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                          color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
                           fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
                         )),
                       ),
-                      onTapLeading: () {},
-                      leadingBadge: true,
-                      actions: [
-                        HeaderIcon(
-                          icon: AppConstants.ic_notification,
-                          onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
-                        ),
-                      ],
-                    );
-                  },
-                ),
+                    ),
+                  ),
+                  HowJobListWidget(scrollController: hotJobScrollController),
+                  SliverPadding(
+                    padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: Text(
+                        instance.get<AppLocalization>().translate('recentWork') ?? 'Recent Work',
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                          fontWeight: FontWeight.w400,
+                          fontSize: 16.sp,
+                        )),
+                      ),
+                    ),
+                  ),
+                  SelectionListWidget(scrollController: selectionScrollController),
+                  const RecentJobListWidget(),
+                ],
+                dragStartBehavior: DragStartBehavior.start,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                physics: const BouncingScrollPhysics(),
+                shrinkWrap: true,
+                controller: scrollController,
+                scrollDirection: Axis.vertical,
               ),
             ),
-            const NavigateFeatWidget(),
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
-              sliver: SliverToBoxAdapter(
-                child: Text(
-                  instance.get<AppLocalization>().translate('hotWork') ?? 'Hot Work',
-                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16.sp,
-                  )),
-                ),
-              ),
-            ),
-            HowJobListWidget(scrollController: hotJobScrollController),
-            SliverPadding(
-              padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
-              sliver: SliverToBoxAdapter(
-                child: Text(
-                  instance.get<AppLocalization>().translate('recentWork') ?? 'Recent Work',
-                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                    color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
-                    fontWeight: FontWeight.w400,
-                    fontSize: 16.sp,
-                  )),
-                ),
-              ),
-            ),
-            SelectionListWidget(scrollController: selectionScrollController),
-            const RecentJobListWidget(),
-          ],
-          dragStartBehavior: DragStartBehavior.start,
-          keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-          physics: const BouncingScrollPhysics(),
-          shrinkWrap: true,
-          controller: scrollController,
-          scrollDirection: Axis.vertical,
-        ),
+          );
+        },
       ),
     );
   }

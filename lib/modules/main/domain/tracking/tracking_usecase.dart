@@ -4,7 +4,7 @@ import 'package:wflow/modules/main/domain/tracking/entities/tracking_entity.dart
 import 'package:wflow/modules/main/domain/tracking/tracking_repository.dart';
 
 abstract class TrackingUseCase {
-  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required num id});
+  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required String id});
 }
 
 class TrackingUseCaseImpl implements TrackingUseCase {
@@ -12,7 +12,7 @@ class TrackingUseCaseImpl implements TrackingUseCase {
   TrackingUseCaseImpl({required this.trackingRepository});
 
   @override
-  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required num id}) async {
+  Future<Either<List<TrackingEntity>, Failure>> findTrackingInBalance({required String id}) async {
     return await trackingRepository.findTrackingInBalance(id: id);
   }
 }

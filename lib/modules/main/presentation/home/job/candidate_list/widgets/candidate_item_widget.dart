@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
-const String IMAGE_PHOTO = 'https://i.pinimg.com/564x/b5/19/65/b5196523468e198c8d6f09dd6320855f.jpg';
+const String IMAGE_PHOTO =
+    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSR6-Y6uY-VKr_TPEiri-UILWJyBDFUnE-jyw&usqp=CAU';
 
 class CandidateItemWidget extends StatefulWidget {
   const CandidateItemWidget(

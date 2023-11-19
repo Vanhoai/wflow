@@ -25,3 +25,7 @@ class ToggleBookmarkWorkEvent extends WorkEvent {
     required this.isBookmarkeded,
   });
 }
+
+class GetRelationPostEvent extends WorkEvent {
+  GetRelationPostEvent();
+}

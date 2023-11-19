@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
@@ -20,7 +23,7 @@ class ContractCard extends StatefulWidget {
 class _ContractCardState extends State<ContractCard> {
   @override
   Widget build(BuildContext context) {
-    final noSimbolInUSFormat = NumberFormat.currency(locale: "vi_VN", symbol: "");
+    final noSimbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
     return Container(
       margin: const EdgeInsets.only(
         left: AppSize.paddingScreenDefault,
@@ -79,16 +82,79 @@ class _ContractCardState extends State<ContractCard> {
                     CircularPercentIndicator(
                       animation: true,
                       radius: 25,
-                      percent: 0.5,
-                      center: const Text(
-                        '50%',
+                      percent: widget.contractEntity.progress / 100,
+                      center: Text(
+                        '${widget.contractEntity.progress}%',
+                        style: TextStyle(
+                          fontSize: 10.sp,
+                        ),
                       ),
-                      progressColor: _progressColor(0.5),
+                      progressColor: _progressColor(widget.contractEntity.progress / 100),
                     )
                   ],
                 ),
                 const SizedBox(
                   height: 30,
+                ),
+                Builder(
+                  builder: (context) {
+                    if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Business',
+                            style: themeData.textTheme.displayMedium!.copyWith(
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          InkWell(
+                            borderRadius: BorderRadius.circular(6),
+                            onTap: () {
+                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,arguments: widget.contractEntity.business.id.toString());
+                            },
+                            child: Ink(
+                              child: Text(
+                                widget.contractEntity.business.name,
+                                style: themeData.textTheme.displayMedium!
+                                    .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
+                                     overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Worker',
+                          style: themeData.textTheme.displayMedium!.copyWith(
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
+                        const SizedBox(width: 100,),
+                        InkWell(
+                          onTap: () {
+                              Navigator.of(context).pushNamed(RouteKeys.detailUserScreen,arguments: widget.contractEntity.worker.id);
+                            },
+                          borderRadius: BorderRadius.circular(6),
+                          child: Ink(
+                            child: Text(
+                              widget.contractEntity.worker.name,
+                              style: themeData.textTheme.displayMedium!
+                                  .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
+                                  overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ),
+                      ],
+                    );
+                  },
+                ),
+                 const SizedBox(
+                  height: 9,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

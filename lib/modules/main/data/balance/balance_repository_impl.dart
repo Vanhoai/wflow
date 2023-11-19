@@ -12,15 +12,14 @@ class BalanceRepositoryImpl implements BalanceRepository {
   BalanceRepositoryImpl({required this.balanceService});
 
   @override
-  Future<Either<CreatePaymentSheetResponse, Failure>> createPaymentSheet(
-      {required CreatePaymentSheetRequest request}) async {
+  Future<Either<CreatePaymentSheetResponse, Failure>> createPaymentSheet({
+    required CreatePaymentSheetRequest request,
+  }) async {
     try {
       final response = await balanceService.createPaymentSheet(request: request);
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -31,8 +30,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -43,8 +40,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 
@@ -55,8 +50,6 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

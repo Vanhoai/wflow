@@ -19,7 +19,7 @@ class CategoryServiceImpl implements CategoryService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<CategoryEntity> categories = [];
@@ -29,7 +29,7 @@ class CategoryServiceImpl implements CategoryService {
 
       return categories;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -40,7 +40,7 @@ class CategoryServiceImpl implements CategoryService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       List<CategoryEntity> categories = [];
@@ -50,7 +50,7 @@ class CategoryServiceImpl implements CategoryService {
 
       return categories;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

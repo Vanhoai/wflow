@@ -107,12 +107,18 @@ class _TaskScreenState extends State<TaskScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocBuilder<TaskBloc, TaskState>(
       bloc: instance.get<TaskBloc>()..add(GetTaskEvent(idContract: widget.idContract)),
       buildWhen: (previous, current) => true,
       builder: (context, state) {
         return CommonScaffold(
-          appBar: const AppHeader(text: 'Tasks'),
+          appBar: AppHeader(
+            text: Text(
+              'Tasks',
+              style: themeData.textTheme.displayMedium,
+            ),
+          ),
           body: RefreshIndicator(
             onRefresh: () async => instance.get<TaskBloc>().add(GetTaskEvent(idContract: widget.idContract)),
             child: Stack(
@@ -143,11 +149,11 @@ class _TaskScreenState extends State<TaskScreen> {
                               ),
                             ),
                           ),
-                          PrimaryButton(
-                              label: 'Rate',
-                              onPressed: () {
-                                _displayTextInputDialog(context);
-                              }),
+                          // PrimaryButton(
+                          //     label: 'Rate',
+                          //     onPressed: () {
+                          //       _displayTextInputDialog(context);
+                          //     }),
                           Builder(
                             builder: (context) {
                               if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) {
@@ -233,9 +239,7 @@ class _TaskScreenState extends State<TaskScreen> {
             alignment: Alignment.centerRight,
             child: Text(
               instance.get<Time>().getDayMonthYear(task.endTime.toString()),
-              style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                    color: task.state == TaskStatus.Accepted.name ? AppColors.greenColor : AppColors.redColor,
-                  ),
+              style: Theme.of(context).textTheme.displayMedium!,
             ),
           ),
           const SizedBox(

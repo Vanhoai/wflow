@@ -156,7 +156,7 @@ class _CompanyLocationWidgetState extends State<CompanyLocationWidget> {
                 );
               }
               return const Center(
-                child: CupertinoActivityIndicator(),
+                child: CupertinoActivityIndicator(radius: 16),
               );
             },
           ),

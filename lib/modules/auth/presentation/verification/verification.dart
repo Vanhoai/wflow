@@ -4,9 +4,11 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:logger/logger.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/firebase/firebase.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -80,7 +82,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
         verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (error) {
           instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-          AlertUtils.showMessage('Notification', error.message!);
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), error.message!);
+
+          Logger().d(error.toString());
         },
         codeSent: (verificationId, forceResendingToken) {
           setState(() {
@@ -96,7 +100,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       );
     } catch (e) {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-      AlertUtils.showMessage('Notification', e.toString(), callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), e.toString(), callback: () {
         Navigator.pop(context);
       });
     }
@@ -121,7 +125,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
         verificationCompleted: (PhoneAuthCredential credential) async {},
         verificationFailed: (error) {
           instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-          AlertUtils.showMessage('Notification', error.message!);
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), error.toString(),
+              callback: () {
+            Navigator.pop(context);
+          });
         },
         codeSent: (verificationId, forceResendingToken) {
           setState(() {
@@ -137,7 +144,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
       );
     } catch (e) {
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
-      AlertUtils.showMessage('Notification', e.toString(), callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), e.toString(), callback: () {
         Navigator.pop(context);
       });
     }
@@ -146,7 +153,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
   _handleVerificationPhoneResetPassword(VerificationBloc verificationBloc, String otp) async {
     // add event to send otp from server to verify
     if (verificationId == null) {
-      return AlertUtils.showMessage('Notification', 'Something went wrong');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+          callback: () {
+        Navigator.pop(context);
+      });
     } else {
       verificationBloc.add(VerificationPhoneForgotPasswordEvent(verificationId: verificationId!, otpCode: otp));
     }
@@ -157,7 +167,10 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
     if (widget.arguments!.type == 'phone') {
       if (verificationId == null) {
-        return AlertUtils.showMessage('Notification', 'Something went wrong');
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+            callback: () {
+          Navigator.pop(context);
+        });
       }
       verificationBloc.add(
         VerificationPhoneRegisterEvent(
@@ -204,27 +217,32 @@ class _VerificationScreenState extends State<VerificationScreen> {
         );
       }
     } else {
-      AlertUtils.showMessage('Notification', 'Something went wrong');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+          callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
   _listenerVerification(BuildContext context, VerificationState state) {
     if (state is VerificationPhoneRegisterSuccessState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         context
             .read<RegisterBloc>()
             .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
       });
     } else if (state is VerificationPhoneRegisterFailureState) {
-      AlertUtils.showMessage('Notification', state.message);
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
     } else if (state is VerificationEmailRegisterSuccessState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         context
             .read<RegisterBloc>()
             .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
       });
     } else if (state is VerificationEmailRegisterFailureState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pop(context);
       });
     }
@@ -232,15 +250,15 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   _listenerRegister(BuildContext context, RegisterState state) {
     if (state is RegisterPhoneSuccessState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pop(context);
       });
     } else if (state is RegisterEmailSuccessState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pop(context);
       });
     } else if (state is RegisterErrorState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pop(context);
       });
     }
@@ -248,18 +266,20 @@ class _VerificationScreenState extends State<VerificationScreen> {
 
   _listenerForgotPasswordVerification(BuildContext context, VerificationState state) {
     if (state is VerificationPhoneForgotPasswordSuccessState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
       });
     } else if (state is VerificationPhoneForgotPasswordFailureState) {
-      AlertUtils.showMessage('Notification', state.message);
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
     } else if (state is VerificationEmailForgotSuccessPasswordState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
         Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
       });
     } else if (state is VerificationEmailForgotFailurePasswordState) {
-      AlertUtils.showMessage('Notification', state.message, callback: () {
-        Navigator.pop(context);
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
       });
     }
   }
@@ -374,12 +394,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                           _otpController4.text.isEmpty ||
                                           _otpController5.text.isEmpty ||
                                           _otpController6.text.isEmpty) {
-                                        AlertUtils.showMessage('Notification', 'Please enter OTP');
+                                        AlertUtils.showMessage(
+                                            instance.get<AppLocalization>().translate('notification'),
+                                            'Please enter OTP');
                                         return;
                                       }
 
                                       if (verificationId == null) {
-                                        AlertUtils.showMessage('Notification', 'Something went wrong');
+                                        AlertUtils.showMessage(
+                                            instance.get<AppLocalization>().translate('notification'),
+                                            'Something went wrong');
                                         return;
                                       }
                                       _logicOtp(context);

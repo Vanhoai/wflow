@@ -12,6 +12,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   RoomBloc({required this.roomUseCase}) : super(const RoomState()) {
     on<GetListRoomEvent>(getListRoom);
     on<GetListRoomMoreEvent>(getListRoomMore);
+    on<GetListRoomSearchEvent>(getListRoomSearch);
   }
 
   FutureOr<void> getListRoom(GetListRoomEvent event, Emitter<RoomState> emit) async {
@@ -36,16 +37,31 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
         emit((state as GetListRoomSuccess).copyWith(loadMore: false));
         return;
       }
-      final candidateList = await roomUseCase.getListRoom(
+      final rooms = await roomUseCase.getListRoom(
         PaginationModel(page: state.meta.currentPage + 1 as int, pageSize: 10, search: state.search),
       );
       emit(
         (state as GetListRoomSuccess).copyWith(
           loadMore: false,
-          roomEntities: [...(state as GetListRoomSuccess).roomEntities, ...candidateList.data],
-          meta: candidateList.meta,
+          roomEntities: [...(state as GetListRoomSuccess).roomEntities, ...rooms.data],
+          meta: rooms.meta,
         ),
       );
     }
+  }
+
+  FutureOr<void> getListRoomSearch(GetListRoomSearchEvent event, Emitter<RoomState> emit) async {
+    emit(state.copyWith(isLoading: true));
+    final rooms = await roomUseCase
+        .getListRoom(PaginationModel(page: state.meta.currentPage + 1 as int, pageSize: 10, search: event.search));
+    emit(
+      (state as GetListRoomSuccess).copyWith(
+        roomEntities: rooms.data,
+        meta: rooms.meta,
+        isLoading: false,
+        loadMore: false,
+        search: state.search,
+      ),
+    );
   }
 }

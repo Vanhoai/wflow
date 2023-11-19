@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
+import 'package:wflow/modules/main/presentation/personal/notification/utils/constants.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/widgets/category_button.dart';
 import 'package:wflow/modules/main/presentation/personal/notification/widgets/notification_card.dart';
-import 'package:wflow/modules/main/presentation/personal/notification/utils/constants.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -29,8 +30,11 @@ class _NotificationScreen extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const AppHeader(
-        text: 'Notification',
+      appBar: AppHeader(
+        text: Text(
+          'Notification',
+          style: themeData.textTheme.displayMedium,
+        ),
       ),
       body: SizedBox(
         width: double.infinity,

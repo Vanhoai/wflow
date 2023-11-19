@@ -4,6 +4,12 @@ import 'package:wflow/modules/auth/data/models/auth_google_model.dart';
 import 'package:wflow/modules/auth/data/models/request_model.dart';
 import 'package:wflow/modules/auth/data/models/response_model.dart';
 
+class AuthPaths {
+  static const String signIn = '/auth/sign-in';
+  static const String register = '/auth/create-account';
+  static const String authWithGoogle = '/auth/auth-with-google';
+}
+
 abstract class AuthService {
   Future<AuthSignInResponse> signIn(AuthNormalRequest request);
   Future<String> register(AuthNormalRegisterRequest request);
@@ -21,32 +27,37 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<AuthSignInResponse> signIn(AuthNormalRequest request) async {
     try {
-      final json = await agent.dio.post('/auth/sign-in', data: request.toJson());
+      final json = await agent.dio.post(
+        AuthPaths.signIn,
+        data: request.toJson(),
+      );
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
-      if (httpResponse.statusCode > 300) {
-        throw ServerException(message: httpResponse.message.toString());
-      } else {
-        return AuthSignInResponse.fromJson(httpResponse.data);
+
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
+
+      return AuthSignInResponse.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
   @override
   Future<String> register(AuthNormalRegisterRequest request) async {
     try {
-      final json = await agent.dio.post('/auth/create-account', data: request.toJson());
+      final json = await agent.dio.post(
+        AuthPaths.register,
+        data: request.toJson(),
+      );
       final HttpResponse httpResponse = HttpResponse.fromJson(json.data);
       if (httpResponse.statusCode != 200) {
-        return throw ServerException(message: httpResponse.message.toString());
-      } else {
-        return httpResponse.message;
+        return throw ServerException(httpResponse.message);
       }
-    } on ServerException catch (exception) {
-      return throw ServerException(message: exception.message.toString());
+
+      return httpResponse.message;
     } catch (exception) {
-      return throw ServerException();
+      throw ServerException(exception.toString());
     }
   }
 
@@ -54,17 +65,17 @@ class AuthServiceImpl implements AuthService {
   Future<String> registerWithGoogle({required AuthWithGoogleModel request}) async {
     try {
       final response = await agent.dio.post(
-        '/auth/auth-with-google',
+        AuthPaths.authWithGoogle,
         data: request.toJson(),
       );
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.message;
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 
@@ -72,17 +83,17 @@ class AuthServiceImpl implements AuthService {
   Future<AuthSignInResponse> signInWithGoogle({required AuthWithGoogleModel request}) async {
     try {
       final response = await agent.dio.post(
-        '/auth/auth-with-google',
+        AuthPaths.authWithGoogle,
         data: request.toJson(),
       );
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
-        throw ServerException(message: httpResponse.message);
+        throw ServerException(httpResponse.message);
       }
 
       return AuthSignInResponse.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 

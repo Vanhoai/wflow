@@ -1,75 +1,38 @@
 import 'package:equatable/equatable.dart';
+import 'package:wflow/core/models/models.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 class AddBusinessState extends Equatable {
   final List<UserEntity> users;
-  final bool isHiddenSuffixIcon;
-  final int page;
-  final String txtSearch;
-  final bool isLoadMore;
+  final Meta meta;
   final List<int> usersChecked;
+  final bool isLoadMore;
+  final bool isLoading;
 
   const AddBusinessState({
-    this.users = const [],
-    this.isHiddenSuffixIcon = true,
-    this.page = 1,
-    this.txtSearch = '',
+    required this.users,
+    required this.usersChecked,
+    required this.meta,
     this.isLoadMore = false,
-    this.usersChecked = const [],
+    this.isLoading = false,
   });
 
   AddBusinessState copyWith({
     List<UserEntity>? users,
-    bool? isHiddenSuffixIcon,
-    int? page,
-    String? txtSearch,
-    bool? isLoadMore,
     List<int>? usersChecked,
+    Meta? meta,
+    bool? isLoadMore,
+    bool? isLoading,
   }) {
     return AddBusinessState(
       users: users ?? this.users,
-      isHiddenSuffixIcon: isHiddenSuffixIcon ?? this.isHiddenSuffixIcon,
-      page: page ?? this.page,
-      txtSearch: txtSearch ?? this.txtSearch,
-      isLoadMore: isLoadMore ?? this.isLoadMore,
       usersChecked: usersChecked ?? this.usersChecked,
+      meta: meta ?? this.meta,
+      isLoadMore: isLoadMore ?? this.isLoadMore,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List get props => [
-        users,
-        isHiddenSuffixIcon,
-        page,
-        txtSearch,
-        isLoadMore,
-        usersChecked,
-      ];
-}
-
-class LoadFailureAddBusinessState extends AddBusinessState {
-  final String message;
-
-  const LoadFailureAddBusinessState({required this.message});
-
-  @override
-  List get props => [message];
-}
-
-class AddCollaboratorFailedAddBusinessState extends AddBusinessState {
-  final String message;
-
-  const AddCollaboratorFailedAddBusinessState({required this.message});
-
-  @override
-  List get props => [message];
-}
-
-class AddCollaboratorSuccessedAddBusinessState extends AddBusinessState {
-  final String message;
-
-  const AddCollaboratorSuccessedAddBusinessState({required this.message});
-
-  @override
-  List get props => [message];
+  List get props => [users, usersChecked, meta, isLoadMore, isLoading];
 }

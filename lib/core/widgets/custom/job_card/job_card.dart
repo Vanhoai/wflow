@@ -1,18 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/theme/them.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
-
-const List<String> staticTitle = [
-  '⏰ Duration',
-  '💰 Budget',
-  '📘 Description',
-  '📚 Skills',
-  '# Poster',
-  '# Progress',
-];
+import 'package:wflow/core/widgets/shared/cupertino_menu/cupertino_menu.dart';
 
 class JobCard extends StatefulWidget {
   const JobCard({
@@ -33,6 +27,9 @@ class JobCard extends StatefulWidget {
     this.margin = const EdgeInsets.all(0),
     this.cardPressed,
     this.isHorizontal = false,
+    required this.jobId,
+    required this.time,
+    this.paymentAvailable = false,
   });
 
   final Widget header;
@@ -46,14 +43,25 @@ class JobCard extends StatefulWidget {
   final EdgeInsets margin;
   final Function()? cardPressed;
   final bool isHorizontal;
+  final num jobId;
+  final DateTime time;
+  final bool paymentAvailable;
 
   @override
   State<JobCard> createState() => _JobCardState();
 }
 
 class _JobCardState extends State<JobCard> {
+  late List<String> staticTitle;
+
   @override
   void initState() {
+    staticTitle = [
+      '⏰ ${instance.get<AppLocalization>().translate("duration")}',
+      '💰 ${instance.get<AppLocalization>().translate("budget")}',
+      '📘 ${instance.get<AppLocalization>().translate("description")}',
+      '📅 ${instance.get<AppLocalization>().translate("updatedAt")}'
+    ];
     super.initState();
   }
 
@@ -65,36 +73,12 @@ class _JobCardState extends State<JobCard> {
       crossAxisAlignment: CrossAxisAlignment.end,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            SvgPicture.asset(
-              AppConstants.checkFill,
-              height: 16,
-              width: 16,
-              colorFilter: const ColorFilter.mode(
-                Colors.greenAccent,
-                BlendMode.srcIn,
-              ),
-            ),
-            const SizedBox(width: 8),
-            Text(
-              'Payment variable',
-              style: Theme.of(context).textTheme.displaySmall!.merge(
-                    TextStyle(
-                      color: Colors.greenAccent[800],
-                      fontSize: 14,
-                    ),
-                  ),
-              textAlign: TextAlign.start,
-              maxLines: 1,
-            ),
-          ],
+        Text(
+          staticTitle[3],
+          style: themeData.textTheme.displayMedium,
         ),
         Text(
-          '⏳ 2m ago',
+          instance.get<ConvertString>().timeFormat(value: widget.time),
           textAlign: TextAlign.end,
           style: Theme.of(context).textTheme.displaySmall!.merge(
                 const TextStyle(
@@ -112,114 +96,114 @@ class _JobCardState extends State<JobCard> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
 
-    return Container(
-      decoration: widget.boxDecoration,
-      padding: widget.padding,
+    return PostMenu(
+      jobId: widget.jobId,
       margin: widget.margin,
-      child: InkWell(
-        onTap: widget.cardPressed,
-        child: Card(
-          clipBehavior: Clip.none,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
-          margin: EdgeInsets.zero,
-          color: themeData.colorScheme.background,
-          elevation: 0,
-          surfaceTintColor: themeData.colorScheme.background,
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              widget.header,
-              kSpaceVertical(context, height: 12),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          staticTitle[0],
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                          )),
+      child: Container(
+        decoration: widget.boxDecoration,
+        padding: widget.padding,
+        margin: widget.margin,
+        child: InkWell(
+          onTap: widget.cardPressed,
+          child: Card(
+            clipBehavior: Clip.none,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(8.0),
+            ),
+            margin: EdgeInsets.zero,
+            color: themeData.colorScheme.background,
+            elevation: 0,
+            surfaceTintColor: themeData.colorScheme.background,
+            child: Column(
+              mainAxisSize: MainAxisSize.max,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                widget.header,
+                kSpaceVertical(context, height: 12),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            staticTitle[0],
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                              color: themeData.colorScheme.onBackground,
+                            )),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        Text(
+                          widget.duration,
+                          style: themeData.textTheme.displayMedium!.merge(
+                            TextStyle(
+                              color: themeData.colorScheme.onBackground,
+                            ),
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Text(
-                        widget.duration,
-                        style: themeData.textTheme.displayMedium!.merge(
-                          TextStyle(
-                            color: themeData.colorScheme.onBackground,
+                      ],
+                    ),
+                    8.verticalSpace,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: Text(
+                            staticTitle[1],
+                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                              color: themeData.colorScheme.onBackground,
+                            )),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                  8.verticalSpace,
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          staticTitle[1],
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground,
-                          )),
+                        Text(
+                          widget.cost,
+                          style: themeData.textTheme.displayMedium!.merge(
+                            TextStyle(
+                              color: Theme.of(context).colorScheme.onBackground,
+                            ),
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
-                      ),
-                      Text(
-                        widget.cost,
-                        style: themeData.textTheme.displayMedium!.merge(
-                          TextStyle(
-                            color: Theme.of(context).colorScheme.onBackground,
-                          ),
+                      ],
+                    ),
+                  ],
+                ),
+                kSpaceVertical(context, height: 12),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  textDirection: TextDirection.ltr,
+                  verticalDirection: VerticalDirection.down,
+                  children: [
+                    Text(
+                      staticTitle[2],
+                      style: themeData.textTheme.displayMedium!.merge(
+                        TextStyle(
+                          color: themeData.colorScheme.onBackground,
                         ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-              kSpaceVertical(context, height: 12),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                textDirection: TextDirection.ltr,
-                verticalDirection: VerticalDirection.down,
-                children: [
-                  Text(
-                    staticTitle[2],
-                    style: themeData.textTheme.displayMedium!.merge(
-                      TextStyle(
-                        color: themeData.colorScheme.onBackground,
                       ),
                     ),
-                  ),
-                  const SizedBox(height: 4),
-                  widget.description,
-                ],
-              ),
-              Visibility(
-                visible: widget.isHorizontal,
-                replacement: const SizedBox(height: 12),
-                child: Expanded(child: Container()),
-              ),
-              widget.bottomChild ?? _buildBottomChildren(context),
-            ],
+                    const SizedBox(height: 4),
+                    widget.description,
+                  ],
+                ),
+                const Spacer(),
+                widget.bottomChild ?? _buildBottomChildren(context),
+              ],
+            ),
           ),
         ),
       ),

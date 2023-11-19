@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
@@ -9,7 +10,7 @@ import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/them.dart';
-import 'package:wflow/core/utils/time.util.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -90,12 +91,12 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
           return Theme(
               data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
               child: AlertDialog(
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
                 backgroundColor: themeData.colorScheme.background,
                 surfaceTintColor: Colors.transparent,
-                insetPadding: const EdgeInsets.all(10),
-                title: const Text('Your Introduction'),
+                insetPadding: EdgeInsets.all(12.r),
+                title: const Text('Introduction'),
                 content: Container(
-                  color: themeData.colorScheme.background,
                   width: MediaQuery.of(context).size.width,
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -104,25 +105,24 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         style: Theme.of(context).textTheme.bodyLarge,
                         minLines: 3,
                         maxLines: 5,
-                        // and this
                         controller: _dialogInputController,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
                           hintText: 'Type your introduction',
-                          contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                          contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                           hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
-                          focusedBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                            borderSide: BorderSide(color: AppColors.primary, width: 1.2),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 1),
                           ),
-                          enabledBorder: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(12)),
-                            borderSide: BorderSide(color: Colors.black26, width: 1.2),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8.r),
+                            borderSide: const BorderSide(color: Colors.black26, width: 1),
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      PrimaryButton(label: 'Send to employers', onPressed: () => Navigator.pop(context, true))
+                      PrimaryButton(label: 'Send', onPressed: () => Navigator.pop(context, true))
                     ],
                   ),
                 ),
@@ -139,23 +139,22 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
             title: Text(
               'Notification',
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium,
+              style: Theme.of(context).textTheme.displayLarge,
             ),
-            content: Text(state.message),
+            content: Padding(
+              padding: EdgeInsets.all(12.r),
+              child: Text(state.message),
+            ),
             actions: [
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-                child: const Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Center(
-                      child: Text('OK'),
-                    )
-                  ],
+              CupertinoDialogAction(
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                 ),
-              ),
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+              )
             ],
           );
         },
@@ -272,7 +271,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                               width: 20,
                                               height: 20,
                                             ),
-                                            Text(Time().getDayMonthYear(state.postEntity.createdAt.toString()),
+                                            Text(instance.get<ConvertString>().timeFormat(value: state.postEntity.updatedAt!),
                                                 style: themeData.textTheme.displayMedium!
                                                     .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],

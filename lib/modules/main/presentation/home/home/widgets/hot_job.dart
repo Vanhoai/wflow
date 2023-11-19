@@ -26,7 +26,6 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
       child: ConstrainedBox(
         constraints: const BoxConstraints(maxHeight: 280),
         child: BlocBuilder<HomeBloc, HomeState>(
-          buildWhen: (previous, current) => previous.isLoading != current.isLoading,
           builder: (context, state) {
             return LayoutBuilder(
               builder: (context, constraints) {
@@ -57,6 +56,15 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                         job: job,
                         constraints: constraints,
                         pressCard: pressCard,
+                        paymentAvailable: job.paymentAvailable,
+                        isBookmarked: state.bookmarks[index],
+                        onToggleBookmark: () => context.read<HomeBloc>().add(
+                              ToggleBookmarkHomeEvent(
+                                id: job.id,
+                                index: index,
+                                isBookmarkeded: !state.bookmarks[index],
+                              ),
+                            ),
                       );
                     },
                   ),

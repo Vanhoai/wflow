@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/task/models/create_task_model.dart';
 import 'package:wflow/modules/main/data/task/models/update_task_model.dart';
 import 'package:wflow/modules/main/data/task/models/update_task_status_model.dart';
@@ -16,8 +16,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.addTaskToContract(model);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -26,8 +26,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.deleteTaskInContract(id);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -36,8 +36,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.updateTaskInContract(model);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -46,8 +46,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.taskInContract(id);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -56,8 +56,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.workerUpdateStatusTask(request);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
@@ -66,8 +66,8 @@ class TaskRepositoryImpl implements TaskRepository {
     try {
       final response = await taskService.businessUpdateStatusTask(request);
       return Left(response);
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

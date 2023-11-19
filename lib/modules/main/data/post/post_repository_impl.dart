@@ -1,8 +1,8 @@
 import 'package:dartz/dartz.dart';
-import 'package:wflow/core/http/failure.http.dart';
-import 'package:wflow/core/http/response.http.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
+import 'package:wflow/modules/main/data/post/models/request/up_post_rqst.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
@@ -46,18 +46,48 @@ class PostRepositoryImpl implements PostRepository {
     try {
       final posts = await postService.getPostId(id);
       return Left(posts);
-    } catch (exception) {
-      return const Right(ServerFailure());
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 
   @override
-  Future<List<PostEntity>> getSearchWorks(GetWorkModel getWorkModel) async {
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getSearchWorks(GetWorkModel getWorkModel) async {
     try {
       final posts = await postService.getSearchWorks(getWorkModel);
-      return posts;
-    } catch (exception) {
-      return [];
+      return Left(posts);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<PostEntity>, Failure>> getPostsSaved(GetWorkModel req) async {
+    try {
+      final posts = await postService.getPostsSaved(req);
+      return Left(posts);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<HttpResponse, Failure>> toggleBookmark(int id) async {
+    try {
+      final res = await postService.toggleBookmark(id);
+      return Left(res);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<String, Failure>> upPost({required UpPostRequest request}) async {
+    try {
+      final response = await postService.upPost(request: request);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/extensions/number.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -12,7 +13,7 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/balance/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/contract/widgets/widget.dart';
-
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 class BalanceScreen extends StatefulWidget {
   const BalanceScreen({super.key, required this.balanceID});
 
@@ -23,7 +24,7 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  final TextEditingController amountController = TextEditingController();
+  final MoneyMaskedTextController amountController =  MoneyMaskedTextController(decimalSeparator: '',precision: 0,initialValue: 0,thousandSeparator: '.');
 
   @override
   void dispose() {
@@ -82,7 +83,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       onPressed: () {
                         if (amountController.text.isNotEmpty) {
                           if (option == 1) {
-                            parentContext.read<BalanceBloc>().add(BalanceTopUpEvent(int.parse(amountController.text)));
+                            parentContext.read<BalanceBloc>().add(BalanceTopUpEvent(amountController.numberValue.toInt()));
                           } else {}
                           Navigator.pop(context);
                         }
@@ -108,8 +109,11 @@ class _BalanceScreenState extends State<BalanceScreen> {
         ),
       child: CommonScaffold(
         isSafe: true,
-        appBar: const AppHeader(
-          text: 'Balance',
+        appBar: AppHeader(
+          text: Text(
+            instance.get<AppLocalization>().translate('balance') ?? 'Balance',
+            style: themeData.textTheme.displayMedium,
+          ),
         ),
         body: SizedBox(
           width: MediaQuery.of(context).size.width,
@@ -171,7 +175,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Top Up',
+                                              instance.get<AppLocalization>().translate('topUp') ?? 'Top Up',
                                               style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -192,7 +196,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                         child: Row(
                                           children: [
                                             Text(
-                                              'Pay Out',
+                                              instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out',
                                               style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
@@ -268,7 +272,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 child: Row(
                   children: [
                     Text(
-                      'Recent Transactions',
+                      instance.get<AppLocalization>().translate('transactionHistory') ?? 'Transaction History',
                       style: themeData.textTheme.displayMedium,
                     ),
                   ],

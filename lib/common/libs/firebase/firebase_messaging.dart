@@ -26,7 +26,10 @@ class FirebaseMessagingService {
         }
       });
     } else {
-      AlertUtils.showMessage('Notification', 'Please allow notification in setting');
+      AlertUtils.showMessage(
+        'Notification',
+        'Please allow notification in setting',
+      );
     }
   }
 

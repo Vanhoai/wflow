@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
@@ -76,7 +78,10 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                       final job = state.listPost[index];
 
                       return Container(
+                        constraints: const BoxConstraints(maxHeight: 270),
                         child: JobCard(
+                          time: job.updatedAt!,
+                          jobId: job.id,
                           boxDecoration: BoxDecoration(
                             color: themeData.colorScheme.background,
                             borderRadius: BorderRadius.circular(8.r),
@@ -133,7 +138,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
                               8.horizontalSpace,
                             ],
                           ),
-                          cost: '${job.salary} VND',
+                          cost: instance.get<ConvertString>().moneyFormat(value: job.salary),
                           duration: job.duration,
                           description: TextMore(
                             job.content,

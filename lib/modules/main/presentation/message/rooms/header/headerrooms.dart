@@ -20,9 +20,9 @@ class _HeaderRoomsState extends State<HeaderRooms> {
   Widget build(BuildContext context) {
     return AppBarWithLogo(
       actions: [
-        const HeaderIcon(
+         HeaderIcon(
           icon: AppConstants.search,
-          // onTap: () => Navigator.of(context).pushNamed(RouteKeys.searchScreen),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.searchRoomScreen),
         ),
         const SizedBox(width: 12),
         HeaderIcon(

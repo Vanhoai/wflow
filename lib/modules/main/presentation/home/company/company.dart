@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:shimmer/shimmer.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
-import 'package:wflow/modules/main/presentation/home/company/function.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
 
 class CompanyScreen extends StatefulWidget {
@@ -25,12 +26,20 @@ class CompanyScreen extends StatefulWidget {
 class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
   late final ScrollController scrollController;
   late final TabController tabController;
+  late final List<String> staticTab;
 
   List<bool> isFirstLoad = [false, false, false];
 
   @override
   void initState() {
     super.initState();
+
+    staticTab = [
+      instance.get<AppLocalization>().translate('about') ?? 'About',
+      instance.get<AppLocalization>().translate('posts') ?? 'Posts',
+      instance.get<AppLocalization>().translate('members') ?? 'Members',
+      instance.get<AppLocalization>().translate('location') ?? 'Location',
+    ];
     scrollController = ScrollController(initialScrollOffset: 0);
     tabController = TabController(length: staticTab.length, vsync: this);
   }
@@ -91,11 +100,20 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
       child: CommonScaffold(
         isSafe: true,
         appBar: AppHeader(
-          text: 'TheFlow',
+          text: BlocBuilder<MyCompanyBloc, MyCompanyState>(
+            builder: (context, state) {
+              return Text(
+                state.companyEntity.name,
+                style: themeData.textTheme.displayMedium,
+              );
+            },
+          ),
           actions: [
             BlocBuilder<MyCompanyBloc, MyCompanyState>(
               builder: (context, state) {
                 final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                final isOwner = instance.get<AppBloc>().state.userEntity.id == state.companyEntity.creator;
+
                 return Padding(
                   padding: EdgeInsets.only(right: 20.w),
                   child: InkWell(
@@ -107,17 +125,45 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                             value: bloc,
                             child: CupertinoActionSheet(
                               actions: [
-                                CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                      ..pop()
-                                      ..pushNamed(RouteKeys.addBusinessScreen);
-                                  },
-                                  child: const Text('Add Collaborator'),
+                                Visibility(
+                                  visible: isOwner,
+                                  child: CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                        ..pop()
+                                        ..pushReplacementNamed(
+                                          RouteKeys.addBusinessScreen,
+                                          arguments: widget.companyID,
+                                        );
+                                    },
+                                    child: Text(
+                                      instance.get<AppLocalization>().translate('addCollaborator') ??
+                                          'Add Collaborator',
+                                    ),
+                                  ),
+                                ),
+                                Visibility(
+                                  visible: isOwner,
+                                  child: CupertinoActionSheetAction(
+                                    onPressed: () {
+                                      Navigator.of(context)
+                                        ..pop()
+                                        ..pushReplacementNamed(
+                                          RouteKeys.removeCollaboratorScreen,
+                                          arguments: widget.companyID,
+                                        );
+                                    },
+                                    child: Text(
+                                      instance.get<AppLocalization>().translate('removeCollaborator') ??
+                                          'Remove Collaborator',
+                                    ),
+                                  ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () {},
-                                  child: const Text('Edit Company'),
+                                  child: Text(
+                                    instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
+                                  ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () {
@@ -125,7 +171,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                       ..pop()
                                       ..pushNamed(RouteKeys.upPostScreen);
                                   },
-                                  child: const Text('Post Job'),
+                                  child: Text(
+                                    instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
+                                  ),
                                 ),
                                 CupertinoActionSheetAction(
                                   onPressed: () {
@@ -136,12 +184,16 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                         arguments: state.companyEntity.balance.toString(),
                                       );
                                   },
-                                  child: const Text('Balance'),
+                                  child: Text(
+                                    instance.get<AppLocalization>().translate('balance') ?? 'Balance',
+                                  ),
                                 ),
                               ],
                               cancelButton: CupertinoActionSheetAction(
                                 onPressed: () => Navigator.of(context).pop(),
-                                child: const Text('Cancel'),
+                                child: Text(
+                                  instance.get<AppLocalization>().translate('cancel') ?? 'Cancel',
+                                ),
                               ),
                             ),
                           );
@@ -149,7 +201,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                       );
                     },
                     child: Text(
-                      'More',
+                      instance.get<AppLocalization>().translate('more') ?? 'More',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         color: AppColors.primary,
                       ),
@@ -217,7 +269,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                       ),
                       8.horizontalSpace,
                       Text(
-                        '${state.companyEntity.collaborators.length} members',
+                        '${state.companyEntity.collaborators.length} ${instance.get<AppLocalization>().translate("members")}',
                         style: themeData.textTheme.displayMedium,
                       ),
                     ],
@@ -250,7 +302,7 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                       fontSize: 14.sp,
                     ),
                     unselectedLabelColor: themeData.colorScheme.onBackground,
-                    physics: const NeverScrollableScrollPhysics(),
+                    physics: const BouncingScrollPhysics(),
                     indicatorSize: TabBarIndicatorSize.tab,
                     onTap: (index) {
                       final MyCompanyBloc bloc = context.read<MyCompanyBloc>();

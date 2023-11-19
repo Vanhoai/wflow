@@ -25,7 +25,6 @@ abstract class CompanyService {
 
 class CompanyServiceImpl implements CompanyService {
   final Agent agent;
-
   CompanyServiceImpl({required this.agent});
 
   @override
@@ -33,13 +32,13 @@ class CompanyServiceImpl implements CompanyService {
     try {
       final response = await agent.dio.get(CompanyPath.getCompanyById + id.toString());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (response.statusCode == 200) {
-        return CompanyModel.fromJson(httpResponse.data);
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (response.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return CompanyModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -48,13 +47,13 @@ class CompanyServiceImpl implements CompanyService {
     try {
       final response = await agent.dio.get(CompanyPath.myCompany);
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (response.statusCode == 200) {
-        return CompanyModel.fromJson(httpResponse.data);
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (response.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return CompanyModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -67,13 +66,13 @@ class CompanyServiceImpl implements CompanyService {
       });
 
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
-      if (response.statusCode == 200) {
-        return httpResponse.data.map((e) => UserModel.fromJson(e)).toList();
-      } else {
-        return throw CommonFailure(message: response.data['message'], statusCode: response.data['statusCode']);
+      if (response.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data.map((e) => UserModel.fromJson(e)).toList();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -85,13 +84,13 @@ class CompanyServiceImpl implements CompanyService {
         'pageSize': pageSize.toString(),
       });
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
-      if (response.statusCode == 200) {
-        return httpResponse.data.map((e) => PostModel.fromJson(e)).toList();
-      } else {
-        return throw CommonFailure(message: response.data['message'], statusCode: response.data['statusCode']);
+      if (response.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data.map((e) => PostModel.fromJson(e)).toList();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -101,12 +100,12 @@ class CompanyServiceImpl implements CompanyService {
       final response = await agent.dio.put(CompanyPath.upgradeBusiness, data: request.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (response.statusCode != 200) {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+        throw ServerException(httpResponse.message);
       }
 
       return httpResponse.data;
     } catch (error) {
-      throw ServerException(message: error.toString());
+      throw ServerException(error.toString());
     }
   }
 
@@ -116,12 +115,12 @@ class CompanyServiceImpl implements CompanyService {
       final response = await agent.dio.get(CompanyPath.findCompany(id: id));
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (response.statusCode != 200) {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+        throw ServerException(httpResponse.message);
       }
 
       return CompanyModel.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
     }
   }
 }

@@ -42,13 +42,18 @@ class _ListRoomState extends State<ListRoom> {
         child: Row(
           children: [
             ClipOval(
-                child: Image.network(
-              userEntity.avatar.isEmpty
-                  ? 'https://vtv1.mediacdn.vn/zoom/640_400/2022/3/4/avatar-jake-neytiri-pandora-ocean-1646372078251163431014-crop-16463720830272075805905.jpg'
-                  : userEntity.avatar,
-              fit: BoxFit.cover,
-              width: 58.0,
-              height: 58.0,
+                child: InkWell(
+              onTap: () {
+                Navigator.of(context).pushNamed(RouteKeys.detailUserScreen, arguments: userEntity.id);
+              },
+              child: Image.network(
+                userEntity.avatar.isEmpty
+                    ? 'https://vtv1.mediacdn.vn/zoom/640_400/2022/3/4/avatar-jake-neytiri-pandora-ocean-1646372078251163431014-crop-16463720830272075805905.jpg'
+                    : userEntity.avatar,
+                fit: BoxFit.cover,
+                width: 58.0,
+                height: 58.0,
+              ),
             )),
             const SizedBox(
               width: 16,

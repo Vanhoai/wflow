@@ -9,16 +9,19 @@ class WorkState extends Equatable {
   final bool isLoading;
   final bool isLoadMore;
   final bool isFinal;
+  final List<bool> bookmarks;
 
   const WorkState({
     required this.categories,
     required this.posts,
     this.categorySelected = 'All',
-    this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
+    this.meta =
+        const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
     this.messageNotification = '',
     this.isLoading = false,
     this.isLoadMore = false,
     this.isFinal = false,
+    this.bookmarks = const [],
   });
 
   WorkState copyWith({
@@ -30,6 +33,7 @@ class WorkState extends Equatable {
     bool? isLoading,
     bool? isLoadMore,
     bool? isFinal,
+    List<bool>? bookmarks,
   }) {
     return WorkState(
       categories: categories ?? this.categories,
@@ -40,10 +44,20 @@ class WorkState extends Equatable {
       isLoading: isLoading ?? this.isLoading,
       isLoadMore: isLoadMore ?? this.isLoadMore,
       isFinal: isFinal ?? this.isFinal,
+      bookmarks: bookmarks ?? this.bookmarks,
     );
   }
 
   @override
-  List<Object> get props =>
-      [categories, categorySelected, meta, posts, messageNotification, isLoading, isLoadMore, isFinal];
+  List<Object> get props => [
+        categories,
+        categorySelected,
+        meta,
+        posts,
+        messageNotification,
+        isLoading,
+        isLoadMore,
+        isFinal,
+        bookmarks,
+      ];
 }

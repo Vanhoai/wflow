@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 
@@ -10,24 +12,23 @@ class HotJobCard extends StatefulWidget {
     required this.job,
     required this.constraints,
     required this.pressCard,
+    this.onToggleBookmark,
+    required this.isBookmarked,
+    required this.paymentAvailable,
   });
 
   final PostEntity job;
   final BoxConstraints constraints;
   final Function(int id) pressCard;
+  final void Function()? onToggleBookmark;
+  final bool isBookmarked;
+  final bool paymentAvailable;
 
   @override
   State<HotJobCard> createState() => _HotJobCardState();
 }
 
 class _HotJobCardState extends State<HotJobCard> {
-  bool isBookmark = false;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -37,6 +38,9 @@ class _HotJobCardState extends State<HotJobCard> {
       height: widget.constraints.maxHeight,
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: JobCard(
+        time: widget.job.updatedAt!,
+        paymentAvailable: widget.paymentAvailable,
+        jobId: widget.job.id,
         isHorizontal: true,
         boxDecoration: BoxDecoration(
           color: themeData.colorScheme.background,
@@ -81,13 +85,15 @@ class _HotJobCardState extends State<HotJobCard> {
           leadingSize: 32,
           actions: [
             InkWell(
-              onTap: () {},
+              onTap: widget.onToggleBookmark,
               child: SvgPicture.asset(
                 AppConstants.bookmark,
                 height: 24,
                 width: 24,
                 colorFilter: ColorFilter.mode(
-                  themeData.colorScheme.onBackground.withOpacity(0.5),
+                  widget.isBookmarked
+                      ? themeData.colorScheme.primary
+                      : themeData.colorScheme.onBackground.withOpacity(0.5),
                   BlendMode.srcIn,
                 ),
               ),
@@ -95,7 +101,7 @@ class _HotJobCardState extends State<HotJobCard> {
             const SizedBox(width: 8.0),
           ],
         ),
-        cost: '${widget.job.salary} VND',
+        cost: instance.get<ConvertString>().moneyFormat(value: widget.job.salary),
         duration: widget.job.duration,
         description: TextMore(
           widget.job.content,

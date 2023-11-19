@@ -2,12 +2,15 @@ import 'dart:async';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/models/models.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/event.dart';
 
 part 'event.dart';
 part 'state.dart';
@@ -24,16 +27,18 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
     on<OnSelectCategoryEvent>(onSelectCategory);
     on<RefreshEvent>(onRefresh);
     on<LoadMoreEvent>(onLoadMore);
+    on<ToggleBookmarkWorkEvent>(onToggleBookmark);
   }
 
   FutureOr<void> getPost(GetPostWithCategory request, Emitter<WorkState> emit, String category) async {
     final response = await postUseCase.getPostWithCategory(request);
-
+    final List<bool> bookmarks = [...response.data.map((e) => e.isBookmarked)];
     emit(
       state.copyWith(
         posts: response.data,
         meta: response.meta,
         isFinal: response.meta.currentPage >= response.meta.totalPage,
+        bookmarks: bookmarks,
       ),
     );
   }
@@ -102,7 +107,17 @@ class WorkBloc extends Bloc<WorkEvent, WorkState> {
         meta: response.meta,
         isLoadMore: false,
         isFinal: isFinal,
+        bookmarks: [...state.bookmarks, ...response.data.map((e) => e.isBookmarked)],
       ),
     );
+  }
+
+  Future<void> onToggleBookmark(ToggleBookmarkWorkEvent event, Emitter emit) async {
+    instance.get<BookmarkBloc>().add(ToggleBookmarkEvent(id: event.id));
+
+    List<bool> newBookmarks = [...state.bookmarks];
+    newBookmarks[event.index] = event.isBookmarkeded;
+
+    emit(state.copyWith(bookmarks: newBookmarks));
   }
 }

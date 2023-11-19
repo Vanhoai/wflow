@@ -75,13 +75,14 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
     if (deviceToken == null || deviceToken.isEmpty) {
-      emit(const SignInFailure(message: "Can't get device token"));
-      emit(const SignInState());
+      AlertUtils.showMessage('Thông báo', 'Ứng dụng không thể lấy được địa chỉ thiết bị của bạn');
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+      return;
     }
 
-    final response =
-        await authUseCase.signIn(AuthNormalRequest(username: username, password: password, deviceToken: deviceToken!));
+    final response = await authUseCase.signIn(
+      AuthNormalRequest(username: username, password: password, deviceToken: deviceToken),
+    );
 
     response.fold(
       (AuthEntity authEntity) {
@@ -113,7 +114,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     String idToken = await FirebaseAuthService.signInWithGoogle();
     String? deviceToken = await FirebaseMessagingService.getDeviceToken();
     if (idToken.isEmpty || deviceToken == null) {
-      AlertUtils.showMessage('Notification', "Can't get device token");
+      AlertUtils.showMessage('Thông báo', 'Ứng dụng không thể lấy được địa chỉ thiết bị của bạn');
       return;
     }
 

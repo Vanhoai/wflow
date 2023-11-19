@@ -1,8 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -21,23 +23,23 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late ScrollController _scrollController;
-  late ScrollController _hotJobScrollController;
-  late ScrollController _selectionScrollController;
+  late ScrollController scrollController;
+  late ScrollController hotJobScrollController;
+  late ScrollController selectionScrollController;
 
   @override
   void initState() {
-    _selectionScrollController = ScrollController();
-    _hotJobScrollController = ScrollController();
-    _scrollController = ScrollController();
+    selectionScrollController = ScrollController();
+    hotJobScrollController = ScrollController();
+    scrollController = ScrollController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _selectionScrollController.dispose();
-    _hotJobScrollController.dispose();
-    _scrollController.dispose();
+    selectionScrollController.dispose();
+    hotJobScrollController.dispose();
+    scrollController.dispose();
     super.dispose();
   }
 
@@ -67,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     return Header(
                       leadingPhotoUrl: state.userEntity.avatar,
                       title: Text(
-                        'Hi $name 👋🏻',
+                        'Chào $name 👋🏻',
                         style: themeData.textTheme.displayLarge!.merge(TextStyle(
                           color: themeData.colorScheme.onBackground,
                           fontWeight: FontWeight.w400,
@@ -102,35 +104,37 @@ class _HomeScreenState extends State<HomeScreen> {
               padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  'Hot Work',
+                  instance.get<AppLocalization>().translate('hotWork') ?? 'Hot Work',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
                     color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
                     fontWeight: FontWeight.w400,
+                    fontSize: 16.sp,
                   )),
                 ),
               ),
             ),
-            HowJobListWidget(scrollController: _hotJobScrollController),
+            HowJobListWidget(scrollController: hotJobScrollController),
             SliverPadding(
               padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
               sliver: SliverToBoxAdapter(
                 child: Text(
-                  'Recent Work',
+                  instance.get<AppLocalization>().translate('recentWork') ?? 'Recent Work',
                   style: themeData.textTheme.displayMedium!.merge(TextStyle(
                     color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
                     fontWeight: FontWeight.w400,
+                    fontSize: 16.sp,
                   )),
                 ),
               ),
             ),
-            SelectionListWidget(scrollController: _selectionScrollController),
+            SelectionListWidget(scrollController: selectionScrollController),
             const RecentJobListWidget(),
           ],
           dragStartBehavior: DragStartBehavior.start,
           keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
           physics: const BouncingScrollPhysics(),
           shrinkWrap: true,
-          controller: _scrollController,
+          controller: scrollController,
           scrollDirection: Axis.vertical,
         ),
       ),

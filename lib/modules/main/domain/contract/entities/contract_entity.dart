@@ -19,7 +19,9 @@ class ContractEntity extends BaseEntity with EquatableMixin {
   final bool workerSigned;
   final Worker worker;
   final Business business;
+  final num progress;
   final List<TaskEntity> tasks;
+  final String position;
 
   const ContractEntity({
     required super.id,
@@ -37,6 +39,8 @@ class ContractEntity extends BaseEntity with EquatableMixin {
     required this.worker,
     required this.business,
     required this.tasks,
+    required this.progress,
+    required this.position,
   });
 
   factory ContractEntity.fromJson(Map<String, dynamic> json) => _$ContractEntityFromJson(json);
@@ -60,6 +64,8 @@ class ContractEntity extends BaseEntity with EquatableMixin {
     Worker? worker,
     Business? business,
     List<TaskEntity>? tasks,
+    num? progress,
+    String? position,
   }) {
     return ContractEntity(
       cv: cv ?? this.cv,
@@ -77,6 +83,8 @@ class ContractEntity extends BaseEntity with EquatableMixin {
       worker: worker ?? this.worker,
       business: business ?? this.business,
       tasks: tasks ?? this.tasks,
+      progress: progress ?? this.progress,
+      position: position ?? this.position,
     );
   }
 
@@ -84,6 +92,7 @@ class ContractEntity extends BaseEntity with EquatableMixin {
     return ContractEntity(
       cv: '',
       id: 0,
+      progress: 0,
       createdAt: DateTime.now(),
       deletedAt: DateTime.now(),
       updatedAt: DateTime.now(),
@@ -94,6 +103,7 @@ class ContractEntity extends BaseEntity with EquatableMixin {
       salary: '',
       businessSigned: false,
       workerSigned: false,
+      position: '',
       worker: const Worker(
         id: 0,
         name: '',
@@ -146,5 +156,7 @@ class ContractEntity extends BaseEntity with EquatableMixin {
         worker,
         business,
         tasks,
+        progress,
+        position,
       ];
 }

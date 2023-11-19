@@ -15,8 +15,6 @@ class TrackingRepositoryImpl implements TrackingRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
-    } catch (exception) {
-      return Right(ServerFailure(message: exception.toString()));
     }
   }
 }

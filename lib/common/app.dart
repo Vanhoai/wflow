@@ -1,11 +1,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -13,7 +14,6 @@ import 'package:wflow/core/routes/routes.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/error/error.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
-import 'package:wflow/modules/introduction/presentation/introduction.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -23,18 +23,6 @@ class App extends StatefulWidget {
 }
 
 class _AppState extends State<App> {
-  @override
-  void initState() {
-    super.initState();
-    localization.init(
-      mapLocales: [
-        const MapLocale('en', AppLocale.EN),
-        const MapLocale('vn', AppLocale.VN),
-      ],
-      initLanguageCode: 'en',
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -70,18 +58,25 @@ class _AppState extends State<App> {
 
                         return child!;
                       },
+                      locale: instance.get<AppLocalization>().locale,
+                      supportedLocales: const [
+                        Locale('vi', 'VN'),
+                        Locale('en', 'EN'),
+                      ],
+                      localizationsDelegates: const [
+                        AppLocalization.delegate,
+                        GlobalMaterialLocalizations.delegate,
+                        GlobalWidgetsLocalizations.delegate,
+                        GlobalCupertinoLocalizations.delegate,
+                      ],
                       navigatorKey: instance.get<NavigationService>().navigatorKey,
-                      supportedLocales: localization.supportedLocales,
-                      localizationsDelegates: localization.localizationsDelegates,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,
                       darkTheme: themeDataDark,
                       themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute:
-                          instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
-                      home: const IntroScreen(),
+                      initialRoute: RouteKeys.signInScreen,
                     ),
                     BlocBuilder<AppLoadingBloc, AppLoadingState>(
                       bloc: instance.get<AppLoadingBloc>(),

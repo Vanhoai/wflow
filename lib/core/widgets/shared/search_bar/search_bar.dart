@@ -14,7 +14,7 @@ class SharedSearchBar extends StatefulWidget {
     this.margin,
     this.onClear,
     this.onSearch,
-    this.placeHolder = 'Search here',
+    required this.placeHolder,
   });
 
   final BoxDecoration? decoration;
@@ -67,9 +67,12 @@ class _SharedSearchBarState extends State<SharedSearchBar> {
           hintText: widget.placeHolder,
           hintStyle: themeData.textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,
+            fontWeight: FontWeight.w400,
+            fontSize: 16.sp,
           ),
           labelStyle: themeData.textTheme.bodyMedium?.copyWith(
             color: AppColors.textGrey,
+            fontSize: 16.sp,
           ),
           prefixIcon: Padding(
             padding: EdgeInsets.all(12.w),

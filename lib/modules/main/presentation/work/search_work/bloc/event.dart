@@ -7,12 +7,7 @@ abstract class SearchWorkEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class InitSearchWorkEvent extends SearchWorkEvent {
-  const InitSearchWorkEvent();
-
-  @override
-  List<Object?> get props => [];
-}
+class InitSearchWorkEvent extends SearchWorkEvent {}
 
 class ChangedSearchWorkEvent extends SearchWorkEvent {
   final String txtSearch;
@@ -23,6 +18,10 @@ class ChangedSearchWorkEvent extends SearchWorkEvent {
   List<Object?> get props => [txtSearch];
 }
 
+class ScrollSearchWorkEvent extends SearchWorkEvent {}
+
+class RefreshSearchWorkEvent extends SearchWorkEvent {}
+
 class ChangedIconClearSearchWorkEvent extends SearchWorkEvent {
   final String txtSearch;
 
@@ -32,28 +31,17 @@ class ChangedIconClearSearchWorkEvent extends SearchWorkEvent {
   List<Object?> get props => [txtSearch];
 }
 
-class ScrollSearchWorkEvent extends SearchWorkEvent {
-  const ScrollSearchWorkEvent();
+class ToggleBookmarkSearchWorkEvent extends SearchWorkEvent {
+  final int id;
+  final int index;
+  final bool isBookmarkeded;
+
+  const ToggleBookmarkSearchWorkEvent({
+    required this.id,
+    required this.index,
+    required this.isBookmarkeded,
+  });
 
   @override
-  List<Object?> get props => [];
-}
-
-class RefreshSearchWorkEvent extends SearchWorkEvent {
-  const RefreshSearchWorkEvent();
-
-  @override
-  List<Object?> get props => [];
-}
-
-class LoadMoreSearchWorkEvent extends SearchWorkEvent {
-  final bool isLoadMore;
-  const LoadMoreSearchWorkEvent({this.isLoadMore = false});
-
-  LoadMoreSearchWorkEvent coppyWith({bool? isLoadMore}) {
-    return LoadMoreSearchWorkEvent(isLoadMore: isLoadMore ?? this.isLoadMore);
-  }
-
-  @override
-  List<Object?> get props => [isLoadMore];
+  List get props => [id, index, isBookmarkeded];
 }

@@ -48,6 +48,9 @@ class PostModel extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'tasks', defaultValue: [])
   final List<String> tasks;
 
+  @JsonKey(name: 'paymentAvailable', defaultValue: false)
+  final bool paymentAvailable;
+
   const PostModel({
     required super.id,
     required super.updatedAt,
@@ -67,6 +70,7 @@ class PostModel extends BaseEntity with EquatableMixin {
     required this.skills,
     required this.tasks,
     required this.numberApplied,
+    required this.paymentAvailable,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) => _$PostModelFromJson(json);
@@ -93,6 +97,7 @@ class PostModel extends BaseEntity with EquatableMixin {
         skills: [],
         tasks: [],
         numberApplied: 0,
+        paymentAvailable: false,
       );
 
   PostModel copyWith({
@@ -110,6 +115,7 @@ class PostModel extends BaseEntity with EquatableMixin {
     List<String>? skills,
     List<String>? tasks,
     num? numberApplied,
+    bool? paymentAvailable,
   }) {
     return PostModel(
       id: id,
@@ -130,6 +136,7 @@ class PostModel extends BaseEntity with EquatableMixin {
       skills: skills ?? this.skills,
       tasks: tasks ?? this.tasks,
       numberApplied: numberApplied ?? this.numberApplied,
+      paymentAvailable: paymentAvailable ?? this.paymentAvailable,
     );
   }
 
@@ -150,5 +157,7 @@ class PostModel extends BaseEntity with EquatableMixin {
         companyLogo,
         skills,
         tasks,
+        numberApplied,
+        paymentAvailable,
       ];
 }

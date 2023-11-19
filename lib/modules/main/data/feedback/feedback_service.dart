@@ -18,7 +18,6 @@ class FeedbackPath {
 
 class FeedbackServiceImpl implements FeedbackService {
   Agent agent;
-
   FeedbackServiceImpl({required this.agent});
 
   @override
@@ -33,13 +32,11 @@ class FeedbackServiceImpl implements FeedbackService {
       HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        return throw ServerException(message: httpResponse.message.toString());
+        throw ServerException(httpResponse.message);
       }
       return httpResponse.data.map((e) => FeedbackEntity.fromJson(e)).toList();
-    } on ServerException catch (e) {
-      return throw ServerException(message: e.message.toString());
-    } catch (e) {
-      return throw ServerException();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -50,14 +47,12 @@ class FeedbackServiceImpl implements FeedbackService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        return throw ServerException(message: httpResponse.message.toString());
+        throw ServerException(httpResponse.message);
       }
 
       return ReputationEntity.fromJson(httpResponse.data);
-    } on ServerException catch (e) {
-      return throw ServerException(message: e.message.toString());
-    } catch (e) {
-      return throw ServerException();
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 }

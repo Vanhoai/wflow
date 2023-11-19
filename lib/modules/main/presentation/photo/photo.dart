@@ -1,9 +1,12 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/presentation/photo/bloc/bloc.dart';
@@ -159,11 +162,39 @@ class _PhotoScreenState extends State<PhotoScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
     return BlocProvider(
       lazy: true,
       create: (context) => PhotoBloc()..add(OnSelectMultipleEvent(multiple: widget.argumentsPhoto.multiple)),
       child: CommonScaffold(
-          appBar: const AppHeader(text: 'Chọn ảnh'),
+          appBar: AppHeader(
+            text: Text(
+              'Chọn ảnh',
+              style: themeData.textTheme.displayMedium,
+            ),
+            actions: [
+              Builder(
+                builder: (context) {
+                  return Container(
+                    margin: const EdgeInsets.only(right: 10, top: 4),
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(20),
+                      onTap: () {
+                        _getImageFromCamera(context: context);
+                      },
+                      child: Ink(
+                          padding: const EdgeInsets.all(6),
+                          decoration: BoxDecoration(color: AppColors.primary, borderRadius: BorderRadius.circular(20)),
+                          child: const Icon(
+                            Icons.camera,
+                            color: Colors.white,
+                          )),
+                    ),
+                  );
+                },
+              )
+            ],
+          ),
           body: Column(
             children: [
               Expanded(child: _buildBody(context)),
@@ -171,5 +202,16 @@ class _PhotoScreenState extends State<PhotoScreen> {
           ),
           floatingActionButton: const SendPhoto()),
     );
+  }
+
+  _getImageFromCamera({required BuildContext context}) async {
+    XFile? result = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (result == null) return;
+    File file = File(result.path);
+    if (!widget.argumentsPhoto.multiple && context.mounted) {
+      BlocProvider.of<PhotoBloc>(context).add(SendPhotoFromCameraEvent(file: file));
+    } else if (widget.argumentsPhoto.multiple && context.mounted) {
+      BlocProvider.of<PhotoBloc>(context).add(SendPhotosFromCameraEvent(files: [file]));
+    }
   }
 }

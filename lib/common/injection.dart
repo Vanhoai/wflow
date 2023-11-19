@@ -1,15 +1,18 @@
-import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/utils/secure.util.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
@@ -34,6 +37,8 @@ import 'package:wflow/modules/main/data/media/media_repository_impl.dart';
 import 'package:wflow/modules/main/data/media/media_service.dart';
 import 'package:wflow/modules/main/data/post/post_repository_impl.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/data/report/report_repository_impl.dart';
+import 'package:wflow/modules/main/data/report/report_service.dart';
 import 'package:wflow/modules/main/data/room/room_repository_impl.dart';
 import 'package:wflow/modules/main/data/room/room_service.dart';
 import 'package:wflow/modules/main/data/task/task_repository_impl.dart';
@@ -60,6 +65,8 @@ import 'package:wflow/modules/main/domain/media/media_repository.dart';
 import 'package:wflow/modules/main/domain/media/media_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/domain/report/report_repository.dart';
+import 'package:wflow/modules/main/domain/report/report_usecase.dart';
 import 'package:wflow/modules/main/domain/room/room_repository.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/domain/task/task_repository.dart';
@@ -68,6 +75,7 @@ import 'package:wflow/modules/main/domain/tracking/tracking_repository.dart';
 import 'package:wflow/modules/main/domain/tracking/tracking_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/bookmark/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/personal/authentications/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/work/task/bloc/bloc.dart';
 
@@ -75,11 +83,15 @@ import 'videocall/bloc/bloc.dart';
 
 final GetIt instance = GetIt.instance;
 late SharedPreferences sharedPreferences;
-final FlutterLocalization localization = FlutterLocalization.instance;
 
 Future<void> initAppInjection() async {
   // core
-  instance.registerLazySingleton<FlutterSecureStorage>(() => const FlutterSecureStorage());
+  instance.registerLazySingleton<FlutterSecureStorage>(
+    () => const FlutterSecureStorage(),
+  );
+
+  instance.registerSingleton<AppLocalization>(AppLocalization(const Locale('vi', 'VN')));
+
   sharedPreferences = await SharedPreferences.getInstance();
   instance.registerLazySingleton<SecureStorage>(
     () => SecureStorage(flutterSecureStorage: instance<FlutterSecureStorage>()),
@@ -167,6 +179,12 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<TrackingUseCase>(
       () => TrackingUseCaseImpl(trackingRepository: instance.get<TrackingRepository>()));
 
+  // report
+  instance.registerLazySingleton<ReportService>(() => ReportServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<ReportRepository>(
+      () => ReportRepositoryImpl(reportService: instance.get<ReportService>()));
+  instance.registerLazySingleton<ReportUseCase>(
+      () => ReportUseCaseImpl(reportRepository: instance.get<ReportRepository>()));
   // Video call connect bloc
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
@@ -176,6 +194,7 @@ Future<void> initAppInjection() async {
     () => TaskBloc(taskUseCase: instance.get<TaskUseCase>(), contractUseCase: instance.get<ContractUseCase>()),
   );
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
+  instance.registerLazySingleton<BookmarkBloc>(() => BookmarkBloc(postUseCase: instance.get<PostUseCase>()));
   instance.registerLazySingleton<AppLoadingBloc>(() => AppLoadingBloc());
   instance.registerLazySingleton<SecurityBloc>(() => SecurityBloc());
   instance.registerLazySingleton<Time>(() => Time());
@@ -193,6 +212,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<FeedbackUseCase>(
       () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
 
+  //Money Format 
+   instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));
+   instance.registerLazySingleton<ConvertString>(() => ConvertString());
   // ! FOR DEBUG ONLY
   bool isDebug = false;
   assert(() {

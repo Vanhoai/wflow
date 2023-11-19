@@ -14,6 +14,7 @@ class TextFieldFrom extends StatefulWidget {
     this.suffixIcon,
     this.isPassword = false,
     this.contentPadding = const EdgeInsets.symmetric(vertical: 16),
+    this.maxLines = 1,
   });
 
   final Function(String val)? onChange;
@@ -26,7 +27,7 @@ class TextFieldFrom extends StatefulWidget {
   final TextEditingController? controller;
   final TextInputType? keyboardType;
   final EdgeInsetsGeometry? contentPadding;
-
+  final num maxLines;
   @override
   State<StatefulWidget> createState() {
     return _StateTextFieldFrom();
@@ -63,7 +64,7 @@ class _StateTextFieldFrom extends State<TextFieldFrom> {
         ),
         TextFormField(
           style: Theme.of(context).textTheme.displayMedium,
-          maxLines: 1,
+          maxLines: widget.maxLines as int,
           autofocus: false,
           focusNode: focusNode,
           controller: widget.controller,

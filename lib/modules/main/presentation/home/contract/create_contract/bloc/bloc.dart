@@ -1,11 +1,15 @@
 import 'dart:async';
 
 import 'package:equatable/equatable.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/failure.http.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/data/task/models/create_task_model.dart';
@@ -21,6 +25,10 @@ part 'state.dart';
 class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> {
   final ContractUseCase contractUseCase;
   final TaskUseCase taskUseCase;
+  final TextEditingController titleController = TextEditingController(text: '');
+  final TextEditingController descriptionController = TextEditingController(text: '');
+  final MoneyMaskedTextController budgetController =
+      MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
 
   CreateContractBloc({
     required this.contractUseCase,
@@ -38,6 +46,20 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     on<CreateNewContractEvent>(onCreateNewContractEvent);
     on<ContractCreatedWorkerSignEvent>(onWorkerSign);
     on<ContractCreatedBusinessSignEvent>(onBusinessSign);
+    on<GetMoney>(getMoney);
+  }
+  bool validator() {
+    if (titleController.text.isEmpty) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Please enter title');
+      return false;
+    }
+
+    if (budgetController.text.isEmpty) {
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Something went wrong with budget');
+      return false;
+    }
+    return true;
   }
 
   FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {
@@ -45,6 +67,10 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     response.fold(
       (ContractEntity contractEntity) {
         print('Tasks: ${contractEntity.tasks.length}');
+        titleController.text = contractEntity.title;
+        descriptionController.text = contractEntity.content;
+        budgetController.text = contractEntity.salary;
+        add(GetMoney());
         emit(state.copyWith(
           contractEntity: contractEntity,
           initSuccess: true,
@@ -76,7 +102,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: tasks));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -89,7 +115,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: state.tasks.sublist(0, state.tasks.length - 1)));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -110,7 +136,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         emit(state.copyWith(tasks: tasks));
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
   }
@@ -186,5 +212,26 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     );
 
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  @override
+  Future<void> close() {
+    titleController.dispose();
+    descriptionController.dispose();
+    budgetController.dispose();
+    return super.close();
+  }
+
+  FutureOr<void> getMoney(GetMoney event, Emitter<CreateContractState> emit) async {
+    if (budgetController.text == "") {
+      emit(state.copyWith(money: moneyYouGet(0)));
+    } else {
+      emit(state.copyWith(money: moneyYouGet(budgetController.numberValue.toInt())));
+    }
+  }
+
+  String moneyYouGet(int value) {
+    double money = (value * 95) / 100;
+    return instance.get<ConvertString>().moneyFormat(value: money.toInt().toString());
   }
 }

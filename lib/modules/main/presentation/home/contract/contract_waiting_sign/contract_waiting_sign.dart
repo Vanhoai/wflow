@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
@@ -19,13 +20,20 @@ class ContractWaitingSignScreen extends StatefulWidget {
 class _ContractWaitingSignScreenState extends State<ContractWaitingSignScreen> {
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return BlocProvider(
       create: (_) => ContractWaitingSignBloc(
         contractUseCase: instance.get<ContractUseCase>(),
       )..add(ContractWaitingSignEventFetch()),
       child: CommonScaffold(
         hideKeyboardWhenTouchOutside: true,
-        appBar: const AppHeader(text: 'Contract Waiting Sign'),
+        appBar: AppHeader(
+          text: Text(
+            instance.get<AppLocalization>().translate('waitingAccept') ?? 'Waiting Accept',
+            style: themeData.textTheme.displayLarge,
+          ),
+        ),
         body: SizedBox(
           height: double.infinity,
           width: double.infinity,
@@ -34,6 +42,8 @@ class _ContractWaitingSignScreenState extends State<ContractWaitingSignScreen> {
               BlocBuilder<ContractWaitingSignBloc, ContractWaitingSignState>(
                 builder: (context, state) {
                   return SharedSearchBar(
+                    placeHolder: instance.get<AppLocalization>().translate('searchByWorkNameOrCompany') ??
+                        'Search by work name or company',
                     margin: EdgeInsets.symmetric(horizontal: 20.w),
                     onClear: () {
                       context.read<ContractWaitingSignBloc>().add(ContractWaitingSignEventClearSearch());

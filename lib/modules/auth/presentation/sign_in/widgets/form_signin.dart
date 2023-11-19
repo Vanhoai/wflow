@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -223,7 +224,7 @@ class _FormState extends State<FormSignIn> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Notification',
+              instance.get<AppLocalization>().translate('notification') ?? 'Notification',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.displayMedium,
             ),
@@ -255,10 +256,11 @@ class _FormState extends State<FormSignIn> {
           child: Column(
             children: [
               TextFieldFrom(
-                label: 'Email or phone number',
+                label: instance.get<AppLocalization>().translate('emailOrPhone') ?? 'Email or phone',
                 controller: emailController,
                 onChange: (val) => context.read<SignInBloc>().add(OnChangeEmailEvent(email: val)),
-                placeholder: 'Enter email or phone number',
+                placeholder:
+                    instance.get<AppLocalization>().translate('placeholderEmailOrPhone') ?? 'Enter your email or phone',
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
                   Icons.account_circle,
@@ -275,8 +277,8 @@ class _FormState extends State<FormSignIn> {
               ),
               TextFieldFrom(
                 controller: passwordController,
-                label: 'Password',
-                placeholder: 'Enter your password',
+                label: instance.get<AppLocalization>().translate('password') ?? 'Password',
+                placeholder: instance.get<AppLocalization>().translate('placeholderPassword') ?? 'Enter your password',
                 prefixIcon: const Icon(
                   Icons.lock,
                   size: 24,
@@ -307,7 +309,7 @@ class _FormState extends State<FormSignIn> {
                         ),
                         const Padding(padding: EdgeInsets.only(left: 8)),
                         Text(
-                          'Remember me',
+                          instance.get<AppLocalization>().translate('rememberMe') ?? 'Remember me',
                           style: Theme.of(context).textTheme.bodyLarge,
                         )
                       ],
@@ -318,7 +320,7 @@ class _FormState extends State<FormSignIn> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
                       child: Text(
-                        'Forgot password ?',
+                        instance.get<AppLocalization>().translate('forgotPassword') ?? 'Forgot password?',
                         style: Theme.of(context).textTheme.bodyLarge,
                       ),
                     ),
@@ -335,16 +337,17 @@ class _FormState extends State<FormSignIn> {
                       listenWhen: (preState, state) => preState != state,
                       listener: listener,
                       child: PrimaryButton(
-                          onPressed: () {
-                            context.read<SignInBloc>().add(
-                                  SignInSubmittedEvent(
-                                    email: emailController.text,
-                                    password: passwordController.text,
-                                    isRemember: state.isRemember,
-                                  ),
-                                );
-                          },
-                          label: 'Sign In'),
+                        onPressed: () {
+                          context.read<SignInBloc>().add(
+                                SignInSubmittedEvent(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  isRemember: state.isRemember,
+                                ),
+                              );
+                        },
+                        label: instance.get<AppLocalization>().translate('signIn') ?? 'Sign in',
+                      ),
                     ),
                   ),
                   BlocBuilder<SecurityBloc, SecurityState>(

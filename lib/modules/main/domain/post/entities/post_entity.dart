@@ -42,14 +42,17 @@ class PostEntity extends BaseEntity with EquatableMixin {
   @JsonKey(name: 'companyLogo', defaultValue: '')
   final String companyLogo;
 
-  @JsonKey(name: 'isBookmark', defaultValue: false)
-  final bool isBookmark;
+  @JsonKey(name: 'isBookmarked', defaultValue: false)
+  final bool isBookmarked;
 
   @JsonKey(name: 'skills', defaultValue: [])
   final List<String> skills;
 
   @JsonKey(name: 'tasks', defaultValue: [])
   final List<String> tasks;
+
+  @JsonKey(name: 'paymentAvailable', defaultValue: false)
+  final bool paymentAvailable;
 
   const PostEntity({
     required super.id,
@@ -67,10 +70,11 @@ class PostEntity extends BaseEntity with EquatableMixin {
     required this.creatorAvatar,
     required this.companyName,
     required this.companyLogo,
-    required this.isBookmark,
+    required this.isBookmarked,
     required this.skills,
     required this.tasks,
     required this.numberApplied,
+    required this.paymentAvailable,
   });
 
   factory PostEntity.fromJson(Map<String, dynamic> json) => _$PostEntityFromJson(json);
@@ -94,10 +98,11 @@ class PostEntity extends BaseEntity with EquatableMixin {
         creatorAvatar: '',
         companyName: '',
         companyLogo: '',
-        isBookmark: false,
+        isBookmarked: false,
         skills: [],
         tasks: [],
         numberApplied: 0,
+        paymentAvailable: false,
       );
 
   PostEntity copyWith({
@@ -112,10 +117,11 @@ class PostEntity extends BaseEntity with EquatableMixin {
     String? creatorAvatar,
     String? companyName,
     String? companyLogo,
-    bool? isBookmark,
+    bool? isBookmarked,
     List<String>? skills,
     List<String>? tasks,
     num? numberApplied,
+    bool? paymentAvailable,
   }) {
     return PostEntity(
       id: id,
@@ -133,10 +139,11 @@ class PostEntity extends BaseEntity with EquatableMixin {
       creatorAvatar: creatorAvatar ?? this.creatorAvatar,
       companyName: companyName ?? this.companyName,
       companyLogo: companyLogo ?? this.companyLogo,
-      isBookmark: isBookmark ?? this.isBookmark,
+      isBookmarked: isBookmarked ?? this.isBookmarked,
       skills: skills ?? this.skills,
       tasks: tasks ?? this.tasks,
       numberApplied: numberApplied ?? this.numberApplied,
+      paymentAvailable: paymentAvailable ?? this.paymentAvailable,
     );
   }
 
@@ -155,8 +162,10 @@ class PostEntity extends BaseEntity with EquatableMixin {
         creatorAvatar,
         companyName,
         companyLogo,
-        isBookmark,
+        isBookmarked,
         skills,
         tasks,
+        numberApplied,
+        paymentAvailable,
       ];
 }

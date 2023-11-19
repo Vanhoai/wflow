@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 
 class CompanyInformationWidget extends StatelessWidget {
@@ -45,7 +47,7 @@ class CompanyInformationWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '🙋🏻‍♂️ Collaboration',
+                        '🙋🏻‍♂️ ${instance.get<AppLocalization>().translate("collaboration")}',
                         style: themeData.textTheme.displayMedium!,
                       ),
                       4.verticalSpace,
@@ -69,7 +71,7 @@ class CompanyInformationWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '📝 Posted',
+                        '📝 ${instance.get<AppLocalization>().translate("posted")}',
                         style: themeData.textTheme.displayMedium!,
                       ),
                       4.verticalSpace,
@@ -87,7 +89,7 @@ class CompanyInformationWidget extends StatelessWidget {
           ),
           12.verticalSpace,
           Text(
-            '🔎 Overview',
+            '🔎 ${instance.get<AppLocalization>().translate("overview")}',
             style: themeData.textTheme.displayMedium!.copyWith(
               fontSize: 16.sp,
             ),
@@ -102,7 +104,7 @@ class CompanyInformationWidget extends StatelessWidget {
           ),
           12.verticalSpace,
           Text(
-            '📞 Phone',
+            '📞 ${instance.get<AppLocalization>().translate("phone")}',
             style: themeData.textTheme.displayMedium!.copyWith(
               fontSize: 16.sp,
             ),
@@ -120,7 +122,7 @@ class CompanyInformationWidget extends StatelessWidget {
           Text(companyEntity.email, style: contentStyle, maxLines: 2),
           12.verticalSpace,
           Text(
-            '🏡 Address',
+            '🏡 ${instance.get<AppLocalization>().translate("address")}',
             style: themeData.textTheme.displayMedium!.copyWith(
               fontSize: 16.sp,
             ),

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -56,7 +57,7 @@ class _SignInScreenState extends State<SignInScreen> {
                     Container(
                       padding: const EdgeInsets.only(top: 17, bottom: 20),
                       child: Text(
-                        'Sign in to your account',
+                        instance.get<AppLocalization>().translate('login') ?? 'Sign in your account',
                         style: Theme.of(context).textTheme.displayLarge,
                       ),
                     ),
@@ -75,7 +76,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             padding: const EdgeInsets.symmetric(horizontal: 8),
                             color: Colors.white,
                             child: Text(
-                              'or',
+                              instance.get<AppLocalization>().translate('or') ?? 'or',
                               style: Theme.of(context).textTheme.displayMedium,
                             ),
                           )
@@ -105,7 +106,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 Align(
                                   alignment: Alignment.center,
                                   child: Text(
-                                    'Sign in with Google',
+                                    instance.get<AppLocalization>().translate('signInWithGoogle') ??
+                                        'Sign in with Google',
                                     style: Theme.of(context).textTheme.displayMedium,
                                   ),
                                 )
@@ -123,7 +125,8 @@ class _SignInScreenState extends State<SignInScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'You don\'t have an account?',
+                            instance.get<AppLocalization>().translate('youDontHaveAccount') ??
+                                'Don\'t have an account ?',
                             style: Theme.of(context).textTheme.displayMedium,
                           ),
                           InkWell(
@@ -132,7 +135,7 @@ class _SignInScreenState extends State<SignInScreen> {
                             child: Padding(
                               padding: const EdgeInsets.all(2),
                               child: Text(
-                                'Sign Up',
+                                instance.get<AppLocalization>().translate('signUp') ?? 'Sign Up',
                                 style: Theme.of(context)
                                     .textTheme
                                     .displayMedium!

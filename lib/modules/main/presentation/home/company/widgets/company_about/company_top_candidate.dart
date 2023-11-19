@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
@@ -85,6 +87,8 @@ class _CompanyTopCandidateState extends State<CompanyTopCandidate> {
                           height: constraints.maxHeight,
                           padding: EdgeInsets.symmetric(vertical: 8.h),
                           child: JobCard(
+                            time: job.updatedAt!,
+                            jobId: job.id,
                             isHorizontal: true,
                             boxDecoration: BoxDecoration(
                               color: themeData.colorScheme.background,
@@ -138,7 +142,7 @@ class _CompanyTopCandidateState extends State<CompanyTopCandidate> {
                                 8.horizontalSpace,
                               ],
                             ),
-                            cost: '${job.salary} VND',
+                            cost: instance.get<ConvertString>().moneyFormat(value: job.salary),
                             duration: job.duration,
                             description: TextMore(
                               job.content,

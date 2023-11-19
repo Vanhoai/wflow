@@ -4,7 +4,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -46,11 +45,18 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
     return BlocProvider(
       create: (_) => CandidateDetailBloc(contractUseCase: instance.get<ContractUseCase>())
         ..add(GetCandidateDetailEvent(id: widget.candidate)),
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Candidate Detail'),
+        appBar: AppHeader(
+          text: Text(
+            'Candidate Detail',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
         hideKeyboardWhenTouchOutside: true,
         body: BlocBuilder<CandidateDetailBloc, CandidateDetailState>(
           builder: (context, state) {

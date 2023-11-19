@@ -6,8 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
-import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/videocall/bloc/bloc.dart';
 import 'package:wflow/common/videocall/bloc/event.dart';
@@ -70,12 +70,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
   @override
   Widget build(BuildContext context) {
     Future<void> redirectFlash() async {
-      int role = instance.get<AppBloc>().state.role.toInt();
-      if (role == 2) {
-        instance.get<NavigationService>().pushNamed(RouteKeys.upPostScreen);
-      } else {
-        instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
-      }
+      instance.get<NavigationService>().pushNamed(RouteKeys.contractScreen);
     }
 
     return BlocListener(
@@ -147,12 +142,12 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
               BottomNavigationBarItem(
                 icon: bottomTabBar(AppConstants.bottomHome, false),
                 activeIcon: bottomTabBar(AppConstants.bottomHome, true),
-                label: 'Home',
+                label: instance.get<AppLocalization>().translate('home') ?? 'Home',
               ),
               BottomNavigationBarItem(
                 icon: bottomTabBar(AppConstants.bottomWork, false),
                 activeIcon: bottomTabBar(AppConstants.bottomWork, true),
-                label: 'Works',
+                label: instance.get<AppLocalization>().translate('work') ?? 'Works',
               ),
               const BottomNavigationBarItem(
                 icon: SizedBox.shrink(),
@@ -162,12 +157,12 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
               BottomNavigationBarItem(
                 icon: bottomTabBar(AppConstants.bottomMessage, false),
                 activeIcon: bottomTabBar(AppConstants.bottomMessage, true),
-                label: 'Message',
+                label: instance.get<AppLocalization>().translate('message') ?? 'Message',
               ),
               BottomNavigationBarItem(
                 icon: bottomTabBar(AppConstants.bottomExtended, false),
                 activeIcon: bottomTabBar(AppConstants.bottomExtended, true),
-                label: 'Personal',
+                label: instance.get<AppLocalization>().translate('personal') ?? 'Personal',
               ),
             ],
           ),

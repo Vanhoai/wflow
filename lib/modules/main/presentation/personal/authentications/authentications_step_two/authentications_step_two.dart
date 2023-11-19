@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,9 +38,13 @@ class AuthStepTwoScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Theme.of(context).copyWith(primaryColor: AppColors.blueColor);
+    final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
-        appBar: const AppHeader(
-          text: 'Verify account',
+        appBar: AppHeader(
+          text: Text(
+            'Verify Account',
+            style: themeData.textTheme.displayMedium,
+          ),
         ),
         body: BlocBuilder<AuthenticationsBloc, AuthenticationsState>(
           bloc: instance.get<AuthenticationsBloc>(),
@@ -84,12 +87,12 @@ class AuthStepTwoScreen extends StatelessWidget {
                           alignment: Alignment.center,
                           child: LayoutBuilder(
                             builder: (context, constraints) {
-                              if (state.stepTwo.messageStep == "") {
+                              if (state.stepTwo.messageStep == '') {
                                 return const SizedBox(
                                   height: 24,
                                 );
                               } else {
-                                if (state.stepTwo.messageStep == "SUCCESS") {
+                                if (state.stepTwo.messageStep == 'SUCCESS') {
                                   return Row(
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -132,66 +135,31 @@ class AuthStepTwoScreen extends StatelessWidget {
                         ),
                         Align(
                           alignment: Alignment.center,
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () {
-                                  _pickImage(context: context);
-                                },
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
-                                  ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.image, color: AppColors.primary),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'CHỌN ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                          child: InkWell(
+                            borderRadius: const BorderRadius.all(Radius.circular(4.0)),
+                            onTap: () {
+                              _pickImage(context: context);
+                            },
+                            child: Ink(
+                              padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(4),
+                                color: AppColors.primary.withAlpha(30),
                               ),
-                              Text(
-                                ' / ',
-                                style: Theme.of(context).textTheme.labelLarge,
-                              ),
-                              InkWell(
-                                borderRadius: const BorderRadius.all(Radius.circular(4.0)),
-                                onTap: () {
-                                  _getImageFromCamera(context: context);
-                                },
-                                child: Ink(
-                                  padding: const EdgeInsets.only(top: 4, bottom: 4, left: 7, right: 13),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(4),
-                                    color: AppColors.primary.withAlpha(30),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(Icons.image, color: AppColors.primary),
+                                  const SizedBox(
+                                    width: 10,
                                   ),
-                                  child: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      const Icon(Icons.camera_alt, color: AppColors.primary),
-                                      const SizedBox(
-                                        width: 10,
-                                      ),
-                                      Text(
-                                        'CHỤP ẢNH',
-                                        style: Theme.of(context).textTheme.displayMedium,
-                                      )
-                                    ],
-                                  ),
-                                ),
+                                  Text(
+                                    'CHỌN ẢNH',
+                                    style: Theme.of(context).textTheme.displayMedium,
+                                  )
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ),
                         const Spacer(),

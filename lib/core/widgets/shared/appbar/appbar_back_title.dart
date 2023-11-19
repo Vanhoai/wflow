@@ -5,14 +5,14 @@ import 'package:wflow/configuration/constants.dart';
 class AppHeader extends StatelessWidget implements PreferredSizeWidget {
   const AppHeader({
     super.key,
-    this.text = '',
+    this.text = const Text(''),
     this.onBack,
     this.onTap,
     this.actions,
   });
 
   final Function? onBack;
-  final String text;
+  final Widget text;
   final List<Widget>? actions;
   final void Function()? onTap;
 
@@ -22,10 +22,7 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
 
     return AppBar(
       centerTitle: true,
-      title: Text(
-        text,
-        style: themeData.textTheme.displayMedium,
-      ),
+      title: text,
       backgroundColor: themeData.colorScheme.background,
       surfaceTintColor: themeData.colorScheme.background,
       leading: Padding(
@@ -34,8 +31,9 @@ class AppHeader extends StatelessWidget implements PreferredSizeWidget {
           onTap: () {
             if (onBack != null) {
               onBack!();
+            } else {
+              Navigator.pop(context);
             }
-            Navigator.pop(context);
           },
           borderRadius: BorderRadius.circular(50),
           child: Container(

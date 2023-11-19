@@ -1,11 +1,14 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_masked_text2/flutter_masked_text2.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
+import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/skill_category.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/task_create_post.dart';
@@ -19,23 +22,28 @@ class UpPostScreen extends StatefulWidget {
 }
 
 class _UpPostScreenState extends State<UpPostScreen> {
-  late final TextEditingController _titleController;
-  late final TextEditingController _descriptionController;
-  late final TextEditingController _budgetController;
-
+  late TextEditingController titleController;
+  late TextEditingController descriptionController;
+  late MoneyMaskedTextController budgetController;
+  late TextEditingController duration;
+  late TextEditingController position;
+      
   @override
   void initState() {
-    _titleController = TextEditingController(text: '');
-    _descriptionController = TextEditingController(text: '');
-    _budgetController = TextEditingController(text: '');
+    titleController = TextEditingController();
+    descriptionController = TextEditingController();
+    budgetController = MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
+    duration = TextEditingController();
+    position = TextEditingController();
     super.initState();
   }
 
   @override
   void dispose() {
-    _titleController.dispose();
-    _descriptionController.dispose();
-    _budgetController.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+    budgetController.dispose();
+    duration.dispose();
     super.dispose();
   }
 
@@ -47,10 +55,16 @@ class _UpPostScreenState extends State<UpPostScreen> {
       create: (_) => UpPostBloc(
         categoryUseCase: instance.get<CategoryUseCase>(),
         contractUseCase: instance.get<ContractUseCase>(),
+        postUseCase: instance.get<PostUseCase>(),
       )..add(UpPostInitialEvent()),
       child: CommonScaffold(
-        appBar: const AppHeader(text: 'Up Post'),
-        hideKeyboardWhenTouchOutside: true,
+        appBar: AppHeader(
+          text: Text(
+            'Up Post',
+            style: themeData.textTheme.displayMedium,
+          ),
+        ),
+        hideKeyboardWhenTouchOutside: false,
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -65,91 +79,146 @@ class _UpPostScreenState extends State<UpPostScreen> {
                 physics: const BouncingScrollPhysics(),
                 slivers: [
                   SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Title',
-                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: _titleController,
-                            maxLines: 2,
-                            minLines: 1,
-                            hintText: 'Enter project title',
-                          ),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Describe',
-                            style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                              color: themeData.colorScheme.onBackground,
-                            )),
-                          ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: _descriptionController,
-                            maxLines: 5,
-                            minLines: 3,
-                            hintText: 'Enter basic description for project',
-                          ),
-                          const SizedBox(height: 20),
-                          const SkillAndCategory(),
-                          const SizedBox(height: 20),
-                          Text(
-                            'Budget',
-                            style: themeData.textTheme.displayMedium!.merge(
-                              TextStyle(
-                                color: themeData.colorScheme.onBackground,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              Text(
+                                'Title',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
                               ),
-                            ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: titleController,
+                                maxLines: 2,
+                                minLines: 1,
+                                hintText: 'Enter project title',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Describe',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: descriptionController,
+                                maxLines: 5,
+                                minLines: 3,
+                                hintText: 'Enter basic description',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Duration',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: duration,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter duration (optional)',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Position',
+                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                  color: themeData.colorScheme.onBackground,
+                                )),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: position,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter position',
+                              ),
+                              20.verticalSpace,
+                              Text(
+                                'Budget',
+                                style: themeData.textTheme.displayMedium!.merge(
+                                  TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  ),
+                                ),
+                              ),
+                              8.verticalSpace,
+                              TextFieldHelper(
+                                controller: budgetController,
+                                maxLines: 1,
+                                minLines: 1,
+                                hintText: 'Enter budget',
+                                keyboardType: TextInputType.number,
+                              ),
+                              20.verticalSpace,
+                            ],
                           ),
-                          const SizedBox(height: 8),
-                          TextFieldHelper(
-                            controller: _budgetController,
-                            maxLines: 1,
-                            minLines: 1,
-                            hintText: 'Enter budget for project',
-                            keyboardType: TextInputType.number,
-                            suffixIcon: const Icon(Icons.attach_money_sharp),
+                        ),
+                        20.verticalSpace,
+                        const SkillAndCategory(),
+                        20.verticalSpace,
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 20.w),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.stretch,
+                            children: [
+                              const TaskCreatePost(),
+                              20.verticalSpace,
+                              ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                              80.verticalSpace,
+                            ],
                           ),
-                          const SizedBox(height: 20),
-                          const TaskCreatePost(),
-                          const SizedBox(height: 20),
-                          ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                          const SizedBox(height: 80),
-                        ],
-                      ),
+                        )
+                      ],
                     ),
                   ),
                 ],
               ),
-              Visibility(
-                visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-                child: Positioned(
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: themeData.colorScheme.background,
+              BlocBuilder<UpPostBloc, UpPostState>(
+                builder: (context, state) {
+                  return Visibility(
+                    visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
+                    child: Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: themeData.colorScheme.background,
+                        ),
+                        child: PrimaryButton(
+                          label: 'Post',
+                          onPressed: () {
+                            context.read<UpPostBloc>().add(
+                                  UpPostSubmitEvent(
+                                    budget: budgetController.numberValue.toInt().toString(),
+                                    description: descriptionController.text,
+                                    title: titleController.text,
+                                    duration: duration.text,
+                                    position: position.text,
+                                  ),
+                                );
+                          },
+                          width: double.infinity,
+                        ),
+                      ),
                     ),
-                    child: PrimaryButton(
-                      label: 'Create',
-                      onPressed: () {},
-                      width: double.infinity,
-                    ),
-                  ),
-                ),
-              ),
+                  );
+                },
+              )
             ],
           ),
         ),

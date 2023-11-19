@@ -1,9 +1,11 @@
+import 'package:dio/dio.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
+import 'package:wflow/modules/main/data/user/models/request/update_profile.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 
 abstract class UserPath {
@@ -13,15 +15,19 @@ abstract class UserPath {
   static const String getAllCollaborator = '/business/members-in-my-business';
   static const String removeCollaborator = '/business/remove-collaborator';
   static String findUserByID(String id) => '/user/find/$id';
+  static const String updateProfile = '/user/update-profile';
 }
 
 abstract class UserService {
   Future<UserModel> myProfile();
-  Future<List<UserModel>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel);
-  Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel);
-  Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
-  Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
+  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness({
+    required GetUserNotBusinessModel getUserNotBusinessModel,
+  });
+  Future<String> addCollaborator(AddCollaboratorModel addCollaboratorModel);
+  Future<HttpResponseWithPagination<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel);
+  Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
   Future<UserModel> findUserByID({required String id});
+  Future<String> updateProfile({required RequestUpdateProfile request});
 }
 
 class UserServiceImpl implements UserService {
@@ -34,18 +40,20 @@ class UserServiceImpl implements UserService {
     try {
       final response = await agent.dio.get(UserPath.myProfile);
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return UserModel.fromJson(httpResponse.data);
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return UserModel.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
   @override
-  Future<List<UserModel>> getUsersNotBusiness(GetUserNotBusinessModel getUserNotBusinessModel) async {
+  Future<HttpResponseWithPagination<UserModel>> getUsersNotBusiness({
+    required GetUserNotBusinessModel getUserNotBusinessModel,
+  }) async {
     try {
       final response = await agent.dio.get(
         UserPath.getUsersNotBusiness,
@@ -55,42 +63,47 @@ class UserServiceImpl implements UserService {
           'search': getUserNotBusinessModel.search,
         },
       );
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        List<UserModel> users = [];
-        httpResponse.data.forEach((user) {
-          users.add(UserModel.fromJson(user));
-        });
 
-        return users;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      if (e is CommonFailure) {
-        return throw CommonFailure(message: e.message, statusCode: e.statusCode);
+
+      List<UserModel> users = [];
+      for (var user in httpResponse.data) {
+        users.add(UserModel.fromJson(user));
       }
-      return throw const ServerFailure();
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: users,
+      );
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
   @override
-  Future<bool> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
+  Future<String> addCollaborator(AddCollaboratorModel addCollaboratorModel) async {
     try {
       final response = await agent.dio.patch(UserPath.addCollaborator, data: addCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return true;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
   @override
-  Future<List<UserModel>> getAllCollaborator(GetAllCollaboratorModel getAllCollaboratorModel) async {
+  Future<HttpResponseWithPagination<UserModel>> getAllCollaborator(
+    GetAllCollaboratorModel getAllCollaboratorModel,
+  ) async {
     try {
       final response = await agent.dio.get(
         UserPath.getAllCollaborator,
@@ -99,36 +112,40 @@ class UserServiceImpl implements UserService {
           'pageSize': getAllCollaboratorModel.pageSize,
         },
       );
-      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        List<UserModel> users = [];
-        httpResponse.data.forEach((user) {
-          users.add(UserModel.fromJson(user));
-        });
-        return users;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+
+      HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      if (e is CommonFailure) {
-        return throw CommonFailure(message: e.message, statusCode: e.statusCode);
+
+      List<UserModel> users = [];
+      for (var user in httpResponse.data) {
+        users.add(UserModel.fromJson(user));
       }
-      return throw const ServerFailure();
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: users,
+      );
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
   @override
-  Future<bool> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
+  Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel) async {
     try {
       final response = await agent.dio.patch(UserPath.removeCollaborator, data: removeCollaboratorModel.toJson());
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
-      if (httpResponse.statusCode == 200) {
-        return true;
-      } else {
-        return throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
       }
-    } catch (e) {
-      return throw const ServerFailure();
+
+      return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 
@@ -139,12 +156,39 @@ class UserServiceImpl implements UserService {
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
 
       if (httpResponse.statusCode != 200) {
-        throw CommonFailure(message: httpResponse.message, statusCode: httpResponse.statusCode);
+        throw ServerException(httpResponse.message);
       }
 
       return UserModel.fromJson(httpResponse.data);
     } catch (exception) {
-      throw ServerException(message: exception.toString());
+      throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<String> updateProfile({required RequestUpdateProfile request}) async {
+    try {
+      var formData = FormData.fromMap({
+        'avatar': request.avatar != null ? await MultipartFile.fromFile((request.avatar!.path)) : null,
+        'background': request.background != null ? await MultipartFile.fromFile(request.background!.path) : null,
+        'address': request.address,
+        'bio': request.bio,
+        'dob': request.dob,
+        'age': request.age
+      });
+      final response = await agent.dio.put(
+        UserPath.updateProfile,
+        data: formData,
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
+      return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(exception.toString());
     }
   }
 }

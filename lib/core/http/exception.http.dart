@@ -1,9 +1,18 @@
 class ServerException implements Exception {
-  ServerException({
-    this.message = 'Server Error',
-  });
+  ServerException(dynamic data) {
+    if (data is String) {
+      message = data;
+    } else if (data is Map) {
+      message = data.toString();
+    }
+  }
 
-  final String message;
+  String message = 'Có lỗi xảy ra, vui lòng thử lại sau';
+
+  @override
+  String toString() {
+    return message;
+  }
 }
 
 class CacheException implements Exception {}

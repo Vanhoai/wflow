@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -23,32 +24,34 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
     final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     staticMenuSelection = [
       {
-        'title': 'Balance',
+        'title': instance.get<AppLocalization>().translate('balance') ?? 'Balance',
         'icon': AppConstants.ic_balance,
       },
       {
-        'title': 'Reputation',
+        'title': instance.get<AppLocalization>().translate('reputation') ?? 'Reputation',
         'icon': AppConstants.ic_reputation,
       },
       {
-        'title': isUser ? 'Apply' : 'Business',
+        'title': isUser
+            ? instance.get<AppLocalization>().translate('apply') ?? 'Apply'
+            : instance.get<AppLocalization>().translate('business') ?? 'Business',
         'icon': isUser ? AppConstants.apply : AppConstants.ic_business,
       },
       {
-        'title': 'Bookmark',
+        'title': instance.get<AppLocalization>().translate('bookmark') ?? 'Bookmark',
         'icon': AppConstants.ic_bookmark_navigate,
       },
       {
-        'title': 'Sign',
+        'title': instance.get<AppLocalization>().translate('sign') ?? 'Waiting',
         'icon': AppConstants.ic_more,
       },
       {
-        'title': 'Signed',
+        'title': instance.get<AppLocalization>().translate('signed') ?? 'Signed',
         'icon': AppConstants.ic_signed,
       },
       {
-        'title': isUser ? 'Cv' : 'Completed',
-        'icon': isUser ? AppConstants.ic_cv : AppConstants.history,
+        'title': isUser ? 'Cv' : instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
+        'icon': isUser ? AppConstants.ic_cv : AppConstants.more,
       },
       {
         'title': 'Graph',
@@ -68,7 +71,8 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isVerify) {
           Navigator.of(context).pushNamed(RouteKeys.balanceScreen, arguments: balance.toString());
         } else {
-          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
+              'You not have balance, please verify your account!');
         }
         break;
       case 1:
@@ -91,26 +95,35 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isVerify) {
           Navigator.of(context).pushNamed(RouteKeys.contractWaitingSignScreen);
         } else {
-          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          AlertUtils.showMessage(
+            instance.get<AppLocalization>().translate('notification'),
+            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+          );
         }
         break;
       case 5:
         if (isVerify) {
           Navigator.of(context).pushNamed(RouteKeys.signedScreen);
         } else {
-          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          AlertUtils.showMessage(
+            instance.get<AppLocalization>().translate('notification'),
+            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+          );
         }
         break;
       case 6:
         if (!isVerify) {
-          AlertUtils.showMessage('Notification', 'You not have balance, please verify your account!');
+          AlertUtils.showMessage(
+            instance.get<AppLocalization>().translate('notification'),
+            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+          );
           return;
         }
 
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.cvScreen);
         } else {
-          Navigator.of(context).pushNamed(RouteKeys.completedContractScreen);
+          Navigator.of(context).pushNamed(RouteKeys.upPostScreen);
         }
         break;
       case 7:

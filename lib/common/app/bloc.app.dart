@@ -37,7 +37,6 @@ class AppBloc extends HydratedBloc<AppEvent, AppState> {
   }
 
   FutureOr<void> onAppChangeLanguage(AppChangeLanguage event, Emitter<AppState> emit) async {
-    localization.translate(event.languageCode);
     emit(state.copyWith(languageCode: event.languageCode));
   }
 

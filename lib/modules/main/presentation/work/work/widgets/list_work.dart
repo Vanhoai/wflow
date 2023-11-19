@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/work/work/bloc/bloc.dart';
@@ -95,20 +97,12 @@ class _ListWorksState extends State<ListWorks> {
               );
             },
           ),
-          BlocConsumer<WorkBloc, WorkState>(
-            listener: (context, state) {
-              if (state.isFinal) {
-                // Fluttertoast.showToast(
-                //   msg: 'Đã hiển thị hết bài đăng',
-                //   toastLength: Toast.LENGTH_SHORT,
-                //   gravity: ToastGravity.CENTER,
-                //   timeInSecForIosWeb: 1,
-                //   fontSize: 16.0,
-                // );
-              }
-            },
+          BlocBuilder<WorkBloc, WorkState>(
             buildWhen: (prev, cur) =>
-                prev.isLoading != cur.isLoading || prev.isLoadMore != cur.isLoadMore || prev.isFinal != cur.isFinal,
+                prev.isLoading != cur.isLoading ||
+                prev.isLoadMore != cur.isLoadMore ||
+                prev.isFinal != cur.isFinal ||
+                prev.bookmarks != cur.bookmarks,
             builder: (context, state) {
               return Expanded(
                 child: RefreshIndicator(
@@ -147,73 +141,82 @@ class _ListWorksState extends State<ListWorks> {
                               visible: !state.isFinal && state.isLoadMore,
                               replacement: const SizedBox(),
                               child: const CupertinoActivityIndicator(
-                                radius: 12,
+                                radius: 16,
                               ),
                             );
                           }
 
                           final post = state.posts[index];
 
-                          return JobCard(
-                            cardPressed: () => pressCard(post.id),
-                            margin: const EdgeInsets.symmetric(horizontal: 20.0),
-                            boxDecoration: BoxDecoration(
-                              color: themeData.colorScheme.background,
-                              borderRadius: BorderRadius.circular(8.0),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                                BoxShadow(
-                                  color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            padding: const EdgeInsets.all(12),
-                            header: Header(
-                              leadingPhotoUrl: post.companyLogo,
-                              title: Text(
-                                post.position,
-                                style: themeData.textTheme.displayLarge!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
+                          return Container(
+                            constraints: const BoxConstraints(maxHeight: 270),
+                            child: JobCard(
+                              time: post.updatedAt!,
+                              jobId: post.id,
+                              cardPressed: () => pressCard(post.id),
+                              margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                              boxDecoration: BoxDecoration(
+                                color: themeData.colorScheme.background,
+                                borderRadius: BorderRadius.circular(8.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                  BoxShadow(
+                                    color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                    blurRadius: 4,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
                               ),
-                              onTapLeading: () {},
-                              subtitle: Text(
-                                post.companyName,
-                                style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                  color: themeData.colorScheme.onBackground,
-                                )),
-                              ),
-                              leadingSize: 30,
-                              actions: [
-                                InkWell(
-                                  child: SvgPicture.asset(
-                                    AppConstants.bookmark,
-                                    height: 24,
-                                    width: 24,
-                                    colorFilter: ColorFilter.mode(
-                                      themeData.colorScheme.onBackground.withOpacity(0.5),
-                                      BlendMode.srcIn,
+                              padding: const EdgeInsets.all(12),
+                              header: Header(
+                                leadingPhotoUrl: post.companyLogo,
+                                title: Text(
+                                  post.position,
+                                  style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  )),
+                                ),
+                                onTapLeading: () {},
+                                subtitle: Text(
+                                  post.companyName,
+                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  )),
+                                ),
+                                leadingSize: 30,
+                                actions: [
+                                  InkWell(
+                                    onTap: () => context.read<WorkBloc>().add(ToggleBookmarkWorkEvent(
+                                        id: post.id, index: index, isBookmarkeded: !state.bookmarks[index])),
+                                    child: SvgPicture.asset(
+                                      AppConstants.bookmark,
+                                      height: 24,
+                                      width: 24,
+                                      colorFilter: ColorFilter.mode(
+                                        state.bookmarks[index]
+                                            ? themeData.colorScheme.primary
+                                            : themeData.colorScheme.onBackground.withOpacity(0.5),
+                                        BlendMode.srcIn,
+                                      ),
                                     ),
                                   ),
-                                ),
-                                const SizedBox(width: 8.0),
-                              ],
-                            ),
-                            cost: '${post.salary} VND',
-                            duration: post.duration,
-                            description: TextMore(
-                              post.content,
-                              trimMode: TrimMode.Hidden,
-                              trimHiddenMaxLines: 3,
-                              style: themeData.textTheme.displayMedium!.merge(
-                                TextStyle(
-                                  color: themeData.colorScheme.onBackground,
+                                  const SizedBox(width: 8.0),
+                                ],
+                              ),
+                              cost: instance.get<ConvertString>().moneyFormat(value: post.salary),
+                              duration: post.duration,
+                              description: TextMore(
+                                post.content,
+                                trimMode: TrimMode.Hidden,
+                                trimHiddenMaxLines: 3,
+                                style: themeData.textTheme.displayMedium!.merge(
+                                  TextStyle(
+                                    color: themeData.colorScheme.onBackground,
+                                  ),
                                 ),
                               ),
                             ),

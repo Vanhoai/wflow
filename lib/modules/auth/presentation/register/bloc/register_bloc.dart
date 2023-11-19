@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -58,7 +59,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
   Future<void> onRegisterWithGoogle(RegisterWithGoogleEvent event, Emitter<RegisterState> emit) async {
     String idToken = await FirebaseAuthService.signInWithGoogle();
     if (idToken.isEmpty) {
-      AlertUtils.showMessage('Notification', "Can't get IDToken from Google");
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), "Can't get IDToken from Google");
       return;
     }
 
@@ -78,7 +80,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         );
       },
       (Failure failure) {
-        AlertUtils.showMessage('Notification', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
       },
     );
 

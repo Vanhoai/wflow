@@ -64,8 +64,10 @@ class SignCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(48.r),
                   child: CachedNetworkImage(
                     imageUrl: contractEntity.business.logo,
-                    placeholder: (context, url) => const Center(child: CupertinoActivityIndicator(radius: 16)),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
+                    placeholder: (context, url) => const Center(
+                        child: CupertinoActivityIndicator(radius: 16)),
+                    errorWidget: (context, url, error) =>
+                        const Icon(Icons.error),
                     fadeInCurve: Curves.easeIn,
                     filterQuality: FilterQuality.high,
                     fit: BoxFit.cover,
@@ -79,8 +81,17 @@ class SignCard extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(contractEntity.business.name, style: themeData.textTheme.labelLarge),
-                      Text(contractEntity.position, style: themeData.textTheme.labelMedium),
+                      Text(
+                        contractEntity.business.name,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          overflow: TextOverflow.ellipsis,
+                          letterSpacing: 0.5,
+                        ),
+                      ),
+                      Text(contractEntity.position,
+                          style: themeData.textTheme.labelMedium),
                     ],
                   ),
                 ),
@@ -88,12 +99,16 @@ class SignCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('status') ?? 'Status',
+                      instance.get<AppLocalization>().translate('status') ??
+                          'Status',
                       style: themeData.textTheme.labelMedium,
                     ),
                     4.verticalSpace,
                     Text(
-                      instance.get<AppLocalization>().translate(contractEntity.state) ?? 'Not Found',
+                      instance
+                              .get<AppLocalization>()
+                              .translate(contractEntity.state) ??
+                          'Not Found',
                       style: themeData.textTheme.labelMedium!.copyWith(
                         color: changeColorWithStatus(contractEntity.state),
                       ),

@@ -88,5 +88,7 @@
   "dayAgo": "ngày trước",
   "weekAgo": "tuần trước",
   "monthAgo": "tháng trước",
-  "yearAgo": "năm trước"
+  "yearAgo": "năm trước",
+  "Completed": "Hoàn thành",
+  "graph": "Thống kê"
 }

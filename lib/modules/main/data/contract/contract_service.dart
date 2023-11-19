@@ -12,30 +12,50 @@ abstract class ContractService {
   Future<String> businessSignContract(int id);
   Future<ContractEntity> candidateAppliedDetail(String id);
   Future<String> createContract(CreateContractModel request);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractAccepted(GetContractOfUserAndBusiness request);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request);
-  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractAccepted(
+      GetContractOfUserAndBusiness request);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(
+      GetContractWaitingSign request);
+  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(
+      num id, GetCandidateApplied request);
   Future<String> workerSignContract(int id);
-  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(RequestApplyModel requestApplyModel);
-  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request);
+  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(
+      RequestApplyModel requestApplyModel);
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(
+      GetContractSigned request);
   Future<String> checkContractAndTransfer(int id);
+  Future<HttpResponseWithPagination<ContractEntity>> getContractCompleted(
+      GetContractSigned req);
 }
 
 class ContractPaths {
   static const String applyPost = '/contract/apply-post';
-  static String getPathBusinessSignContract(int id) => '/contract/business-sign-contract/$id';
-  static String getPathCandidateAppliedDetail(String id) => '/contract/candidate-applied-detail/$id';
+  static String getPathBusinessSignContract(int id) =>
+      '/contract/business-sign-contract/$id';
+  static String getPathCandidateAppliedDetail(String id) =>
+      '/contract/candidate-applied-detail/$id';
   static const String createContract = '/contract/update-contract';
-  static const String findContractAcceptedOfUser = '/contract/find-contract-accepted-of-user';
-  static const String findContractAcceptedOfBusiness = '/contract/find-contract-accepted-of-business';
-  static const String findContractWaitingSignOfUser = '/contract/find-contract-waiting-sign-of-user';
-  static const String findContractWaitingSignOfBusiness = '/contract/find-contract-waiting-sign-of-business';
-  static String getPathCandidateApplied(num id) => '/contract/candidate-applied/$id';
-  static String getPathWorkerSignContract(int id) => '/contract/worker-sign-contract/$id';
-  static const String findContractSignedOfUser = '/contract/find-contract-signed-of-user';
-  static const String findContractSignedOfBusiness = '/contract/find-contract-signed-of-business';
-  static String checkContractAndTransfer(int id) => '/contract/check-contract-and-transfer/$id';
+  static const String findContractAcceptedOfUser =
+      '/contract/find-contract-accepted-of-user';
+  static const String findContractAcceptedOfBusiness =
+      '/contract/find-contract-accepted-of-business';
+  static const String findContractWaitingSignOfUser =
+      '/contract/find-contract-waiting-sign-of-user';
+  static const String findContractWaitingSignOfBusiness =
+      '/contract/find-contract-waiting-sign-of-business';
+  static String getPathCandidateApplied(num id) =>
+      '/contract/candidate-applied/$id';
+  static String getPathWorkerSignContract(int id) =>
+      '/contract/worker-sign-contract/$id';
+  static const String findContractSignedOfUser =
+      '/contract/find-contract-signed-of-user';
+  static const String findContractSignedOfBusiness =
+      '/contract/find-contract-signed-of-business';
+  static String checkContractAndTransfer(int id) =>
+      '/contract/check-contract-and-transfer/$id';
   static const String getContractApplies = '/contract/find-post-applied';
+  static const String getContractCompletedUser = '/contract/find-contract-success-of-user';
+  static const String getContractCompletedBusiness = '/contract/find-contract-success-of-business';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -46,7 +66,8 @@ class ContractServiceImpl implements ContractService {
   @override
   Future<String> applyPost(ApplyPostRequest request) async {
     try {
-      final response = await agent.dio.post(ContractPaths.applyPost, data: request.toJson());
+      final response =
+          await agent.dio.post(ContractPaths.applyPost, data: request.toJson());
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       return httpResponse.message;
     } catch (exception) {
@@ -114,8 +135,9 @@ class ContractServiceImpl implements ContractService {
     GetContractOfUserAndBusiness request,
   ) async {
     try {
-      final path =
-          request.isBusiness ? ContractPaths.findContractAcceptedOfBusiness : ContractPaths.findContractAcceptedOfUser;
+      final path = request.isBusiness
+          ? ContractPaths.findContractAcceptedOfBusiness
+          : ContractPaths.findContractAcceptedOfUser;
 
       final response = await agent.dio.get(
         path,
@@ -126,12 +148,14 @@ class ContractServiceImpl implements ContractService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(httpResponse.message);
       }
 
-      List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
+      List<ContractEntity> contracts =
+          httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -145,7 +169,8 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(
+      GetContractWaitingSign request) async {
     try {
       final url = request.isBusiness
           ? ContractPaths.findContractWaitingSignOfBusiness
@@ -160,12 +185,14 @@ class ContractServiceImpl implements ContractService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(httpResponse.message);
       }
 
-      List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
+      List<ContractEntity> contracts =
+          httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -178,7 +205,8 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, request) async {
+  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(
+      num id, request) async {
     try {
       final response = await agent.dio.get(
         ContractPaths.getPathCandidateApplied(id),
@@ -189,12 +217,14 @@ class ContractServiceImpl implements ContractService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(httpResponse.message);
       }
 
-      List<CandidateEntity> posts = httpResponse.data.map((e) => CandidateEntity.fromJson(e)).toList();
+      List<CandidateEntity> posts =
+          httpResponse.data.map((e) => CandidateEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -209,7 +239,8 @@ class ContractServiceImpl implements ContractService {
   @override
   Future<String> workerSignContract(int id) async {
     try {
-      final response = await agent.dio.patch(ContractPaths.getPathWorkerSignContract(id));
+      final response =
+          await agent.dio.patch(ContractPaths.getPathWorkerSignContract(id));
 
       final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
@@ -223,10 +254,12 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(
+      GetContractSigned request) async {
     try {
-      final url =
-          request.isBusiness ? ContractPaths.findContractSignedOfBusiness : ContractPaths.findContractSignedOfUser;
+      final url = request.isBusiness
+          ? ContractPaths.findContractSignedOfBusiness
+          : ContractPaths.findContractSignedOfUser;
 
       final response = await agent.dio.get(
         url,
@@ -237,12 +270,14 @@ class ContractServiceImpl implements ContractService {
         },
       );
 
-      HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      HttpResponseWithPagination<dynamic> httpResponse =
+          HttpResponseWithPagination.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         throw ServerException(httpResponse.message);
       }
 
-      List<ContractEntity> contracts = httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
+      List<ContractEntity> contracts =
+          httpResponse.data.map((e) => ContractEntity.fromJson(e)).toList();
       return HttpResponseWithPagination(
         statusCode: httpResponse.statusCode,
         message: httpResponse.message,
@@ -255,9 +290,11 @@ class ContractServiceImpl implements ContractService {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(RequestApplyModel requestApplyModel) async {
+  Future<HttpResponseWithPagination<ContractEntity>> getContractApplies(
+      RequestApplyModel requestApplyModel) async {
     try {
-      final response = await agent.dio.get(ContractPaths.getContractApplies, queryParameters: {
+      final response = await agent.dio
+          .get(ContractPaths.getContractApplies, queryParameters: {
         'page': requestApplyModel.page,
         'pageSize': requestApplyModel.pageSize,
         'search': requestApplyModel.search,
@@ -270,7 +307,10 @@ class ContractServiceImpl implements ContractService {
         throw ServerException(httpResponseWithPagination.message);
       }
 
-      final applies = [...httpResponseWithPagination.data.map((e) => ContractEntity.fromJson(e))];
+      final applies = [
+        ...httpResponseWithPagination.data
+            .map((e) => ContractEntity.fromJson(e))
+      ];
 
       return HttpResponseWithPagination(
         statusCode: httpResponseWithPagination.statusCode,
@@ -296,6 +336,45 @@ class ContractServiceImpl implements ContractService {
       }
 
       return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<ContractEntity>> getContractCompleted(
+      GetContractSigned request) async {
+    try {
+      final url = request.isBusiness
+          ? ContractPaths.getContractCompletedBusiness
+          : ContractPaths.getContractCompletedUser;
+
+      final response = await agent.dio.get(
+        url,
+        queryParameters: {
+          'page': request.page,
+          'pageSize': request.pageSize,
+          'search': request.search,
+        },
+      );
+
+      HttpResponseWithPagination<dynamic> httpResponseWithPagination =
+          HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponseWithPagination.statusCode != 200) {
+        throw ServerException(httpResponseWithPagination.message);
+      }
+
+      List<ContractEntity> contracts = [
+        ...httpResponseWithPagination.data
+            .map((e) => ContractEntity.fromJson(e))
+      ];
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponseWithPagination.statusCode,
+        message: httpResponseWithPagination.message,
+        meta: httpResponseWithPagination.meta,
+        data: contracts,
+      );
     } catch (exception) {
       throw ServerException(exception.toString());
     }

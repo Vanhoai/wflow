@@ -21,6 +21,7 @@ import 'package:wflow/modules/main/presentation/home/company/company.dart';
 import 'package:wflow/modules/main/presentation/home/completed/completed.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract_history/contract_history_screen.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
@@ -171,6 +172,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const UpdateBusinessScreen());
       case RouteKeys.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
+      case RouteKeys.contractHistoryScreen:
+        return MaterialPageRoute(builder: (_) => const ContractHistoryScreen());
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

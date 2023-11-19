@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -103,6 +104,8 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                               itemBuilder: (context, index) => Container(
                                 constraints: const BoxConstraints(maxHeight: 270),
                                 child: JobCard(
+                                  cardPressed: () => Navigator.pushNamed(context, RouteKeys.jobInformationScreen,
+                                      arguments: state.postsData[index].id),
                                   time: state.postsData[index].updatedAt!,
                                   jobId: state.postsData[index].id,
                                   margin: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -112,13 +115,13 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                     boxShadow: [
                                       BoxShadow(
                                         color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                        blurRadius: 1,
-                                        offset: const Offset(-1, 1),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
                                       ),
                                       BoxShadow(
                                         color: themeData.colorScheme.onBackground.withOpacity(0.1),
-                                        blurRadius: 1,
-                                        offset: const Offset(-0.5, -0.5),
+                                        blurRadius: 4,
+                                        offset: const Offset(0, 2),
                                       ),
                                     ],
                                   ),
@@ -162,9 +165,10 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                   ),
                                   cost: instance.get<ConvertString>().moneyFormat(value: state.postsData[index].salary),
                                   duration: state.postsData[index].duration,
-                                  description: Text(
+                                  description: TextMore(
                                     state.postsData[index].content,
-                                    maxLines: 4,
+                                    trimMode: TrimMode.Hidden,
+                                    trimHiddenMaxLines: 3,
                                     style: themeData.textTheme.displayMedium!.merge(
                                       TextStyle(
                                         color: themeData.colorScheme.onBackground,

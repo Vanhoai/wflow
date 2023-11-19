@@ -198,29 +198,6 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                   ),
                 ),
               ),
-              actions: [
-                LayoutBuilder(
-                  builder: (context, constraints) {
-                    if (isYourBusiness) {
-                      return Container(
-                        margin: const EdgeInsets.only(right: 10),
-                        child: InkWell(
-                          borderRadius: BorderRadius.circular(50),
-                          child: Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-                              child: Icon(
-                                Icons.contact_page,
-                                color: Theme.of(context).primaryColor,
-                              )),
-                          onTap: () {},
-                        ),
-                      );
-                    } else {
-                      return const SizedBox();
-                    }
-                  },
-                )
-              ],
               backgroundColor: themeData.colorScheme.background,
               surfaceTintColor: Colors.transparent,
               title: Text(
@@ -270,9 +247,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                           crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             SvgPicture.asset(
-                                              'assets/icons/checkgreen.svg',
-                                              width: 20,
-                                              height: 20,
+                                              'assets/icons/timer.svg',
+                                              width: 24,
+                                              height: 24,
                                             ),
                                             Text(
                                                 instance

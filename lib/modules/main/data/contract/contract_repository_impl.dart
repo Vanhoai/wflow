@@ -23,7 +23,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<Either<ContractEntity, Failure>> candidateAppliedDetail(String id) async {
+  Future<Either<ContractEntity, Failure>> candidateAppliedDetail(
+      String id) async {
     try {
       final candidateDetail = await contactService.candidateAppliedDetail(id);
       return Left(candidateDetail);
@@ -33,7 +34,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(num id, GetCandidateApplied request) async {
+  Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(
+      num id, GetCandidateApplied request) async {
     try {
       final response = await contactService.getCandidateApplied(id, request);
       return response;
@@ -43,7 +45,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<Either<String, Failure>> createContract(CreateContractModel request) async {
+  Future<Either<String, Failure>> createContract(
+      CreateContractModel request) async {
     try {
       final response = await contactService.createContract(request);
       return Left(response);
@@ -64,7 +67,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(GetContractWaitingSign request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractWaitingSign(
+      GetContractWaitingSign request) async {
     try {
       final response = await contactService.findContractWaitingSign(request);
       return response;
@@ -94,7 +98,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(GetContractSigned request) async {
+  Future<HttpResponseWithPagination<ContractEntity>> findContractSigned(
+      GetContractSigned request) async {
     try {
       final response = await contactService.findContractSigned(request);
       return response;
@@ -104,8 +109,8 @@ class ContractRepositoryImpl implements ContractRepository {
   }
 
   @override
-  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>> getContractApplies(
-      RequestApplyModel requestApplyModel) async {
+  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
+      getContractApplies(RequestApplyModel requestApplyModel) async {
     try {
       final result = await contactService.getContractApplies(requestApplyModel);
       return Left(result);
@@ -119,6 +124,17 @@ class ContractRepositoryImpl implements ContractRepository {
     try {
       final response = await contactService.checkContractAndTransfer(id);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
+      getContractCompleted(GetContractSigned req) async {
+    try {
+      final result = await contactService.getContractCompleted(req);
+      return Left(result);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
     }

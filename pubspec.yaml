@@ -67,7 +67,6 @@ dependencies:
   chips_choice: ^3.0.1
   flutter_masked_text2: ^0.9.1
 
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

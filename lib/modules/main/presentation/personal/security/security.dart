@@ -1,13 +1,17 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 
 class SecurityScreen extends StatefulWidget {
-  const SecurityScreen({super.key});
+  final bool isVerify;
+  const SecurityScreen({super.key, required this.isVerify});
 
   @override
   State<SecurityScreen> createState() => _SecurityScreenState();
@@ -29,13 +33,15 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
   void onClickTermOfService(BuildContext context) {}
 
+  void onClickChangePassword(BuildContext context) => Navigator.of(context).pushNamed(RouteKeys.changePasswordScreen);
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return CommonScaffold(
       appBar: AppHeader(
         text: Text(
-          'Security',
+          instance.get<AppLocalization>().translate('security') ?? 'Security',
           style: themeData.textTheme.displayMedium,
         ),
       ),
@@ -61,7 +67,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Touch ID',
+                      instance.get<AppLocalization>().translate('touchId') ?? 'Touch ID',
                       style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
@@ -88,7 +94,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Face ID',
+                      instance.get<AppLocalization>().translate('faceId') ?? 'Face ID',
                       style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
@@ -117,7 +123,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Verify',
+                        instance.get<AppLocalization>().translate('verify') ?? 'Verify',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
@@ -128,7 +134,9 @@ class _SecurityScreenState extends State<SecurityScreen> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text(
-                            'Not verify',
+                            widget.isVerify == true
+                                ? instance.get<AppLocalization>().translate('hasVerified') ?? 'Verified'
+                                : instance.get<AppLocalization>().translate('notVerify') ?? 'Not Verified',
                             style: themeData.textTheme.displayMedium!.merge(
                               TextStyle(color: themeData.colorScheme.onBackground),
                             ),
@@ -142,7 +150,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
                               AppConstants.backArrow,
                               width: 20,
                               height: 20,
-                              color: themeData.colorScheme.onBackground,
+                              colorFilter: ColorFilter.mode(
+                                themeData.colorScheme.onBackground,
+                                BlendMode.srcIn,
+                              ),
                             ),
                           )
                         ],
@@ -152,13 +163,48 @@ class _SecurityScreenState extends State<SecurityScreen> {
                 ),
               ),
             ),
+            SliverToBoxAdapter(
+              child: InkWell(
+                onTap: () => onClickChangePassword(context),
+                child: Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        instance.get<AppLocalization>().translate('changePassword') ?? 'Change Password',
+                        style: themeData.textTheme.displayMedium!.merge(
+                          TextStyle(color: themeData.colorScheme.onBackground),
+                        ),
+                      ),
+                      RotatedBox(
+                        quarterTurns: 2,
+                        child: SvgPicture.asset(
+                          AppConstants.backArrow,
+                          width: 20,
+                          height: 20,
+                          colorFilter: ColorFilter.mode(
+                            themeData.colorScheme.onBackground,
+                            BlendMode.srcIn,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             SliverPadding(
               padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
               sliver: SliverToBoxAdapter(
-                child: Text('Legal',
-                    style: themeData.textTheme.displayMedium!.merge(
-                      TextStyle(color: themeData.colorScheme.onBackground.withOpacity(0.7)),
-                    )),
+                child: Text(
+                  instance.get<AppLocalization>().translate('legal') ?? 'Legal',
+                  style: themeData.textTheme.displayMedium!.merge(
+                    TextStyle(color: themeData.colorScheme.onBackground.withOpacity(0.7)),
+                  ),
+                ),
               ),
             ),
             const SliverToBoxAdapter(child: SizedBox(height: 10)),
@@ -173,7 +219,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Privacy policy',
+                        instance.get<AppLocalization>().translate('privacyPolicy') ?? 'Privacy Policy',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
@@ -184,7 +230,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           AppConstants.backArrow,
                           width: 20,
                           height: 20,
-                          color: themeData.colorScheme.onBackground,
+                          colorFilter: ColorFilter.mode(
+                            themeData.colorScheme.onBackground,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],
@@ -203,7 +252,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Accessibility',
+                        instance.get<AppLocalization>().translate('accessibility') ?? 'Accessibility',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
@@ -214,7 +263,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           AppConstants.backArrow,
                           width: 20,
                           height: 20,
-                          color: themeData.colorScheme.onBackground,
+                          colorFilter: ColorFilter.mode(
+                            themeData.colorScheme.onBackground,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],
@@ -233,7 +285,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        'Term of service',
+                        instance.get<AppLocalization>().translate('termOfService') ?? 'Term of service',
                         style: themeData.textTheme.displayMedium!.merge(
                           TextStyle(color: themeData.colorScheme.onBackground),
                         ),
@@ -244,7 +296,10 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           AppConstants.backArrow,
                           width: 20,
                           height: 20,
-                          color: themeData.colorScheme.onBackground,
+                          colorFilter: ColorFilter.mode(
+                            themeData.colorScheme.onBackground,
+                            BlendMode.srcIn,
+                          ),
                         ),
                       ),
                     ],

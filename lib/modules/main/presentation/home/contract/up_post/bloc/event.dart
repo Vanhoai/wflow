@@ -16,7 +16,11 @@ class ToggleCategoryEvent extends UpPostEvent {
   ToggleCategoryEvent(this.categoryEntity);
 }
 
-class UpPostAddTaskEvent extends UpPostEvent {}
+class UpPostAddTaskEvent extends UpPostEvent {
+  final String task;
+
+  UpPostAddTaskEvent({required this.task});
+}
 
 class EditTaskEvent extends UpPostEvent {
   final int index;

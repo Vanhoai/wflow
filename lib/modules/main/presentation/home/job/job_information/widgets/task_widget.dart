@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/widgets/custom/custom.dart';
 
 const String _kProgress = '\u2022';
 
@@ -15,46 +19,33 @@ class TaskWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '📑 Task',
+            '📑 ${instance.get<AppLocalization>().translate("task")}',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,
             )),
           ),
-          const SizedBox(
-            height: 13,
-          ),
-          ListView.separated(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: tasks.length,
-            itemBuilder: (BuildContext context, int index) {
-              return Row(
-                children: [
-                  Text(
-                    '${(index + 1).toString()}.  ',
-                    style: themeData.textTheme.displayMedium!.merge(
-                      TextStyle(
-                        color: themeData.colorScheme.onBackground,
-                      ),
+          6.verticalSpace,
+          Flexible(
+            child: ListView.separated(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: tasks.length,
+              itemBuilder: (BuildContext context, int index) {
+                return TextMore(
+                  '${(index + 1).toString()}. ${tasks[index]}',
+                  style: themeData.textTheme.displayLarge!.merge(
+                    TextStyle(
+                      color: Theme.of(context).colorScheme.onBackground,
+                      fontSize: 16,
                     ),
                   ),
-                  Expanded(
-                    child: Text(
-                      tasks[index],
-                      style: themeData.textTheme.displayLarge!.merge(
-                        TextStyle(
-                          color: Theme.of(context).colorScheme.onBackground,
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              );
-            },
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            separatorBuilder: (BuildContext context, int index) => const SizedBox(height: 20),
+                  trimMode: TrimMode.Line,
+                  trimLines: 7,
+                );
+              },
+              separatorBuilder: (BuildContext context, int index) => 10.verticalSpace,
+            ),
           ),
         ],
       ),

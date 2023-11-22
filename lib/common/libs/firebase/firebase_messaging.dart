@@ -108,4 +108,8 @@ class FirebaseMessagingService {
   static Future<void> subscribeToTopic(String topic) async {
     await firebaseMessaging.subscribeToTopic(topic);
   }
+
+  static Future<void> unsubscribeFromTopic(String topic) async {
+    await firebaseMessaging.unsubscribeFromTopic(topic);
+  }
 }

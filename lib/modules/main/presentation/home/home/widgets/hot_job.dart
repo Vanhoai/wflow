@@ -24,7 +24,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
     final ThemeData themeData = Theme.of(context);
     return SliverToBoxAdapter(
       child: ConstrainedBox(
-        constraints: const BoxConstraints(maxHeight: 280),
+        constraints: const BoxConstraints(maxHeight: 290),
         child: BlocBuilder<HomeBloc, HomeState>(
           builder: (context, state) {
             return LayoutBuilder(
@@ -62,7 +62,7 @@ class _HowJobListWidgetState extends State<HowJobListWidget> {
                               ToggleBookmarkHomeEvent(
                                 id: job.id,
                                 index: index,
-                                isBookmarkeded: !state.bookmarks[index],
+                                isBookmarked: !state.bookmarks[index],
                               ),
                             ),
                       );

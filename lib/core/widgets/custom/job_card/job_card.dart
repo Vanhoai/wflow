@@ -5,7 +5,6 @@ import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/string.util.dart';
-import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/cupertino_menu/cupertino_menu.dart';
 
 class JobCard extends StatefulWidget {
@@ -35,7 +34,7 @@ class JobCard extends StatefulWidget {
   final Widget header;
   final String duration;
   final String cost;
-  final TextMore description;
+  final Widget description;
   final Widget? bottomChild;
   final Decoration boxDecoration;
   final String poster;
@@ -106,7 +105,6 @@ class _JobCardState extends State<JobCard> {
         child: InkWell(
           onTap: widget.cardPressed,
           child: Card(
-            clipBehavior: Clip.none,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8.0),
             ),

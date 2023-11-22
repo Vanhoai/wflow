@@ -13,6 +13,7 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/company/widgets/widgets.dart';
+import 'package:wflow/modules/main/presentation/home/job/candidate_list/widgets/widgets.dart';
 
 class CompanyScreen extends StatefulWidget {
   const CompanyScreen({super.key, required this.companyID});
@@ -160,7 +161,9 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                   ),
                                 ),
                                 CupertinoActionSheetAction(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.of(context).pushNamed(RouteKeys.updateBusinessScreen);
+                                  },
                                   child: Text(
                                     instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
                                   ),
@@ -222,26 +225,55 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
-                Container(
-                  height: 150.h,
-                  margin: EdgeInsets.symmetric(horizontal: 20.w),
-                  clipBehavior: Clip.none,
-                  decoration: const BoxDecoration(),
-                  child: Stack(
-                    children: [
-                      SizedBox(
-                        height: double.infinity,
-                        width: double.infinity,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(8.r),
-                          child: CachedNetworkImage(
-                            imageUrl: state.companyEntity.background.toString(),
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                Visibility(
+                  visible: !state.isLoadingCompany,
+                  replacement: Shimmer.fromColors(
+                    baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                    highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                    child: Container(
+                      height: 150.h,
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      clipBehavior: Clip.none,
+                      decoration: const BoxDecoration(),
+                      child: Stack(
+                        children: [
+                          SizedBox(
+                            height: double.infinity,
+                            width: double.infinity,
+                            child: ClipRRect(
+                              borderRadius: BorderRadius.circular(8.r),
+                              child: Container(
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  child: Container(
+                    height: 150.h,
+                    margin: EdgeInsets.symmetric(horizontal: 20.w),
+                    clipBehavior: Clip.none,
+                    decoration: const BoxDecoration(),
+                    child: Stack(
+                      children: [
+                        SizedBox(
+                          height: double.infinity,
+                          width: double.infinity,
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: CachedNetworkImage(
+                              imageUrl: state.companyEntity.background.toString() == ''
+                                  ? IMAGE_PHOTO
+                                  : state.companyEntity.background.toString(),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -258,12 +290,29 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                           shape: BoxShape.circle,
                           border: Border.all(color: Colors.white, width: 2),
                         ),
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.circular(60),
-                          child: CachedNetworkImage(
-                            imageUrl: state.companyEntity.logo.toString(),
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                        child: Visibility(
+                          visible: !state.isLoadingCompany,
+                          replacement: Shimmer.fromColors(
+                            baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                            highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                            child: Container(
+                              height: 60.w,
+                              width: 60.w,
+                              decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(60),
+                            child: CachedNetworkImage(
+                              imageUrl: state.companyEntity.logo.toString() == ''
+                                  ? IMAGE_PHOTO
+                                  : state.companyEntity.logo.toString(),
+                              fit: BoxFit.cover,
+                              placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                            ),
                           ),
                         ),
                       ),

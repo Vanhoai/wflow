@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
@@ -38,8 +37,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 
   Future<void> _pickImage({required BuildContext context, required bool isAvatar}) async {
-    dynamic file = await Navigator.of(context)
-        .pushNamed(RouteKeys.photoScreen, arguments: ArgumentsPhoto(multiple: false, onlyImage: true));
+    dynamic file = await Navigator.of(context).pushNamed(
+      RouteKeys.photoScreen,
+      arguments: ArgumentsPhoto(multiple: false, onlyImage: true),
+    );
     if (file == null) return;
     file as File;
     if (context.mounted) {
@@ -110,6 +111,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 ),
                               ),
                             ),
+                            Positioned(
+                              bottom: 10,
+                              right: 10,
+                              child: InkWell(
+                                onTap: () => _pickImage(context: context, isAvatar: false),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: const Icon(Icons.camera_alt_rounded),
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
@@ -120,38 +136,57 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           mainAxisAlignment: MainAxisAlignment.start,
                           crossAxisAlignment: CrossAxisAlignment.end,
                           children: [
-                            Container(
-                              height: 60.w,
-                              width: 60.w,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 2),
+                            Stack(
+                              children: [
+                                Container(
+                                  height: 60.w,
+                                  width: 60.w,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: Colors.white, width: 2),
+                                  ),
+                                  child: InkWell(onTap: () {
+                                    _pickImage(context: context, isAvatar: true);
+                                  }, child: Builder(
+                                    builder: (context) {
+                                      if (state.avatar != null) {
+                                        return ClipRRect(
+                                          borderRadius: BorderRadius.circular(60),
+                                          child: Image.file(
+                                            state.avatar!,
+                                            fit: BoxFit.cover,
+                                          ),
+                                        );
+                                      }
+                                      return ClipRRect(
+                                        borderRadius: BorderRadius.circular(60),
+                                        child: CachedNetworkImage(
+                                          imageUrl: state.userEntity.avatar.isEmpty
+                                              ? 'https://picsum.photos/200'
+                                              : state.userEntity.avatar,
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                                        ),
+                                      );
+                                    },
+                                  )),
+                                ),
+                                 Positioned(
+                              bottom: -5,
+                              right: -5,
+                              child: InkWell(
+                                onTap: () => _pickImage(context: context, isAvatar: true),
+                                child: Container(
+                                  padding: const EdgeInsets.all(5),
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(30),
+                                  ),
+                                  child: const Icon(Icons.camera_alt_rounded, size: 16),
+                                ),
                               ),
-                              child: InkWell(onTap: () {
-                                _pickImage(context: context, isAvatar: true);
-                              }, child: Builder(
-                                builder: (context) {
-                                  if (state.avatar != null) {
-                                    return ClipRRect(
-                                      borderRadius: BorderRadius.circular(60),
-                                      child: Image.file(
-                                        state.avatar!,
-                                        fit: BoxFit.cover,
-                                      ),
-                                    );
-                                  }
-                                  return ClipRRect(
-                                    borderRadius: BorderRadius.circular(60),
-                                    child: CachedNetworkImage(
-                                      imageUrl: state.userEntity.avatar.isEmpty
-                                          ? 'https://picsum.photos/200'
-                                          : state.userEntity.avatar,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
-                                    ),
-                                  );
-                                },
-                              )),
+                            )
+                              ],
                             ),
                             8.horizontalSpace,
                             Text(

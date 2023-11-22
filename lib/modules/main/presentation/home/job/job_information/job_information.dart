@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -16,6 +17,7 @@ import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/related_job_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/select_cv_widget.dart';
 import 'package:wflow/modules/main/presentation/home/job/job_information/widgets/widget.dart';
 
@@ -34,8 +36,9 @@ class JobInformationScreen extends StatefulWidget {
 
 class _JobInformationScreenState extends State<JobInformationScreen> {
   int choiceValue = 0;
-  late ScrollController _skillScrollController;
-  late TextEditingController _dialogInputController;
+  late ScrollController skillScrollController;
+  late TextEditingController dialogInputController;
+  late ScrollController relatedJobScrollController;
 
   late bool isUser;
   bool isYourBusiness = false;
@@ -43,17 +46,18 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   @override
   void initState() {
     super.initState();
-    _skillScrollController = ScrollController(
+    skillScrollController = ScrollController(
       initialScrollOffset: 0.0,
     );
-    _dialogInputController = TextEditingController();
+    relatedJobScrollController = ScrollController(initialScrollOffset: 0.0);
+    dialogInputController = TextEditingController();
     isUser = instance.get<AppBloc>().state.role == 1;
   }
 
   @override
   void dispose() {
-    _skillScrollController.dispose();
-    _dialogInputController.dispose();
+    skillScrollController.dispose();
+    dialogInputController.dispose();
     super.dispose();
   }
 
@@ -77,11 +81,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
     if (result != null && context.mounted) {
       var getIntroduction = await _displayTextInputDialog(context);
       if (getIntroduction != null && context.mounted) {
-        BlocProvider.of<JobInformationBloc>(context).add(ApplyPostEvent(
-            post: widget.work,
-            cv: (result as int),
-            introduction: _dialogInputController.text));
-        _dialogInputController.clear();
+        BlocProvider.of<JobInformationBloc>(context)
+            .add(ApplyPostEvent(post: widget.work, cv: (result as int), introduction: dialogInputController.text));
+        dialogInputController.clear();
       }
     }
   }
@@ -91,11 +93,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
         context: context,
         builder: (context) {
           return Theme(
-              data: themeData.copyWith(
-                  dialogBackgroundColor: themeData.colorScheme.background),
+              data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
               child: AlertDialog(
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8.r)),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8.r)),
                 backgroundColor: themeData.colorScheme.background,
                 surfaceTintColor: Colors.transparent,
                 insetPadding: EdgeInsets.all(12.r),
@@ -109,32 +109,24 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         style: Theme.of(context).textTheme.bodyLarge,
                         minLines: 3,
                         maxLines: 5,
-                        controller: _dialogInputController,
+                        controller: dialogInputController,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
                           hintText: 'Type your introduction',
-                          contentPadding: EdgeInsets.symmetric(
-                              vertical: 20.h, horizontal: 20.w),
-                          hintStyle: Theme.of(context)
-                              .textTheme
-                              .bodyLarge!
-                              .copyWith(color: Colors.black26),
+                          contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
+                          hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
                           focusedBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.r),
-                            borderSide: const BorderSide(
-                                color: AppColors.primary, width: 1),
+                            borderSide: const BorderSide(color: AppColors.primary, width: 1),
                           ),
                           enabledBorder: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8.r),
-                            borderSide: const BorderSide(
-                                color: Colors.black26, width: 1),
+                            borderSide: const BorderSide(color: Colors.black26, width: 1),
                           ),
                         ),
                       ),
                       const SizedBox(height: 20),
-                      PrimaryButton(
-                          label: 'Send',
-                          onPressed: () => Navigator.pop(context, true))
+                      PrimaryButton(label: 'Send', onPressed: () => Navigator.pop(context, true))
                     ],
                   ),
                 ),
@@ -161,10 +153,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
               CupertinoDialogAction(
                 child: Text(
                   'OK',
-                  style: Theme.of(context)
-                      .textTheme
-                      .displayMedium!
-                      .copyWith(color: AppColors.primary),
+                  style: Theme.of(context).textTheme.displayMedium!.copyWith(color: AppColors.primary),
                 ),
                 onPressed: () {
                   Navigator.pop(context);
@@ -181,10 +170,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
     return BlocProvider(
-      create: (_) => JobInformationBloc(
-          postUseCase: instance.get<PostUseCase>(),
-          contractUseCase: instance.get<ContractUseCase>())
-        ..add(GetJobInformationEvent(id: widget.work.toString())),
+      create: (_) =>
+          JobInformationBloc(postUseCase: instance.get<PostUseCase>(), contractUseCase: instance.get<ContractUseCase>())
+            ..add(GetJobInformationEvent(id: widget.work.toString())),
       child: BlocConsumer<JobInformationBloc, JobInformationState>(
         listenWhen: (previous, current) => previous != current,
         buildWhen: (previous, current) => previous != current,
@@ -193,9 +181,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
           var title = 'Information';
           if (state is GetJobInformationSuccessState) {
             title = state.postEntity.position;
-            isYourBusiness =
-                instance.get<AppBloc>().state.userEntity.business ==
-                    state.postEntity.business;
+            isYourBusiness = instance.get<AppBloc>().state.userEntity.business == state.postEntity.business;
           }
           return CommonScaffold(
             hideKeyboardWhenTouchOutside: true,
@@ -221,54 +207,44 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
               centerTitle: true,
             ),
             body: RefreshIndicator(
-              onRefresh: () async => context
-                  .read<JobInformationBloc>()
-                  .add(GetJobInformationEvent(id: widget.work.toString())),
+              onRefresh: () async =>
+                  context.read<JobInformationBloc>().add(GetJobInformationEvent(id: widget.work.toString())),
               child: Stack(
                 children: [
                   LayoutBuilder(
                     builder: (context, constraints) {
                       if (state is GetJobInformationSuccessState) {
-                        // final date = DateTime.fromMillisecondsSinceEpoch((int.parse(state.postEntity.updatedAt)));
                         return Stack(
                           children: [
                             CustomScrollView(
                               slivers: [
                                 SliverPadding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 30, horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
-                                        'Company',
-                                        style: themeData.textTheme.displayLarge!
-                                            .merge(TextStyle(
-                                          color: themeData
-                                              .colorScheme.onBackground,
+                                        instance.get<AppLocalization>().translate('business') ?? 'Company',
+                                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
                                         )),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
                                       ),
                                       subtitle: Text(
-                                        state.postEntity.companyName,
+                                        state.postEntity.creatorName,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: themeData.textTheme.displayLarge!
-                                            .merge(TextStyle(
-                                          color: themeData
-                                              .colorScheme.onBackground,
+                                        style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
                                         )),
                                       ),
                                       onTapLeading: () {},
-                                      leadingPhotoUrl:
-                                          state.postEntity.companyLogo,
+                                      leadingPhotoUrl: state.postEntity.companyLogo,
                                       leadingBadge: false,
                                       actions: [
                                         Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment: CrossAxisAlignment.end,
                                           children: [
                                             SvgPicture.asset(
                                               'assets/icons/timer.svg',
@@ -278,15 +254,9 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                             Text(
                                                 instance
                                                     .get<ConvertString>()
-                                                    .timeFormat(
-                                                        value: state.postEntity
-                                                            .updatedAt!),
-                                                style: themeData
-                                                    .textTheme.displayMedium!
-                                                    .merge(TextStyle(
-                                                        color: themeData
-                                                            .colorScheme
-                                                            .onBackground))),
+                                                    .timeFormat(value: state.postEntity.updatedAt!),
+                                                style: themeData.textTheme.displayMedium!
+                                                    .merge(TextStyle(color: themeData.colorScheme.onBackground))),
                                           ],
                                         )
                                       ],
@@ -294,59 +264,39 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                   ),
                                 ),
                                 SliverPadding(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 20),
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
                                   sliver: SliverToBoxAdapter(
                                     child: CustomScrollView(
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
+                                      physics: const NeverScrollableScrollPhysics(),
                                       shrinkWrap: true,
                                       slivers: [
-                                        WorkNameWidget(
-                                            workName: state.postEntity.title),
-                                        const SliverToBoxAdapter(
-                                            child: SizedBox(height: 40)),
-                                        DescWidget(
-                                            description:
-                                                state.postEntity.content),
-                                        const SliverToBoxAdapter(
-                                            child: SizedBox(height: 40)),
-                                        BudgetWidget(
-                                            budget: state.postEntity.salary),
-                                        const SliverToBoxAdapter(
-                                            child: SizedBox(height: 40)),
-                                        TaskWidget(
-                                            tasks: state.postEntity.tasks),
-                                        const SliverToBoxAdapter(
-                                            child: SizedBox(height: 40)),
+                                        WorkNameWidget(workName: state.postEntity.title),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                                        DescWidget(description: state.postEntity.content),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                                        BudgetWidget(budget: state.postEntity.salary),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
+                                        TaskWidget(tasks: state.postEntity.tasks),
+                                        const SliverToBoxAdapter(child: SizedBox(height: 20)),
                                       ],
-                                      clipBehavior: Clip.none,
-                                      cacheExtent: 1000,
-                                      dragStartBehavior:
-                                          DragStartBehavior.start,
-                                      keyboardDismissBehavior:
-                                          ScrollViewKeyboardDismissBehavior
-                                              .manual,
+                                      dragStartBehavior: DragStartBehavior.start,
+                                      keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                                     ),
                                   ),
                                 ),
                                 RequireSkill(
-                                  scrollController: _skillScrollController,
+                                  scrollController: skillScrollController,
                                   onSelected: callBackSetChoiceValue,
                                   skills: state.postEntity.skills,
                                 ),
                                 SliverPadding(
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 35, horizontal: 20),
+                                  padding: const EdgeInsets.all(20),
                                   sliver: SliverToBoxAdapter(
                                     child: Header(
                                       title: Text(
-                                        'Creator 😎',
-                                        style: themeData
-                                            .textTheme.displayMedium!
-                                            .merge(TextStyle(
-                                          color: themeData
-                                              .colorScheme.onBackground,
+                                        '${instance.get<AppLocalization>().translate("creator")} 😎',
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
                                         )),
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
@@ -355,28 +305,38 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                         state.postEntity.creatorName,
                                         maxLines: 1,
                                         overflow: TextOverflow.ellipsis,
-                                        style: themeData
-                                            .textTheme.displayMedium!
-                                            .merge(TextStyle(
-                                          color: themeData
-                                              .colorScheme.onBackground,
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
                                         )),
                                       ),
-                                      leadingPhotoUrl:
-                                          state.postEntity.creatorAvatar,
+                                      leadingPhotoUrl: state.postEntity.creatorAvatar,
                                       onTapLeading: () {},
                                       leadingBadge: false,
                                     ),
                                   ),
                                 ),
-                                const SliverToBoxAdapter(
-                                    child: SizedBox(height: 60)),
+                                SliverToBoxAdapter(child: 6.verticalSpace),
+                                SliverPadding(
+                                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                                  sliver: SliverToBoxAdapter(
+                                    child: Text(
+                                      '🔧 Related Jobs',
+                                      style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                        color: Theme.of(context).colorScheme.onBackground,
+                                        fontSize: 18,
+                                      )),
+                                    ),
+                                  ),
+                                ),
+                                SliverToBoxAdapter(child: 6.verticalSpace),
+                                RelatedJobWidget(
+                                  scrollController: relatedJobScrollController,
+                                  currentJobId: widget.work,
+                                ),
+                                const SliverToBoxAdapter(child: SizedBox(height: 100)),
                               ],
-                              clipBehavior: Clip.none,
-                              cacheExtent: 1000,
                               dragStartBehavior: DragStartBehavior.start,
-                              keyboardDismissBehavior:
-                                  ScrollViewKeyboardDismissBehavior.manual,
+                              keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                               shrinkWrap: true,
                               physics: const BouncingScrollPhysics(),
                             ),
@@ -391,17 +351,12 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Apply',
+                                        label: instance.get<AppLocalization>().translate('apply') ?? 'Apply',
                                         onPressed: () {
-                                          if (instance
-                                              .get<AppBloc>()
-                                              .state
-                                              .userEntity
-                                              .isVerify) {
+                                          if (instance.get<AppBloc>().state.userEntity.isVerify) {
                                             _showSelectCV(context, widget.work);
                                           } else {
-                                            Navigator.of(context).pushNamed(
-                                                RouteKeys.auStepOneScreen);
+                                            Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
                                           }
                                         },
                                       ),
@@ -411,7 +366,8 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'View Candidate',
+                                        label: instance.get<AppLocalization>().translate('viewCandidate') ??
+                                            'View Candidate',
                                         onPressed: () {
                                           Navigator.of(context).pushNamed(
                                             RouteKeys.candidateListScreen,
@@ -430,8 +386,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         );
                       } else if (state is GetJobInformationFailureState) {
                         return Center(
-                          child: Text('No Information',
-                              style: Theme.of(context).textTheme.bodyLarge),
+                          child: Text('No Information', style: Theme.of(context).textTheme.bodyLarge),
                         );
                       } else {
                         return const SizedBox();

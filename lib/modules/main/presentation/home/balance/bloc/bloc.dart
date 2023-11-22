@@ -4,6 +4,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -12,24 +13,29 @@ import 'package:wflow/modules/main/data/balance/models/create_payment_rsp.dart';
 import 'package:wflow/modules/main/data/balance/models/update_balance_rqst.dart';
 import 'package:wflow/modules/main/domain/balance/balance_usecase.dart';
 import 'package:wflow/modules/main/domain/balance/entities/balance_entity.dart';
+import 'package:wflow/modules/main/domain/tracking/entities/tracking_entity.dart';
+import 'package:wflow/modules/main/domain/tracking/tracking_usecase.dart';
 
 part 'event.dart';
 part 'state.dart';
 
 class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   final BalanceUseCase balanceUseCase;
+  final TrackingUseCase trackingUseCase;
 
-  BalanceBloc({required this.balanceUseCase})
+  BalanceBloc({required this.balanceUseCase, required this.trackingUseCase})
       : super(
           BalanceState(
             balanceEntity: BalanceEntity.empty(),
             isLoading: false,
+            trackingEntities: const [],
           ),
         ) {
     on<BalanceEventFetch>(onFetch);
     on<BalanceTopUpEvent>((event, emit) async {
       await onTopUp(event, emit);
     });
+    on<TrackingEventFetch>(getTrackingList);
   }
 
   FutureOr<void> onFetch(BalanceEventFetch event, Emitter<BalanceState> emit) async {
@@ -123,5 +129,24 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
         AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), r.message);
       },
     );
+  }
+
+  Future getTrackingList(TrackingEventFetch event, Emitter<BalanceState> emit) async {
+    emit(state.copyWith(isLoading: true));
+
+    instance.call<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await trackingUseCase.findTrackingInBalance(id: event.id);
+    response.fold(
+      (List<TrackingEntity> l) {
+        emit(state.copyWith(trackingEntities: l));
+      },
+      (Failure r) {
+        emit(state.copyWith(trackingEntities: []));
+      },
+    );
+
+    emit(state.copyWith(isLoading: false));
+    instance.call<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

@@ -10,6 +10,9 @@ abstract class AuthUseCase {
   Future<Either<String, Failure>> register(AuthNormalRegisterRequest request);
   Future<Either<String, Failure>> registerWithGoogle({required AuthWithGoogleModel request});
   Future<Either<AuthEntity, Failure>> signInWithGoogle({required AuthWithGoogleModel request});
+  Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode});
+  Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode});
+  Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword});
 }
 
 class AuthUseCaseImpl implements AuthUseCase {
@@ -35,5 +38,20 @@ class AuthUseCaseImpl implements AuthUseCase {
   @override
   Future<Either<AuthEntity, Failure>> signInWithGoogle({required AuthWithGoogleModel request}) async {
     return await authRepository.signInWithGoogle(request: request);
+  }
+
+  @override
+  Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode}) async {
+    return await authRepository.sendCodeOtpMail(email: email, otpCode: otpCode);
+  }
+
+  @override
+  Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode}) async {
+    return await authRepository.verifyCodeOtpMail(email: email, otpCode: otpCode);
+  }
+
+  @override
+  Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword}) async {
+    return await authRepository.changeNewPassword(oldPassword: oldPassword, newPassword: newPassword);
   }
 }

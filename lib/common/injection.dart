@@ -212,9 +212,9 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<FeedbackUseCase>(
       () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
 
-  //Money Format 
-   instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));
-   instance.registerLazySingleton<ConvertString>(() => ConvertString());
+  //Money Format
+  instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));
+  instance.registerLazySingleton<ConvertString>(() => ConvertString());
   // ! FOR DEBUG ONLY
   bool isDebug = false;
   assert(() {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
@@ -25,8 +26,8 @@ class _SettingScreenState extends State<SettingScreen> {
     return CommonScaffold(
       appBar: AppHeader(
         text: Text(
-          'Setting',
-          style: themeData.textTheme.displayMedium,
+          instance.get<AppLocalization>().translate('setting') ?? 'Setting',
+          style: themeData.textTheme.displayLarge,
         ),
       ),
       hideKeyboardWhenTouchOutside: true,
@@ -51,7 +52,7 @@ class _SettingScreenState extends State<SettingScreen> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
-                      'Dark mode',
+                      instance.get<AppLocalization>().translate('darkMode') ?? 'Dark mode',
                       style: themeData.textTheme.displayLarge!.merge(
                         TextStyle(color: themeData.colorScheme.onBackground),
                       ),
@@ -68,7 +69,34 @@ class _SettingScreenState extends State<SettingScreen> {
                   ],
                 ),
               ),
-            )
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
+              sliver: SliverToBoxAdapter(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      instance.get<AppLocalization>().translate('darkMode') ?? 'Dark mode',
+                      style: themeData.textTheme.displayLarge!.merge(
+                        TextStyle(color: themeData.colorScheme.onBackground),
+                      ),
+                    ),
+                    BlocBuilder<AppBloc, AppState>(
+                      bloc: instance.call<AppBloc>(),
+                      builder: (context, state) {
+                        return SwitchAnimation(
+                          value: state.isDarkMode,
+                          onChanged: (bool values) => changeTheme(!values),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ),
           ],
         ),
       ),

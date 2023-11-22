@@ -81,7 +81,7 @@ class _SelectionListWidgetState extends State<SelectionListWidget> {
                       color: selected
                           ? const MaterialStatePropertyAll(AppColors.primary)
                           : MaterialStatePropertyAll(themeData.colorScheme.background),
-                      elevation: 2,
+                      elevation: 1,
                     ),
                   );
                 },

@@ -23,7 +23,7 @@ import 'package:wflow/modules/auth/presentation/verification/bloc/verification_b
 class VerificationScreen extends StatefulWidget {
   const VerificationScreen({super.key, this.arguments});
 
-  final FormRegisterArgument? arguments;
+  final VerificationArgument? arguments;
 
   @override
   State<StatefulWidget> createState() {
@@ -38,14 +38,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
   final TextEditingController _otpController4 = TextEditingController();
   final TextEditingController _otpController5 = TextEditingController();
   final TextEditingController _otpController6 = TextEditingController();
-  int? count;
+
+  int? count = 120;
+
   Timer? _everySecond;
+
   String? verificationId;
 
   @override
   void initState() {
     super.initState();
-    count = 120;
     _everySecond = Timer.periodic(const Duration(seconds: 1), (Timer t) {
       setState(() {
         if (count == 0) {
@@ -55,11 +57,12 @@ class _VerificationScreenState extends State<VerificationScreen> {
         }
       });
     });
-
     if (widget.arguments!.type == 'phone') {
       _initVerificationPhone();
-    } else {
-      _initVerificationEmail();
+    } else if (widget.arguments!.type == 'reset_password') {
+      if (StringsUtil.isPhoneNumber(widget.arguments!.username)) {
+        _initVerificationPhoneResetPassword();
+      }
     }
   }
 
@@ -90,142 +93,297 @@ class _VerificationScreenState extends State<VerificationScreen> {
           setState(() {
             this.verificationId = verificationId;
           });
-          Logger().d(verificationId);
         },
         codeAutoRetrievalTimeout: (verificationId) {
           setState(() {
             this.verificationId = verificationId;
           });
-          Logger().d(verificationId);
         },
         phoneNumber: phoneNumber,
       );
     } catch (e) {
-      Logger().d(e);
+      instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), e.toString(), callback: () {
+        Navigator.pop(context);
+      });
     }
   }
 
-  _initVerificationEmail() async {}
+  _handleVerificationEmail(VerificationBloc verificationBloc, String otp) async {
+    // add event to send otp from server to verify
+    verificationBloc.add(VerificationEmailRegisterEvent(
+        username: widget.arguments!.username, otpCode: otp, password: widget.arguments!.password));
+  }
+
+  _handleVerificationEmailResetPassword(VerificationBloc verificationBloc, String otp) async {
+    // add event to send otp from server to verify
+    verificationBloc.add(VerificationEmailForgotPasswordEvent(email: widget.arguments!.username, otpCode: otp));
+  }
+
+  _initVerificationPhoneResetPassword() async {
+    // send email and opt to server
+    try {
+      final phoneNumber = '+84${widget.arguments!.username.substring(1)}';
+      await firebaseAuth.verifyPhoneNumber(
+        verificationCompleted: (PhoneAuthCredential credential) async {},
+        verificationFailed: (error) {
+          instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), error.toString(),
+              callback: () {
+            Navigator.pop(context);
+          });
+        },
+        codeSent: (verificationId, forceResendingToken) {
+          setState(() {
+            this.verificationId = verificationId;
+          });
+        },
+        codeAutoRetrievalTimeout: (verificationId) {
+          setState(() {
+            this.verificationId = verificationId;
+          });
+        },
+        phoneNumber: phoneNumber,
+      );
+    } catch (e) {
+      instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), e.toString(), callback: () {
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  _handleVerificationPhoneResetPassword(VerificationBloc verificationBloc, String otp) async {
+    // add event to send otp from server to verify
+    if (verificationId == null) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+          callback: () {
+        Navigator.pop(context);
+      });
+    } else {
+      verificationBloc.add(VerificationPhoneForgotPasswordEvent(verificationId: verificationId!, otpCode: otp));
+    }
+  }
+
+  _logicOtp(BuildContext context) {
+    final VerificationBloc verificationBloc = BlocProvider.of(context);
+
+    if (widget.arguments!.type == 'phone') {
+      if (verificationId == null) {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+            callback: () {
+          Navigator.pop(context);
+        });
+      }
+      verificationBloc.add(
+        VerificationPhoneRegisterEvent(
+          username: widget.arguments!.username,
+          password: widget.arguments!.password,
+          verificationId: verificationId!,
+          smsCode: _otpController1.text +
+              _otpController2.text +
+              _otpController3.text +
+              _otpController4.text +
+              _otpController5.text +
+              _otpController6.text,
+        ),
+      );
+    } else if (widget.arguments!.type == 'email') {
+      _handleVerificationEmail(
+          verificationBloc,
+          _otpController1.text +
+              _otpController2.text +
+              _otpController3.text +
+              _otpController4.text +
+              _otpController5.text +
+              _otpController6.text);
+    } else if (widget.arguments!.type == 'reset_password') {
+      if (StringsUtil.isEmail(widget.arguments!.username)) {
+        _handleVerificationEmailResetPassword(
+          verificationBloc,
+          _otpController1.text +
+              _otpController2.text +
+              _otpController3.text +
+              _otpController4.text +
+              _otpController5.text +
+              _otpController6.text,
+        );
+      } else if (StringsUtil.isPhoneNumber(widget.arguments!.username)) {
+        _handleVerificationPhoneResetPassword(
+          verificationBloc,
+          _otpController1.text +
+              _otpController2.text +
+              _otpController3.text +
+              _otpController4.text +
+              _otpController5.text +
+              _otpController6.text,
+        );
+      }
+    } else {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Something went wrong',
+          callback: () {
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  _listenerVerification(BuildContext context, VerificationState state) {
+    if (state is VerificationPhoneRegisterSuccessState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        context
+            .read<RegisterBloc>()
+            .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
+      });
+    } else if (state is VerificationPhoneRegisterFailureState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
+    } else if (state is VerificationEmailRegisterSuccessState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        context
+            .read<RegisterBloc>()
+            .add(RegisterTypeEvent(username: state.username, password: state.password, type: state.type));
+      });
+    } else if (state is VerificationEmailRegisterFailureState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  _listenerRegister(BuildContext context, RegisterState state) {
+    if (state is RegisterPhoneSuccessState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
+    } else if (state is RegisterEmailSuccessState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
+    } else if (state is RegisterErrorState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pop(context);
+      });
+    }
+  }
+
+  _listenerForgotPasswordVerification(BuildContext context, VerificationState state) {
+    if (state is VerificationPhoneForgotPasswordSuccessState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
+    } else if (state is VerificationPhoneForgotPasswordFailureState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
+    } else if (state is VerificationEmailForgotSuccessPasswordState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
+    } else if (state is VerificationEmailForgotFailurePasswordState) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
         BlocProvider<VerificationBloc>(
-          create: (_) => VerificationBloc(),
+          create: (_) => VerificationBloc(authUseCase: instance.call<AuthUseCase>(), arguments: widget.arguments!),
           lazy: true,
         ),
-        BlocProvider(
+        BlocProvider<RegisterBloc>(
           create: (context) => RegisterBloc(authUseCase: instance.call<AuthUseCase>()),
           lazy: true,
         ),
       ],
-      child: Builder(builder: (context) {
-        final VerificationBloc verificationBloc = BlocProvider.of(context);
-        final RegisterBloc registerBloc = BlocProvider.of(context);
-        return SafeArea(
-          child: Listener(
-            onPointerDown: (PointerDownEvent event) {
-              FocusManager.instance.primaryFocus?.unfocus();
-            },
-            child: BlocConsumer<VerificationBloc, VerificationState>(
-              listener: (context, state) {
-                if (state.isSuccess && !state.isError) {
-                  AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
-                      callback: () {
-                    registerBloc.add(RegisterTypeEvent(
-                      username: widget.arguments!.username,
-                      password: widget.arguments!.password,
-                      type: widget.arguments!.type,
-                    ));
-                  });
-                } else if (!state.isSuccess && state.isError) {
-                  AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message);
-                }
-              },
-              buildWhen: (previous, current) => true,
-              listenWhen: (previous, current) => true,
-              bloc: BlocProvider.of(context),
-              builder: (context, state) {
-                return BlocConsumer<RegisterBloc, RegisterState>(
-                  listener: (context, state) {
-                    if (state is RegisterPhoneSuccessState) {
-                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
-                          callback: () {
-                        Navigator.popAndPushNamed(context, RouteKeys.signInScreen);
-                      });
-                    } else if (state is RegisterEmailSuccessState) {
-                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
-                          callback: () {
-                        Navigator.popAndPushNamed(context, RouteKeys.signInScreen);
-                      });
-                    } else if (state is RegisterErrorState) {
-                      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message,
-                          callback: () {
-                        Navigator.pop(context);
-                      });
-                    }
-                  },
-                  buildWhen: (previous, current) => true,
-                  listenWhen: (previous, current) => true,
-                  bloc: registerBloc,
-                  builder: (context, state) {
-                    return Scaffold(
-                      resizeToAvoidBottomInset: false,
-                      body: Container(
-                        padding: const EdgeInsets.only(left: 20, right: 20),
-                        child: Column(
+      child: Builder(
+        builder: (context) {
+          final VerificationBloc verificationBloc = BlocProvider.of(context);
+          final RegisterBloc registerBloc = BlocProvider.of(context);
+
+          return SafeArea(
+            child: Listener(
+              onPointerDown: (PointerDownEvent event) => FocusManager.instance.primaryFocus?.unfocus(),
+              child: MultiBlocListener(
+                listeners: [
+                  BlocListener<RegisterBloc, RegisterState>(
+                    listener: _listenerRegister,
+                    bloc: registerBloc,
+                    listenWhen: (previous, current) => true,
+                  ),
+                  BlocListener<VerificationBloc, VerificationState>(
+                    listener: _listenerForgotPasswordVerification,
+                    bloc: verificationBloc,
+                    listenWhen: (previous, current) => true,
+                  ),
+                  BlocListener<VerificationBloc, VerificationState>(
+                    listener: _listenerVerification,
+                    bloc: verificationBloc,
+                    listenWhen: (previous, current) => true,
+                  ),
+                ],
+                child: Scaffold(
+                  resizeToAvoidBottomInset: false,
+                  body: Container(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          margin: const EdgeInsets.only(top: 80),
+                          child: SvgPicture.asset(
+                            AppConstants.app,
+                            semanticsLabel: 'Logo',
+                          ),
+                        ),
+                        Container(
+                          margin: const EdgeInsets.only(top: 49),
+                          child: Text(
+                            'Nhập mã xác nhận',
+                            style: Theme.of(context).textTheme.displayLarge,
+                          ),
+                        ),
+                        const SizedBox(
+                          height: 60,
+                        ),
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              margin: const EdgeInsets.only(top: 80),
-                              child: SvgPicture.asset(
-                                AppConstants.app,
-                                semanticsLabel: 'Logo',
-                              ),
+                            TextFieldVerification(controller: _otpController1),
+                            TextFieldVerification(controller: _otpController2),
+                            TextFieldVerification(controller: _otpController3),
+                            TextFieldVerification(controller: _otpController4),
+                            TextFieldVerification(controller: _otpController5),
+                            TextFieldVerification(controller: _otpController6),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 17,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Mã xác nhận sẽ gửi lại sau',
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            Container(
-                              margin: const EdgeInsets.only(top: 49),
-                              child: Text(
-                                'Xác nhận số điện thoại',
-                                style: Theme.of(context).textTheme.displayLarge,
-                              ),
+                            Text(
+                              '${count}s',
+                              style: Theme.of(context).textTheme.displayMedium,
                             ),
-                            const SizedBox(
-                              height: 60,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                TextFieldVerification(controller: _otpController1),
-                                TextFieldVerification(controller: _otpController2),
-                                TextFieldVerification(controller: _otpController3),
-                                TextFieldVerification(controller: _otpController4),
-                                TextFieldVerification(controller: _otpController5),
-                                TextFieldVerification(controller: _otpController6),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 17,
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Mã xác nhận sẽ gửi lại sau',
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                                Text(
-                                  '${count}s',
-                                  style: Theme.of(context).textTheme.displayMedium,
-                                ),
-                              ],
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Flexible(
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 15,
+                        ),
+                        Builder(
+                          builder: (context) {
+                            return Flexible(
                               fit: FlexFit.tight,
                               child: Stack(
                                 alignment: Alignment.center,
@@ -251,71 +409,50 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                             'Something went wrong');
                                         return;
                                       }
-
-                                      if (widget.arguments!.type == 'phone') {
-                                        verificationBloc.add(VerificationPhoneStartEvent(
-                                          otpNumber: _otpController1.text +
-                                              _otpController2.text +
-                                              _otpController3.text +
-                                              _otpController4.text +
-                                              _otpController5.text +
-                                              _otpController6.text,
-                                          verification: verificationId!,
-                                        ));
-                                      } else {
-                                        verificationBloc.add(VerificationEmailStartEvent(
-                                          otpNumber: _otpController1.text +
-                                              _otpController2.text +
-                                              _otpController3.text +
-                                              _otpController4.text +
-                                              _otpController5.text +
-                                              _otpController6.text,
-                                          verification: verificationId!,
-                                        ));
-                                      }
+                                      _logicOtp(context);
                                     },
                                   ),
                                 ],
                               ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
-                              alignment: Alignment.center,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    'Bạn đã có tài khoản? ',
-                                    style: Theme.of(context).textTheme.displayMedium,
-                                  ),
-                                  InkWell(
-                                    borderRadius: BorderRadius.circular(4),
-                                    onTap: () => {Navigator.pop(context)},
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(2),
-                                      child: Text(
-                                        'Đăng nhập',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .displayMedium!
-                                            .merge(const TextStyle(color: AppColors.primary)),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            )
-                          ],
+                            );
+                          },
                         ),
-                      ),
-                    );
-                  },
-                );
-              },
+                        Container(
+                          margin: EdgeInsets.only(top: 16, bottom: MediaQuery.of(context).viewInsets.bottom + 30),
+                          alignment: Alignment.center,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Bạn đã có tài khoản? ',
+                                style: Theme.of(context).textTheme.displayMedium,
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(4),
+                                onTap: () => {Navigator.pop(context)},
+                                child: Padding(
+                                  padding: const EdgeInsets.all(2),
+                                  child: Text(
+                                    'Đăng nhập',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .displayMedium!
+                                        .merge(const TextStyle(color: AppColors.primary)),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        )
+                      ],
+                    ),
+                  ),
+                ),
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }

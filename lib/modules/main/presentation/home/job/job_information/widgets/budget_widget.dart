@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/utils/string.util.dart';
 
 class BudgetWidget extends StatelessWidget {
@@ -18,17 +19,16 @@ class BudgetWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '🪙 Budget',
+            '🪙 ${instance.get<AppLocalization>().translate("budget")}',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,
             )),
           ),
-          const SizedBox(height: 13.0),
+          6.verticalSpace,
           Text(
             instance.get<ConvertString>().moneyFormat(value: budget),
             style: themeData.textTheme.displayLarge!.merge(const TextStyle(
-              color: AppColors.greenColor,
               fontSize: 18,
             )),
           ),

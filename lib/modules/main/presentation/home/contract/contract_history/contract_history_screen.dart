@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_history/bloc/bloc.dart';
@@ -40,13 +41,10 @@ class _ContractHistoryScreenState extends State<ContractHistoryScreen> {
             ..add(InitContractHistoryEvent()),
       child: Scaffold(
           appBar: AppHeader(
-            text: Center(
-              child: Text(
-                instance
-                        .get<AppLocalization>()
-                        .translate('contractCompleted') ??
-                    'Contract completed',
-              ),
+            text: Text(
+              instance.get<AppLocalization>().translate('contractCompleted') ??
+                  'Contract completed',
+                  style: themeData.textTheme.labelMedium,
             ),
           ),
           body: BlocBuilder<ContractHistoryBloc, ContractHistoryState>(

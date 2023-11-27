@@ -74,7 +74,7 @@ class _ContractCardState extends State<ContractCard> {
                             ),
                           ),
                           Text(
-                            '${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
+                            '💰 ${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
                             style: themeData.textTheme.labelMedium!.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.green),
@@ -111,10 +111,7 @@ class _ContractCardState extends State<ContractCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                              instance
-                                      .get<AppLocalization>()
-                                      .translate('business') ??
-                                  'Business',
+                              "🏬 ${instance.get<AppLocalization>().translate('business') ?? 'Business'}",
                               style: themeData.textTheme.displayMedium),
                           InkWell(
                             borderRadius: BorderRadius.circular(6),
@@ -140,10 +137,7 @@ class _ContractCardState extends State<ContractCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                            instance
-                                    .get<AppLocalization>()
-                                    .translate('worker') ??
-                                'Worker',
+                            "🧑‍💼 ${instance.get<AppLocalization>().translate('worker') ?? 'Worker'}",
                             style: themeData.textTheme.displayMedium),
                         const SizedBox(
                           width: 100,
@@ -175,8 +169,7 @@ class _ContractCardState extends State<ContractCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        instance.get<AppLocalization>().translate('status') ??
-                            'Status',
+                        "✅ ${instance.get<AppLocalization>().translate('status') ?? 'Status'}",
                         style: themeData.textTheme.displayMedium),
                     Text(
                       instance.get<AppLocalization>().translate(widget
@@ -197,8 +190,7 @@ class _ContractCardState extends State<ContractCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                        instance.get<AppLocalization>().translate('deadline') ??
-                            'Deadline',
+                        "🕜 ${instance.get<AppLocalization>().translate('deadline') ?? 'Deadline'}",
                         style: themeData.textTheme.displayMedium),
                     Text(
                         instance

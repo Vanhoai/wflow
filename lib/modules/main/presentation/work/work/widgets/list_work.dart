@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -52,7 +53,8 @@ class _ListWorksState extends State<ListWorks> {
           Padding(
             padding: const EdgeInsets.only(left: 20, right: 20),
             child: Text(
-              'Categories',
+              instance.get<AppLocalization>().translate('categories') ??
+                  'Categories',
               style: themeData.textTheme.displayMedium,
             ),
           ),

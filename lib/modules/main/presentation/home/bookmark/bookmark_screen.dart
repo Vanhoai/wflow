@@ -39,17 +39,21 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
     final themeData = Theme.of(context);
 
     return BlocProvider(
-      create: (_) => BookmarkBloc(postUseCase: instance.get<PostUseCase>())..add(InitBookmarkEvent()),
+      create: (_) => BookmarkBloc(postUseCase: instance.get<PostUseCase>())
+        ..add(InitBookmarkEvent()),
       child: Scaffold(
         appBar: AppHeader(
           text: const Text('Bookmark Works'),
-          onBack: () => Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false),
+          onBack: () => Navigator.of(context).pushNamedAndRemoveUntil(
+              RouteKeys.bottomScreen, (route) => false),
         ),
         body: BlocBuilder<BookmarkBloc, BookmarkState>(
           builder: (context, state) {
             _scrollController.addListener(() {
-              if (_scrollController.position.maxScrollExtent == _scrollController.offset) {
-                BlocProvider.of<BookmarkBloc>(context).add(ScrollBookmarkEvent());
+              if (_scrollController.position.maxScrollExtent ==
+                  _scrollController.offset) {
+                BlocProvider.of<BookmarkBloc>(context)
+                    .add(ScrollBookmarkEvent());
               }
             });
             return SizedBox(
@@ -61,7 +65,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                     child: Builder(builder: (context) {
                       if (state.posts.isNotEmpty) {
                         return BlocListener<BookmarkBloc, BookmarkState>(
-                          listenWhen: (previous, current) => previous != current,
+                          listenWhen: (previous, current) =>
+                              previous != current,
                           listener: (context, state) {
                             if (state is RemoveSuccessedBookmarkState) {
                               final snackBar = SnackBar(
@@ -71,13 +76,15 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                   onPressed: () => {},
                                 ),
                               );
-                              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                              ScaffoldMessenger.of(context)
+                                  .showSnackBar(snackBar);
                             }
                           },
                           child: ListView.separated(
                             controller: _scrollController,
                             padding: const EdgeInsets.only(bottom: 20, top: 4),
-                            separatorBuilder: (context, index) => const SizedBox(height: 12),
+                            separatorBuilder: (context, index) =>
+                                const SizedBox(height: 12),
                             physics: const BouncingScrollPhysics(),
                             itemCount: state.posts.length,
                             itemBuilder: (context, index) => Container(
@@ -85,18 +92,21 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                               child: JobCard(
                                 time: state.posts[index].updatedAt!,
                                 jobId: state.posts[index].id,
-                                margin: const EdgeInsets.symmetric(horizontal: 20.0),
+                                margin: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
                                 boxDecoration: BoxDecoration(
                                   color: themeData.colorScheme.background,
                                   borderRadius: BorderRadius.circular(8.0),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                      color: themeData.colorScheme.onBackground
+                                          .withOpacity(0.1),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
                                     BoxShadow(
-                                      color: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                      color: themeData.colorScheme.onBackground
+                                          .withOpacity(0.1),
                                       blurRadius: 4,
                                       offset: const Offset(0, 2),
                                     ),
@@ -104,25 +114,31 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                 ),
                                 padding: const EdgeInsets.all(12),
                                 header: Header(
-                                  leadingPhotoUrl: state.posts[index].companyLogo,
+                                  idBusiness:
+                                      state.posts[index].business.toString(),
+                                  leadingPhotoUrl:
+                                      state.posts[index].companyLogo,
                                   title: Text(
                                     state.posts[index].position,
-                                    style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                                    style: themeData.textTheme.displayLarge!
+                                        .merge(TextStyle(
                                       color: themeData.colorScheme.onBackground,
                                     )),
                                   ),
-                                  onTapLeading: () {},
                                   subtitle: Text(
                                     state.posts[index].companyName,
-                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                    style: themeData.textTheme.displayMedium!
+                                        .merge(TextStyle(
                                       color: themeData.colorScheme.onBackground,
                                     )),
                                   ),
                                   leadingSize: 30,
                                   actions: [
                                     InkWell(
-                                      onTap: () => BlocProvider.of<BookmarkBloc>(context)
-                                          .add(ToggleBookmarkEvent(id: state.posts[index].id)),
+                                      onTap: () =>
+                                          BlocProvider.of<BookmarkBloc>(context)
+                                              .add(ToggleBookmarkEvent(
+                                                  id: state.posts[index].id)),
                                       child: SvgPicture.asset(
                                         AppConstants.bookmark,
                                         height: 24,
@@ -136,13 +152,15 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                                     const SizedBox(width: 8.0),
                                   ],
                                 ),
-                                cost: instance.get<ConvertString>().moneyFormat(value: state.posts[index].salary),
+                                cost: instance.get<ConvertString>().moneyFormat(
+                                    value: state.posts[index].salary),
                                 duration: state.posts[index].duration,
                                 description: TextMore(
                                   state.posts[index].content,
                                   trimMode: TrimMode.Hidden,
                                   trimHiddenMaxLines: 3,
-                                  style: themeData.textTheme.displayMedium!.merge(
+                                  style:
+                                      themeData.textTheme.displayMedium!.merge(
                                     TextStyle(
                                       color: themeData.colorScheme.onBackground,
                                     ),
@@ -153,7 +171,8 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                           ),
                         );
                       } else {
-                        return const Center(child: Text('Bookmark Works is empty'));
+                        return const Center(
+                            child: Text('Bookmark Works is empty'));
                       }
                     }),
                   ),

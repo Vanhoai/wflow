@@ -127,6 +127,7 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                   ),
                                   padding: const EdgeInsets.all(12),
                                   header: Header(
+                                    idBusiness: state.postsData[index].business.toString(),
                                     leadingPhotoUrl: state.postsData[index].companyLogo,
                                     title: Text(
                                       state.postsData[index].position,
@@ -134,7 +135,6 @@ class _SearchWorkScreenState extends State<SearchWorkScreen> {
                                         color: themeData.colorScheme.onBackground,
                                       )),
                                     ),
-                                    onTapLeading: () {},
                                     subtitle: Text(
                                       state.postsData[index].companyName,
                                       style: themeData.textTheme.displayMedium!.merge(TextStyle(

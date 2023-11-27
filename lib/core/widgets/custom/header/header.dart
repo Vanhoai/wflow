@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/core/routes/keys.dart';
 
-const String defaultUrl = 'https://www.pinclipart.com/picdir/middle/148-1486972_mystery-man-avatar-circle-clipart.png';
+const String defaultUrl =
+    'https://www.pinclipart.com/picdir/middle/148-1486972_mystery-man-avatar-circle-clipart.png';
 
 class Header extends StatefulWidget {
   const Header({
@@ -14,7 +16,10 @@ class Header extends StatefulWidget {
     this.leadingBadge = false,
     this.onTapLeading,
     this.actions = const [],
+    this.idBusiness,
   });
+
+  final String? idBusiness;
   final Widget title;
   final VoidCallback? onTapLeading;
   final Widget subtitle;
@@ -43,13 +48,18 @@ class _HeaderState extends State<Header> {
         children: <Widget>[
           Builder(builder: (context) {
             return InkWell(
-              onTap: widget.onTapLeading,
+              onTap: widget.onTapLeading ??
+                  () => Navigator.of(context).pushNamed(RouteKeys.companyScreen,
+                      arguments: widget.idBusiness.toString()),
               highlightColor: Theme.of(context).colorScheme.background,
               borderRadius: BorderRadius.circular(99),
               child: CircleAvatar(
-                backgroundColor: Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
+                backgroundColor:
+                    Theme.of(context).colorScheme.onBackground.withOpacity(0.6),
                 backgroundImage: NetworkImage(
-                  widget.leadingPhotoUrl == '' ? defaultUrl : widget.leadingPhotoUrl,
+                  widget.leadingPhotoUrl == ''
+                      ? defaultUrl
+                      : widget.leadingPhotoUrl,
                 ),
                 radius: widget.leadingSize,
                 onBackgroundImageError: (exception, stackTrace) {

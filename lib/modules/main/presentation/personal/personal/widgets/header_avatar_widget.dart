@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:insta_image_viewer/insta_image_viewer.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/personal/personal/bloc/bloc.dart';
 
@@ -18,7 +19,8 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
   Widget build(BuildContext context) {
     return BlocBuilder<PersonalBloc, PersonalState>(
       buildWhen: (previous, current) =>
-          previous.userEntity != current.userEntity || previous.isLoading != current.isLoading,
+          previous.userEntity != current.userEntity ||
+          previous.isLoading != current.isLoading,
       builder: (context, state) {
         final UserEntity userEntity = state.userEntity;
         return SliverPadding(
@@ -28,17 +30,23 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
               height: 260,
               child: Stack(
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: SizedBox(
-                      height: 210,
-                      width: MediaQuery.of(context).size.width,
-                      child: CachedNetworkImage(
-                        imageUrl: userEntity.background == '' ? 'https://picsum.photos/200' : userEntity.background,
-                        placeholder: (context, url) => const Center(child: CupertinoActivityIndicator()),
-                        filterQuality: FilterQuality.high,
-                        fit: BoxFit.cover,
-                        errorWidget: (context, url, error) => const Icon(Icons.error),
+                  InstaImageViewer(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: SizedBox(
+                        height: 210,
+                        width: MediaQuery.of(context).size.width,
+                        child: CachedNetworkImage(
+                          imageUrl: userEntity.background == ''
+                              ? 'https://picsum.photos/200'
+                              : userEntity.background,
+                          placeholder: (context, url) =>
+                              const Center(child: CupertinoActivityIndicator()),
+                          filterQuality: FilterQuality.high,
+                          fit: BoxFit.cover,
+                          errorWidget: (context, url, error) =>
+                              const Icon(Icons.error),
+                        ),
                       ),
                     ),
                   ),
@@ -49,11 +57,15 @@ class _HeaderAvatarWidgetState extends State<HeaderAvatarWidget> {
                     child: CircleAvatar(
                       radius: 50,
                       backgroundColor: Colors.white,
-                      child: CircleAvatar(
-                        radius: 48,
-                        backgroundColor: Colors.grey,
-                        backgroundImage: CachedNetworkImageProvider(
-                          userEntity.avatar == '' ? 'https://picsum.photos/200' : userEntity.avatar,
+                      child: InstaImageViewer(
+                        child: CircleAvatar(
+                          radius: 48,
+                          backgroundColor: Colors.grey,
+                          backgroundImage: CachedNetworkImageProvider(
+                            userEntity.avatar == ''
+                                ? 'https://picsum.photos/200'
+                                : userEntity.avatar,
+                          ),
                         ),
                       ),
                     ),

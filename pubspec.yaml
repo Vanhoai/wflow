@@ -66,6 +66,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   chips_choice: ^3.0.1
   flutter_masked_text2: ^0.9.1
+  insta_image_viewer: ^1.0.2
 
 dev_dependencies:
   flutter_test:

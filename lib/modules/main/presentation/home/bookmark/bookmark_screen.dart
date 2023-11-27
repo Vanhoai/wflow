@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/string.util.dart';
@@ -43,7 +44,10 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
         ..add(InitBookmarkEvent()),
       child: Scaffold(
         appBar: AppHeader(
-          text: const Text('Bookmark Works'),
+          text: Text(
+            instance.get<AppLocalization>().translate('saved') ?? 'Saved',
+            style: themeData.textTheme.displayLarge,
+          ),
           onBack: () => Navigator.of(context).pushNamedAndRemoveUntil(
               RouteKeys.bottomScreen, (route) => false),
         ),
@@ -171,8 +175,14 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                           ),
                         );
                       } else {
-                        return const Center(
-                            child: Text('Bookmark Works is empty'));
+                        return Center(
+                          child: Text(
+                            instance
+                                    .get<AppLocalization>()
+                                    .translate('savedIsEmpty') ??
+                                'Saved is empty',
+                          ),
+                        );
                       }
                     }),
                   ),

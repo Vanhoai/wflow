@@ -3,8 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/time.util.dart';
@@ -23,7 +25,8 @@ class ContractCard extends StatefulWidget {
 class _ContractCardState extends State<ContractCard> {
   @override
   Widget build(BuildContext context) {
-    final noSimbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
+    final noSimbolInUSFormat =
+        NumberFormat.currency(locale: 'vi_VN', symbol: '');
     return Container(
       margin: const EdgeInsets.only(
         left: AppSize.paddingScreenDefault,
@@ -46,9 +49,11 @@ class _ContractCardState extends State<ContractCard> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: widget.contractEntity.id),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen,
+              arguments: widget.contractEntity.id),
           child: Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
+            padding:
+                const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
             child: Column(
               children: [
                 Row(
@@ -70,8 +75,9 @@ class _ContractCardState extends State<ContractCard> {
                           ),
                           Text(
                             '${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
-                            style: themeData.textTheme.labelMedium!
-                                .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
+                            style: themeData.textTheme.labelMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                                color: Colors.green),
                           )
                         ],
                       ),
@@ -89,7 +95,8 @@ class _ContractCardState extends State<ContractCard> {
                           fontSize: 10.sp,
                         ),
                       ),
-                      progressColor: _progressColor(widget.contractEntity.progress / 100),
+                      progressColor:
+                          _progressColor(widget.contractEntity.progress / 100),
                     )
                   ],
                 ),
@@ -98,12 +105,16 @@ class _ContractCardState extends State<ContractCard> {
                 ),
                 Builder(
                   builder: (context) {
-                    if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
+                    if (instance.get<AppBloc>().state.role !=
+                        RoleEnum.business.index + 1) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            'Business',
+                            instance
+                                    .get<AppLocalization>()
+                                    .translate('business') ??
+                                'Business',
                             style: themeData.textTheme.displayMedium!.copyWith(
                               fontWeight: FontWeight.w500,
                             ),
@@ -111,14 +122,19 @@ class _ContractCardState extends State<ContractCard> {
                           InkWell(
                             borderRadius: BorderRadius.circular(6),
                             onTap: () {
-                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,arguments: widget.contractEntity.business.id.toString());
+                              Navigator.of(context).pushNamed(
+                                  RouteKeys.companyScreen,
+                                  arguments: widget.contractEntity.business.id
+                                      .toString());
                             },
                             child: Ink(
                               child: Text(
                                 widget.contractEntity.business.name,
                                 style: themeData.textTheme.displayMedium!
-                                    .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
-                                     overflow: TextOverflow.ellipsis,
+                                    .copyWith(
+                                        fontWeight: FontWeight.w500,
+                                        color: themeData.primaryColor),
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -129,23 +145,30 @@ class _ContractCardState extends State<ContractCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Worker',
+                          instance.get<AppLocalization>().translate('worker') ??
+                              'Worker',
                           style: themeData.textTheme.displayMedium!.copyWith(
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const SizedBox(width: 100,),
+                        const SizedBox(
+                          width: 100,
+                        ),
                         InkWell(
                           onTap: () {
-                              Navigator.of(context).pushNamed(RouteKeys.detailUserScreen,arguments: widget.contractEntity.worker.id);
-                            },
+                            Navigator.of(context).pushNamed(
+                                RouteKeys.detailUserScreen,
+                                arguments: widget.contractEntity.worker.id);
+                          },
                           borderRadius: BorderRadius.circular(6),
                           child: Ink(
                             child: Text(
                               widget.contractEntity.worker.name,
                               style: themeData.textTheme.displayMedium!
-                                  .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
-                                  overflow: TextOverflow.ellipsis,
+                                  .copyWith(
+                                      fontWeight: FontWeight.w500,
+                                      color: themeData.primaryColor),
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -153,22 +176,28 @@ class _ContractCardState extends State<ContractCard> {
                     );
                   },
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 9,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Status',
+                      instance.get<AppLocalization>().translate('status') ??
+                          'Status',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
-                      widget.contractEntity.state,
+                      instance.get<AppLocalization>().translate(widget
+                              .contractEntity.state
+                              .toString()
+                              .toLowerCase()) ??
+                          'Apply',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.w500,
+                        color: AppColors.greenColor,
                       ),
                     ),
                   ],
@@ -180,13 +209,16 @@ class _ContractCardState extends State<ContractCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      'Deadline',
+                      instance.get<AppLocalization>().translate('deadline') ??
+                          'Deadline',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),
                     ),
                     Text(
-                      instance.get<Time>().getDayMonthYear(DateTime.now().toString()),
+                      instance
+                          .get<Time>()
+                          .getDayMonthYear(DateTime.now().toString()),
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.w500,
                       ),

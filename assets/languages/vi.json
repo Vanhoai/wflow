@@ -141,6 +141,11 @@
   "showMore": "Xem thêm",
   "showLess": "Thu gọn",
   "darkMode": "Chế độ tối",
-  "completed": "Hoàn thành",
-  "graph": "Thống kê"
+  "search": "Tìm kiếm",
+  "contractCompleted": "Hợp đồng hoàn thành",
+  "totalTask": "Lượng công việc",
+  "createAt": "Tạo hợp đồng vào",
+  "endDateAt": "Đã kết thúc vào",
+  "worker": "Ứng viên",
+  "success": "Hoàn thành"
 }

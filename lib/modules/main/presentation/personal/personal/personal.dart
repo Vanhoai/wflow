@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -46,9 +47,11 @@ class _PersonalScreenState extends State<PersonalScreen> {
       lazy: true,
       child: BlocBuilder<PersonalBloc, PersonalState>(
         buildWhen: (previous, current) =>
-            previous.userEntity != current.userEntity || previous.isLoading != current.isLoading,
+            previous.userEntity != current.userEntity ||
+            previous.isLoading != current.isLoading,
         builder: (context, state) {
-          final PersonalBloc personalBloc = BlocProvider.of<PersonalBloc>(context);
+          final PersonalBloc personalBloc =
+              BlocProvider.of<PersonalBloc>(context);
           return CommonScaffold(
             isSafe: true,
             body: Visibility(
@@ -56,7 +59,8 @@ class _PersonalScreenState extends State<PersonalScreen> {
               replacement: const ShimmerUser(),
               child: CustomScrollView(
                 dragStartBehavior: DragStartBehavior.start,
-                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                keyboardDismissBehavior:
+                    ScrollViewKeyboardDismissBehavior.manual,
                 physics: const AlwaysScrollableScrollPhysics(),
                 shrinkWrap: true,
                 controller: scrollController,
@@ -72,41 +76,62 @@ class _PersonalScreenState extends State<PersonalScreen> {
                           child: CupertinoActionSheet(
                             actions: [
                               Visibility(
-                                visible: instance.get<AppBloc>().state.role == RoleEnum.user.index + 1,
+                                visible: instance.get<AppBloc>().state.role ==
+                                    RoleEnum.user.index + 1,
                                 child: CupertinoActionSheetAction(
                                   onPressed: () => Navigator.of(context)
                                     ..pop(context)
-                                    ..pushNamed(RouteKeys.upgradeBusinessScreen),
-                                  child: const Text('Upgrade'),
+                                    ..pushNamed(
+                                        RouteKeys.upgradeBusinessScreen),
+                                  child: Text(instance
+                                          .get<AppLocalization>()
+                                          .translate('upgrade') ??
+                                      'Upgrade'),
                                 ),
                               ),
                               CupertinoActionSheetAction(
                                 onPressed: () => Navigator.of(context)
                                   ..pop(context)
                                   ..pushNamed(RouteKeys.contractScreen),
-                                child: const Text('Works'),
+                                child: Text(instance
+                                        .get<AppLocalization>()
+                                        .translate('work') ??
+                                    'Works'),
                               ),
                               CupertinoActionSheetAction(
                                 onPressed: () => Navigator.of(context)
                                   ..pop()
                                   ..pushNamed(RouteKeys.notificationScreen),
-                                child: const Text('Notification'),
+                                child: Text(instance
+                                        .get<AppLocalization>()
+                                        .translate('notification') ??
+                                    'Notification'),
                               ),
                               CupertinoActionSheetAction(
                                 onPressed: () => Navigator.of(context)
                                   ..pop()
                                   ..pushNamed(RouteKeys.settingScreen),
-                                child: const Text('Settings'),
+                                child: Text(instance
+                                        .get<AppLocalization>()
+                                        .translate('setting') ??
+                                    'Settings'),
                               ),
                               CupertinoActionSheetAction(
-                                onPressed: () => personalBloc.add(SignOutEvent()),
+                                onPressed: () =>
+                                    personalBloc.add(SignOutEvent()),
                                 isDestructiveAction: true,
-                                child: const Text('Sign out'),
+                                child: Text(instance
+                                        .get<AppLocalization>()
+                                        .translate('signOut') ??
+                                    'Sign out'),
                               ),
                             ],
                             cancelButton: CupertinoActionSheetAction(
                               onPressed: () => Navigator.of(context).pop(),
-                              child: const Text('Cancel'),
+                              child: Text(instance
+                                      .get<AppLocalization>()
+                                      .translate('cancel') ??
+                                  'Cancel'),
                             ),
                           ),
                         );

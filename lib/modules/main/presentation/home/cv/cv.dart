@@ -38,7 +38,8 @@ class _CVScreenState extends State<CVScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => CVBloc(cvUseCase: instance.get<CVUseCase>())..add(GetMyCVEvent()),
+      create: (_) =>
+          CVBloc(cvUseCase: instance.get<CVUseCase>())..add(GetMyCVEvent()),
       child: BlocBuilder<CVBloc, CVSate>(
         builder: (context, state) {
           return CommonScaffold(
@@ -46,7 +47,7 @@ class _CVScreenState extends State<CVScreen> {
             appBar: AppHeader(
               text: Text(
                 'My CV',
-                style: themeData.textTheme.displayMedium,
+                style: themeData.textTheme.displayLarge,
               ),
               actions: [
                 Builder(
@@ -54,9 +55,11 @@ class _CVScreenState extends State<CVScreen> {
                     if (state.selectCvEntities.isEmpty) {
                       return InkWell(
                         borderRadius: BorderRadius.circular(6),
-                        onTap: () => Navigator.of(context).pushNamed(RouteKeys.addCVScreen),
+                        onTap: () => Navigator.of(context)
+                            .pushNamed(RouteKeys.addCVScreen),
                         child: Ink(
-                          padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 4),
                           child: Text(
                             'Add',
                             style: themeData.textTheme.displayMedium!.copyWith(
@@ -71,11 +74,13 @@ class _CVScreenState extends State<CVScreen> {
                       borderRadius: BorderRadius.circular(6),
                       onTap: () {},
                       child: Ink(
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 6, vertical: 4),
                         child: Text(
                           'Remove',
-                          style: themeData.textTheme.displayMedium!
-                              .copyWith(color: AppColors.primary, fontWeight: FontWeight.normal),
+                          style: themeData.textTheme.displayMedium!.copyWith(
+                              color: AppColors.primary,
+                              fontWeight: FontWeight.normal),
                         ),
                       ),
                     );
@@ -117,11 +122,17 @@ class _CVScreenState extends State<CVScreen> {
 
   Widget _cv(BuildContext context, CVEntity cvEntity, CVSate state) {
     bool isCheck = false;
-    isCheck = state.selectCvEntities.indexWhere((element) => element.id == cvEntity.id) != -1 ? true : false;
+    isCheck = state.selectCvEntities
+                .indexWhere((element) => element.id == cvEntity.id) !=
+            -1
+        ? true
+        : false;
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
       padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.fade)),
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: AppColors.fade)),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.start,
@@ -134,7 +145,8 @@ class _CVScreenState extends State<CVScreen> {
           ),
           const SizedBox(width: 20),
           Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Text(
                 cvEntity.title,
                 style: themeData.textTheme.displaySmall!.merge(
@@ -190,7 +202,8 @@ class _CVScreenState extends State<CVScreen> {
         child: Checkbox(
           value: isCheck,
           onChanged: (value) {
-            BlocProvider.of<CVBloc>(context).add(OnSelectedCVEVent(id: id, state: isCheck));
+            BlocProvider.of<CVBloc>(context)
+                .add(OnSelectedCVEVent(id: id, state: isCheck));
           },
           checkColor: AppColors.primary,
           side: const BorderSide(

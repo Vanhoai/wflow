@@ -73,7 +73,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                             ),
                           ),
                           Text(
-                            '${noSymbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
+                            '💰 ${noSymbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
                             style: themeData.textTheme.labelMedium!.copyWith(
                                 fontWeight: FontWeight.w500,
                                 color: Colors.green),
@@ -91,7 +91,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   children: [
                     Expanded(
                       child: Text(
-                        widget.contractEntity.content,
+                        '📜 ${widget.contractEntity.content}',
                         style: themeData.textTheme.displayMedium!.copyWith(
                           fontSize: 16.sp,
                           fontWeight: FontWeight.w300,
@@ -110,8 +110,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('totalTask') ??
-                          'Total task',
+                      '📋 ${instance.get<AppLocalization>().translate('totalTask') ?? 'Total task'}',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
@@ -135,10 +134,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            instance
-                                    .get<AppLocalization>()
-                                    .translate('business') ??
-                                'Business',
+                            '🏬 ${instance.get<AppLocalization>().translate('business') ?? 'Business'}',
                             style: themeData.textTheme.displayMedium!.copyWith(
                               fontWeight: FontWeight.normal,
                             ),
@@ -169,8 +165,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          instance.get<AppLocalization>().translate('worker') ??
-                              'Worker',
+                          '🧑‍💼 ${instance.get<AppLocalization>().translate('worker') ?? 'Worker'}',
                           style: themeData.textTheme.displayMedium!.copyWith(
                             fontWeight: FontWeight.normal,
                           ),
@@ -207,8 +202,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('status') ??
-                          'Status',
+                      '✅ ${instance.get<AppLocalization>().translate('status') ?? 'Status'}',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
@@ -233,8 +227,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('createAt') ??
-                          'Contract created',
+                      '🏁 ${instance.get<AppLocalization>().translate('createAt') ?? 'Contract created'}',
                       style: themeData.textTheme.displayMedium!
                           .copyWith(fontWeight: FontWeight.normal),
                     ),
@@ -254,8 +247,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('endDateAt') ??
-                          'Contract closed',
+                      '🚩 ${instance.get<AppLocalization>().translate('endDateAt') ?? 'Contract closed'}',
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),

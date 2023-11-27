@@ -111,14 +111,11 @@ class _ContractCardState extends State<ContractCard> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            instance
-                                    .get<AppLocalization>()
-                                    .translate('business') ??
-                                'Business',
-                            style: themeData.textTheme.displayMedium!.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
+                              instance
+                                      .get<AppLocalization>()
+                                      .translate('business') ??
+                                  'Business',
+                              style: themeData.textTheme.displayMedium),
                           InkWell(
                             borderRadius: BorderRadius.circular(6),
                             onTap: () {
@@ -131,9 +128,7 @@ class _ContractCardState extends State<ContractCard> {
                               child: Text(
                                 widget.contractEntity.business.name,
                                 style: themeData.textTheme.displayMedium!
-                                    .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: themeData.primaryColor),
+                                    .copyWith(color: themeData.primaryColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -145,12 +140,11 @@ class _ContractCardState extends State<ContractCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          instance.get<AppLocalization>().translate('worker') ??
-                              'Worker',
-                          style: themeData.textTheme.displayMedium!.copyWith(
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
+                            instance
+                                    .get<AppLocalization>()
+                                    .translate('worker') ??
+                                'Worker',
+                            style: themeData.textTheme.displayMedium),
                         const SizedBox(
                           width: 100,
                         ),
@@ -165,9 +159,7 @@ class _ContractCardState extends State<ContractCard> {
                             child: Text(
                               widget.contractEntity.worker.name,
                               style: themeData.textTheme.displayMedium!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: themeData.primaryColor),
+                                  .copyWith(color: themeData.primaryColor),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -183,12 +175,9 @@ class _ContractCardState extends State<ContractCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('status') ??
-                          'Status',
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                        instance.get<AppLocalization>().translate('status') ??
+                            'Status',
+                        style: themeData.textTheme.displayMedium),
                     Text(
                       instance.get<AppLocalization>().translate(widget
                               .contractEntity.state
@@ -196,7 +185,6 @@ class _ContractCardState extends State<ContractCard> {
                               .toLowerCase()) ??
                           'Apply',
                       style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
                         color: AppColors.greenColor,
                       ),
                     ),
@@ -209,20 +197,14 @@ class _ContractCardState extends State<ContractCard> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      instance.get<AppLocalization>().translate('deadline') ??
-                          'Deadline',
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                        instance.get<AppLocalization>().translate('deadline') ??
+                            'Deadline',
+                        style: themeData.textTheme.displayMedium),
                     Text(
-                      instance
-                          .get<Time>()
-                          .getDayMonthYear(DateTime.now().toString()),
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
+                        instance
+                            .get<Time>()
+                            .getDayMonthYear(DateTime.now().toString()),
+                        style: themeData.textTheme.displayMedium),
                   ],
                 ),
               ],

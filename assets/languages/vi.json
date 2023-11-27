@@ -95,7 +95,7 @@
   "monthAgo": "tháng trước",
   "yearAgo": "năm trước",
   "search": "Tìm kiếm",
-  "contractCompleted": "Hợp đồng hoàn thành",
+  "contractCompleted": "Hợp đồng đã hoàn thành",
   "totalTask": "Lượng công việc",
   "createAt": "Tạo hợp đồng vào",
   "endDateAt": "Đã kết thúc vào",
@@ -141,9 +141,9 @@
   "showMore": "Xem thêm",
   "showLess": "Thu gọn",
   "darkMode": "Chế độ tối",
-  "applied": "Đã ứng tuyển",
   "appliedIsEmpty": "Chưa có công việc ứng tuyển",
   "saved": "Đã lưu",
   "savedIsEmpty": "Chưa có bài viết nào",
-  "deadline": "Hết hạn"
+  "deadline": "Hết hạn",
+  "completed": "Hoàn thành"
 }

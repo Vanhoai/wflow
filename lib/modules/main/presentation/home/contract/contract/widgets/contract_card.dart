@@ -58,7 +58,7 @@ class _ContractCardState extends State<ContractCard> {
               children: [
                 Row(
                   children: [
-                    _buildAvatar(),
+                    _buildAvatar(widget.contractEntity.business.id.toString()),
                     const SizedBox(
                       width: 10,
                     ),
@@ -245,14 +245,18 @@ class _ContractCardState extends State<ContractCard> {
     }
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(String idBusiness) {
     return SizedBox(
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
-      child: CircleAvatar(
-        radius: MediaQuery.sizeOf(context).width,
-        backgroundImage: NetworkImage(
-          widget.contractEntity.business.logo,
+      child: InkWell(
+        onTap: () => Navigator.of(context)
+            .pushNamed(RouteKeys.companyScreen, arguments: idBusiness),
+        child: CircleAvatar(
+          radius: MediaQuery.sizeOf(context).width,
+          backgroundImage: NetworkImage(
+            widget.contractEntity.business.logo,
+          ),
         ),
       ),
     );

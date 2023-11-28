@@ -46,7 +46,10 @@ class _ContractCardState extends State<ContractCard> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: widget.contractEntity.id),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+            'contractId': widget.contractEntity.id,
+            'candidateId': widget.contractEntity.worker.id,
+          }),
           child: Container(
             padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
             child: Column(
@@ -111,14 +114,15 @@ class _ContractCardState extends State<ContractCard> {
                           InkWell(
                             borderRadius: BorderRadius.circular(6),
                             onTap: () {
-                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,arguments: widget.contractEntity.business.id.toString());
+                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,
+                                  arguments: widget.contractEntity.business.id.toString());
                             },
                             child: Ink(
                               child: Text(
                                 widget.contractEntity.business.name,
                                 style: themeData.textTheme.displayMedium!
                                     .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
-                                     overflow: TextOverflow.ellipsis,
+                                overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
@@ -134,18 +138,21 @@ class _ContractCardState extends State<ContractCard> {
                             fontWeight: FontWeight.w500,
                           ),
                         ),
-                        const SizedBox(width: 100,),
+                        const SizedBox(
+                          width: 100,
+                        ),
                         InkWell(
                           onTap: () {
-                              Navigator.of(context).pushNamed(RouteKeys.detailUserScreen,arguments: widget.contractEntity.worker.id);
-                            },
+                            Navigator.of(context)
+                                .pushNamed(RouteKeys.detailUserScreen, arguments: widget.contractEntity.worker.id);
+                          },
                           borderRadius: BorderRadius.circular(6),
                           child: Ink(
                             child: Text(
                               widget.contractEntity.worker.name,
                               style: themeData.textTheme.displayMedium!
                                   .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
-                                  overflow: TextOverflow.ellipsis,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                         ),
@@ -153,7 +160,7 @@ class _ContractCardState extends State<ContractCard> {
                     );
                   },
                 ),
-                 const SizedBox(
+                const SizedBox(
                   height: 9,
                 ),
                 Row(

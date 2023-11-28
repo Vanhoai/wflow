@@ -140,5 +140,8 @@
   "createAt": "Tạo hợp đồng vào",
   "endDateAt": "Đã kết thúc vào",
   "worker": "Ứng viên",
-  "success": "Hoàn thành"
+  "success": "Hoàn thành",
+  "rating": "Đánh giá",
+  "ratingSuccess": "Đánh giá thành công",
+  "ratingFailed": "Đánh giá thất bại"
 }

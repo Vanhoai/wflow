@@ -8,7 +8,7 @@ import 'package:wflow/modules/main/domain/feedback/feedback_repository.dart';
 abstract class FeedbackUseCase {
   Future<Either<ReputationEntity, Failure>> findReputation();
   Future<Either<List<FeedbackEntity>, Failure>> findFeedbackOfUser();
-  Future<Either<HttpResponse, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
+  Future<Either<String, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
 }
 
 class FeedbackUseCaseImpl implements FeedbackUseCase {
@@ -27,8 +27,7 @@ class FeedbackUseCaseImpl implements FeedbackUseCase {
   }
 
   @override
-  Future<Either<HttpResponse, Failure>> businessSendFeedback(
-      BusinessSendFeedbackModel businessSendFeedbackModel) async {
+  Future<Either<String, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) async {
     return await feedbackRepository.businessSendFeedback(businessSendFeedbackModel);
   }
 }

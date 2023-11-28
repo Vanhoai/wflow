@@ -6,6 +6,8 @@ class TaskEvent extends Equatable {
   List<Object?> get props => [];
 }
 
+class InitEvent extends TaskEvent {}
+
 class GetTaskEvent extends TaskEvent {
   final num idContract;
 
@@ -31,4 +33,14 @@ class CheckContractAndTransfer extends TaskEvent {
   List<Object?> get props => [id];
 }
 
-class CleanEvent extends TaskEvent {}
+class RatingEvent extends TaskEvent {
+  final num star;
+  final String description;
+  final num businessID;
+  final num userID;
+
+  const RatingEvent({required this.star, required this.description, required this.businessID, required this.userID});
+
+  @override
+  List<Object?> get props => [star, description, businessID, userID];
+}

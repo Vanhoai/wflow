@@ -107,8 +107,12 @@ class AppRoutes {
       case RouteKeys.auStepThreeScreen:
         return MaterialPageRoute(builder: (_) => const AuthStepThreeScreen());
       case RouteKeys.taskScreen:
-        final args = settings.arguments as num;
-        return MaterialPageRoute(builder: (_) => TaskScreen(idContract: args));
+        print('settings.arguments: ${settings.arguments}');
+
+        final args = settings.arguments as Map<String, dynamic>;
+
+        return MaterialPageRoute(
+            builder: (_) => TaskScreen(idContract: args['contractId'], workId: args['candidateId'] ?? 0));
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:

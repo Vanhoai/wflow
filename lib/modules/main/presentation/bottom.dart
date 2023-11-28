@@ -170,7 +170,7 @@ class _BottomNavigationState extends State<BottomNavigation> with SingleTickerPr
         body: LazyLoadIndexedStack(
           index: currentIndex,
           children: [
-            const HomeScreen(),
+            HomeScreen(onTabTapped: onTabTapped),
             const WorkScreen(),
             Container(),
             const RoomsScreen(),

@@ -50,7 +50,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.ic_signed,
       },
       {
-        'title': isUser ? 'Cv' : instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
+        'title': isUser ? 'CV' : instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
         'icon': isUser ? AppConstants.ic_cv : AppConstants.more,
       },
       {'title': instance.get<AppLocalization>().translate('completed') ?? 'Completed', 'icon': AppConstants.history},

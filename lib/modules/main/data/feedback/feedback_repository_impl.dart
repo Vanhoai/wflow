@@ -12,8 +12,13 @@ class FeedbackRepositoryImpl implements FeedbackRepository {
   FeedbackRepositoryImpl({required this.feedbackService});
 
   @override
-  Future<Either<HttpResponse, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) {
-    throw UnimplementedError();
+  Future<Either<String, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) async {
+    try {
+      final response = await feedbackService.businessSendFeedback(businessSendFeedbackModel);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
   }
 
   @override

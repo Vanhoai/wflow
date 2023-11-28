@@ -16,8 +16,9 @@ import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({super.key, required this.onTabTapped});
 
+  final Function(int) onTabTapped;
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -88,7 +89,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             fontWeight: FontWeight.w400,
                           )),
                         ),
-                        onTapLeading: () {},
+                        onTapLeading: () {
+                          widget.onTabTapped(4);
+                        },
                         leadingBadge: true,
                         actions: [
                           HeaderIcon(

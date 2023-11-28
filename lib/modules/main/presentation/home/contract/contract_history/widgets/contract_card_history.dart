@@ -47,7 +47,10 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: widget.contractEntity.id),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+            'contractId': widget.contractEntity.id,
+            'candidateId': widget.contractEntity.worker.id,
+          }),
           child: Container(
             padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
             child: Column(

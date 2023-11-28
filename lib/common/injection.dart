@@ -189,9 +189,19 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<StringeeClient>(() => StringeeClient());
   instance.registerLazySingleton<VideoCallBloc>(() => VideoCallBloc(client: instance.get<StringeeClient>()));
 
+  // FEEDBACK
+  instance.registerLazySingleton<FeedbackService>(() => FeedbackServiceImpl(agent: instance.get<Agent>()));
+  instance.registerLazySingleton<FeedbackRepository>(
+      () => FeedbackRepositoryImpl(feedbackService: instance.get<FeedbackService>()));
+  instance.registerLazySingleton<FeedbackUseCase>(
+      () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
+
   //Task Bloc
   instance.registerLazySingleton<TaskBloc>(
-    () => TaskBloc(taskUseCase: instance.get<TaskUseCase>(), contractUseCase: instance.get<ContractUseCase>()),
+    () => TaskBloc(
+        taskUseCase: instance.get<TaskUseCase>(),
+        contractUseCase: instance.get<ContractUseCase>(),
+        feedbackUseCase: instance.get<FeedbackUseCase>()),
   );
   instance.registerLazySingleton<AppBloc>(() => AppBloc());
   instance.registerLazySingleton<BookmarkBloc>(() => BookmarkBloc(postUseCase: instance.get<PostUseCase>()));
@@ -204,13 +214,6 @@ Future<void> initAppInjection() async {
   instance.registerLazySingleton<UserService>(() => UserServiceImpl(agent: instance.get<Agent>()));
   instance.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(userService: instance.get<UserService>()));
   instance.registerLazySingleton<UserUseCase>(() => UserUseCaseImpl(userRepository: instance.get<UserRepository>()));
-
-  // FEEDBACK
-  instance.registerLazySingleton<FeedbackService>(() => FeedbackServiceImpl(agent: instance.get<Agent>()));
-  instance.registerLazySingleton<FeedbackRepository>(
-      () => FeedbackRepositoryImpl(feedbackService: instance.get<FeedbackService>()));
-  instance.registerLazySingleton<FeedbackUseCase>(
-      () => FeedbackUseCaseImpl(feedbackRepository: instance.get<FeedbackRepository>()));
 
   //Money Format
   instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));

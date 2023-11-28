@@ -41,3 +41,46 @@ class GetTaskListSuccessState extends TaskState {
   @override
   List<Object?> get props => [isLoading, taskEntities, isAllDone, idContract];
 }
+
+class RatingState extends TaskState {
+  final num idContract;
+  const RatingState({
+    required super.isLoading,
+    required this.idContract,
+  });
+
+  @override
+  RatingState copyWith({
+    bool? isLoading,
+    num? idContract,
+  }) {
+    return RatingState(
+      isLoading: isLoading ?? super.isLoading,
+      idContract: idContract ?? this.idContract,
+    );
+  }
+
+  @override
+  List<Object?> get props => [isLoading, idContract];
+}
+
+class RatingSuccessState extends TaskState {
+  final String message;
+
+  const RatingSuccessState({
+    required this.message,
+  });
+
+  @override
+  RatingSuccessState copyWith({
+    String? message,
+    bool? isLoading,
+  }) {
+    return RatingSuccessState(
+      message: message ?? this.message,
+    );
+  }
+
+  @override
+  List<Object?> get props => [message];
+}

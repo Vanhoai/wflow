@@ -10,4 +10,13 @@ class BusinessSendFeedbackModel {
     required this.businessID,
     required this.userID,
   });
+
+  Map<String, dynamic> toJson() {
+    return {
+      'star': star,
+      'description': description,
+      'businessID': businessID,
+      'userID': userID,
+    };
+  }
 }

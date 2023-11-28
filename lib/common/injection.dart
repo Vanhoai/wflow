@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
-import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
@@ -12,8 +10,8 @@ import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/agent/agent.dart';
-import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/utils/secure.util.dart';
+import 'package:wflow/core/utils/string.util.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/modules/auth/data/auth_repository_impl.dart';
 import 'package:wflow/modules/auth/data/auth_service.dart';
@@ -218,39 +216,4 @@ Future<void> initAppInjection() async {
   //Money Format
   instance.registerLazySingleton<NumberFormat>(() => NumberFormat.currency(locale: 'vi_VN', symbol: ''));
   instance.registerLazySingleton<ConvertString>(() => ConvertString());
-  // ! FOR DEBUG ONLY
-  bool isDebug = false;
-  assert(() {
-    isDebug = true;
-    return true;
-  }());
-  if (isDebug) {
-    Bloc.observer = AppBlocObserver();
-  }
-}
-
-class AppBlocObserver extends BlocObserver {
-  var logger = Logger(
-    printer: PrettyPrinter(
-      methodCount: 2, // Number of method calls to be displayed
-      errorMethodCount: 8, // Number of method calls if stacktrace is provided
-      colors: true, // Colorful log messages
-      printEmojis: true, // Print an emoji for each log message
-      printTime: true, // Should each log print contain a timestamp
-    ),
-    level: Level.verbose,
-    filter: ProductionFilter(),
-  );
-
-  @override
-  void onTransition(Bloc bloc, Transition transition) {
-    super.onTransition(bloc, transition);
-    logger.i('onTransition -- bloc: ${bloc.runtimeType}, transition: $transition');
-  }
-
-  @override
-  void onError(BlocBase bloc, Object error, StackTrace stackTrace) {
-    super.onError(bloc, error, stackTrace);
-    logger.e('onError -- bloc: ${bloc.runtimeType}, error: $error, stackTrace: $stackTrace');
-  }
 }

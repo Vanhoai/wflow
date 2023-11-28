@@ -349,26 +349,6 @@ class _FormState extends State<FormSignIn> {
                       ),
                     ),
                   ),
-                  Expanded(
-                    flex: 1,
-                    child: BlocListener<SignInBloc, SignInState>(
-                      listenWhen: (preState, state) => preState != state,
-                      listener: listener,
-                      child: PrimaryButton(
-                        onPressed: () {
-                          emailController.text = 'hongvybusiness@gmail.com';
-                          context.read<SignInBloc>().add(
-                                SignInSubmittedEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  isRemember: state.isRemember,
-                                ),
-                              );
-                        },
-                        label: 'Sign In With Business',
-                      ),
-                    ),
-                  ),
                   BlocBuilder<SecurityBloc, SecurityState>(
                     bloc: instance.get<SecurityBloc>(),
                     builder: (context, state) {

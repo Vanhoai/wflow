@@ -44,7 +44,7 @@ class _ContractHistoryScreenState extends State<ContractHistoryScreen> {
             text: Text(
               instance.get<AppLocalization>().translate('contractCompleted') ??
                   'Contract completed',
-                  style: themeData.textTheme.labelMedium,
+              style: themeData.textTheme.displayLarge,
             ),
           ),
           body: BlocBuilder<ContractHistoryBloc, ContractHistoryState>(

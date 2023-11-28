@@ -15,12 +15,14 @@ class HotJobCard extends StatefulWidget {
     this.onToggleBookmark,
     required this.isBookmarked,
     required this.paymentAvailable,
+    this.onToggleAvatar,
   });
 
   final PostEntity job;
   final BoxConstraints constraints;
   final Function(int id) pressCard;
   final void Function()? onToggleBookmark;
+  final void Function()? onToggleAvatar;
   final bool isBookmarked;
   final bool paymentAvailable;
 
@@ -61,6 +63,7 @@ class _HotJobCardState extends State<HotJobCard> {
         cardPressed: () => widget.pressCard(widget.job.id),
         padding: const EdgeInsets.all(12),
         header: Header(
+          idBusiness: widget.job.business.toString(),
           leadingPhotoUrl: widget.job.companyLogo,
           title: Text(
             widget.job.position,
@@ -81,7 +84,7 @@ class _HotJobCardState extends State<HotJobCard> {
               ),
             ),
           ),
-          onTapLeading: () {},
+          onTapLeading: widget.onToggleAvatar,
           leadingSize: 32,
           actions: [
             InkWell(
@@ -101,7 +104,8 @@ class _HotJobCardState extends State<HotJobCard> {
             const SizedBox(width: 8.0),
           ],
         ),
-        cost: instance.get<ConvertString>().moneyFormat(value: widget.job.salary),
+        cost:
+            instance.get<ConvertString>().moneyFormat(value: widget.job.salary),
         duration: widget.job.duration,
         description: Text(
           widget.job.content,

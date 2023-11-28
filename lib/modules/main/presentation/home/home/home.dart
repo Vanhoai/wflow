@@ -6,6 +6,7 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -46,6 +47,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+    final isUser =
+        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
 
     return BlocProvider(
       create: (_) => HomeBloc(
@@ -72,7 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         leadingPhotoUrl: state.userEntity.avatar,
                         title: Text(
                           'Chào $name 👋🏻',
-                          style: themeData.textTheme.displayLarge!.merge(TextStyle(
+                          style:
+                              themeData.textTheme.displayLarge!.merge(TextStyle(
                             color: themeData.colorScheme.onBackground,
                             fontWeight: FontWeight.w400,
                           )),
@@ -83,17 +87,30 @@ class _HomeScreenState extends State<HomeScreen> {
                           email,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                            color: themeData.colorScheme.onBackground.withOpacity(0.5),
+                          style: themeData.textTheme.displayMedium!
+                              .merge(TextStyle(
+                            color: themeData.colorScheme.onBackground
+                                .withOpacity(0.5),
                             fontWeight: FontWeight.w400,
                           )),
                         ),
-                        onTapLeading: () {},
+                        onTapLeading: () => isUser
+                            ? {}
+                            : Navigator.of(context).pushNamed(
+                                RouteKeys.companyScreen,
+                                arguments: instance
+                                    .get<AppBloc>()
+                                    .state
+                                    .userEntity
+                                    .business
+                                    .toString(),
+                              ),
                         leadingBadge: true,
                         actions: [
                           HeaderIcon(
                             icon: AppConstants.ic_notification,
-                            onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
+                            onTap: () => Navigator.of(context)
+                                .pushNamed(RouteKeys.notificationScreen),
                           ),
                         ],
                       );
@@ -103,12 +120,15 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               const NavigateFeatWidget(),
               SliverPadding(
-                padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
+                padding: const EdgeInsets.only(
+                    top: 10, bottom: 4, left: 20, right: 20),
                 sliver: SliverToBoxAdapter(
                   child: Text(
-                    instance.get<AppLocalization>().translate('hotWork') ?? 'Hot Work',
+                    instance.get<AppLocalization>().translate('hotWork') ??
+                        'Hot Work',
                     style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                      color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                      color: themeData.textTheme.displayMedium!.color!
+                          .withOpacity(0.5),
                       fontWeight: FontWeight.w400,
                       fontSize: 16.sp,
                     )),
@@ -117,14 +137,17 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               HowJobListWidget(scrollController: hotJobScrollController),
               SliverPadding(
-                padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
+                padding: const EdgeInsets.only(
+                    top: 6, bottom: 4, left: 20, right: 20),
                 sliver: SliverToBoxAdapter(
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 8, top: 16),
                     child: Text(
-                      instance.get<AppLocalization>().translate('recentWork') ?? 'Recent Work',
+                      instance.get<AppLocalization>().translate('recentWork') ??
+                          'Recent Work',
                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                        color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                        color: themeData.textTheme.displayMedium!.color!
+                            .withOpacity(0.5),
                         fontWeight: FontWeight.w400,
                         fontSize: 16.sp,
                       )),

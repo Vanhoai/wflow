@@ -7,6 +7,7 @@ import 'package:shimmer/shimmer.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -24,7 +25,8 @@ class CompanyScreen extends StatefulWidget {
   State<CompanyScreen> createState() => _CompanyScreenState();
 }
 
-class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateMixin {
+class _CompanyScreenState extends State<CompanyScreen>
+    with TickerProviderStateMixin {
   late final ScrollController scrollController;
   late final TabController tabController;
   late final List<String> staticTab;
@@ -87,6 +89,11 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
+    final isUser =
+        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final business =
+        instance.get<AppBloc>().state.userEntity.business.toString();
+
     return BlocProvider<MyCompanyBloc>(
       create: (context) => MyCompanyBloc(
         companyUseCase: instance.call<CompanyUseCase>(),
@@ -109,118 +116,148 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
               );
             },
           ),
-          actions: [
-            BlocBuilder<MyCompanyBloc, MyCompanyState>(
-              builder: (context, state) {
-                final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
-                final isOwner = instance.get<AppBloc>().state.userEntity.id == state.companyEntity.creator;
+          actions: isUser || business != widget.companyID
+              ? []
+              : [
+                  BlocBuilder<MyCompanyBloc, MyCompanyState>(
+                    builder: (context, state) {
+                      final MyCompanyBloc bloc = context.read<MyCompanyBloc>();
+                      final isOwner =
+                          instance.get<AppBloc>().state.userEntity.id ==
+                              state.companyEntity.creator;
 
-                return Padding(
-                  padding: EdgeInsets.only(right: 20.w),
-                  child: InkWell(
-                    onTap: () {
-                      showCupertinoModalPopup(
-                        context: context,
-                        builder: (context) {
-                          return BlocProvider<MyCompanyBloc>.value(
-                            value: bloc,
-                            child: CupertinoActionSheet(
-                              actions: [
-                                Visibility(
-                                  visible: isOwner,
-                                  child: CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                        ..pop()
-                                        ..pushReplacementNamed(
-                                          RouteKeys.addBusinessScreen,
-                                          arguments: widget.companyID,
-                                        );
-                                    },
-                                    child: Text(
-                                      instance.get<AppLocalization>().translate('addCollaborator') ??
-                                          'Add Collaborator',
+                      return Padding(
+                        padding: EdgeInsets.only(right: 20.w),
+                        child: InkWell(
+                          onTap: () {
+                            showCupertinoModalPopup(
+                              context: context,
+                              builder: (context) {
+                                return BlocProvider<MyCompanyBloc>.value(
+                                  value: bloc,
+                                  child: CupertinoActionSheet(
+                                    actions: [
+                                      Visibility(
+                                        visible: isOwner,
+                                        child: CupertinoActionSheetAction(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                              ..pop()
+                                              ..pushReplacementNamed(
+                                                RouteKeys.addBusinessScreen,
+                                                arguments: widget.companyID,
+                                              );
+                                          },
+                                          child: Text(
+                                            instance
+                                                    .get<AppLocalization>()
+                                                    .translate(
+                                                        'addCollaborator') ??
+                                                'Add Collaborator',
+                                          ),
+                                        ),
+                                      ),
+                                      Visibility(
+                                        visible: isOwner,
+                                        child: CupertinoActionSheetAction(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                              ..pop()
+                                              ..pushReplacementNamed(
+                                                RouteKeys
+                                                    .removeCollaboratorScreen,
+                                                arguments: widget.companyID,
+                                              );
+                                          },
+                                          child: Text(
+                                            instance
+                                                    .get<AppLocalization>()
+                                                    .translate(
+                                                        'removeCollaborator') ??
+                                                'Remove Collaborator',
+                                          ),
+                                        ),
+                                      ),
+                                      CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context).pushNamed(
+                                              RouteKeys.updateBusinessScreen);
+                                        },
+                                        child: Text(
+                                          instance
+                                                  .get<AppLocalization>()
+                                                  .translate('editCompany') ??
+                                              'Edit Company',
+                                        ),
+                                      ),
+                                      CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                            ..pop()
+                                            ..pushNamed(RouteKeys.upPostScreen);
+                                        },
+                                        child: Text(
+                                          instance
+                                                  .get<AppLocalization>()
+                                                  .translate('upPost') ??
+                                              'Up Post',
+                                        ),
+                                      ),
+                                      CupertinoActionSheetAction(
+                                        onPressed: () {
+                                          Navigator.of(context)
+                                            ..pop()
+                                            ..pushNamed(
+                                              RouteKeys.balanceScreen,
+                                              arguments: state
+                                                  .companyEntity.balance
+                                                  .toString(),
+                                            );
+                                        },
+                                        child: Text(
+                                          instance
+                                                  .get<AppLocalization>()
+                                                  .translate('balance') ??
+                                              'Balance',
+                                        ),
+                                      ),
+                                    ],
+                                    cancelButton: CupertinoActionSheetAction(
+                                      onPressed: () =>
+                                          Navigator.of(context).pop(),
+                                      child: Text(
+                                        instance
+                                                .get<AppLocalization>()
+                                                .translate('cancel') ??
+                                            'Cancel',
+                                      ),
                                     ),
                                   ),
-                                ),
-                                Visibility(
-                                  visible: isOwner,
-                                  child: CupertinoActionSheetAction(
-                                    onPressed: () {
-                                      Navigator.of(context)
-                                        ..pop()
-                                        ..pushReplacementNamed(
-                                          RouteKeys.removeCollaboratorScreen,
-                                          arguments: widget.companyID,
-                                        );
-                                    },
-                                    child: Text(
-                                      instance.get<AppLocalization>().translate('removeCollaborator') ??
-                                          'Remove Collaborator',
-                                    ),
-                                  ),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context).pushNamed(RouteKeys.updateBusinessScreen);
-                                  },
-                                  child: Text(
-                                    instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
-                                  ),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                      ..pop()
-                                      ..pushNamed(RouteKeys.upPostScreen);
-                                  },
-                                  child: Text(
-                                    instance.get<AppLocalization>().translate('upPost') ?? 'Up Post',
-                                  ),
-                                ),
-                                CupertinoActionSheetAction(
-                                  onPressed: () {
-                                    Navigator.of(context)
-                                      ..pop()
-                                      ..pushNamed(
-                                        RouteKeys.balanceScreen,
-                                        arguments: state.companyEntity.balance.toString(),
-                                      );
-                                  },
-                                  child: Text(
-                                    instance.get<AppLocalization>().translate('balance') ?? 'Balance',
-                                  ),
-                                ),
-                              ],
-                              cancelButton: CupertinoActionSheetAction(
-                                onPressed: () => Navigator.of(context).pop(),
-                                child: Text(
-                                  instance.get<AppLocalization>().translate('cancel') ?? 'Cancel',
-                                ),
-                              ),
+                                );
+                              },
+                            );
+                          },
+                          child: Text(
+                            instance.get<AppLocalization>().translate('more') ??
+                                'More',
+                            style: themeData.textTheme.displayMedium!.copyWith(
+                              color: AppColors.primary,
                             ),
-                          );
-                        },
+                          ),
+                        ),
                       );
                     },
-                    child: Text(
-                      instance.get<AppLocalization>().translate('more') ?? 'More',
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        color: AppColors.primary,
-                      ),
-                    ),
-                  ),
-                );
-              },
-            )
-          ],
+                  )
+                ],
         ),
         body: BlocConsumer<MyCompanyBloc, MyCompanyState>(
           listener: (context, state) {},
           buildWhen: (previous, current) =>
-              previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
+              previous.companyEntity != current.companyEntity ||
+              previous.isLoadingCompany != current.isLoadingCompany,
           listenWhen: (previous, current) =>
-              previous.companyEntity != current.companyEntity || previous.isLoadingCompany != current.isLoadingCompany,
+              previous.companyEntity != current.companyEntity ||
+              previous.isLoadingCompany != current.isLoadingCompany,
           builder: (context, state) {
             return Column(
               mainAxisAlignment: MainAxisAlignment.start,
@@ -228,8 +265,10 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                 Visibility(
                   visible: !state.isLoadingCompany,
                   replacement: Shimmer.fromColors(
-                    baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                    highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                    baseColor:
+                        themeData.colorScheme.onBackground.withOpacity(0.1),
+                    highlightColor:
+                        themeData.colorScheme.onBackground.withOpacity(0.05),
                     child: Container(
                       height: 150.h,
                       margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -264,11 +303,14 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(8.r),
                             child: CachedNetworkImage(
-                              imageUrl: state.companyEntity.background.toString() == ''
+                              imageUrl: state.companyEntity.background
+                                          .toString() ==
+                                      ''
                                   ? IMAGE_PHOTO
                                   : state.companyEntity.background.toString(),
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(radius: 16),
                             ),
                           ),
                         ),
@@ -293,8 +335,10 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                         child: Visibility(
                           visible: !state.isLoadingCompany,
                           replacement: Shimmer.fromColors(
-                            baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
-                            highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
+                            baseColor: themeData.colorScheme.onBackground
+                                .withOpacity(0.1),
+                            highlightColor: themeData.colorScheme.onBackground
+                                .withOpacity(0.05),
                             child: Container(
                               height: 60.w,
                               width: 60.w,
@@ -307,11 +351,13 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(60),
                             child: CachedNetworkImage(
-                              imageUrl: state.companyEntity.logo.toString() == ''
-                                  ? IMAGE_PHOTO
-                                  : state.companyEntity.logo.toString(),
+                              imageUrl:
+                                  state.companyEntity.logo.toString() == ''
+                                      ? IMAGE_PHOTO
+                                      : state.companyEntity.logo.toString(),
                               fit: BoxFit.cover,
-                              placeholder: (context, url) => const CupertinoActivityIndicator(radius: 16),
+                              placeholder: (context, url) =>
+                                  const CupertinoActivityIndicator(radius: 16),
                             ),
                           ),
                         ),
@@ -340,7 +386,8 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                     controller: tabController,
                     isScrollable: true,
                     labelColor: AppColors.primary,
-                    unselectedLabelStyle: themeData.textTheme.displaySmall!.copyWith(
+                    unselectedLabelStyle:
+                        themeData.textTheme.displaySmall!.copyWith(
                       color: AppColors.textColor,
                       fontWeight: FontWeight.w400,
                       fontSize: 14.sp,

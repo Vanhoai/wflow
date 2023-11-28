@@ -7,5 +7,5 @@ import 'package:wflow/modules/main/domain/feedback/entities/reputation_entity.da
 abstract class FeedbackRepository {
   Future<Either<ReputationEntity, Failure>> findReputation();
   Future<Either<List<FeedbackEntity>, Failure>> findFeedbackOfUser();
-  Future<Either<HttpResponse, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
+  Future<Either<String, Failure>> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
 }

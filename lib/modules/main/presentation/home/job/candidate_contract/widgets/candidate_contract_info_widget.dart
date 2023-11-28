@@ -38,6 +38,8 @@ class CandidateContractInfoWidget extends StatelessWidget {
           ),
           Text(
             introduction,
+            maxLines: 20,
+            overflow: TextOverflow.ellipsis,
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground,
               fontSize: 18,

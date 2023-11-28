@@ -34,7 +34,7 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'huy@gmail.com');
+    emailController = TextEditingController(text: 'hongvyuser@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
@@ -336,6 +336,7 @@ class _FormState extends State<FormSignIn> {
                       listener: listener,
                       child: PrimaryButton(
                         onPressed: () {
+                          emailController.text = 'hongvyuser@gmail.com';
                           context.read<SignInBloc>().add(
                                 SignInSubmittedEvent(
                                   email: emailController.text,
@@ -345,6 +346,26 @@ class _FormState extends State<FormSignIn> {
                               );
                         },
                         label: instance.get<AppLocalization>().translate('signIn') ?? 'Sign in',
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 1,
+                    child: BlocListener<SignInBloc, SignInState>(
+                      listenWhen: (preState, state) => preState != state,
+                      listener: listener,
+                      child: PrimaryButton(
+                        onPressed: () {
+                          emailController.text = 'hongvybusiness@gmail.com';
+                          context.read<SignInBloc>().add(
+                                SignInSubmittedEvent(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  isRemember: state.isRemember,
+                                ),
+                              );
+                        },
+                        label: 'Sign In With Business',
                       ),
                     ),
                   ),

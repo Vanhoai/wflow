@@ -7,7 +7,7 @@ import 'package:wflow/modules/main/domain/feedback/entities/reputation_entity.da
 abstract class FeedbackService {
   Future<ReputationEntity> findReputation();
   Future<List<FeedbackEntity>> findFeedbackOfUser();
-  Future<HttpResponse> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
+  Future<String> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel);
 }
 
 class FeedbackPath {
@@ -21,8 +21,19 @@ class FeedbackServiceImpl implements FeedbackService {
   FeedbackServiceImpl({required this.agent});
 
   @override
-  Future<HttpResponse> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) {
-    throw UnimplementedError();
+  Future<String> businessSendFeedback(BusinessSendFeedbackModel businessSendFeedbackModel) async {
+    try {
+      final response =
+          await agent.dio.post(FeedbackPath.businessSendFeedback, data: businessSendFeedbackModel.toJson());
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+      return httpResponse.message;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
   }
 
   @override

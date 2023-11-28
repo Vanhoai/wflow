@@ -24,8 +24,7 @@ class ContractCardHistory extends StatefulWidget {
 class _ContractCardHistoryState extends State<ContractCardHistory> {
   @override
   Widget build(BuildContext context) {
-    final noSymbolInUSFormat =
-        NumberFormat.currency(locale: 'vi_VN', symbol: '');
+    final noSymbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
     return Container(
       margin: const EdgeInsets.only(
         left: AppSize.paddingScreenDefault,
@@ -48,11 +47,12 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen,
-              arguments: widget.contractEntity.id),
+          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+            'contractId': widget.contractEntity.id,
+            'candidateId': widget.contractEntity.worker.id,
+          }),
           child: Container(
-            padding:
-                const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
+            padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
             child: Column(
               children: [
                 Row(
@@ -74,9 +74,8 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                           ),
                           Text(
                             '💰 ${noSymbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
-                            style: themeData.textTheme.labelMedium!.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: Colors.green),
+                            style: themeData.textTheme.labelMedium!
+                                .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
                           )
                         ],
                       ),
@@ -128,8 +127,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                 ),
                 Builder(
                   builder: (context) {
-                    if (instance.get<AppBloc>().state.role !=
-                        RoleEnum.business.index + 1) {
+                    if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -142,18 +140,14 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                           InkWell(
                             borderRadius: BorderRadius.circular(6),
                             onTap: () {
-                              Navigator.of(context).pushNamed(
-                                  RouteKeys.companyScreen,
-                                  arguments: widget.contractEntity.business.id
-                                      .toString());
+                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,
+                                  arguments: widget.contractEntity.business.id.toString());
                             },
                             child: Ink(
                               child: Text(
                                 widget.contractEntity.business.name,
                                 style: themeData.textTheme.displayMedium!
-                                    .copyWith(
-                                        fontWeight: FontWeight.w500,
-                                        color: themeData.primaryColor),
+                                    .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
@@ -175,18 +169,15 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                         ),
                         InkWell(
                           onTap: () {
-                            Navigator.of(context).pushNamed(
-                                RouteKeys.detailUserScreen,
-                                arguments: widget.contractEntity.worker.id);
+                            Navigator.of(context)
+                                .pushNamed(RouteKeys.detailUserScreen, arguments: widget.contractEntity.worker.id);
                           },
                           borderRadius: BorderRadius.circular(6),
                           child: Ink(
                             child: Text(
                               widget.contractEntity.worker.name,
                               style: themeData.textTheme.displayMedium!
-                                  .copyWith(
-                                      fontWeight: FontWeight.w500,
-                                      color: themeData.primaryColor),
+                                  .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
                               overflow: TextOverflow.ellipsis,
                             ),
                           ),
@@ -208,10 +199,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                       ),
                     ),
                     Text(
-                      instance.get<AppLocalization>().translate(widget
-                              .contractEntity.state
-                              .toString()
-                              .toLowerCase()) ??
+                      instance.get<AppLocalization>().translate(widget.contractEntity.state.toString().toLowerCase()) ??
                           widget.contractEntity.state,
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
@@ -228,12 +216,10 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                   children: [
                     Text(
                       '🏁 ${instance.get<AppLocalization>().translate('createAt') ?? 'Contract created'}',
-                      style: themeData.textTheme.displayMedium!
-                          .copyWith(fontWeight: FontWeight.normal),
+                      style: themeData.textTheme.displayMedium!.copyWith(fontWeight: FontWeight.normal),
                     ),
                     Text(
-                      instance.get<Time>().getDayMonthYear(
-                          widget.contractEntity.createdAt.toString()),
+                      instance.get<Time>().getDayMonthYear(widget.contractEntity.createdAt.toString()),
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
@@ -253,8 +239,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
                       ),
                     ),
                     Text(
-                      instance.get<Time>().getDayMonthYear(
-                          widget.contractEntity.updatedAt.toString()),
+                      instance.get<Time>().getDayMonthYear(widget.contractEntity.updatedAt.toString()),
                       style: themeData.textTheme.displayMedium!.copyWith(
                         fontWeight: FontWeight.normal,
                       ),
@@ -274,8 +259,7 @@ class _ContractCardHistoryState extends State<ContractCardHistory> {
       width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
       height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
       child: InkWell(
-        onTap: () => Navigator.of(context)
-            .pushNamed(RouteKeys.companyScreen, arguments: idBusiness),
+        onTap: () => Navigator.of(context).pushNamed(RouteKeys.companyScreen, arguments: idBusiness),
         child: CircleAvatar(
           radius: MediaQuery.sizeOf(context).width,
           backgroundImage: NetworkImage(

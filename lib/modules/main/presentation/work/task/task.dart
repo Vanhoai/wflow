@@ -1,26 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/configuration/constants.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/alert.util.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
 import 'package:wflow/core/widgets/shared/scaffold/scaffold.dart';
 import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
+import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/presentation/work/task/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/work/task/bloc/event.dart';
+import 'package:wflow/modules/main/presentation/work/task/function.dart';
 
 import 'bloc/state.dart';
 
 class TaskScreen extends StatefulWidget {
-  const TaskScreen({required this.idContract, super.key});
+  const TaskScreen({required this.idContract, super.key, required this.workId});
+
   final num idContract;
+  final num workId;
+
   @override
   State<StatefulWidget> createState() {
     return _TaskScreenState();
@@ -28,165 +33,113 @@ class TaskScreen extends StatefulWidget {
 }
 
 class _TaskScreenState extends State<TaskScreen> {
-  final TextEditingController _ratingController = TextEditingController();
+  final TaskBloc taskBloc = instance.get<TaskBloc>();
+
+  @override
+  void initState() {
+    super.initState();
+    taskBloc.add(GetTaskEvent(idContract: widget.idContract));
+  }
 
   @override
   void dispose() {
-    instance.get<TaskBloc>().add(CleanEvent());
-    _ratingController.dispose();
+    taskBloc.add(InitEvent());
     super.dispose();
   }
 
-  _displayTextInputDialog(BuildContext context) async {
+  Future _displayRating(BuildContext context, TaskBloc taskBloc) async {
     final ThemeData themeData = Theme.of(context);
+    final UserEntity userEntity = instance.get<AppBloc>().state.userEntity;
+    final TextEditingController ratingController = TextEditingController();
+
     return showDialog(
       context: context,
       builder: (context) {
-        return Theme(
-          data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
-          child: AlertDialog(
-            backgroundColor: themeData.colorScheme.background,
-            surfaceTintColor: Colors.transparent,
-            insetPadding: const EdgeInsets.all(10),
-            title: const Text('Rating'),
-            content: Container(
-              color: themeData.colorScheme.background,
-              width: MediaQuery.of(context).size.width,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  RatingBar.builder(
-                    initialRating: 5,
-                    minRating: 1,
-                    direction: Axis.horizontal,
-                    allowHalfRating: true,
-                    itemCount: 5,
-                    itemBuilder: (context, _) => const Icon(
-                      Icons.star,
-                      color: AppColors.primary,
-                    ),
-                    onRatingUpdate: (rating) {
-                      print(rating);
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  TextField(
-                    style: Theme.of(context).textTheme.bodyLarge,
-                    minLines: 3,
-                    maxLines: 5,
-                    // and this
-                    textInputAction: TextInputAction.newline,
-                    controller: _ratingController,
-                    decoration: InputDecoration(
-                      hintText: 'Type your rating content here',
-                      contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-                      hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
-                      focusedBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(color: AppColors.primary, width: 1.2),
-                      ),
-                      enabledBorder: const OutlineInputBorder(
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                        borderSide: BorderSide(color: Colors.black26, width: 1.2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  PrimaryButton(
-                    label: 'Rating this contract',
-                    onPressed: () => Navigator.pop(context, true),
-                  )
-                ],
-              ),
-            ),
-          ),
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final ThemeData themeData = Theme.of(context);
-    return BlocBuilder<TaskBloc, TaskState>(
-      bloc: instance.get<TaskBloc>()..add(GetTaskEvent(idContract: widget.idContract)),
-      buildWhen: (previous, current) => true,
-      builder: (context, state) {
-        return CommonScaffold(
-          appBar: AppHeader(
-            text: Text(
-              'Tasks',
-              style: themeData.textTheme.displayMedium,
-            ),
-          ),
-          body: RefreshIndicator(
-            onRefresh: () async => instance.get<TaskBloc>().add(GetTaskEvent(idContract: widget.idContract)),
-            child: Stack(
-              children: [
-                Builder(
-                  builder: (context) {
-                    if (state is GetTaskListSuccessState) {
-                      if (state.taskEntities.isEmpty) {
-                        return Center(
-                          child: Text(
-                            'No item task',
-                            style: Theme.of(context).textTheme.bodyLarge,
-                          ),
-                        );
-                      }
-                      return Column(
+        return StatefulBuilder(
+          builder: (context, setState) {
+            double rating = 5;
+            return BlocBuilder<TaskBloc, TaskState>(
+              buildWhen: (previous, current) => true,
+              bloc: taskBloc,
+              builder: (context, state) {
+                return Theme(
+                  data: themeData.copyWith(dialogBackgroundColor: themeData.colorScheme.background),
+                  child: AlertDialog(
+                    backgroundColor: themeData.colorScheme.background,
+                    surfaceTintColor: Colors.transparent,
+                    insetPadding: const EdgeInsets.all(10),
+                    title: const Text('Rating'),
+                    content: Container(
+                      color: themeData.colorScheme.background,
+                      width: MediaQuery.of(context).size.width,
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
                         children: [
-                          Expanded(
-                            child: Container(
-                              margin: const EdgeInsets.only(top: 15, bottom: 15),
-                              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                              child: ListView.builder(
-                                shrinkWrap: true,
-                                itemCount: state.taskEntities.length,
-                                itemBuilder: (context, index) {
-                                  return _task(state.taskEntities[index], context);
-                                },
+                          RatingBar.builder(
+                            initialRating: 5,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemBuilder: (context, _) => const Icon(
+                              Icons.star,
+                              color: AppColors.primary,
+                            ),
+                            onRatingUpdate: (rating) {
+                              setState(() {
+                                rating = rating;
+                              });
+                            },
+                          ),
+                          const SizedBox(height: 20),
+                          TextField(
+                            style: Theme.of(context).textTheme.bodyLarge,
+                            minLines: 3,
+                            maxLines: 5,
+                            // and this
+                            textInputAction: TextInputAction.newline,
+                            controller: ratingController,
+                            decoration: InputDecoration(
+                              hintText: 'Type your rating content here',
+                              contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+                              hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
+                              focusedBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                                borderSide: BorderSide(color: AppColors.primary, width: 1.2),
+                              ),
+                              enabledBorder: const OutlineInputBorder(
+                                borderRadius: BorderRadius.all(Radius.circular(12)),
+                                borderSide: BorderSide(color: Colors.black26, width: 1.2),
                               ),
                             ),
                           ),
-                          // PrimaryButton(
-                          //     label: 'Rate',
-                          //     onPressed: () {
-                          //       _displayTextInputDialog(context);
-                          //     }),
-                          Builder(
-                            builder: (context) {
-                              if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) {
-                                return Container(
-                                  color: Colors.white,
-                                  padding: const EdgeInsets.all(20),
-                                  child: PrimaryButton(
-                                    label: 'Close Contract',
-                                    onPressed: () {
-                                      instance.get<TaskBloc>().add(CheckContractAndTransfer(id: widget.idContract));
-                                    },
-                                  ),
-                                );
-                              } else {
-                                return const SizedBox();
+                          const SizedBox(height: 20),
+                          PrimaryButton(
+                            label: 'Rating this contract',
+                            onPressed: () {
+                              if (widget.workId == 0) {
+                                AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
+                                    instance.get<AppLocalization>().translate('ratingFailed'), callback: () {
+                                  Navigator.pop(context);
+                                });
                               }
+
+                              taskBloc.add(RatingEvent(
+                                star: rating,
+                                description: ratingController.text,
+                                businessID: userEntity.business,
+                                userID: widget.workId,
+                              ));
                             },
                           )
                         ],
-                      );
-                    }
-                    return const SizedBox();
-                  },
-                ),
-                Positioned(
-                  child: Visibility(
-                    visible: state.isLoading,
-                    child: const LoadingWithWhite(),
+                      ),
+                    ),
                   ),
-                )
-              ],
-            ),
-          ),
+                );
+              },
+            );
+          },
         );
       },
     );
@@ -214,7 +167,7 @@ class _TaskScreenState extends State<TaskScreen> {
               Expanded(
                 child: InkWell(
                   onTap: () {
-                    _showDetail(task, context);
+                    _bottomSheetDetail(task, context);
                   },
                   borderRadius: BorderRadius.circular(8),
                   child: Container(
@@ -225,9 +178,9 @@ class _TaskScreenState extends State<TaskScreen> {
                         border: Border.all(width: 1, color: AppColors.borderColor.withAlpha(90))),
                     child: Text(
                       task.title,
-                      maxLines: 2,
                       style: Theme.of(context).textTheme.displayMedium,
                       overflow: TextOverflow.ellipsis,
+                      maxLines: 3,
                     ),
                   ),
                 ),
@@ -251,18 +204,21 @@ class _TaskScreenState extends State<TaskScreen> {
   }
 
   Widget _boxStatus(String status) {
+    final TaskStatus status0 = TaskStatus.values.firstWhere((element) => element.name == status);
+
     return Container(
-        width: 22,
-        height: 22,
-        decoration: BoxDecoration(
-          border: Border.all(width: 1, color: Colors.black26),
-          borderRadius: BorderRadius.circular(6.0),
-          color: _colorSatus(status),
-        ),
-        child: _iconStatus(status));
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        border: Border.all(width: 1, color: Colors.black26),
+        borderRadius: BorderRadius.circular(6.0),
+        color: colorStatus(status0),
+      ),
+      child: iconStatus(status0),
+    );
   }
 
-  _showDetail(TaskEntity task, BuildContext context) {
+  Future _bottomSheetDetail(TaskEntity task, BuildContext context) {
     final ScrollController controller = ScrollController();
     return showModalBottomSheet(
       context: context,
@@ -282,11 +238,13 @@ class _TaskScreenState extends State<TaskScreen> {
                   margin: const EdgeInsets.only(bottom: 3),
                   child: Text(
                     'Nhiệm vụ: ',
-                    style: Theme.of(context).textTheme.displayMedium,
+                    style: Theme.of(context).textTheme.displayLarge,
                   )),
               Text(
                 task.title,
                 style: Theme.of(context).textTheme.displayMedium,
+                maxLines: 10,
+                overflow: TextOverflow.ellipsis,
               ),
               Container(
                   margin: const EdgeInsets.only(top: 8, bottom: 3),
@@ -320,7 +278,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 child: Text(
                   'Deadline: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
                   style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: task.state == TaskStatus.Accepted ? AppColors.greenColor : AppColors.redColor,
+                        color: task.state == TaskStatus.Accepted.toString() ? AppColors.greenColor : AppColors.redColor,
                       ),
                 ),
               ),
@@ -330,30 +288,6 @@ class _TaskScreenState extends State<TaskScreen> {
         );
       },
     );
-  }
-
-  Widget _iconStatus(String status) {
-    if (status == TaskStatus.Accepted.name) {
-      return Padding(padding: const EdgeInsets.all(2), child: SvgPicture.asset(AppConstants.checkOutLine));
-    } else if (status == TaskStatus.Done.name) {
-      return Padding(padding: const EdgeInsets.all(0), child: SvgPicture.asset(AppConstants.warning));
-    } else if (status == TaskStatus.Reject.name) {
-      return Padding(padding: const EdgeInsets.all(4), child: SvgPicture.asset(AppConstants.danger));
-    } else {
-      return Padding(padding: const EdgeInsets.all(2), child: SvgPicture.asset(AppConstants.checkOutLine));
-    }
-  }
-
-  Color _colorSatus(String status) {
-    if (status == TaskStatus.Accepted.name) {
-      return AppColors.greenColor;
-    } else if (status == TaskStatus.Done.name) {
-      return Colors.yellow;
-    } else if (status == TaskStatus.Reject.name) {
-      return AppColors.redColor;
-    } else {
-      return Colors.white;
-    }
   }
 
   Widget _buttonStatus(BuildContext context, TaskEntity taskEntity) {
@@ -505,6 +439,94 @@ class _TaskScreenState extends State<TaskScreen> {
             ),
           )
         ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ThemeData themeData = Theme.of(context);
+
+    return BlocProvider(
+      create: (_) => taskBloc,
+      child: BlocConsumer<TaskBloc, TaskState>(
+        listener: (context, state) {
+          if (state is RatingState) {
+            _displayRating(context, taskBloc);
+          }
+        },
+        listenWhen: (previous, current) =>
+            previous.isLoading != current.isLoading || current is GetTaskListSuccessState && current.isAllDone,
+        bloc: taskBloc,
+        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
+        builder: (context, state) {
+          return CommonScaffold(
+            appBar: AppHeader(
+              text: Text(
+                'Tasks',
+                style: themeData.textTheme.displayMedium,
+              ),
+            ),
+            body: RefreshIndicator(
+              onRefresh: () async => taskBloc..add(GetTaskEvent(idContract: widget.idContract)),
+              child: Stack(
+                children: [
+                  Builder(
+                    builder: (context) {
+                      if (state is GetTaskListSuccessState) {
+                        if (state.taskEntities.isEmpty) {
+                          return Center(
+                            child: Text(
+                              'No item task',
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                          );
+                        }
+                        return Column(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                margin: const EdgeInsets.only(top: 15, bottom: 15),
+                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                                child: ListView.builder(
+                                  shrinkWrap: true,
+                                  itemCount: state.taskEntities.length,
+                                  itemBuilder: (context, index) {
+                                    return _task(state.taskEntities[index], context);
+                                  },
+                                ),
+                              ),
+                            ),
+                            if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) ...[
+                              Container(
+                                color: Colors.white,
+                                padding: const EdgeInsets.all(20),
+                                child: PrimaryButton(
+                                  label: 'Close Contract',
+                                  onPressed: () {
+                                    taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
+                                  },
+                                ),
+                              )
+                            ]
+                          ],
+                        );
+                      } else {
+                        return const SizedBox();
+                      }
+                    },
+                  ),
+                  Positioned(
+                    child: Visibility(
+                      visible: state.isLoading && state is! RatingState && state is! RatingSuccessState,
+                      child: const LoadingWithWhite(),
+                    ),
+                  )
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

@@ -147,5 +147,8 @@
   "deadline": "Hết hạn",
   "completed": "Hoàn thành",
   "upgrade": "Nâng cấp tài khoản",
-  "workIsEmpty": "Chưa có công việc nào"
+  "workIsEmpty": "Chưa có công việc nào",
+  "rating": "Đánh giá",
+  "ratingSuccess": "Đánh giá thành công",
+  "ratingFailed": "Đánh giá thất bại"
 }

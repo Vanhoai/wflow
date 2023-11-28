@@ -33,7 +33,6 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
     isBusiness = instance.get<AppBloc>().state.role == RoleEnum.business.index + 1;
   }
 
-  
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -126,11 +125,10 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                   hintText: 'Enter budget for project',
                                   keyboardType: TextInputType.number,
                                   onChange: (value) {
-                                   context.read<CreateContractBloc>().add(GetMoney());
+                                    context.read<CreateContractBloc>().add(GetMoney());
                                   },
                                 ),
                                 const SizedBox(height: 20),
-
                                 Text(
                                   'Budget The Worker have (VNĐ)',
                                   style: themeData.textTheme.displayMedium!.merge(
@@ -298,10 +296,13 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                   label: 'View Progress',
                                   width: double.infinity,
                                   onPressed: () {
-                                    Navigator.of(context).pushNamed(
-                                      RouteKeys.taskScreen,
-                                      arguments: state.contractEntity.id,
-                                    );
+                                    print('contractId: ${state.contractEntity.id}');
+                                    print('candidateId: ${state.contractEntity.worker.id}');
+
+                                    Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+                                      'contractId': state.contractEntity.id,
+                                      'candidateId': state.contractEntity.worker.id,
+                                    });
                                   },
                                 );
                               }

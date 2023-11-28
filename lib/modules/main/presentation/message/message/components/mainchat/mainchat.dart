@@ -155,7 +155,7 @@ class _MainChatState extends State<MainChat> {
         ),
         Container(
           alignment: Alignment.centerLeft,
-          width: 50,
+          width: 60,
           child: Text(
             instance.get<Time>().getHourMinute(message.createdAt.toString()),
             style: Theme.of(context)
@@ -184,7 +184,7 @@ class _MainChatState extends State<MainChat> {
         margin: const EdgeInsets.only(top: 4),
         decoration: BoxDecoration(color: const Color(0xFFBDBFBF), borderRadius: BorderRadius.circular(8)),
         alignment: Alignment.center,
-        width: 50,
+        width: 60,
         child: Text(
           instance.get<Time>().getHourMinute(message.createdAt.toString()),
           style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),
@@ -278,7 +278,7 @@ class _MainChatState extends State<MainChat> {
             margin: const EdgeInsets.only(top: 4),
             decoration: BoxDecoration(color: const Color(0xFFBDBFBF), borderRadius: BorderRadius.circular(8)),
             alignment: Alignment.center,
-            width: 50,
+            width: 60,
             child: Text(
               instance.get<Time>().getHourMinute(message.createdAt.toString()),
               style: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.white, fontSize: 9),

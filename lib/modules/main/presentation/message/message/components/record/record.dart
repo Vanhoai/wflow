@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/bloc.dart';
+import 'package:wflow/modules/main/presentation/message/message/components/boxchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/mainchat/bloc/event.dart';
 import 'package:wflow/modules/main/presentation/message/message/components/record/bloc/bloc.dart';
@@ -21,7 +23,6 @@ class Record extends StatefulWidget {
 class _RecordState extends State<Record> {
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
     return BlocBuilder<RecordBloc, RecordState>(
       buildWhen: (previous, current) => previous != current,
       builder: (context, state) {
@@ -85,6 +86,11 @@ class _RecordState extends State<Record> {
                           context
                               .read<MainChatBloc>()
                               .add(SendFilesEvent(id: "", type: "RECORD", files: [state.file!]));
+                          
+                          context
+                              .read<BoxChatBloc>()
+                              .add(HideAllShowEvent());
+                            
                         },
                         child: Padding(
                           padding: const EdgeInsets.all(8),
@@ -92,6 +98,7 @@ class _RecordState extends State<Record> {
                             AppConstants.send,
                             height: 30,
                             width: 30,
+                            colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                           ),
                         ),
                       )),

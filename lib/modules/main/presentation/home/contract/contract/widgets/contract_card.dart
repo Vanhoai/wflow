@@ -12,6 +12,7 @@ import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/utils/time.util.dart';
 import 'package:wflow/core/widgets/custom/circular_percent/circular_percent.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
+import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/menu.dart';
 
 class ContractCard extends StatefulWidget {
   const ContractCard({super.key, required this.contractEntity});
@@ -26,27 +27,17 @@ class _ContractCardState extends State<ContractCard> {
   @override
   Widget build(BuildContext context) {
     final noSimbolInUSFormat = NumberFormat.currency(locale: 'vi_VN', symbol: '');
-    return Container(
-      margin: const EdgeInsets.only(
-        left: AppSize.paddingScreenDefault,
-        right: AppSize.paddingScreenDefault,
-        top: AppSize.marginSmall * 2,
-        bottom: AppSize.paddingSmall * 2,
-      ),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(8),
-        color: themeData.colorScheme.background,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 10,
-            offset: const Offset(0, 2),
-          )
-        ],
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
+    return ContractMenu(
+      contractId: widget.contractEntity.id,
+      child: Container(
+        margin: const EdgeInsets.only(
+          left: AppSize.paddingScreenDefault,
+          right: AppSize.paddingScreenDefault,
+          top: AppSize.marginSmall * 2,
+          bottom: AppSize.paddingSmall * 2,
+        ),
+        constraints: const BoxConstraints(maxHeight: 200),
+        decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
             'contractId': widget.contractEntity.id,
@@ -79,38 +70,81 @@ class _ContractCardState extends State<ContractCard> {
                                 .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
                           )
                         ],
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 40,
-                    ),
-                    CircularPercentIndicator(
-                      animation: true,
-                      radius: 25,
-                      percent: widget.contractEntity.progress / 100,
-                      center: Text(
-                        '${widget.contractEntity.progress}%',
-                        style: TextStyle(
-                          fontSize: 10.sp,
+  ),
+                      Expanded(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              widget.contractEntity.title,
+                              style: themeData.textTheme.displayMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            Text(
+                              '${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
+                              style: themeData.textTheme.labelMedium!
+                                  .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
+                            )
+                          ],
                         ),
                       ),
-                      progressColor: _progressColor(widget.contractEntity.progress / 100),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 30,
-                ),
-                Builder(
-                  builder: (context) {
-                    if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
+                      const SizedBox(
+                        width: 40,
+                      ),
+                      CircularPercentIndicator(
+                        animation: true,
+                        radius: 25,
+                        percent: widget.contractEntity.progress / 100,
+                        center: Text(
+                          '${widget.contractEntity.progress}%',
+                          style: TextStyle(
+                            fontSize: 10.sp,
+                          ),
+                        ),
+                        progressColor: _progressColor(widget.contractEntity.progress / 100),
+                      )
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 30,
+                  ),
+                  Builder(
+                    builder: (context) {
+                      if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              'Business',
+                              style: themeData.textTheme.displayMedium!.copyWith(
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                            InkWell(
+                              borderRadius: BorderRadius.circular(6),
+                              onTap: () {
+                                Navigator.of(context).pushNamed(RouteKeys.companyScreen,arguments: widget.contractEntity.business.id.toString());
+                              },
+                              child: Ink(
+                                child: Text(
+                                  widget.contractEntity.business.name,
+                                  style: themeData.textTheme.displayMedium!
+                                      .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
+                                       overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            ),
+                          ],
+                        );
+                      }
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text("🏬 ${instance.get<AppLocalization>().translate('business') ?? 'Business'}",
                               style: themeData.textTheme.displayMedium),
                           InkWell(
-                            borderRadius: BorderRadius.circular(6),
                             onTap: () {
                               Navigator.of(context).pushNamed(RouteKeys.companyScreen,
                                   arguments: widget.contractEntity.business.id.toString());
@@ -153,11 +187,11 @@ class _ContractCardState extends State<ContractCard> {
                   },
                 ),
                 const SizedBox(
-                  height: 9,
+                  height = 9,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  mainAxisAlignment = MainAxisAlignment.spaceBetween,
+                  children = [
                     Text("✅ ${instance.get<AppLocalization>().translate('status') ?? 'Status'}",
                         style: themeData.textTheme.displayMedium),
                     Text(
@@ -170,11 +204,11 @@ class _ContractCardState extends State<ContractCard> {
                   ],
                 ),
                 const SizedBox(
-                  height: 9,
+                  height = 9,
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
+                  mainAxisAlignment = MainAxisAlignment.spaceBetween,
+                  children = [
                     Text("🕜 ${instance.get<AppLocalization>().translate('deadline') ?? 'Deadline'}",
                         style: themeData.textTheme.displayMedium),
                     Text(instance.get<Time>().getDayMonthYear(DateTime.now().toString()),

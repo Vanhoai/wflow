@@ -83,7 +83,7 @@ class _AppState extends State<App> {
                       themeMode:
                           parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute: RouteKeys.signInScreen,
+                      initialRoute: instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
                     ),
                     BlocBuilder<AppLoadingBloc, AppLoadingState>(
                       bloc: instance.get<AppLoadingBloc>(),

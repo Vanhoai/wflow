@@ -18,6 +18,7 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
     on<HandleStartRecordEvent>(handleStartRecord);
     on<HandleStopRecordEvent>(handleStopRecord);
     on<HandleRemoveRecordEvent>(handleRemoveRecord);
+    on<CleanAfterSendFile>(cleanAfterSendFile);
   }
 
   static RecordState initState() {
@@ -75,5 +76,9 @@ class RecordBloc extends Bloc<RecordEvent, RecordState> {
     } finally {
       emit(state.copyWith(timeRecord: "Nhấn để ghi âm"));
     }
+  }
+
+  FutureOr<void> cleanAfterSendFile(CleanAfterSendFile event, Emitter<RecordState> emit) {
+    emit(state.copyWith(timeRecord: "Nhấn để ghi âm"));
   }
 }

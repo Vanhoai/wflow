@@ -87,9 +87,9 @@ class _MessageScreenState extends State<MessageScreen> {
                               padding: const EdgeInsets.all(5),
                               alignment: Alignment.center,
                               child: SvgPicture.asset(
-                                AppConstants.backArrow2,
-                                height: 28,
-                                width: 28,
+                                AppConstants.backArrow,
+                                height: 24,
+                                width: 24,
                               ),
                             ),
                           ),
@@ -100,7 +100,7 @@ class _MessageScreenState extends State<MessageScreen> {
                               backgroundColor: Colors.brown.shade800,
                               radius: 15,
                               backgroundImage: NetworkImage(widget.argumentsMessage.userEntity.avatar.isEmpty
-                                  ? 'https://img.freepik.com/free-vector/gradient-network-connection-background_23-2148874050.jpg'
+                                  ? 'https://picsum.photos/200'
                                   : widget.argumentsMessage.userEntity.avatar)),
                           const SizedBox(
                             width: 8,
@@ -158,7 +158,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           margin: const EdgeInsets.only(right: 5),
                           child: InkWell(
                             onTap: () {
-                              print('more');
+                              Navigator.of(context).pushNamed(RouteKeys.detailUserScreen,arguments: widget.argumentsMessage.userEntity.id);
                             },
                             borderRadius: BorderRadius.circular(25),
                             child: Container(

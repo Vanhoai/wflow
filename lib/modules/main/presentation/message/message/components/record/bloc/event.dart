@@ -33,4 +33,7 @@ class HandleStopRecordEvent extends RecordEvent{
 class HandleRemoveRecordEvent extends RecordEvent {
   HandleRemoveRecordEvent();
 }
+class CleanAfterSendFile extends RecordEvent {
+  CleanAfterSendFile();
+}
 

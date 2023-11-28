@@ -12,6 +12,7 @@ import 'package:wflow/modules/auth/presentation/sign_in/sign_in_ui.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/widgets/form_signin.dart';
 import 'package:wflow/modules/auth/presentation/verification/verification.dart';
 import 'package:wflow/modules/introduction/presentation/introduction.dart';
+import 'package:wflow/modules/main/domain/cv/cv_entity.dart';
 import 'package:wflow/modules/main/presentation/bottom.dart';
 import 'package:wflow/modules/main/presentation/home/add_cv/add_cv.dart';
 import 'package:wflow/modules/main/presentation/home/apply/apply.dart';
@@ -26,6 +27,7 @@ import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_s
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
 import 'package:wflow/modules/main/presentation/home/cv/cv.dart';
+import 'package:wflow/modules/main/presentation/home/detail_cv/detail_cv.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/report/report.dart';
@@ -169,11 +171,15 @@ class AppRoutes {
       case RouteKeys.searchRoomScreen:
         return MaterialPageRoute(builder: (_) => const SearchRoomsScreen());
       case RouteKeys.updateBusinessScreen:
-        return MaterialPageRoute(builder: (_) => const UpdateBusinessScreen());
+        final arg = settings.arguments as String;
+        return MaterialPageRoute(builder: (_) =>  UpdateBusinessScreen(business: arg,));
       case RouteKeys.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case RouteKeys.contractHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ContractHistoryScreen());
+        case RouteKeys.detailCVScreen:
+        final arg = settings.arguments as CVEntity;
+        return MaterialPageRoute(builder: (_) =>  DetailCVScreen(cvEntity: arg));
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

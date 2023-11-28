@@ -101,6 +101,7 @@ class _CVScreenState extends State<CVScreen> {
                     return ListView.builder(
                         padding: const EdgeInsets.all(20),
                         physics: const BouncingScrollPhysics(),
+                        
                         itemCount: state.cvEntities.length,
                         itemBuilder: (context, index) {
                           return _cv(context, state.cvEntities[index], state);
@@ -120,54 +121,60 @@ class _CVScreenState extends State<CVScreen> {
     isCheck = state.selectCvEntities.indexWhere((element) => element.id == cvEntity.id) != -1 ? true : false;
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.fade)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
-            'assets/icons/cv.svg',
-            width: 40,
-            height: 40,
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                cvEntity.title,
-                style: themeData.textTheme.displaySmall!.merge(
-                  TextStyle(
-                    color: themeData.colorScheme.onBackground,
-                    fontSize: 14,
+      child: InkWell(
+        onTap: () => Navigator.of(context).pushNamed(RouteKeys.detailCVScreen,arguments: cvEntity),
+        borderRadius:  BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.fade)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                'assets/icons/cv.svg',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    cvEntity.title,
+                    style: themeData.textTheme.displaySmall!.merge(
+                      TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
-                ),
+                  Builder(
+                    builder: (context) {
+                      final String content = cvEntity.url;
+                      if (content.length > 25) {
+                        return Text(
+                          '${content.substring(0, 19)}...pdf',
+                          style: themeData.textTheme.displaySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      } else {
+                        return Text(
+                          content,
+                          style: themeData.textTheme.displaySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }
+                    },
+                  ),
+                ]),
               ),
-              Builder(
-                builder: (context) {
-                  final String content = cvEntity.url;
-                  if (content.length > 25) {
-                    return Text(
-                      '${content.substring(0, 19)}...pdf',
-                      style: themeData.textTheme.displaySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    );
-                  } else {
-                    return Text(
-                      content,
-                      style: themeData.textTheme.displaySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    );
-                  }
-                },
-              ),
-            ]),
+              _buildCheckbox(context, cvEntity.id, isCheck),
+            ],
           ),
-          _buildCheckbox(context, cvEntity.id, isCheck),
-        ],
+        ),
       ),
     );
   }

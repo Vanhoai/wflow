@@ -24,8 +24,8 @@ import 'package:wflow/modules/main/presentation/personal/update_business/bloc/st
 import 'package:wflow/modules/main/presentation/personal/update_business/widget/location.dart';
 
 class UpdateBusinessScreen extends StatefulWidget {
-  const UpdateBusinessScreen({super.key});
-
+  const UpdateBusinessScreen({super.key, required this.business});
+  final String business;
   @override
   State<StatefulWidget> createState() => _UpdateBusinessScreenState();
 }
@@ -80,6 +80,12 @@ class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
               'Update Business',
               style: themeData.textTheme.displayMedium,
             ),
+            onBack: () {
+                Navigator.of(context).pushReplacementNamed(
+                  RouteKeys.companyScreen,
+                  arguments: widget.business,
+                );
+              },
           ),
           body: BlocBuilder<UpdateBusinessBloc, UpdateBusinessState>(
             builder: (context, state) {

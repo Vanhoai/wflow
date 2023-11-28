@@ -29,7 +29,7 @@ class TaskScreen extends StatefulWidget {
 
 class _TaskScreenState extends State<TaskScreen> {
   final TextEditingController _ratingController = TextEditingController();
-
+  final timeZero = DateTime.fromMillisecondsSinceEpoch(0);
   @override
   void dispose() {
     instance.get<TaskBloc>().add(CleanEvent());
@@ -238,7 +238,9 @@ class _TaskScreenState extends State<TaskScreen> {
             margin: const EdgeInsets.only(top: 8),
             alignment: Alignment.centerRight,
             child: Text(
-              instance.get<Time>().getDayMonthYear(task.endTime.toString()),
+              timeZero.microsecondsSinceEpoch == task.endTime.microsecondsSinceEpoch
+                  ? ""
+                  : instance.get<Time>().getDayMonthYear(task.endTime.toString()),
               style: Theme.of(context).textTheme.displayMedium!,
             ),
           ),
@@ -319,9 +321,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 margin: const EdgeInsets.only(top: 10),
                 child: Text(
                   'Deadline: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: task.state == TaskStatus.Accepted ? AppColors.greenColor : AppColors.redColor,
-                      ),
+                  style: Theme.of(context).textTheme.displayMedium!,
                 ),
               ),
               _buttonStatus(context, task),

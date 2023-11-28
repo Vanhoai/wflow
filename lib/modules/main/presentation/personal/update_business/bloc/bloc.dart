@@ -60,7 +60,7 @@ class UpdateBusinessBloc extends Bloc<UpdateBusinessEvent, UpdateBusinessState> 
   FutureOr<void> updateBusiness(UpdateBusiness event, Emitter<UpdateBusinessState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     final response = await companyUseCase.updateBusiness(
-        request: RequestUpdateBusiness(logo: state.avatar, background: state.background, companyEntity: state.companyEntity));
+        request: RequestUpdateBusiness(logo: state.avatar, background: state.background, companyEntity: state.companyEntity.copyWith(overview: overviewController.text)));
     response.fold(
       (String messages) {
         AlertUtils.showMessage(

@@ -49,6 +49,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
             'Create Contract',
             style: themeData.textTheme.displayMedium,
           ),
+          
         ),
         hideKeyboardWhenTouchOutside: true,
         body: SizedBox(

@@ -34,7 +34,7 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'hongvyuser@gmail.com');
+    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
     passwordController = TextEditingController(text: 'admin123A@');
     super.initState();
   }
@@ -336,7 +336,6 @@ class _FormState extends State<FormSignIn> {
                       listener: listener,
                       child: PrimaryButton(
                         onPressed: () {
-                          emailController.text = 'hongvyuser@gmail.com';
                           context.read<SignInBloc>().add(
                                 SignInSubmittedEvent(
                                   email: emailController.text,

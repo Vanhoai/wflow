@@ -2,6 +2,8 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -76,7 +78,7 @@ class _SearchContractState extends State<SearchContract> {
         controller: _controller,
         onChanged: _onChanged,
         decoration: InputDecoration(
-          hintText: 'Search',
+          hintText: instance.get<AppLocalization>().translate('search') ?? 'Search',
           hintStyle: const TextStyle(
             fontSize: 14,
             fontWeight: FontWeight.normal,

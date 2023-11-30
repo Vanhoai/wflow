@@ -49,15 +49,15 @@ class _AddCVScreenState extends State<AddCVScreen> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Notification',
+              'Thông báo',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            content: const Text('Add CV Success'),
+            content: const Text('Thêm CV thành công'),
             actions: [
               TextButton(
                 onPressed: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context)..pop()..pop(true);
                 },
                 child: const Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -99,7 +99,7 @@ class _AddCVScreenState extends State<AddCVScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Add CV',
+            'Thêm CV',
             style: themeData.textTheme.displayMedium,
           ),
         ),
@@ -189,7 +189,7 @@ class _AddCVScreenState extends State<AddCVScreen> {
                       child: Container(
                         padding: EdgeInsets.all(20.r),
                         child: PrimaryButton(
-                          label: 'Add',
+                          label: instance.get<AppLocalization>().translate('add') ?? 'Add',
                           onPressed: () {
                             _addCV(context);
                           },

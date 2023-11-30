@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_message.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -55,7 +56,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
             hideKeyboardWhenTouchOutside: true,
             appBar: AppHeader(
               text: Text(
-                'Candidates',
+                instance.get<AppLocalization>().translate('candidate') ?? 'candidate',
                 style: themeData.textTheme.displayMedium,
               ),
             ),
@@ -80,7 +81,7 @@ class _CandidateListScreenState extends State<CandidateListScreen> {
                             if (state.candidateEntities.isEmpty) {
                               return Center(
                                 child: Text(
-                                  'No candidates have applied yet',
+                                  'Chưa có ứng viên',
                                   style: Theme.of(context).textTheme.bodyLarge,
                                 ),
                               );

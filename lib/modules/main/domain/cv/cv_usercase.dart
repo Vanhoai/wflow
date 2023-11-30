@@ -8,6 +8,7 @@ import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 abstract class CVUseCase {
   Future<List<CVEntity>> getMyCV();
   Future<Either<UserEntity, Failure>> addCV(RequestAddCV requestAddCV);
+  Future<Either<String, Failure>> deleteCV(RequestDeleteCV requestDeleteCV);
 }
 
 class CVUseCaseImpl implements CVUseCase {
@@ -23,5 +24,10 @@ class CVUseCaseImpl implements CVUseCase {
   @override
   Future<Either<UserEntity, Failure>> addCV(RequestAddCV requestAddCV) async {
     return await cvRepository.addCV(requestAddCV);
+  }
+  
+  @override
+  Future<Either<String, Failure>> deleteCV(RequestDeleteCV requestDeleteCV) async {
+    return await cvRepository.deleteCV(requestDeleteCV);
   }
 }

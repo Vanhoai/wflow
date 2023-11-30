@@ -10,6 +10,7 @@ import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 abstract class CVService {
   Future<List<CVEntity>> getMyCV();
   Future<UserEntity> addCV(RequestAddCV requestAddCV);
+  Future<String> deleteCV(RequestDeleteCV requestDeleteCV);
 }
 
 class CVServiceImpl implements CVService {
@@ -53,6 +54,23 @@ class CVServiceImpl implements CVService {
       }
 
       return UserEntity.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<String> deleteCV(RequestDeleteCV requestDeleteCV) async {
+    try {
+      final response = await agent.dio.delete(
+        '/cv/',
+        data: requestDeleteCV.toJson()
+      );
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+      return httpResponse.data;
     } catch (exception) {
       throw ServerException(exception.toString());
     }

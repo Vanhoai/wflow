@@ -7,4 +7,5 @@ import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 abstract class CVRepository {
   Future<List<CVEntity>> getMyCV();
   Future<Either<UserEntity, Failure>> addCV(RequestAddCV requestAddCV);
+  Future<Either<String, Failure>> deleteCV(RequestDeleteCV requestDeleteCV);
 }

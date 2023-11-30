@@ -30,4 +30,14 @@ class CVRepositoryImpl implements CVRepository {
       return const Right(ServerFailure());
     }
   }
+  
+  @override
+  Future<Either<String, Failure>> deleteCV(RequestDeleteCV requestDeleteCV) async {
+     try {
+      final cv = await cvService.deleteCV(requestDeleteCV);
+      return Left(cv);
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
 }

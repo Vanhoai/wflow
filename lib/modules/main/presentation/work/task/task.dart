@@ -41,7 +41,6 @@ class _TaskScreenState extends State<TaskScreen> {
     taskBloc.add(GetTaskEvent(idContract: widget.idContract));
   }
 
-  final TextEditingController _ratingController = TextEditingController();
   final timeZero = DateTime.fromMillisecondsSinceEpoch(0);
   @override
   void dispose() {
@@ -125,7 +124,6 @@ class _TaskScreenState extends State<TaskScreen> {
                                   Navigator.pop(context);
                                 });
                               }
-
                               taskBloc.add(RatingEvent(
                                 star: rating,
                                 description: ratingController.text,
@@ -239,19 +237,20 @@ class _TaskScreenState extends State<TaskScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                  margin: const EdgeInsets.only(bottom: 3),
-                  child: Text(
-                    'Nhiệm vụ: ',
-                    style: Theme.of(context).textTheme.displayLarge,
-                  )),
+                margin: const EdgeInsets.only(bottom: 10),
+                child: Text(
+                  'Nhiệm vụ: ',
+                  style: Theme.of(context).textTheme.displayLarge,
+                ),
+              ),
               Text(
-                task.title,
+                task.title.isNotEmpty ? task.title : "Không có thông tin",
                 style: Theme.of(context).textTheme.displayMedium,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
               ),
               Container(
-                  margin: const EdgeInsets.only(top: 8, bottom: 3),
+                  margin: const EdgeInsets.only(top: 8, bottom: 10),
                   child: Text(
                     'Mô tả: ',
                     style: Theme.of(context).textTheme.displayMedium,
@@ -269,7 +268,7 @@ class _TaskScreenState extends State<TaskScreen> {
                       physics: const ScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Text(
-                        task.content,
+                        task.content.isNotEmpty ? task.content : "Không có thông tin",
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),
@@ -454,11 +453,7 @@ class _TaskScreenState extends State<TaskScreen> {
     return BlocProvider(
       create: (_) => taskBloc,
       child: BlocConsumer<TaskBloc, TaskState>(
-        listener: (context, state) {
-          if (state is RatingState) {
-            _displayRating(context, taskBloc);
-          }
-        },
+        listener: (context, state) {},
         listenWhen: (previous, current) =>
             previous.isLoading != current.isLoading || current is GetTaskListSuccessState && current.isAllDone,
         bloc: taskBloc,
@@ -467,7 +462,7 @@ class _TaskScreenState extends State<TaskScreen> {
           return CommonScaffold(
             appBar: AppHeader(
               text: Text(
-                'Tasks',
+                instance.get<AppLocalization>().translate('task') ?? 'Task',
                 style: themeData.textTheme.displayMedium,
               ),
             ),
@@ -481,7 +476,7 @@ class _TaskScreenState extends State<TaskScreen> {
                         if (state.taskEntities.isEmpty) {
                           return Center(
                             child: Text(
-                              'No item task',
+                              'Không có công việc',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           );
@@ -501,18 +496,37 @@ class _TaskScreenState extends State<TaskScreen> {
                                 ),
                               ),
                             ),
-                            if (instance.get<AppBloc>().state.role != RoleEnum.user.index + 1 && state.isAllDone) ...[
-                              Container(
-                                color: Colors.white,
-                                padding: const EdgeInsets.all(20),
-                                child: PrimaryButton(
-                                  label: 'Close Contract',
-                                  onPressed: () {
-                                    taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
-                                  },
-                                ),
-                              )
-                            ]
+                            Builder(
+                              builder: (context) {
+                                if (state.stateContract == ContractStatus.Success.name &&
+                                    instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
+                                  return Container(
+                                    color: Colors.white,
+                                    padding: const EdgeInsets.all(20),
+                                    child: PrimaryButton(
+                                      label: 'Đánh giá',
+                                      onPressed: () {
+                                        _displayRating(context, instance.get<TaskBloc>());
+                                      },
+                                    ),
+                                  );
+                                } else {
+                                  if (state.isAllDone && instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
+                                    return Container(
+                                      color: Colors.white,
+                                      padding: const EdgeInsets.all(20),
+                                      child: PrimaryButton(
+                                        label: 'Close Contract',
+                                        onPressed: () {
+                                          taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
+                                        },
+                                      ),
+                                    );
+                                  }
+                                }
+                                return const SizedBox();
+                              },
+                            ),
                           ],
                         );
                       } else {

@@ -36,6 +36,7 @@ class _ContractCardState extends State<ContractCard> {
           top: AppSize.marginSmall * 2,
           bottom: AppSize.paddingSmall * 2,
         ),
+        constraints: const BoxConstraints(maxHeight: 192),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: themeData.colorScheme.background,

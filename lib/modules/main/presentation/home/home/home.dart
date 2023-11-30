@@ -13,6 +13,7 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
+import 'package:wflow/modules/main/presentation/home/graph/graph_circular/graph_circular.dart';
 import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/home/widgets/widgets.dart';
 
@@ -142,6 +143,31 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SelectionListWidget(scrollController: selectionScrollController),
               const RecentJobListWidget(),
+               SliverPadding(
+                padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
+                sliver: SliverToBoxAdapter(
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 8, top: 16),
+                    child: Text(
+                      'Thông kê xu hướng tuyển dụng',
+                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                        color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                        fontWeight: FontWeight.w400,
+                        fontSize: 16.sp,
+                      )),
+                    ),
+                  ),
+                ),
+              ),
+               SliverPadding(
+                padding: const EdgeInsets.only(top: 6, bottom: 20, left: 20, right: 20),
+                sliver: SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: 200.h,
+                    child: const GraphCircularWidget(),
+                  ),
+                ), 
+              ),
             ],
             dragStartBehavior: DragStartBehavior.start,
             keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,

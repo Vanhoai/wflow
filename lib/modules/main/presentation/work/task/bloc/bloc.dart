@@ -103,12 +103,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     response.fold(
       (String messages) {
         AlertUtils.showMessage(
-          'Close Contract',
+          'Đóng họp đồng',
           messages,
+          
         );
+        add(GetTaskEvent(idContract: (state as GetTaskListSuccessState).idContract));
       },
+    
       (failure) {
-        AlertUtils.showMessage('Close Contract', failure.message);
+        AlertUtils.showMessage('Đóng họp đồng', failure.message);
       },
     );
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

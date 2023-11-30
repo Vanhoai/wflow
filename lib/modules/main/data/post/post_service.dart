@@ -3,6 +3,7 @@ import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
 import 'package:wflow/modules/main/data/post/models/request/up_post_rqst.dart';
+import 'package:wflow/modules/main/domain/post/entities/graph_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 
 class PostPaths {
@@ -14,6 +15,7 @@ class PostPaths {
   static const String findPostBookmarked = '/post/find-post-bookmarked';
   static String toggleBookmark(int id) => '/bookmark/toggle/$id';
   static const String upPost = '/post/create';
+    static const String statistic = '/post/statistic';
 }
 
 abstract class PostService {
@@ -25,6 +27,7 @@ abstract class PostService {
   Future<HttpResponseWithPagination<PostEntity>> getPostsSaved(GetWorkModel request);
   Future<HttpResponse> toggleBookmark(int id);
   Future<String> upPost({required UpPostRequest request});
+  Future<List<GraphEntity>> getStatistic();
 }
 
 class PostServiceImpl implements PostService {
@@ -217,6 +220,30 @@ class PostServiceImpl implements PostService {
       }
 
       return httpResponse.message;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<List<GraphEntity>> getStatistic() async {
+      try {
+      final response = await agent.dio.get(
+        PostPaths.statistic,
+      
+      );
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+
+      if (httpResponse.statusCode != 200) {
+        return [];
+      }
+
+      List<GraphEntity> graph = [];
+      httpResponse.data.forEach((element) {
+        graph.add(GraphEntity.fromJson(element));
+      });
+
+      return graph;
     } catch (exception) {
       throw ServerException(exception.toString());
     }

@@ -333,7 +333,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Cancel',
+                      'Đóng',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -364,7 +364,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: const Text(
-                      'Done',
+                      'Hoàn thành',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -401,7 +401,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Reject',
+                      'Từ chối',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -432,7 +432,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: const Text(
-                      'Accepted',
+                      'Chấp nhận',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -457,7 +457,6 @@ class _TaskScreenState extends State<TaskScreen> {
         listenWhen: (previous, current) =>
             previous.isLoading != current.isLoading || current is GetTaskListSuccessState && current.isAllDone,
         bloc: taskBloc,
-        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
         builder: (context, state) {
           return CommonScaffold(
             appBar: AppHeader(
@@ -516,7 +515,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Close Contract',
+                                        label: 'Đóng họp đồng',
                                         onPressed: () {
                                           taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
                                         },

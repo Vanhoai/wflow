@@ -52,13 +52,13 @@ class _TaskScreenState extends State<TaskScreen> {
     final ThemeData themeData = Theme.of(context);
     final UserEntity userEntity = instance.get<AppBloc>().state.userEntity;
     final TextEditingController ratingController = TextEditingController();
+    double rating = 5;
 
     return showDialog(
       context: context,
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
-            double rating = 5;
             return BlocBuilder<TaskBloc, TaskState>(
               buildWhen: (previous, current) => true,
               bloc: taskBloc,
@@ -86,9 +86,9 @@ class _TaskScreenState extends State<TaskScreen> {
                               Icons.star,
                               color: AppColors.primary,
                             ),
-                            onRatingUpdate: (rating) {
+                            onRatingUpdate: (_rating) {
                               setState(() {
-                                rating = rating;
+                                rating = _rating;
                               });
                             },
                           ),

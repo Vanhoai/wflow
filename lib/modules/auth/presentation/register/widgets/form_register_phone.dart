@@ -87,9 +87,9 @@ class _FormState extends State<FormRegisterPhone> {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFieldFrom(
-                label: 'Phone',
+                label: instance.get<AppLocalization>().translate('phone') ?? 'Phone',
                 controller: phoneController,
-                placeholder: 'Enter your phone',
+                placeholder: instance.get<AppLocalization>().translate('enterYourPhone') ?? 'Enter your phone',
                 keyboardType: TextInputType.phone,
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
@@ -104,7 +104,7 @@ class _FormState extends State<FormRegisterPhone> {
               ),
               TextFieldFrom(
                 controller: passwordController,
-                label: 'Password',
+                label: instance.get<AppLocalization>().translate('password') ?? 'Password',
                 placeholder: 'Enter your password',
                 textInputAction: TextInputAction.next,
                 prefixIcon: const Icon(
@@ -115,8 +115,8 @@ class _FormState extends State<FormRegisterPhone> {
               ),
               TextFieldFrom(
                 controller: rePasswordController,
-                label: 'Confirm password',
-                placeholder: 'Enter your confirm password',
+                label: instance.get<AppLocalization>().translate('confirmPassword') ?? 'Confirm password',
+                placeholder: instance.get<AppLocalization>().translate('confirmPassword') ?? 'Confirm password',
                 textInputAction: TextInputAction.done,
                 prefixIcon: const Icon(
                   Icons.lock,
@@ -141,7 +141,7 @@ class _FormState extends State<FormRegisterPhone> {
                     );
                   }
                 },
-                label: 'Sign Up',
+                label: instance.get<AppLocalization>().translate('signUp') ?? 'Sign up',
               ),
             ],
           ),

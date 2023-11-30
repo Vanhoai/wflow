@@ -10,8 +10,7 @@ class ContractHistoryState extends Equatable {
 
   const ContractHistoryState({
     this.contractHistories = const [],
-    this.meta =
-        const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
+    this.meta = const Meta(currentPage: 1, totalPage: 0, totalRecord: 0, pageSize: 10),
     this.txtSearch = '',
     this.isHiddenClearIconSearch = true,
   });
@@ -26,10 +25,8 @@ class ContractHistoryState extends Equatable {
           contractHistories: contractHistories ?? this.contractHistories,
           meta: meta ?? this.meta,
           txtSearch: txtSearch ?? this.txtSearch,
-          isHiddenClearIconSearch:
-              isHiddenClearIconSearch ?? this.isHiddenClearIconSearch);
+          isHiddenClearIconSearch: isHiddenClearIconSearch ?? this.isHiddenClearIconSearch);
 
   @override
-  List get props =>
-      [contractHistories, meta, txtSearch, isHiddenClearIconSearch];
+  List get props => [contractHistories, meta, txtSearch, isHiddenClearIconSearch];
 }

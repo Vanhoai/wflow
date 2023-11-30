@@ -1,5 +1,3 @@
-import 'dart:math' as math;
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
@@ -34,10 +32,6 @@ class _FormState extends State<FormRegisterEmail> {
     emailController = TextEditingController();
     passwordController = TextEditingController();
     rePasswordController = TextEditingController();
-
-    emailController.text = '${math.Random().nextInt(100000)}@gmail.com';
-    passwordController.text = 'Aa12345678@';
-    rePasswordController.text = 'Aa12345678@';
   }
 
   @override

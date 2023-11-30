@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -37,13 +38,11 @@ class _ContractHistoryScreenState extends State<ContractHistoryScreen> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) =>
-          ContractHistoryBloc(contractUseCase: instance.get<ContractUseCase>())
-            ..add(InitContractHistoryEvent()),
+          ContractHistoryBloc(contractUseCase: instance.get<ContractUseCase>())..add(InitContractHistoryEvent()),
       child: Scaffold(
           appBar: AppHeader(
             text: Text(
-              instance.get<AppLocalization>().translate('contractCompleted') ??
-                  'Contract completed',
+              instance.get<AppLocalization>().translate('contractCompleted') ?? 'Contract completed',
               style: themeData.textTheme.displayLarge,
             ),
           ),
@@ -59,23 +58,20 @@ class _ContractHistoryScreenState extends State<ContractHistoryScreen> {
                           isHiddenSuffixIcon: state.isHiddenClearIconSearch,
                           onChangedSearch: (value) => context
                               .read<ContractHistoryBloc>()
-                              .add(ChangedIconClearSearchContractHistoryEvent(
-                                  txtSearch: value)),
+                              .add(ChangedIconClearSearchContractHistoryEvent(txtSearch: value)),
                           onClearSearch: () {
                             _controller.clear();
-                            context.read<ContractHistoryBloc>().add(
-                                const ChangedIconClearSearchContractHistoryEvent(
-                                    txtSearch: ''));
+                            context
+                                .read<ContractHistoryBloc>()
+                                .add(const ChangedIconClearSearchContractHistoryEvent(txtSearch: ''));
                           },
                         ),
                         Expanded(
                           child: ListView.separated(
                             padding: const EdgeInsets.only(bottom: 20, top: 4),
-                            separatorBuilder: (context, index) =>
-                                const SizedBox(height: 12),
+                            separatorBuilder: (context, index) => const SizedBox(height: 12),
                             itemCount: state.contractHistories.length,
-                            itemBuilder: (context, index) =>
-                                ContractCardHistory(
+                            itemBuilder: (context, index) => ContractCardHistory(
                               contractEntity: state.contractHistories[index],
                             ),
                           ),
@@ -83,8 +79,21 @@ class _ContractHistoryScreenState extends State<ContractHistoryScreen> {
                       ],
                     );
                   } else {
-                    return const Center(
-                        child: Text('Chưa có hợp đồng hoàn thành'));
+                    return Center(
+                      child: BlocBuilder<AppLoadingBloc, AppLoadingState>(
+                        bloc: instance.get<AppLoadingBloc>(),
+                        builder: (context, state) {
+                          if (state is AppShowLoadingState) {
+                            return const SizedBox();
+                          } else if (state is AppHideLoadingState) {
+                            return Text(instance.get<AppLocalization>().translate('dontHaveContractCompleted') ??
+                                'You don\'t have any completed contract');
+                          } else {
+                            return const SizedBox();
+                          }
+                        },
+                      ),
+                    );
                   }
                 },
               );

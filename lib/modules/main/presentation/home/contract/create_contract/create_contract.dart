@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -33,6 +34,21 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
     isBusiness = instance.get<AppBloc>().state.role == RoleEnum.business.index + 1;
   }
 
+  bool canEdit(ContractStatus status) {
+    switch (status) {
+      case ContractStatus.Apply:
+      case ContractStatus.Created:
+        return true;
+      case ContractStatus.WaitingSign:
+      case ContractStatus.Accepted:
+      case ContractStatus.Success:
+      case ContractStatus.Rejected:
+        return false;
+      default:
+        return false;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -45,10 +61,10 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Create Contract',
+            instance.get<AppLocalization>().translate(isBusiness ? 'createContract' : 'contractDetail') ??
+                'Create Contract',
             style: themeData.textTheme.displayMedium,
           ),
-          
         ),
         hideKeyboardWhenTouchOutside: true,
         body: SizedBox(
@@ -56,198 +72,211 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
           width: double.infinity,
           child: Stack(
             children: [
-              RefreshIndicator(
-                onRefresh: () async {
-                  Future.delayed(const Duration(seconds: 1));
-                },
-                child: CustomScrollView(
-                  clipBehavior: Clip.none,
-                  cacheExtent: 1000,
-                  dragStartBehavior: DragStartBehavior.start,
-                  keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
-                  shrinkWrap: true,
-                  physics: const BouncingScrollPhysics(),
-                  slivers: [
-                    BlocConsumer<CreateContractBloc, CreateContractState>(
-                      listener: (context, state) {},
-                      builder: (context, state) {
-                        return SliverToBoxAdapter(
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Text(
-                                  'Title',
-                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
-                                ),
-                                const SizedBox(height: 8),
-                                TextFieldHelper(
-                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: context.read<CreateContractBloc>().titleController,
-                                  maxLines: 2,
-                                  minLines: 1,
-                                  hintText: 'Enter project title',
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Describe',
-                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground,
-                                  )),
-                                ),
-                                const SizedBox(height: 8),
-                                TextFieldHelper(
-                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: context.read<CreateContractBloc>().descriptionController,
-                                  maxLines: 5,
-                                  minLines: 3,
-                                  hintText: 'Enter description (optional)',
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Budget (VNĐ)',
-                                  style: themeData.textTheme.displayMedium!.merge(
-                                    TextStyle(
+              Builder(builder: (context) {
+                return RefreshIndicator(
+                  onRefresh: () async {
+                    context.read<CreateContractBloc>().add(CreateContractInitEvent(contract: widget.contract));
+                  },
+                  child: CustomScrollView(
+                    clipBehavior: Clip.none,
+                    cacheExtent: 1000,
+                    dragStartBehavior: DragStartBehavior.start,
+                    keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
+                    shrinkWrap: true,
+                    physics: const BouncingScrollPhysics(),
+                    slivers: [
+                      BlocConsumer<CreateContractBloc, CreateContractState>(
+                        listener: (context, state) {},
+                        builder: (context, state) {
+                          final ContractStatus status = ContractStatus.values.firstWhere(
+                            (element) => element.name.toString() == state.contractEntity.state.toString(),
+                            orElse: () => ContractStatus.WaitingSign,
+                          );
+
+                          return SliverToBoxAdapter(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    instance.get<AppLocalization>().translate('title') ?? 'Title',
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                       color: themeData.colorScheme.onBackground,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                TextFieldHelper(
-                                  enabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                  controller: context.read<CreateContractBloc>().budgetController,
-                                  maxLines: 1,
-                                  minLines: 1,
-                                  hintText: 'Enter budget for project',
-                                  keyboardType: TextInputType.number,
-                                  onChange: (value) {
-                                    context.read<CreateContractBloc>().add(GetMoney());
-                                  },
-                                ),
-                                const SizedBox(height: 20),
-                                Text(
-                                  'Budget The Worker have (VNĐ)',
-                                  style: themeData.textTheme.displayMedium!.merge(
-                                    TextStyle(
-                                      color: themeData.primaryColor,
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(height: 8),
-                                Container(
-                                  width: MediaQuery.of(context).size.width,
-                                  padding: const EdgeInsets.fromLTRB(13, 15, 13, 15),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(8),
-                                    color: Colors.grey[100],
-                                  ),
-                                  child: Text(
-                                    state.money,
-                                    style: themeData.textTheme.displayMedium!.merge(const TextStyle(
-                                      color: AppColors.greenColor,
                                     )),
                                   ),
-                                ),
-                                const SizedBox(height: 20),
-                                TaskCreateContract(
-                                  isEnabled: isBusiness && state.contractEntity.state != ContractStatus.Accepted.name,
-                                ),
-                                const SizedBox(height: 16),
-                                Visibility(
-                                  visible: isBusiness,
-                                  child: ActionHelper(onUpload: () {}, onWatchVideo: () {}),
-                                ),
-                                const SizedBox(height: 30),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Candidate',
+                                  const SizedBox(height: 8),
+                                  TextFieldHelper(
+                                    enabled: isBusiness && canEdit(status),
+                                    controller: context.read<CreateContractBloc>().titleController,
+                                    maxLines: 2,
+                                    minLines: 1,
+                                    hintText: instance.get<AppLocalization>().translate('enterTitle') ?? 'Enter title',
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    instance.get<AppLocalization>().translate('description') ?? 'Description',
+                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                      color: themeData.colorScheme.onBackground,
+                                    )),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFieldHelper(
+                                    enabled: isBusiness && canEdit(status),
+                                    controller: context.read<CreateContractBloc>().descriptionController,
+                                    maxLines: 5,
+                                    minLines: 3,
+                                    hintText: instance.get<AppLocalization>().translate('enterDescription') ??
+                                        'Enter description',
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    instance.get<AppLocalization>().translate('budget') ?? 'Budget' ' (VNĐ)',
+                                    style: themeData.textTheme.displayMedium!.merge(
+                                      TextStyle(
+                                        color: themeData.colorScheme.onBackground,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  TextFieldHelper(
+                                    enabled: isBusiness && canEdit(status),
+                                    controller: context.read<CreateContractBloc>().budgetController,
+                                    maxLines: 1,
+                                    minLines: 1,
+                                    hintText:
+                                        instance.get<AppLocalization>().translate('enterBudget') ?? 'Enter budget',
+                                    keyboardType: TextInputType.number,
+                                    onChange: (value) {
+                                      context.read<CreateContractBloc>().add(GetMoney());
+                                    },
+                                  ),
+                                  const SizedBox(height: 20),
+                                  Text(
+                                    '${instance.get<AppLocalization>().translate("budgetTheWorkerHave")} (VNĐ)',
+                                    style: themeData.textTheme.displayMedium!.merge(
+                                      TextStyle(
+                                        color: themeData.primaryColor,
+                                      ),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Container(
+                                    width: MediaQuery.of(context).size.width,
+                                    padding: const EdgeInsets.fromLTRB(13, 15, 13, 15),
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(8),
+                                      color: Colors.grey[100],
+                                    ),
+                                    child: Text(
+                                      state.money,
+                                      style: themeData.textTheme.displayMedium!.merge(const TextStyle(
+                                        color: AppColors.greenColor,
+                                      )),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 20),
+                                  TaskCreateContract(
+                                    isEnabled: isBusiness && canEdit(status),
+                                  ),
+                                  const SizedBox(height: 16),
+                                  Visibility(
+                                    visible: isBusiness,
+                                    child: ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        instance.get<AppLocalization>().translate('worker') ?? 'Worker',
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
+                                        )),
+                                      ),
+                                      Text(
+                                        state.contractEntity.workerSigned
+                                            ? '🥰️ ${instance.get<AppLocalization>().translate('accepted') ?? 'Accepted'}'
+                                            : '😪️ ${instance.get<AppLocalization>().translate('notAccepted') ?? 'Not Accepted'}',
+                                        style: themeData.textTheme.displayMedium!,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Header(
+                                    leadingPhotoUrl: state.contractEntity.worker.avatar,
+                                    title: Text(
+                                      state.contractEntity.worker.name,
+                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                        color: themeData.colorScheme.onBackground,
+                                      )),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                    subtitle: Text(
+                                      state.contractEntity.worker.email,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                         color: themeData.colorScheme.onBackground,
                                       )),
                                     ),
-                                    Text(
-                                      state.contractEntity.workerSigned ? '🥰️ Accepted' : '😪️ Not Accepted',
-                                      style: themeData.textTheme.displayMedium!,
+                                    onTapLeading: () {},
+                                    leadingBadge: false,
+                                  ),
+                                  32.verticalSpace,
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Text(
+                                        instance.get<AppLocalization>().translate('business') ?? 'Business',
+                                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                          color: themeData.colorScheme.onBackground,
+                                        )),
+                                      ),
+                                      Text(
+                                        state.contractEntity.businessSigned
+                                            ? '🥰️ ${instance.get<AppLocalization>().translate('accepted') ?? 'Accepted'}'
+                                            : '😪️ ${instance.get<AppLocalization>().translate('notAccepted') ?? 'Not Accepted'}',
+                                        style: themeData.textTheme.displayMedium!,
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Header(
+                                    leadingPhotoUrl: state.contractEntity.business.logo,
+                                    title: Text(
+                                      state.contractEntity.business.name,
+                                      style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                        color: themeData.colorScheme.onBackground,
+                                      )),
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Header(
-                                  leadingPhotoUrl: state.contractEntity.worker.avatar,
-                                  title: Text(
-                                    state.contractEntity.worker.name,
-                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                      color: themeData.colorScheme.onBackground,
-                                    )),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                  subtitle: Text(
-                                    state.contractEntity.worker.email,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                      color: themeData.colorScheme.onBackground,
-                                    )),
-                                  ),
-                                  onTapLeading: () {},
-                                  leadingBadge: false,
-                                ),
-                                32.verticalSpace,
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Text(
-                                      'Business',
+                                    subtitle: Text(
+                                      state.contractEntity.business.email,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: themeData.textTheme.displayMedium!.merge(TextStyle(
                                         color: themeData.colorScheme.onBackground,
                                       )),
                                     ),
-                                    Text(
-                                      state.contractEntity.businessSigned ? '🥰️ Accepted' : '😪️ Not Accepted',
-                                      style: themeData.textTheme.displayMedium!,
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 8),
-                                Header(
-                                  leadingPhotoUrl: state.contractEntity.business.logo,
-                                  title: Text(
-                                    state.contractEntity.business.name,
-                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                      color: themeData.colorScheme.onBackground,
-                                    )),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
+                                    onTapLeading: () {},
+                                    leadingBadge: false,
                                   ),
-                                  subtitle: Text(
-                                    state.contractEntity.business.email,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: themeData.textTheme.displayMedium!.merge(TextStyle(
-                                      color: themeData.colorScheme.onBackground,
-                                    )),
-                                  ),
-                                  onTapLeading: () {},
-                                  leadingBadge: false,
-                                ),
-                                const SizedBox(height: 80),
-                              ],
+                                  const SizedBox(height: 80),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                ),
-              ),
+                          );
+                        },
+                      )
+                    ],
+                  ),
+                );
+              }),
               Visibility(
                 visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
                 child: Positioned(
@@ -267,7 +296,8 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                             if (isBusiness) {
                               if (state.contractEntity.state == ContractStatus.Apply.name) {
                                 return PrimaryButton(
-                                  label: 'Create',
+                                  label:
+                                      instance.get<AppLocalization>().translate('createContract') ?? 'Create Contract',
                                   width: double.infinity,
                                   onPressed: () {
                                     final bool isValid = context.read<CreateContractBloc>().validator();
@@ -286,7 +316,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 );
                               } else if (state.contractEntity.state != ContractStatus.Accepted.name) {
                                 return PrimaryButton(
-                                  label: 'Accepted',
+                                  label: instance.get<AppLocalization>().translate('accept') ?? 'Accept',
                                   width: double.infinity,
                                   onPressed: () {
                                     context.read<CreateContractBloc>().add(ContractCreatedBusinessSignEvent());
@@ -294,12 +324,9 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 );
                               } else {
                                 return PrimaryButton(
-                                  label: 'View Progress',
+                                  label: instance.get<AppLocalization>().translate('viewProgress') ?? 'View Progress',
                                   width: double.infinity,
                                   onPressed: () {
-                                    print('contractId: ${state.contractEntity.id}');
-                                    print('candidateId: ${state.contractEntity.worker.id}');
-
                                     Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
                                       'contractId': state.contractEntity.id,
                                       'candidateId': state.contractEntity.worker.id,
@@ -309,7 +336,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                               }
                             } else {
                               return PrimaryButton(
-                                label: 'Accepted',
+                                label: instance.get<AppLocalization>().translate('accepted') ?? 'Accepted',
                                 width: double.infinity,
                                 onPressed: () {
                                   context.read<CreateContractBloc>().add(ContractCreatedWorkerSignEvent());

@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -60,6 +61,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   }
 
   FutureOr onInit(HomeInitialEvent event, Emitter<HomeState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     emit(state.copyWith(isLoading: true));
     await getMyProfile();
 
@@ -87,6 +89,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         bookmarksRecent: bookmarksRecent,
       ),
     );
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   FutureOr onSelectCategory(OnSelectCategoryEvent event, Emitter<HomeState> emit) async {

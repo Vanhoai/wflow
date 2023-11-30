@@ -63,6 +63,8 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   }
 
   FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
     final response = await contractUseCase.candidateAppliedDetail(event.contract);
     response.fold(
       (ContractEntity contractEntity) {
@@ -82,6 +84,8 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
         instance.get<NavigationService>().pop();
       },
     );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   void onAddTask(AddTaskCreateContractEvent event, Emitter<CreateContractState> emit) async {
@@ -223,7 +227,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   }
 
   FutureOr<void> getMoney(GetMoney event, Emitter<CreateContractState> emit) async {
-    if (budgetController.text == "") {
+    if (budgetController.text == '') {
       emit(state.copyWith(money: moneyYouGet(0)));
     } else {
       emit(state.copyWith(money: moneyYouGet(budgetController.numberValue.toInt())));

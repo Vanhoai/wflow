@@ -69,7 +69,8 @@ class _TaskScreenState extends State<TaskScreen> {
                     backgroundColor: themeData.colorScheme.background,
                     surfaceTintColor: Colors.transparent,
                     insetPadding: const EdgeInsets.all(10),
-                    title: const Text('Rating'),
+                    title: Text(instance.get<AppLocalization>().translate('rating') ?? 'Rating',
+                        style: themeData.textTheme.displayMedium),
                     content: Container(
                       color: themeData.colorScheme.background,
                       width: MediaQuery.of(context).size.width,
@@ -86,9 +87,9 @@ class _TaskScreenState extends State<TaskScreen> {
                               Icons.star,
                               color: AppColors.primary,
                             ),
-                            onRatingUpdate: (_rating) {
+                            onRatingUpdate: (rating) {
                               setState(() {
-                                rating = _rating;
+                                rating = rating;
                               });
                             },
                           ),
@@ -101,7 +102,7 @@ class _TaskScreenState extends State<TaskScreen> {
                             textInputAction: TextInputAction.newline,
                             controller: ratingController,
                             decoration: InputDecoration(
-                              hintText: 'Type your rating content here',
+                              hintText: instance.call<AppLocalization>().translate('ratingTypeContent') ?? 'Content',
                               contentPadding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
                               hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
                               focusedBorder: const OutlineInputBorder(
@@ -116,7 +117,8 @@ class _TaskScreenState extends State<TaskScreen> {
                           ),
                           const SizedBox(height: 20),
                           PrimaryButton(
-                            label: 'Rating this contract',
+                            label:
+                                instance.get<AppLocalization>().translate('ratingThisWork') ?? 'Rating this contract',
                             onPressed: () {
                               if (widget.workId == 0) {
                                 AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
@@ -239,12 +241,12 @@ class _TaskScreenState extends State<TaskScreen> {
               Container(
                 margin: const EdgeInsets.only(bottom: 10),
                 child: Text(
-                  'Nhiệm vụ: ',
+                  instance.get<AppLocalization>().translate('mission') ?? 'Mission',
                   style: Theme.of(context).textTheme.displayLarge,
                 ),
               ),
               Text(
-                task.title.isNotEmpty ? task.title : "Không có thông tin",
+                task.title.isNotEmpty ? task.title : 'Không có thông tin',
                 style: Theme.of(context).textTheme.displayMedium,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
@@ -252,7 +254,7 @@ class _TaskScreenState extends State<TaskScreen> {
               Container(
                   margin: const EdgeInsets.only(top: 8, bottom: 10),
                   child: Text(
-                    'Mô tả: ',
+                    instance.get<AppLocalization>().translate('description') ?? 'Description',
                     style: Theme.of(context).textTheme.displayMedium,
                   )),
               SizedBox(
@@ -268,7 +270,9 @@ class _TaskScreenState extends State<TaskScreen> {
                       physics: const ScrollPhysics(),
                       scrollDirection: Axis.vertical,
                       child: Text(
-                        task.content.isNotEmpty ? task.content : "Không có thông tin",
+                        task.content.isNotEmpty
+                            ? task.content
+                            : instance.get<AppLocalization>().translate('noInfo') ?? 'No info',
                         style: Theme.of(context).textTheme.displayMedium,
                       ),
                     ),
@@ -279,7 +283,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 alignment: Alignment.centerRight,
                 margin: const EdgeInsets.only(top: 10),
                 child: Text(
-                  'Deadline: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
+                  '${instance.get<AppLocalization>().translate('deadlineAt') ?? 'Deadline'}: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
                   style: Theme.of(context).textTheme.displayMedium!.copyWith(
                         color: task.state == TaskStatus.Accepted.toString() ? AppColors.greenColor : AppColors.redColor,
                       ),
@@ -333,7 +337,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Cancel',
+                      instance.get<AppLocalization>().translate('cancel') ?? 'Cancel',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -363,10 +367,10 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Container(
                     height: 45,
                     alignment: Alignment.center,
-                    child: const Text(
-                      'Done',
+                    child: Text(
+                      instance.get<AppLocalization>().translate('done') ?? 'Done',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                      style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
@@ -401,7 +405,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Reject',
+                      instance.get<AppLocalization>().translate('taskRejected') ?? 'Reject',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -476,7 +480,7 @@ class _TaskScreenState extends State<TaskScreen> {
                         if (state.taskEntities.isEmpty) {
                           return Center(
                             child: Text(
-                              'Không có công việc',
+                              instance.get<AppLocalization>().translate('noTask') ?? 'No task',
                               style: Theme.of(context).textTheme.bodyLarge,
                             ),
                           );
@@ -504,19 +508,21 @@ class _TaskScreenState extends State<TaskScreen> {
                                     color: Colors.white,
                                     padding: const EdgeInsets.all(20),
                                     child: PrimaryButton(
-                                      label: 'Đánh giá',
+                                      label: instance.get<AppLocalization>().translate('rating') ?? 'Rating',
                                       onPressed: () {
                                         _displayRating(context, instance.get<TaskBloc>());
                                       },
                                     ),
                                   );
                                 } else {
-                                  if (state.isAllDone && instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
+                                  if (state.isAllDone &&
+                                      instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
                                     return Container(
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Close Contract',
+                                        label: instance.get<AppLocalization>().translate('closeContract') ??
+                                            'Close contract',
                                         onPressed: () {
                                           taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
                                         },

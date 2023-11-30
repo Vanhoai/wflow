@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 
 class TextFieldHelper extends StatelessWidget {
-  const TextFieldHelper({
-    super.key,
-    this.enabled = true,
-    required this.controller,
-    this.maxLines = 5,
-    this.hintText = '',
-    this.minLines = 1,
-    this.suffixIcon,
-    this.keyboardType,
-    this.validator,
-    this.onChange
-  });
+  const TextFieldHelper(
+      {super.key,
+      this.enabled = true,
+      required this.controller,
+      this.maxLines = 5,
+      this.hintText = '',
+      this.minLines = 1,
+      this.suffixIcon,
+      this.keyboardType,
+      this.validator,
+      this.onChange});
 
   final bool enabled;
   final TextEditingController controller;
@@ -34,7 +33,7 @@ class TextFieldHelper extends StatelessWidget {
       onChanged: onChange,
       scrollPhysics: const BouncingScrollPhysics(),
       keyboardType: keyboardType,
-      textInputAction: TextInputAction.next,
+      textInputAction: TextInputAction.newline,
       style: themeData.textTheme.displayMedium!.merge(TextStyle(
         color: Colors.black.withOpacity(0.5),
       )),

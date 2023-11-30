@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:timelines/timelines.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -169,7 +171,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         Text(
-                          'Edit Task',
+                          instance.get<AppLocalization>().translate('editTask') ?? 'Edit Task',
                           textAlign: TextAlign.center,
                           style: Theme.of(context).textTheme.displayLarge,
                         ),
@@ -180,7 +182,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                               crossAxisAlignment: CrossAxisAlignment.stretch,
                               children: [
                                 Text(
-                                  'Task title',
+                                  instance.get<AppLocalization>().translate('taskTitle') ?? 'Task title',
                                   style: themeData.textTheme.displayMedium,
                                 ),
                                 const SizedBox(height: 8),
@@ -189,12 +191,13 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                   controller: titleController,
                                   minLines: 1,
                                   maxLines: 1,
-                                  hintText: 'Enter task heading',
+                                  hintText:
+                                      instance.get<AppLocalization>().translate('enterTaskTitle') ?? 'Enter task title',
                                   keyboardType: TextInputType.name,
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
-                                  'Task content (optional)',
+                                  '${instance.get<AppLocalization>().translate('taskContent') ?? 'Task content'} (${instance.get<AppLocalization>().translate('optional') ?? '(Optional)'})',
                                   style: themeData.textTheme.displayMedium,
                                 ),
                                 const SizedBox(height: 8),
@@ -203,12 +206,13 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                   controller: contentController,
                                   minLines: 1,
                                   maxLines: 4,
-                                  hintText: 'Enter task content',
+                                  hintText: instance.get<AppLocalization>().translate('enterTaskContent') ??
+                                      'Enter task content',
                                   keyboardType: TextInputType.name,
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
-                                  'Start time',
+                                  instance.get<AppLocalization>().translate('taskStartDate') ?? 'Start time',
                                   style: themeData.textTheme.displayMedium,
                                 ),
                                 const SizedBox(height: 8),
@@ -236,7 +240,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                                 ),
                                 const SizedBox(height: 20),
                                 Text(
-                                  'End time',
+                                  instance.get<AppLocalization>().translate('taskEndDate') ?? 'End time',
                                   style: themeData.textTheme.displayMedium,
                                 ),
                                 const SizedBox(height: 8),
@@ -327,7 +331,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Text(
-              'Task',
+              instance.get<AppLocalization>().translate('task') ?? 'Task',
               style: themeData.textTheme.displayMedium!.merge(TextStyle(
                 color: themeData.colorScheme.onBackground,
               )),
@@ -339,7 +343,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
                   return InkWell(
                     onTap: () => context.read<CreateContractBloc>().add(AddTaskCreateContractEvent()),
                     child: Text(
-                      'Add Task',
+                      instance.get<AppLocalization>().translate('addTask') ?? 'Add Task',
                       style: themeData.textTheme.displayMedium!.merge(
                         TextStyle(
                           color: themeData.colorScheme.primary,
@@ -457,7 +461,7 @@ class _TaskCreateContractState extends State<TaskCreateContract> {
               return InkWell(
                 onTap: () => context.read<CreateContractBloc>().add(RemoveLastTaskCreateContractEvent()),
                 child: Text(
-                  'Remove Task',
+                  instance.get<AppLocalization>().translate('removeTask') ?? 'Remove Task',
                   style: themeData.textTheme.displayMedium!.merge(
                     const TextStyle(
                       color: AppColors.redColor,

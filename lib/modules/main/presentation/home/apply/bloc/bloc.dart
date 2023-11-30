@@ -22,11 +22,8 @@ class ApplyBloc extends Bloc<ApplyEvent, ApplyState> {
     );
 
     result.fold(
-        (HttpResponseWithPagination<ContractEntity>
-                httpResponseWithPagination) =>
-            emit(state.copyWith(
-                applies: httpResponseWithPagination.data,
-                meta: httpResponseWithPagination.meta)),
+        (HttpResponseWithPagination<ContractEntity> httpResponseWithPagination) =>
+            emit(state.copyWith(applies: httpResponseWithPagination.data, meta: httpResponseWithPagination.meta)),
         (Failure failure) => {});
 
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -42,15 +39,12 @@ class ApplyBloc extends Bloc<ApplyEvent, ApplyState> {
         pageSize: state.meta.pageSize.toInt(),
         search: '',
       ));
-      result.fold((HttpResponseWithPagination<ContractEntity>
-          httpResponseWithPagination) {
+      result.fold((HttpResponseWithPagination<ContractEntity> httpResponseWithPagination) {
         newApplies = [
           ...state.applies.map((e) => ContractEntity.fromJson(e.toJson())),
-          ...httpResponseWithPagination.data
-              .map((e) => ContractEntity.fromJson(e.toJson()))
+          ...httpResponseWithPagination.data.map((e) => ContractEntity.fromJson(e.toJson()))
         ];
-        emit(ApplyState(
-            applies: newApplies, meta: httpResponseWithPagination.meta));
+        emit(ApplyState(applies: newApplies, meta: httpResponseWithPagination.meta));
       }, (Failure failure) => {});
     }
   }

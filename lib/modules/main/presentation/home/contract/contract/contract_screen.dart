@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -50,7 +51,7 @@ class _ContractScreenState extends State<ContractScreen> {
             hideKeyboardWhenTouchOutside: true,
             appBar: AppHeader(
               text: Text(
-                'Works',
+                instance.get<AppLocalization>().translate('work') ?? 'Work',
                 style: themeData.textTheme.displayMedium,
               ),
             ),
@@ -70,7 +71,7 @@ class _ContractScreenState extends State<ContractScreen> {
                           if (state.contractEntities.isEmpty) {
                             return Center(
                               child: Text(
-                                'No item applied',
+                                'Không có họp đồng',
                                 style: Theme.of(context).textTheme.bodyLarge,
                               ),
                             );

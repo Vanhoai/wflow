@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/size.dart';
@@ -35,6 +36,14 @@ class _CVScreenState extends State<CVScreen> {
     super.dispose();
   }
 
+  void navigator(BuildContext context) async{
+   final result = await Navigator.of(context).pushNamed(RouteKeys.addCVScreen);
+   if(result != null && context.mounted)
+   {
+     context.read<CVBloc>().add(GetMyCVEvent());
+   }
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -54,11 +63,13 @@ class _CVScreenState extends State<CVScreen> {
                     if (state.selectCvEntities.isEmpty) {
                       return InkWell(
                         borderRadius: BorderRadius.circular(6),
-                        onTap: () => Navigator.of(context).pushNamed(RouteKeys.addCVScreen),
+                        onTap: ()  {
+                         navigator(context);
+                        },
                         child: Ink(
                           padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 4),
                           child: Text(
-                            'Add',
+                             instance.get<AppLocalization>().translate('add') ?? 'Add',
                             style: themeData.textTheme.displayMedium!.copyWith(
                               color: AppColors.primary,
                               fontWeight: FontWeight.normal,
@@ -69,11 +80,13 @@ class _CVScreenState extends State<CVScreen> {
                     }
                     return InkWell(
                       borderRadius: BorderRadius.circular(6),
-                      onTap: () {},
+                      onTap: () {
+                        context.read<CVBloc>().add(RemoveCV());
+                      },
                       child: Ink(
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                         child: Text(
-                          'Remove',
+                          instance.get<AppLocalization>().translate('remove') ?? 'Remove',
                           style: themeData.textTheme.displayMedium!
                               .copyWith(color: AppColors.primary, fontWeight: FontWeight.normal),
                         ),
@@ -84,7 +97,9 @@ class _CVScreenState extends State<CVScreen> {
               ],
             ),
             body: RefreshIndicator(
-              onRefresh: () async {},
+              onRefresh: () async {
+                context.read<CVBloc>().add(GetMyCVEvent());
+              },
               child: Visibility(
                 visible: !state.isLoading,
                 replacement: const Loading(),
@@ -93,7 +108,7 @@ class _CVScreenState extends State<CVScreen> {
                     if (state.cvEntities.isEmpty) {
                       return Center(
                         child: Text(
-                          'No candidates have applied yet',
+                          'Không có thông tin',
                           style: Theme.of(context).textTheme.bodyLarge,
                         ),
                       );
@@ -120,54 +135,60 @@ class _CVScreenState extends State<CVScreen> {
     isCheck = state.selectCvEntities.indexWhere((element) => element.id == cvEntity.id) != -1 ? true : false;
     return Container(
       margin: const EdgeInsets.only(bottom: 20),
-      padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
-      decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.fade)),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.start,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          SvgPicture.asset(
-            'assets/icons/cv.svg',
-            width: 40,
-            height: 40,
-          ),
-          const SizedBox(width: 20),
-          Expanded(
-            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-              Text(
-                cvEntity.title,
-                style: themeData.textTheme.displaySmall!.merge(
-                  TextStyle(
-                    color: themeData.colorScheme.onBackground,
-                    fontSize: 14,
+      child: InkWell(
+        onTap: () => Navigator.of(context).pushNamed(RouteKeys.detailCVScreen,arguments: cvEntity),
+        borderRadius:  BorderRadius.circular(8),
+        child: Container(
+          padding: const EdgeInsets.only(top: 10, bottom: 10, left: 10, right: 10),
+          decoration: BoxDecoration(borderRadius: BorderRadius.circular(8), border: Border.all(color: AppColors.fade)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              SvgPicture.asset(
+                'assets/icons/cv.svg',
+                width: 40,
+                height: 40,
+              ),
+              const SizedBox(width: 20),
+              Expanded(
+                child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                  Text(
+                    cvEntity.title,
+                    style: themeData.textTheme.displaySmall!.merge(
+                      TextStyle(
+                        color: themeData.colorScheme.onBackground,
+                        fontSize: 14,
+                      ),
+                    ),
                   ),
-                ),
+                  Builder(
+                    builder: (context) {
+                      final String content = cvEntity.url;
+                      if (content.length > 25) {
+                        return Text(
+                          '${content.substring(0, 19)}...pdf',
+                          style: themeData.textTheme.displaySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      } else {
+                        return Text(
+                          content,
+                          style: themeData.textTheme.displaySmall,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        );
+                      }
+                    },
+                  ),
+                ]),
               ),
-              Builder(
-                builder: (context) {
-                  final String content = cvEntity.url;
-                  if (content.length > 25) {
-                    return Text(
-                      '${content.substring(0, 19)}...pdf',
-                      style: themeData.textTheme.displaySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    );
-                  } else {
-                    return Text(
-                      content,
-                      style: themeData.textTheme.displaySmall,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    );
-                  }
-                },
-              ),
-            ]),
+              _buildCheckbox(context, cvEntity.id, isCheck),
+            ],
           ),
-          _buildCheckbox(context, cvEntity.id, isCheck),
-        ],
+        ),
       ),
     );
   }

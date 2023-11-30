@@ -36,22 +36,42 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       emit(state.copyWith(isLoading: true));
     }
     final taskList = await taskUseCase.taskInContract(event.idContract);
-    taskList.fold((List<TaskEntity> left) {
-      bool isAllDone = false;
-      for (int i = 0; i < left.length; i++) {
-        if (left[i].state != TaskStatus.Accepted.name) {
-          isAllDone = false;
-          break;
-        }
-        isAllDone = true;
-      }
-
-      emit(GetTaskListSuccessState(
-          taskEntities: left, isLoading: false, idContract: event.idContract, isAllDone: isAllDone));
-    }, (Failure right) {
-      emit(GetTaskListSuccessState(
-          taskEntities: const [], isLoading: false, idContract: event.idContract, isAllDone: false));
-    });
+    final contractDetail = await contractUseCase.findContractById(event.idContract as int);
+    contractDetail.fold(
+        (String stateContract) => taskList.fold((List<TaskEntity> left) {
+              bool isAllDone = false;
+              if (stateContract == ContractStatus.Success.name) {
+                isAllDone = true;
+              } else {
+                for (int i = 0; i < left.length; i++) {
+                  if (left[i].state != TaskStatus.Accepted.name) {
+                    isAllDone = false;
+                    break;
+                  }
+                  isAllDone = true;
+                }
+              }
+              
+              emit(GetTaskListSuccessState(
+                  stateContract: stateContract,
+                  taskEntities: left,
+                  isLoading: false,
+                  idContract: event.idContract,
+                  isAllDone: isAllDone));
+            }, (Failure right) {
+              emit(GetTaskListSuccessState(
+                  stateContract: ContractStatus.Accepted.name,
+                  taskEntities: const [],
+                  isLoading: false,
+                  idContract: event.idContract,
+                  isAllDone: false));
+            }),
+        (Failure right) => emit(GetTaskListSuccessState(
+            stateContract: ContractStatus.Accepted.name,
+            taskEntities: const [],
+            isLoading: false,
+            idContract: event.idContract,
+            isAllDone: false)));
   }
 
   FutureOr<void> updateTask(UpdateTaskEvent event, Emitter<TaskState> emit) async {
@@ -85,16 +105,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         AlertUtils.showMessage(
           'Close Contract',
           messages,
-          callback: () {
-            AlertUtils.showMessage('Close Contract', messages);
-          },
         );
       },
       (failure) {
         AlertUtils.showMessage('Close Contract', failure.message);
       },
     );
-    emit(RatingState(isLoading: true, idContract: event.id));
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 

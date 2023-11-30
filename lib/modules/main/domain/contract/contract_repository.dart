@@ -26,4 +26,5 @@ abstract class ContractRepository {
   Future<Either<String, Failure>> checkContractAndTransfer(int id);
   Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
       getContractCompleted(GetContractSigned req);
+  Future<Either<String, Failure>> findContractById(int id);
 }

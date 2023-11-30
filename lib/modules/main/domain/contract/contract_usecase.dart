@@ -28,6 +28,7 @@ abstract class ContractUseCase {
   Future<Either<String, Failure>> checkContractAndTransfer(int id);
   Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
       getContractCompleted(GetContractSigned req);
+  Future<Either<String, Failure>> findContractById(int id);
 }
 
 class ContractUseCaseImpl implements ContractUseCase {
@@ -101,5 +102,10 @@ class ContractUseCaseImpl implements ContractUseCase {
   Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
       getContractCompleted(GetContractSigned req) async {
     return await contactRepository.getContractCompleted(req);
+  }
+  
+  @override
+  Future<Either<String, Failure>> findContractById(int id)  async{
+    return await contactRepository.findContractById(id);
   }
 }

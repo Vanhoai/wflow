@@ -10,7 +10,6 @@ class InitEvent extends TaskEvent {}
 
 class GetTaskEvent extends TaskEvent {
   final num idContract;
-
   const GetTaskEvent({required this.idContract});
   @override
   List<Object?> get props => [idContract];

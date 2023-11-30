@@ -92,7 +92,7 @@ class _BookmarkScreenState extends State<BookmarkScreen> {
                             physics: const BouncingScrollPhysics(),
                             itemCount: state.posts.length,
                             itemBuilder: (context, index) => Container(
-                              constraints: const BoxConstraints(maxHeight: 270),
+                              constraints: const BoxConstraints(maxHeight: 280),
                               child: JobCard(
                                 time: state.posts[index].updatedAt!,
                                 jobId: state.posts[index].id,

@@ -17,11 +17,13 @@ class TaskState extends Equatable {
 class GetTaskListSuccessState extends TaskState {
   final List<TaskEntity> taskEntities;
   final num idContract;
+  final String stateContract;
   const GetTaskListSuccessState({
     required this.taskEntities,
     required super.isLoading,
     required this.idContract,
     required super.isAllDone,
+    required this.stateContract,
   });
 
   @override
@@ -30,16 +32,19 @@ class GetTaskListSuccessState extends TaskState {
     List<TaskEntity>? taskEntities,
     num? idContract,
     bool? isAllDone,
+     String? stateContract,
   }) {
     return GetTaskListSuccessState(
         taskEntities: taskEntities ?? this.taskEntities,
         isLoading: isLoading ?? super.isLoading,
         isAllDone: isAllDone ?? super.isAllDone,
-        idContract: idContract ?? this.idContract);
+        idContract: idContract ?? this.idContract,
+        stateContract: stateContract ?? this.stateContract
+        );
   }
 
   @override
-  List<Object?> get props => [isLoading, taskEntities, isAllDone, idContract];
+  List<Object?> get props => [isLoading, taskEntities, isAllDone, idContract,stateContract];
 }
 
 class RatingState extends TaskState {

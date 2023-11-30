@@ -16,3 +16,6 @@ class OnSelectedCVEVent extends CVEvent {
   @override
   List<Object?> get props => [state, id];
 }
+class RemoveCV extends CVEvent{
+  
+}

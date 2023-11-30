@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
@@ -35,7 +36,7 @@ class _SearchRoomsScreenState extends State<SearchRoomsScreen> {
             hideKeyboardWhenTouchOutside: true,
             appBar: AppHeader(
               text: Text(
-                'Search',
+                instance.get<AppLocalization>().translate('search') ?? 'Search',
                 style: themeData.textTheme.displayMedium,
               ),
             ),
@@ -48,7 +49,7 @@ class _SearchRoomsScreenState extends State<SearchRoomsScreen> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
                     child: SharedSearchBar(
-                      placeHolder: 'Search',
+                      placeHolder: instance.get<AppLocalization>().translate('search') ?? 'Search',
                       decoration: BoxDecoration(
                         color: themeData.colorScheme.background,
                       ),

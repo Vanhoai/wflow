@@ -36,41 +36,36 @@ class _ContractCardState extends State<ContractCard> {
           top: AppSize.marginSmall * 2,
           bottom: AppSize.paddingSmall * 2,
         ),
-        constraints: const BoxConstraints(maxHeight: 200),
+        constraints: const BoxConstraints(maxHeight: 192),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
-          onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
-            'contractId': widget.contractEntity.id,
-            'candidateId': widget.contractEntity.worker.id,
-          }),
-          child: Container(
-            padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    _buildAvatar(widget.contractEntity.business.id.toString()),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            widget.contractEntity.title,
-                            style: themeData.textTheme.displayMedium!.copyWith(
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                          Text(
-                            '💰 ${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
-                            style: themeData.textTheme.labelMedium!
-                                .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
-                          )
-                        ],
-  ),
+          color: themeData.colorScheme.background,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.1),
+              blurRadius: 10,
+              offset: const Offset(0, 2),
+            )
+          ],
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            borderRadius: BorderRadius.circular(8),
+            onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+              'contractId': widget.contractEntity.id,
+              'candidateId': widget.contractEntity.worker.id,
+            }),
+            child: Container(
+              padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      _buildAvatar(widget.contractEntity.business.id.toString()),
+                      const SizedBox(
+                        width: 10,
+                      ),
                       Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -83,7 +78,7 @@ class _ContractCardState extends State<ContractCard> {
                               ),
                             ),
                             Text(
-                              '${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
+                              '💰 ${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
                               style: themeData.textTheme.labelMedium!
                                   .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
                             )
@@ -116,23 +111,19 @@ class _ContractCardState extends State<ContractCard> {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'Business',
-                              style: themeData.textTheme.displayMedium!.copyWith(
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
+                            Text("🏬 ${instance.get<AppLocalization>().translate('business') ?? 'Business'}",
+                                style: themeData.textTheme.displayMedium),
                             InkWell(
                               borderRadius: BorderRadius.circular(6),
                               onTap: () {
-                                Navigator.of(context).pushNamed(RouteKeys.companyScreen,arguments: widget.contractEntity.business.id.toString());
+                                Navigator.of(context).pushNamed(RouteKeys.companyScreen,
+                                    arguments: widget.contractEntity.business.id.toString());
                               },
                               child: Ink(
                                 child: Text(
                                   widget.contractEntity.business.name,
-                                  style: themeData.textTheme.displayMedium!
-                                      .copyWith(fontWeight: FontWeight.w500, color: themeData.primaryColor),
-                                       overflow: TextOverflow.ellipsis,
+                                  style: themeData.textTheme.displayMedium!.copyWith(color: themeData.primaryColor),
+                                  overflow: TextOverflow.ellipsis,
                                 ),
                               ),
                             ),
@@ -142,16 +133,20 @@ class _ContractCardState extends State<ContractCard> {
                       return Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text("🏬 ${instance.get<AppLocalization>().translate('business') ?? 'Business'}",
+                          Text("🧑‍💼 ${instance.get<AppLocalization>().translate('worker') ?? 'Worker'}",
                               style: themeData.textTheme.displayMedium),
+                          const SizedBox(
+                            width: 100,
+                          ),
                           InkWell(
                             onTap: () {
-                              Navigator.of(context).pushNamed(RouteKeys.companyScreen,
-                                  arguments: widget.contractEntity.business.id.toString());
+                              Navigator.of(context)
+                                  .pushNamed(RouteKeys.detailUserScreen, arguments: widget.contractEntity.worker.id);
                             },
+                            borderRadius: BorderRadius.circular(6),
                             child: Ink(
                               child: Text(
-                                widget.contractEntity.business.name,
+                                widget.contractEntity.worker.name,
                                 style: themeData.textTheme.displayMedium!.copyWith(color: themeData.primaryColor),
                                 overflow: TextOverflow.ellipsis,
                               ),
@@ -159,63 +154,39 @@ class _ContractCardState extends State<ContractCard> {
                           ),
                         ],
                       );
-                    }
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("🧑‍💼 ${instance.get<AppLocalization>().translate('worker') ?? 'Worker'}",
-                            style: themeData.textTheme.displayMedium),
-                        const SizedBox(
-                          width: 100,
+                    },
+                  ),
+                  const SizedBox(
+                    height: 9,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("✅ ${instance.get<AppLocalization>().translate('status') ?? 'Status'}",
+                          style: themeData.textTheme.displayMedium),
+                      Text(
+                        instance.get<AppLocalization>().translate(widget.contractEntity.state.toString().toLowerCase()) ??
+                            'Apply',
+                        style: themeData.textTheme.displayMedium!.copyWith(
+                          color: AppColors.greenColor,
                         ),
-                        InkWell(
-                          onTap: () {
-                            Navigator.of(context)
-                                .pushNamed(RouteKeys.detailUserScreen, arguments: widget.contractEntity.worker.id);
-                          },
-                          borderRadius: BorderRadius.circular(6),
-                          child: Ink(
-                            child: Text(
-                              widget.contractEntity.worker.name,
-                              style: themeData.textTheme.displayMedium!.copyWith(color: themeData.primaryColor),
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-                      ],
-                    );
-                  },
-                ),
-                const SizedBox(
-                  height = 9,
-                ),
-                Row(
-                  mainAxisAlignment = MainAxisAlignment.spaceBetween,
-                  children = [
-                    Text("✅ ${instance.get<AppLocalization>().translate('status') ?? 'Status'}",
-                        style: themeData.textTheme.displayMedium),
-                    Text(
-                      instance.get<AppLocalization>().translate(widget.contractEntity.state.toString().toLowerCase()) ??
-                          'Apply',
-                      style: themeData.textTheme.displayMedium!.copyWith(
-                        color: AppColors.greenColor,
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(
-                  height = 9,
-                ),
-                Row(
-                  mainAxisAlignment = MainAxisAlignment.spaceBetween,
-                  children = [
-                    Text("🕜 ${instance.get<AppLocalization>().translate('deadline') ?? 'Deadline'}",
-                        style: themeData.textTheme.displayMedium),
-                    Text(instance.get<Time>().getDayMonthYear(DateTime.now().toString()),
-                        style: themeData.textTheme.displayMedium),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                  const SizedBox(
+                    height: 9,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("🕜 ${instance.get<AppLocalization>().translate('deadline') ?? 'Deadline'}",
+                          style: themeData.textTheme.displayMedium),
+                      Text(instance.get<Time>().getDayMonthYear(DateTime.now().toString()),
+                          style: themeData.textTheme.displayMedium),
+                    ],
+                  ),
+                ],
+              ),
             ),
           ),
         ),

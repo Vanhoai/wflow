@@ -62,7 +62,7 @@ class _RecentJobListWidgetState extends State<RecentJobListWidget> {
                 final job = state.recentJobs[index];
 
                 return Container(
-                  constraints: const BoxConstraints(maxHeight: 270),
+                  constraints: const BoxConstraints(maxHeight: 280),
                   child: JobCard(
                     time: job.updatedAt!,
                     jobId: job.id,

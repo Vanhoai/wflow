@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/bloc.dart';
 import 'package:wflow/modules/main/presentation/home/job/candidate_list/bloc/event.dart';
 import 'package:wflow/configuration/constants.dart';
@@ -53,7 +55,7 @@ class _SearchCandidateWidgetState extends State<SearchCandidateWidget> {
       controller: textEditingController,
       onChanged: _onChanged,
       decoration: InputDecoration(
-        hintText: 'Enter here',
+        hintText: instance.get<AppLocalization>().translate('search') ?? 'Search',
         hintStyle: const TextStyle(
           color: Colors.grey,
         ),

@@ -26,6 +26,7 @@ abstract class ContractService {
   Future<String> checkContractAndTransfer(int id);
   Future<HttpResponseWithPagination<ContractEntity>> getContractCompleted(
       GetContractSigned req);
+  Future<String> findContractById(int id);
 }
 
 class ContractPaths {
@@ -56,6 +57,8 @@ class ContractPaths {
   static const String getContractApplies = '/contract/find-post-applied';
   static const String getContractCompletedUser = '/contract/find-contract-success-of-user';
   static const String getContractCompletedBusiness = '/contract/find-contract-success-of-business';
+  static String findContractById(int id) =>
+      '/contract/find/$id';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -375,6 +378,22 @@ class ContractServiceImpl implements ContractService {
         meta: httpResponseWithPagination.meta,
         data: contracts,
       );
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<String> findContractById(int id) async {
+    try {
+      final response = await agent.dio.get(
+        ContractPaths.findContractById(id),
+      );
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+      return httpResponse.data['state'];
     } catch (exception) {
       throw ServerException(exception.toString());
     }

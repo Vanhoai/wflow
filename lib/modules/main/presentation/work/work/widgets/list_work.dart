@@ -212,7 +212,7 @@ class _ListWorksState extends State<ListWorks> {
                         final post = state.posts[index];
 
                         return Container(
-                          constraints: const BoxConstraints(maxHeight: 270),
+                          constraints: const BoxConstraints(maxHeight: 280),
                           child: JobCard(
                             time: post.updatedAt!,
                             jobId: post.id,

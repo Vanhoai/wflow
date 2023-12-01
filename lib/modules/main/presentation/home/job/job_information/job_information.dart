@@ -99,7 +99,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 backgroundColor: themeData.colorScheme.background,
                 surfaceTintColor: Colors.transparent,
                 insetPadding: EdgeInsets.all(12.r),
-                title: const Text('Introduction'),
+                title: const Text('Giới thiệu bản thân'),
                 content: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -112,7 +112,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         controller: dialogInputController,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
-                          hintText: 'Type your introduction',
+                          hintText: 'Mô tả một chút về bản thân cho nhà tuyển dụng',
                           contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                           hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
                           focusedBorder: OutlineInputBorder(
@@ -126,7 +126,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      PrimaryButton(label: 'Send', onPressed: () => Navigator.pop(context, true))
+                      PrimaryButton(label: 'Gửi', onPressed: () => Navigator.pop(context, true))
                     ],
                   ),
                 ),
@@ -351,7 +351,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: instance.get<AppLocalization>().translate('apply') ?? 'Apply',
+                                        label: 'Ứng tuyển',
                                         onPressed: () {
                                           if (instance.get<AppBloc>().state.userEntity.isVerify) {
                                             _showSelectCV(context, widget.work);
@@ -386,7 +386,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         );
                       } else if (state is GetJobInformationFailureState) {
                         return Center(
-                          child: Text('No Information', style: Theme.of(context).textTheme.bodyLarge),
+                          child: Text('Không có thông tin', style: Theme.of(context).textTheme.bodyLarge),
                         );
                       } else {
                         return const SizedBox();

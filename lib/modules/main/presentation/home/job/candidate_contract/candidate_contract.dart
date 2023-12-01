@@ -53,7 +53,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Candidate Detail',
+            'Chi tiết ứng viên',
             style: themeData.textTheme.displayMedium,
           ),
         ),
@@ -103,7 +103,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                               );
                             } else if (state is GetCandidateDetailFailureState) {
                               return Center(
-                                child: Text('No Information', style: Theme.of(context).textTheme.bodyLarge),
+                                child: Text('Không có thông tin', style: Theme.of(context).textTheme.bodyLarge),
                               );
                             } else {
                               return const SizedBox();
@@ -138,7 +138,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                         ),
                       ),
                       child: PrimaryButton(
-                        label: 'Create Contract',
+                        label: 'Tạo họp đồng',
                         onPressed: navigateToCreateContract,
                         width: double.infinity,
                       ),

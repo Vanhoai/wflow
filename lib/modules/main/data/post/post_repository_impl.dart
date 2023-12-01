@@ -4,6 +4,7 @@ import 'package:wflow/modules/main/data/post/models/request/get_post_with_catego
 import 'package:wflow/modules/main/data/post/models/request/get_work_model.dart';
 import 'package:wflow/modules/main/data/post/models/request/up_post_rqst.dart';
 import 'package:wflow/modules/main/data/post/post_service.dart';
+import 'package:wflow/modules/main/domain/post/entities/graph_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_repository.dart';
 
@@ -88,6 +89,16 @@ class PostRepositoryImpl implements PostRepository {
       return Left(response);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<List<GraphEntity>> getStatistic() async {
+     try {
+      final graph = await postService.getStatistic();
+      return graph;
+    } catch (exception) {
+      return [];
     }
   }
 }

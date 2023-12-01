@@ -76,7 +76,7 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
                                         height: 45,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          'Cancel',
+                                          'Đóng',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 16,
@@ -108,7 +108,7 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
                                         height: 45,
                                         alignment: Alignment.center,
                                         child: const Text(
-                                          'Get CV',
+                                          'Chọn CV',
                                           textAlign: TextAlign.center,
                                           style:
                                               TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),

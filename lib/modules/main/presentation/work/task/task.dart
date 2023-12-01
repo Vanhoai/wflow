@@ -337,7 +337,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      instance.get<AppLocalization>().translate('cancel') ?? 'Cancel',
+                      'Đóng',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -367,10 +367,10 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Container(
                     height: 45,
                     alignment: Alignment.center,
-                    child: Text(
-                      instance.get<AppLocalization>().translate('done') ?? 'Done',
+                    child: const Text(
+                      'Hoàn thành',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                      style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
@@ -405,7 +405,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      instance.get<AppLocalization>().translate('taskRejected') ?? 'Reject',
+                      'Từ chối',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -436,7 +436,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: const Text(
-                      'Accepted',
+                      'Chấp nhận',
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
@@ -461,7 +461,6 @@ class _TaskScreenState extends State<TaskScreen> {
         listenWhen: (previous, current) =>
             previous.isLoading != current.isLoading || current is GetTaskListSuccessState && current.isAllDone,
         bloc: taskBloc,
-        buildWhen: (previous, current) => previous.isLoading != current.isLoading,
         builder: (context, state) {
           return CommonScaffold(
             appBar: AppHeader(
@@ -521,8 +520,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: instance.get<AppLocalization>().translate('closeContract') ??
-                                            'Close contract',
+                                        label: 'Đóng họp đồng',
                                         onPressed: () {
                                           taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
                                         },

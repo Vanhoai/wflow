@@ -15,7 +15,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '# Candidate name',
+            '# Tên ứng viên',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
@@ -30,7 +30,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40.0),
           Text(
-            '# Introduction',
+            '# Lời giới thiệu',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,

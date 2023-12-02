@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -93,7 +94,8 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
   Future<void> onUpPostSubmit(UpPostSubmitEvent event, Emitter<UpPostState> emit) async {
     final [isValid, message] = validate(event);
     if (!isValid) {
-      AlertUtils.showMessage('Thông báo', message, callback: () {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification') ?? 'Notification', message,
+          callback: () {
         if (state.categorySelected.isNotEmpty && state.tasks.isEmpty) {
           add(UpPostAddTaskEvent(task: event.title));
         }
@@ -106,7 +108,9 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     final UpPostRequest request = UpPostRequest(
       title: event.title,
       content: event.description,
-      duration: event.duration.isEmpty ? 'Không có thông tin' : event.duration,
+      duration: event.duration.isEmpty
+          ? instance.get<AppLocalization>().translate('noInfo') ?? 'No information'
+          : event.duration,
       salary: num.parse(event.budget),
       position: event.position,
       business: business,
@@ -118,12 +122,14 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     final response = await postUseCase.upPost(request: request);
     response.fold(
       (String message) {
-        AlertUtils.showMessage('Thông báo', message, callback: () {
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification') ?? 'Notification', message,
+            callback: () {
           instance.get<NavigationService>().pop();
         });
       },
       (Failure failure) {
-        AlertUtils.showMessage('Thông báo', failure.message);
+        AlertUtils.showMessage(
+            instance.get<AppLocalization>().translate('notification') ?? 'Notification', failure.message);
       },
     );
 
@@ -136,38 +142,38 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
 
     if (state.tasks.isEmpty) {
       isValid = false;
-      message =
-          'Nếu bạn không nhập đầu việc nào cho công việc thì chúng tôi sẽ tạo mặt định 1 đầu việc chính là công việc này !!';
+      message = instance.get<AppLocalization>().translate('ifYouDontAddTask') ??
+          "If you don't add any task, we will add the simple task for you";
     }
 
     if (state.skillSelected.isEmpty) {
       isValid = false;
-      message = 'Vui lòng chọn ít nhất 1 kỹ năng';
+      message = instance.get<AppLocalization>().translate('pleaseAddSkill') ?? 'Please select at least 1 skill';
     }
 
     if (state.categorySelected.isEmpty) {
       isValid = false;
-      message = 'Vui lòng chọn ít nhất 1 danh mục';
+      message = instance.get<AppLocalization>().translate('pleaseAddCategory') ?? 'Please select at least 1 category';
     }
 
     if (event.position.isEmpty) {
       isValid = false;
-      message = 'Vui lòng nhập vị trí cho công việc';
+      message = instance.get<AppLocalization>().translate('pleaseAddPosition') ?? 'Please add position';
     }
 
     if (event.budget.isEmpty) {
       isValid = false;
-      message = 'Vui lòng nhập giá tiền cho công việc';
+      message = instance.get<AppLocalization>().translate('pleaseAddTaskBudget') ?? 'Please enter budget';
     }
 
     if (event.description.isEmpty) {
       isValid = false;
-      message = 'Vui lòng nhập mô tả cho công việc';
+      message = instance.get<AppLocalization>().translate('pleaseAddDescription') ?? 'Please enter description';
     }
 
     if (event.title.isEmpty) {
       isValid = false;
-      message = 'Vui lòng nhập tiêu đề công việc';
+      message = instance.get<AppLocalization>().translate('taskTitle') ?? 'Please enter title';
     }
 
     return [isValid, message];

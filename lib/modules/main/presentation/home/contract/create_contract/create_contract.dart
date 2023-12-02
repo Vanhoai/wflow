@@ -326,6 +326,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                 builder: (context) {
                                   if (isBusiness) {
                                     if (state.contractEntity.state == ContractStatus.Apply.name) {
+                                      print('state.contractEntity ${state.contractEntity.tasks}');
                                       return PrimaryButton(
                                         label: instance.get<AppLocalization>().translate('createContract') ??
                                             'Create Contract',

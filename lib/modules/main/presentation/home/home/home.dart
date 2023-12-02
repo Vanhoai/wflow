@@ -119,9 +119,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   )),
                                 ),
                                 onTapLeading: () => isUser
-                                    ? {
-                                        widget.onTabTapped(4),
-                                      }
+                                    ? {widget.onTabTapped(4)}
                                     : Navigator.of(context).pushNamed(
                                         RouteKeys.companyScreen,
                                         arguments: instance.get<AppBloc>().state.userEntity.business.toString(),

@@ -293,7 +293,7 @@ class _FormState extends State<FormSignIn> {
 
   Future<void> listener(BuildContext context, SignInState state) async {
     if (state is SignInSuccess) {
-      Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.bottomScreen, (route) => false);
+      Navigator.of(context).pushNamedAndRemoveUntil(RouteKeys.subTopicScreen, (route) => false);
     } else if (state is SignInFailure) {
       await showCupertinoDialog(
         context: context,

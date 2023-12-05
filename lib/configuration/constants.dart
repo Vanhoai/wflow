@@ -46,6 +46,7 @@ class AppConstants {
   static const String task = '${commonIconPath}ic.task.svg';
   static const String history = '${commonIconPath}ic.history.svg';
   static const String bank = '${commonIconPath}ic.bank.svg';
+  static const String next = '${commonIconPath}ic.next.svg';
 
   // path for introduction svg
   static const String introductionPath = 'assets/icons/introduction/';

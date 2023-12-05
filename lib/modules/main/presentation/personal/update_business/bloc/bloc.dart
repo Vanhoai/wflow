@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/navigation.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/alert.util.dart';
@@ -64,7 +65,7 @@ class UpdateBusinessBloc extends Bloc<UpdateBusinessEvent, UpdateBusinessState> 
     response.fold(
       (String messages) {
         AlertUtils.showMessage(
-          'Update Business',
+           instance.get<AppLocalization>().translate('updateBusiness') ?? 'Update Business',
           messages,
           callback: () {
             instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.bottomScreen);
@@ -72,7 +73,7 @@ class UpdateBusinessBloc extends Bloc<UpdateBusinessEvent, UpdateBusinessState> 
         );
       },
       (failure) {
-        AlertUtils.showMessage('Update Business', failure.message);
+        AlertUtils.showMessage( instance.get<AppLocalization>().translate('updateBusiness') ?? 'Update Business', failure.message);
       },
     );
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

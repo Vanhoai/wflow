@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/routes/keys.dart';
@@ -77,7 +78,7 @@ class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
           isSafe: true,
           appBar: AppHeader(
             text: Text(
-              'Update Business',
+             instance.get<AppLocalization>().translate('updateBusiness') ?? 'Update Business',
               style: themeData.textTheme.displayMedium,
             ),
             onBack: () {
@@ -228,9 +229,9 @@ class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
                             children: [
                               TextFieldFrom(
                                 controller: context.read<UpdateBusinessBloc>().overviewController,
-                                label: 'Overview',
+                                label: instance.get<AppLocalization>().translate('overview') ?? 'Overview',
                                 maxLines: 5,
-                                placeholder: 'Type your bio',
+                                placeholder: instance.get<AppLocalization>().translate('typeYourBio') ?? 'Type Your Bio',
                                 textInputAction: TextInputAction.next,
                                 contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                               ),
@@ -240,8 +241,8 @@ class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
                                     children: [
                                       TextFieldFrom(
                                         controller: context.read<UpdateBusinessBloc>().addressController,
-                                        label: 'Address',
-                                        placeholder: 'Type your address',
+                                        label:instance.get<AppLocalization>().translate('address') ?? 'Address',
+                                        placeholder: instance.get<AppLocalization>().translate('typeYourAddress') ?? 'Type your business address  ',
                                         textInputAction: TextInputAction.next,
                                         prefixIcon: const Icon(
                                           Icons.location_on_sharp,
@@ -300,7 +301,7 @@ class _UpdateBusinessScreenState extends State<UpdateBusinessScreen> {
                                 onPressed: () {
                                   context.read<UpdateBusinessBloc>().add(UpdateBusiness());
                                 },
-                                label: 'Edit',
+                                label: instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
                               ),
                               const SizedBox(height: 50,),
                             ],

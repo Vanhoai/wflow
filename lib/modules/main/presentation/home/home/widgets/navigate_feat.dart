@@ -33,7 +33,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       },
       {
         'title': isUser
-            ? instance.get<AppLocalization>().translate('apply') ?? 'Apply'
+            ? instance.get<AppLocalization>().translate('applied') ?? 'Applied'
             : instance.get<AppLocalization>().translate('business') ?? 'Business',
         'icon': isUser ? AppConstants.apply : AppConstants.ic_business,
       },

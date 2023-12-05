@@ -2,6 +2,7 @@ import 'dart:io' show Platform;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:flutter_ringtone_player/flutter_ringtone_player.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_call.dart';
@@ -296,6 +297,7 @@ class _CallScreenState extends State<CallScreen> {
     if (widget._showIncomingUi) {
       widget._stringeeCall2!.initAnswer().then((event) {
         bool status = event['status'];
+        FlutterRingtonePlayer.playRingtone();
         if (!status) {
           clearDataEndDismiss();
         }
@@ -341,6 +343,7 @@ class _CallScreenState extends State<CallScreen> {
       widget._stringeeCall2!.answer().then((result) {
         print('_acceptCallTapped -- ${result['message']}');
         bool status = result['status'];
+        FlutterRingtonePlayer.stop();
         if (!status) {
           clearDataEndDismiss();
         }
@@ -353,6 +356,7 @@ class _CallScreenState extends State<CallScreen> {
 
   void rejectCallTapped() {
     if (widget._callType == StringeeObjectEventType.call2) {
+      FlutterRingtonePlayer.stop();
       widget._stringeeCall2!.reject().then((result) {
         print('_rejectCallTapped -- ${result['message']}');
         if (Platform.isAndroid) {
@@ -371,8 +375,10 @@ class _CallScreenState extends State<CallScreen> {
       case StringeeSignalingState.calling:
         break;
       case StringeeSignalingState.ringing:
+        
         break;
       case StringeeSignalingState.answered:
+        FlutterRingtonePlayer.stop();
         break;
       case StringeeSignalingState.busy:
         clearDataEndDismiss();
@@ -546,6 +552,7 @@ class _CallScreenState extends State<CallScreen> {
     if (widget._callType == StringeeObjectEventType.call2) {
       widget._stringeeCall2!.destroy();
       widget._stringeeCall2 = null;
+        FlutterRingtonePlayer.stop();
       Navigator.pop(context);
     } else {
       Navigator.pop(context);

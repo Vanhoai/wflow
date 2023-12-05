@@ -246,7 +246,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 ),
               ),
               Text(
-                task.title.isNotEmpty ? task.title : 'Không có thông tin',
+                task.title.isNotEmpty ? task.title : instance.get<AppLocalization>().translate('noInfo') ?? 'No Information',
                 style: Theme.of(context).textTheme.displayMedium,
                 maxLines: 10,
                 overflow: TextOverflow.ellipsis,
@@ -284,9 +284,7 @@ class _TaskScreenState extends State<TaskScreen> {
                 margin: const EdgeInsets.only(top: 10),
                 child: Text(
                   '${instance.get<AppLocalization>().translate('deadlineAt') ?? 'Deadline'}: ${instance.get<Time>().getDayMonthYear(task.endTime.toString())}',
-                  style: Theme.of(context).textTheme.displayMedium!.copyWith(
-                        color: task.state == TaskStatus.Accepted.toString() ? AppColors.greenColor : AppColors.redColor,
-                      ),
+                  style: Theme.of(context).textTheme.displayMedium!,
                 ),
               ),
               _buttonStatus(context, task),
@@ -337,7 +335,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Đóng',
+                      instance.get<AppLocalization>().translate('close') ?? 'Close',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -367,10 +365,10 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Container(
                     height: 45,
                     alignment: Alignment.center,
-                    child: const Text(
-                      'Hoàn thành',
+                    child: Text(
+                      instance.get<AppLocalization>().translate('done') ?? 'Done',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                      style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
@@ -405,7 +403,7 @@ class _TaskScreenState extends State<TaskScreen> {
                     height: 45,
                     alignment: Alignment.center,
                     child: Text(
-                      'Từ chối',
+                      instance.get<AppLocalization>().translate('reject') ?? 'Reject',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 16, color: Theme.of(context).primaryColor, fontWeight: FontWeight.w400),
@@ -435,10 +433,10 @@ class _TaskScreenState extends State<TaskScreen> {
                   child: Container(
                     height: 45,
                     alignment: Alignment.center,
-                    child: const Text(
-                      'Chấp nhận',
+                    child:  Text(
+                     instance.get<AppLocalization>().translate('accept') ?? 'Accept',
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                      style: const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                     ),
                   ),
                 ),
@@ -520,7 +518,7 @@ class _TaskScreenState extends State<TaskScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Đóng họp đồng',
+                                        label: instance.get<AppLocalization>().translate('closeContract') ?? 'Close Contract',
                                         onPressed: () {
                                           taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
                                         },

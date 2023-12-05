@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 
 class CandidateContractInfoWidget extends StatelessWidget {
   const CandidateContractInfoWidget({required this.candidateName, required this.introduction, super.key});
@@ -15,7 +17,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Text(
-            '# Tên ứng viên',
+            '# ${instance.get<AppLocalization>().translate('nameOfCandidate') ?? 'Name of candidate'}',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,
@@ -30,7 +32,7 @@ class CandidateContractInfoWidget extends StatelessWidget {
           ),
           const SizedBox(height: 40.0),
           Text(
-            '# Lời giới thiệu',
+            '# ${instance.get<AppLocalization>().translate('introductionOfCandidate') ?? 'Introduction'}',
             style: themeData.textTheme.displayLarge!.merge(TextStyle(
               color: Theme.of(context).colorScheme.onBackground.withOpacity(0.5),
               fontSize: 18,

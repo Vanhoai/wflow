@@ -5,19 +5,19 @@ class SecureStorage {
 
   SecureStorage({required this.flutterSecureStorage});
 
-  void clear() {
-    flutterSecureStorage.deleteAll();
+  Future<void> clear() async {
+    await flutterSecureStorage.deleteAll();
   }
 
-  void write(String key, dynamic data) {
-    flutterSecureStorage.write(key: key, value: data);
+  Future<void> write(String key, dynamic data) async {
+    await flutterSecureStorage.write(key: key, value: data);
   }
 
-  dynamic read(String key) {
-    return flutterSecureStorage.read(key: key);
+  Future<dynamic> read(String key) async {
+    return await flutterSecureStorage.read(key: key);
   }
 
-  void delete(String key) {
-    flutterSecureStorage.delete(key: key);
+  Future<void> delete(String key) async {
+    await flutterSecureStorage.delete(key: key);
   }
 }

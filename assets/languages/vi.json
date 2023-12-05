@@ -200,5 +200,17 @@
   "detailCandidate" : "Chi tiết ứng viên",
   "nameOfCandidate" : "Tên ứng viên",
   "introductionOfCandidate" : "Lời giới thiệu",
-  "viewProgress" : "Xem tiến độ"
+  "viewProgress" : "Xem tiến độ",
+  "pleaseAddTaskTitle": "Vui lòng thêm tiêu đề công việc",
+  "pleaseAddTaskBudget": "Vui lòng thêm ngân sách công việc",
+  "pleaseAddTaskWork": "Vui lòng thêm công việc",
+  "ifYouDontAddTask": "Nếu bạn không nhập đầu việc nào cho công việc thì chúng tôi sẽ tạo mặt định 1 đầu việc chính là công việc này",
+  "pleaseAddSkill": "Vui lòng chọn ít nhất 1 kỹ năng",
+  "pleaseAddCategory": "Vui lòng chọn ít nhất 1 danh mục",
+  "pleaseAddPosition": "Vui lòng nhập vị trí tuyển dụng",
+  "pleaseAddDescription": "Vui lòng nhập mô tả công việc",
+  "pleaseEnableFingerprint": "Vui lòng bật xác thực vân tay",
+  "pleaseEnableFaceId": "Vui lòng bật xác thực khuôn mặt",
+  "pleaseRememberCredential": "Vui lòng ghi nhớ thông tin đăng nhập của bạn",
+  "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay"
 }

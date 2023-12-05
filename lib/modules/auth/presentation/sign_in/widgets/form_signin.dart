@@ -38,15 +38,15 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'hoaitvps22068@gmail.com');
-    passwordController = TextEditingController(text: 'admin123A@');
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
     super.initState();
     oldRemember = isRemember;
     _initRemember();
   }
 
   @override
-  void dispose() {
+  void dispose() { 
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -97,10 +97,7 @@ class _FormState extends State<FormSignIn> {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is required');
       return 'Email is required';
     }
-    if (!StringsUtil.isEmail(value)) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is invalid');
-      return 'Email is invalid';
-    }
+   
     return null;
   }
 
@@ -385,7 +382,7 @@ class _FormState extends State<FormSignIn> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.black26),
                             borderRadius: BorderRadius.circular(6.0),
-                            color: isRemember ? Colors.blue : Colors.white,
+                            color: isRemember ? AppColors.primary : Colors.white,
                           ),
                           child: SvgPicture.asset(AppConstants.checkOutLine, height: 12, width: 12),
                         ),

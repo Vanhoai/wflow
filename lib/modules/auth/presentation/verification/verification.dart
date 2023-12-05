@@ -339,6 +339,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                           child: SvgPicture.asset(
                             AppConstants.app,
                             semanticsLabel: 'Logo',
+                            colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                           ),
                         ),
                         Container(

@@ -1,7 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/security/bloc.dart';
@@ -26,9 +25,7 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
-
     setState(() {
       TouchID = securityBloc.state.touchIDEnabled;
     });

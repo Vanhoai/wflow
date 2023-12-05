@@ -113,6 +113,7 @@ class _SubTopicState extends State<SubTopic> {
                             width: 48,
                             height: 48,
                             AppConstants.next,
+                            colorFilter: const ColorFilter.mode(AppColors.primary, BlendMode.srcIn),
                           ),
                         ),
                       ),

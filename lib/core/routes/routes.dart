@@ -32,6 +32,7 @@ import 'package:wflow/modules/main/presentation/home/graph/graph.dart';
 import 'package:wflow/modules/main/presentation/home/job/job.dart';
 import 'package:wflow/modules/main/presentation/home/report/report.dart';
 import 'package:wflow/modules/main/presentation/home/reputation/reputation.dart';
+import 'package:wflow/modules/main/presentation/home/sub_topic/sub_topic.dart';
 import 'package:wflow/modules/main/presentation/message/message/message.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/rooms.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/search_room.dart';
@@ -63,15 +64,18 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const IntroScreen());
       case RouteKeys.verificationScreen:
         final args = settings.arguments as VerificationArgument;
-        return MaterialPageRoute(builder: (_) => VerificationScreen(arguments: args));
+        return MaterialPageRoute(
+            builder: (_) => VerificationScreen(arguments: args));
       case RouteKeys.roomsScreen:
         return MaterialPageRoute(builder: (_) => const RoomsScreen());
       case RouteKeys.messageScreen:
         final args = settings.arguments as ArgumentsMessage;
-        return MaterialPageRoute(builder: (_) => MessageScreen(argumentsMessage: args));
+        return MaterialPageRoute(
+            builder: (_) => MessageScreen(argumentsMessage: args));
       case RouteKeys.photoScreen:
         final args = settings.arguments as ArgumentsPhoto;
-        return MaterialPageRoute(builder: (_) => PhotoScreen(argumentsPhoto: args));
+        return MaterialPageRoute(
+            builder: (_) => PhotoScreen(argumentsPhoto: args));
       case RouteKeys.callScreen:
         final args = settings.arguments as ArgumentsCall;
         return MaterialPageRoute(
@@ -81,13 +85,16 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const BottomNavigation());
       case RouteKeys.candidateContractScreen:
         final candidate = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => CandidateContractScreen(candidate: candidate));
+        return MaterialPageRoute(
+            builder: (_) => CandidateContractScreen(candidate: candidate));
       case RouteKeys.jobInformationScreen:
         final work = settings.arguments as num;
-        return MaterialPageRoute(builder: (_) => JobInformationScreen(work: work));
+        return MaterialPageRoute(
+            builder: (_) => JobInformationScreen(work: work));
       case RouteKeys.candidateListScreen:
         final post = settings.arguments as num;
-        return MaterialPageRoute(builder: (_) => CandidateListScreen(post: post));
+        return MaterialPageRoute(
+            builder: (_) => CandidateListScreen(post: post));
       case RouteKeys.createContractScreen:
         final contract = settings.arguments as String;
         return MaterialPageRoute(
@@ -101,7 +108,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const SettingScreen());
       case RouteKeys.securityScreen:
         final bool isVerify = settings.arguments as bool;
-        return MaterialPageRoute(builder: (_) => SecurityScreen(isVerify: isVerify));
+        return MaterialPageRoute(
+            builder: (_) => SecurityScreen(isVerify: isVerify));
       case RouteKeys.auStepOneScreen:
         return MaterialPageRoute(builder: (_) => const AuthStepOneScreen());
       case RouteKeys.auStepTwoScreen:
@@ -114,12 +122,15 @@ class AppRoutes {
         final args = settings.arguments as Map<String, dynamic>;
 
         return MaterialPageRoute(
-            builder: (_) => TaskScreen(idContract: args['contractId'], workId: args['candidateId'] ?? 0));
+            builder: (_) => TaskScreen(
+                idContract: args['contractId'],
+                workId: args['candidateId'] ?? 0));
       case RouteKeys.notificationScreen:
         return MaterialPageRoute(builder: (_) => const NotificationScreen());
       case RouteKeys.addBusinessScreen:
         final business = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => AddBusinessScreen(business: business));
+        return MaterialPageRoute(
+            builder: (_) => AddBusinessScreen(business: business));
       case RouteKeys.chatBusinessScreen:
         return MaterialPageRoute(builder: (_) => const ChatBusinessScreen());
       case RouteKeys.contractScreen:
@@ -128,7 +139,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const UpgradeBusinessScreen());
       case RouteKeys.companyScreen:
         final company = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => CompanyScreen(companyID: company));
+        return MaterialPageRoute(
+            builder: (_) => CompanyScreen(companyID: company));
       case RouteKeys.upPostScreen:
         return MaterialPageRoute(builder: (_) => const UpPostScreen());
       case RouteKeys.developScreen:
@@ -137,11 +149,13 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ApplyScreen());
       case RouteKeys.balanceScreen:
         final balance = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => BalanceScreen(balanceID: balance));
+        return MaterialPageRoute(
+            builder: (_) => BalanceScreen(balanceID: balance));
       case RouteKeys.searchWorkScreen:
         return MaterialPageRoute(builder: (_) => const SearchWorkScreen());
       case RouteKeys.contractWaitingSignScreen:
-        return MaterialPageRoute(builder: (_) => const ContractWaitingSignScreen());
+        return MaterialPageRoute(
+            builder: (_) => const ContractWaitingSignScreen());
       case RouteKeys.addCVScreen:
         return MaterialPageRoute(builder: (_) => const AddCVScreen());
       case RouteKeys.cvScreen:
@@ -154,12 +168,15 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const GraphScreen());
       case RouteKeys.removeCollaboratorScreen:
         final business = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) => RemoveCollaboratorScreen(business: business));
+        return MaterialPageRoute(
+            builder: (_) => RemoveCollaboratorScreen(business: business));
       case RouteKeys.completedContractScreen:
-        return MaterialPageRoute(builder: (_) => const CompletedContractScreen());
+        return MaterialPageRoute(
+            builder: (_) => const CompletedContractScreen());
       case RouteKeys.reportScreen:
         final report = settings.arguments as ArgumentsReport;
-        return MaterialPageRoute(builder: (_) => ReportScreen(argumentsReport: report));
+        return MaterialPageRoute(
+            builder: (_) => ReportScreen(argumentsReport: report));
       case RouteKeys.editProfileScreen:
         return MaterialPageRoute(builder: (_) => const EditProfileScreen());
       case RouteKeys.detailUserScreen:
@@ -169,21 +186,27 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ReputationScreen());
       case RouteKeys.forgotPasswordScreen:
         final arg = settings.arguments as ForgotType;
-        return MaterialPageRoute(builder: (_) => ForgotPasswordScreen(forgotType: arg));
+        return MaterialPageRoute(
+            builder: (_) => ForgotPasswordScreen(forgotType: arg));
       case RouteKeys.resetPasswordScreen:
         return MaterialPageRoute(builder: (_) => const ResetPasswordScreen());
       case RouteKeys.searchRoomScreen:
         return MaterialPageRoute(builder: (_) => const SearchRoomsScreen());
       case RouteKeys.updateBusinessScreen:
         final arg = settings.arguments as String;
-        return MaterialPageRoute(builder: (_) =>  UpdateBusinessScreen(business: arg,));
+        return MaterialPageRoute(
+            builder: (_) => UpdateBusinessScreen(
+                  business: arg,
+                ));
       case RouteKeys.changePasswordScreen:
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
+      case RouteKeys.subTopicScreen:
+        return MaterialPageRoute(builder: (_) => const SubTopic());
       case RouteKeys.contractHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ContractHistoryScreen());
-        case RouteKeys.detailCVScreen:
+      case RouteKeys.detailCVScreen:
         final arg = settings.arguments as CVEntity;
-        return MaterialPageRoute(builder: (_) =>  DetailCVScreen(cvEntity: arg));
+        return MaterialPageRoute(builder: (_) => DetailCVScreen(cvEntity: arg));
       default:
         return MaterialPageRoute(builder: (_) => const DevelopeScreen());
     }

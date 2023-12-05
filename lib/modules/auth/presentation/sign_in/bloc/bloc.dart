@@ -75,8 +75,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     final String? deviceToken = await FirebaseMessagingService.getDeviceToken();
 
-    print('DEVICE TOKEN $deviceToken');
-
     if (deviceToken == null || deviceToken.isEmpty) {
       AlertUtils.showMessage('Thông báo', 'Ứng dụng không thể lấy được địa chỉ thiết bị của bạn');
       instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

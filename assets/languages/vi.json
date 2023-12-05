@@ -180,5 +180,6 @@
   "enterTaskContent": "Nhập nội dung công việc",
   "taskStartDate": "Ngày bắt đầu công việc",
   "taskEndDate": "Ngày kết thúc công việc",
-  "optional": "Không bắt buộc"
+  "optional": "Không bắt buộc",
+  "topicYouCare": "Chủ đề bạn quan tâm"
 }

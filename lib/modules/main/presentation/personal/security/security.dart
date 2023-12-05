@@ -1,6 +1,7 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/security/bloc.dart';
@@ -35,7 +36,12 @@ class _SecurityScreenState extends State<SecurityScreen> {
 
   void onClickTouchID(BuildContext context) => securityBloc.add(ToggleTouchIDEvent(touchIDEnabled: TouchID));
 
-  void onClickVerify(BuildContext context) {}
+  void onClickVerify(BuildContext context) {
+    if(!widget.isVerify)
+    {
+      Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
+    }
+  }
 
   void onClickPrivacyPolicy(BuildContext context) {}
 

@@ -15,10 +15,10 @@ import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart
 import 'package:wflow/modules/main/presentation/home/contract/contract/widgets/menu.dart';
 
 class ContractCard extends StatefulWidget {
-  const ContractCard({super.key, required this.contractEntity});
+  const ContractCard({super.key, required this.contractEntity, this.isApply = false});
 
   final ContractEntity contractEntity;
-
+  final isApply;
   @override
   State<ContractCard> createState() => _ContractCardState();
 }
@@ -52,10 +52,16 @@ class _ContractCardState extends State<ContractCard> {
           color: Colors.transparent,
           child: InkWell(
             borderRadius: BorderRadius.circular(8),
-            onTap: () => Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
-              'contractId': widget.contractEntity.id,
-              'candidateId': widget.contractEntity.worker.id,
-            }),
+            onTap: () {
+              if (widget.isApply) {
+                
+              } else {
+                Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
+                  'contractId': widget.contractEntity.id,
+                  'candidateId': widget.contractEntity.worker.id,
+                });
+              }
+            },
             child: Container(
               padding: const EdgeInsets.only(top: 10, bottom: 13, left: 9, right: 9),
               child: Column(
@@ -78,7 +84,9 @@ class _ContractCardState extends State<ContractCard> {
                               ),
                             ),
                             Text(
-                              '💰 ${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
+                              widget.isApply
+                                  ? ''
+                                  : '💰 ${noSimbolInUSFormat.format(int.parse(widget.contractEntity.salary))} VNĐ',
                               style: themeData.textTheme.labelMedium!
                                   .copyWith(fontWeight: FontWeight.w500, color: Colors.green),
                             )
@@ -88,17 +96,24 @@ class _ContractCardState extends State<ContractCard> {
                       const SizedBox(
                         width: 40,
                       ),
-                      CircularPercentIndicator(
-                        animation: true,
-                        radius: 25,
-                        percent: widget.contractEntity.progress / 100,
-                        center: Text(
-                          '${widget.contractEntity.progress}%',
-                          style: TextStyle(
-                            fontSize: 10.sp,
-                          ),
-                        ),
-                        progressColor: _progressColor(widget.contractEntity.progress / 100),
+                      Builder(
+                        builder: (context) {
+                          if (widget.isApply) {
+                            return const SizedBox();
+                          }
+                          return CircularPercentIndicator(
+                            animation: true,
+                            radius: 25,
+                            percent: widget.contractEntity.progress / 100,
+                            center: Text(
+                              '${widget.contractEntity.progress}%',
+                              style: TextStyle(
+                                fontSize: 10.sp,
+                              ),
+                            ),
+                            progressColor: _progressColor(widget.contractEntity.progress / 100),
+                          );
+                        },
                       )
                     ],
                   ),

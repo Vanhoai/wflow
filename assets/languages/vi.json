@@ -213,5 +213,7 @@
   "pleaseEnableFaceId": "Vui lòng bật xác thực khuôn mặt",
   "pleaseRememberCredential": "Vui lòng ghi nhớ thông tin đăng nhập của bạn",
   "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay",
-  "topicYouCare": "Chủ đề bạn quan tâm"
+  "topicYouCare": "Chủ đề bạn quan tâm",
+  "skip" : "Bỏ qua",
+  "endIntroduciton" : "Bắt đầu"
 }

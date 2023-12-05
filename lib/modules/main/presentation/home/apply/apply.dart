@@ -67,6 +67,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) => ContractCard(
                               contractEntity: state.applies[index],
+                              isApply: true,
                             ),
                             itemCount: state.applies.length,
                           ),

@@ -4,11 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/biometrics.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/textfield/text_field_from.dart';
 import 'package:wflow/modules/auth/presentation/sign_in/bloc/bloc.dart';
@@ -29,14 +31,20 @@ class FormSignIn extends StatefulWidget {
 class _FormState extends State<FormSignIn> {
   late final TextEditingController emailController;
   late final TextEditingController passwordController;
+  late final bool oldRemember;
+  bool isRemember = instance.get<SecurityBloc>().state.isRememberMe;
 
   final GlobalKey<FormState> _key = GlobalKey<FormState>();
 
   @override
   void initState() {
-    emailController = TextEditingController(text: 'hongvyuser@gmail.com');
-    passwordController = TextEditingController(text: 'admin123A@');
+    // hongvyuser@gmail.com
+    // admin123A@
+    emailController = TextEditingController();
+    passwordController = TextEditingController();
     super.initState();
+    oldRemember = isRemember;
+    _initRemember();
   }
 
   @override
@@ -45,6 +53,78 @@ class _FormState extends State<FormSignIn> {
     passwordController.dispose();
     super.dispose();
   }
+
+  _initRemember() async {
+    if (isRemember) {
+      emailController.text = await instance.get<SecureStorage>().read(AppConstants.usernameKey) ?? '';
+      passwordController.text = await instance.get<SecureStorage>().read(AppConstants.passwordKey) ?? '';
+    }
+
+    if (isRemember && instance.get<SecurityBloc>().state.touchIDEnabled) {
+      AlertUtils.showMessage(
+        instance.get<AppLocalization>().translate('notification') ?? 'Notification',
+        instance.get<AppLocalization>().translate('pleaseEnterTouchId') ?? 'Please enter touch id',
+        callback: () {
+          authenticate().then(
+            (value) {
+              if (value) {
+                if (validateEmail(emailController.text) == null &&
+                    validatePassword(passwordController.text, passwordController.text) == null) {
+                  context.read<SignInBloc>().add(
+                        SignInSubmittedEvent(
+                          email: emailController.text,
+                          password: passwordController.text,
+                          isRemember: isRemember,
+                        ),
+                      );
+
+                  instance.get<SecurityBloc>().add(SaveCredentialsEvent(
+                        email: emailController.text,
+                        password: passwordController.text,
+                      ));
+                }
+              } else {
+                print("=================== Can't authenticate");
+                passwordController.text = '';
+              }
+            },
+          );
+        },
+      );
+    }
+  }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is required');
+      return 'Email is required';
+    }
+    if (!StringsUtil.isEmail(value)) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is invalid');
+      return 'Email is invalid';
+    }
+    return null;
+  }
+
+  String? validatePassword(String? value, String? secondValue) {
+    if (value == null || value.isEmpty) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Password is required');
+      return 'Password is required';
+    }
+    if (!StringsUtil.isPassword(value)) {
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password must be at least 8 characters');
+      return 'Password must be at least 8 characters';
+    }
+    if (!StringsUtil.isComparePassword(value, secondValue!)) {
+      AlertUtils.showMessage(
+          instance.get<AppLocalization>().translate('notification'), 'Password and confirm password must be the same');
+      return 'Password and confirm password must be the same';
+    }
+    return null;
+  }
+
+  Future<bool> authenticate() async => BiometricsUtil.authenticate(context);
 
   _buildModalForgot(BuildContext context) {
     return showModalBottomSheet(
@@ -289,7 +369,13 @@ class _FormState extends State<FormSignIn> {
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
                   InkWell(
-                    onTap: () => context.read<SignInBloc>().add(RememberPassEvent(isRemember: !state.isRemember)),
+                    onTap: () async {
+                      setState(() {
+                        isRemember = !isRemember;
+                      });
+
+                      instance.get<SecurityBloc>().add(RememberMeEvent(rememberMe: isRemember));
+                    },
                     borderRadius: BorderRadius.circular(4),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -301,7 +387,7 @@ class _FormState extends State<FormSignIn> {
                           decoration: BoxDecoration(
                             border: Border.all(width: 1, color: Colors.black26),
                             borderRadius: BorderRadius.circular(6.0),
-                            color: state.isRemember ? Colors.blue : Colors.white,
+                            color: isRemember ? Colors.blue : Colors.white,
                           ),
                           child: SvgPicture.asset(AppConstants.checkOutLine, height: 12, width: 12),
                         ),
@@ -336,22 +422,26 @@ class _FormState extends State<FormSignIn> {
                       listener: listener,
                       child: PrimaryButton(
                         onPressed: () {
-                          context.read<SignInBloc>().add(
-                                SignInSubmittedEvent(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                  isRemember: state.isRemember,
-                                ),
-                              );
+                          if (validateEmail(emailController.text) == null &&
+                              validatePassword(passwordController.text, passwordController.text) == null) {
+                            context.read<SignInBloc>().add(
+                                  SignInSubmittedEvent(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    isRemember: isRemember,
+                                  ),
+                                );
+                          }
                         },
                         label: instance.get<AppLocalization>().translate('signIn') ?? 'Sign in',
                       ),
                     ),
                   ),
                   BlocBuilder<SecurityBloc, SecurityState>(
+                    buildWhen: (previous, current) => previous != current,
                     bloc: instance.get<SecurityBloc>(),
-                    builder: (context, state) {
-                      if (state.touchIDEnabled) {
+                    builder: (context, securityState) {
+                      if (securityState.touchIDEnabled && oldRemember == true) {
                         return (Row(
                           children: [
                             const SizedBox(
@@ -361,6 +451,24 @@ class _FormState extends State<FormSignIn> {
                               borderRadius: BorderRadius.circular(8),
                               splashColor: AppColors.blueColor,
                               child: SvgPicture.asset(height: 50, AppConstants.bionic),
+                              onTap: () {
+                                authenticate().then((value) async {
+                                  if (value) {
+                                    context.read<SignInBloc>().add(
+                                          SignInSubmittedEvent(
+                                            email: await instance.get<SecureStorage>().read(AppConstants.usernameKey) ??
+                                                '',
+                                            password:
+                                                await instance.get<SecureStorage>().read(AppConstants.passwordKey) ??
+                                                    '',
+                                            isRemember: isRemember,
+                                          ),
+                                        );
+                                  } else {
+                                    print("=================== Can't authenticate");
+                                  }
+                                });
+                              },
                             )
                           ],
                         ));

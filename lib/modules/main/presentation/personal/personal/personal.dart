@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/core/enum/role_enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -101,7 +102,10 @@ class _PersonalScreenState extends State<PersonalScreen> {
                                 child: Text(instance.get<AppLocalization>().translate('setting') ?? 'Settings'),
                               ),
                               CupertinoActionSheetAction(
-                                onPressed: () => personalBloc.add(SignOutEvent()),
+                                onPressed: () {
+                                  personalBloc.add(SignOutEvent());
+                                  instance.get<SecurityBloc>().add(const ClearAllDataEvent());
+                                },
                                 isDestructiveAction: true,
                                 child: Text(instance.get<AppLocalization>().translate('signOut') ?? 'Sign out'),
                               ),

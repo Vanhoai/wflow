@@ -188,5 +188,9 @@
   "pleaseAddSkill": "Vui lòng chọn ít nhất 1 kỹ năng",
   "pleaseAddCategory": "Vui lòng chọn ít nhất 1 danh mục",
   "pleaseAddPosition": "Vui lòng nhập vị trí tuyển dụng",
-  "pleaseAddDescription": "Vui lòng nhập mô tả công việc"
+  "pleaseAddDescription": "Vui lòng nhập mô tả công việc",
+  "pleaseEnableFingerprint": "Vui lòng bật xác thực vân tay",
+  "pleaseEnableFaceId": "Vui lòng bật xác thực khuôn mặt",
+  "pleaseRememberCredential": "Vui lòng ghi nhớ thông tin đăng nhập của bạn",
+  "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay"
 }

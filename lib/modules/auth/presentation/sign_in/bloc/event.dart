@@ -40,7 +40,15 @@ class RememberPassEvent extends SignInEvent {
   List<Object?> get props => [isRemember];
 }
 
-class SignInCheckRememberEvent extends SignInEvent {}
+class SignInCheckRememberEvent extends SignInEvent {
+  final bool isRemember;
+  final bool touchIDEnabled;
+
+  SignInCheckRememberEvent({required this.isRemember, this.touchIDEnabled = false});
+
+  @override
+  List<Object?> get props => [isRemember, touchIDEnabled];
+}
 
 class SignInWithBiometrics extends SignInEvent {}
 

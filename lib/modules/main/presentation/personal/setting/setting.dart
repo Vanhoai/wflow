@@ -70,33 +70,6 @@ class _SettingScreenState extends State<SettingScreen> {
                 ),
               ),
             ),
-            SliverPadding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 30),
-              sliver: SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      instance.get<AppLocalization>().translate('darkMode') ?? 'Dark mode',
-                      style: themeData.textTheme.displayLarge!.merge(
-                        TextStyle(color: themeData.colorScheme.onBackground),
-                      ),
-                    ),
-                    BlocBuilder<AppBloc, AppState>(
-                      bloc: instance.call<AppBloc>(),
-                      builder: (context, state) {
-                        return SwitchAnimation(
-                          value: state.isDarkMode,
-                          onChanged: (bool values) => changeTheme(!values),
-                        );
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
           ],
         ),
       ),

@@ -96,6 +96,4 @@ class AppConstants {
   static const String passwordKey = '$keySecureStorage@PASSWORD';
   static const String accessTokenKey = '$keySecureStorage@ACCESS_TOKEN';
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
-  static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';
-  static const String keyPasswordSignInWithBiometric = '$keySecureStorage@PASSWORD_SIGN_IN_WITH_BIOMETRIC';
 }

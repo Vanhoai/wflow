@@ -6,6 +6,7 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -29,19 +30,20 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     on<OnChangeEmailEvent>(onChangeEmail);
     on<OnChangePasswordEvent>(onChangePassword);
     on<SignInSubmittedEvent>(signInSubmitted);
-    on<RememberPassEvent>(rememberPass);
     on<SignInWithGoogleEvent>(signInWithGoogle);
     on<SignInCheckRememberEvent>(onSignInCheckRemember);
   }
 
   FutureOr<void> onSignInCheckRemember(SignInCheckRememberEvent event, Emitter<SignInState> emit) async {
-    final rememberMe = instance.get<AppBloc>().state.rememberMe;
-    if (rememberMe) {
-      final username = await instance.get<SecureStorage>().read(AppConstants.usernameKey);
-      final password = await instance.get<SecureStorage>().read(AppConstants.passwordKey);
+    final rememberMe = event.isRemember;
+    if (event.touchIDEnabled == false) {
+      if (rememberMe) {
+        final username = await instance.get<SecureStorage>().read(AppConstants.usernameKey);
+        final password = await instance.get<SecureStorage>().read(AppConstants.passwordKey);
 
-      if (username != null && password != null) {
-        await signIn(username, password, emit);
+        if (username != null && password != null) {
+          await signIn(username, password, emit);
+        }
       }
     }
   }
@@ -58,10 +60,6 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
   FutureOr<void> onChangePassword(OnChangePasswordEvent event, Emitter<SignInState> emit) {
     emit(state.copyWith(password: event.password));
-  }
-
-  FutureOr<void> rememberPass(RememberPassEvent event, Emitter<SignInState> emit) {
-    emit(state.copyWith(isRemember: event.isRemember));
   }
 
   num verifyAccessToken(String accessToken) {
@@ -90,7 +88,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     response.fold(
       (AuthEntity authEntity) {
         final role = verifyAccessToken(authEntity.accessToken);
-        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, rememberMe: state.isRemember, role: role));
+        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: role));
         emit(SignInSuccess());
       },
       (Failure right) {
@@ -105,11 +103,11 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
   FutureOr<void> signInSubmitted(SignInSubmittedEvent event, Emitter<SignInState> emit) async {
     await signIn(event.email, event.password, emit);
     if (event.isRemember) {
-      instance.get<SecureStorage>().write(AppConstants.usernameKey, event.email);
-      instance.get<SecureStorage>().write(AppConstants.passwordKey, event.password);
+      await instance.get<SecureStorage>().write(AppConstants.usernameKey, event.email);
+      await instance.get<SecureStorage>().write(AppConstants.passwordKey, event.password);
     } else {
-      instance.get<SecureStorage>().delete(AppConstants.usernameKey);
-      instance.get<SecureStorage>().delete(AppConstants.passwordKey);
+      await instance.get<SecureStorage>().delete(AppConstants.usernameKey);
+      await instance.get<SecureStorage>().delete(AppConstants.passwordKey);
     }
   }
 
@@ -129,7 +127,7 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
     response.fold(
       (AuthEntity authEntity) {
         final role = verifyAccessToken(authEntity.accessToken);
-        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, rememberMe: state.isRemember, role: role));
+        instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: role));
         emit(SignInSuccess());
       },
       (Failure failure) {

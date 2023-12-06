@@ -192,5 +192,16 @@
   "pleaseEnableFingerprint": "Vui lòng bật xác thực vân tay",
   "pleaseEnableFaceId": "Vui lòng bật xác thực khuôn mặt",
   "pleaseRememberCredential": "Vui lòng ghi nhớ thông tin đăng nhập của bạn",
-  "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay"
+  "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay",
+  "upgradeBusiness": "Nâng cấp tài khoản doanh nghiệp",
+  "logoForBusiness": "Logo doanh nghiệp",
+  "nameForBusiness": "Tên doanh nghiệp",
+  "enterNameForBusiness": "Nhập tên doanh nghiệp",
+  "emailForBusiness": "Email doanh nghiệp",
+  "enterEmailForBusiness": "Nhập email doanh nghiệp",
+  "phoneForBusiness": "Số điện thoại doanh nghiệp",
+  "enterPhoneForBusiness": "Nhập số điện thoại doanh nghiệp",
+  "overviewForBusiness": "Giới thiệu doanh nghiệp",
+  "enterOverviewForBusiness": "Nhập giới thiệu doanh nghiệp",
+  "fee": "Phí"
 }

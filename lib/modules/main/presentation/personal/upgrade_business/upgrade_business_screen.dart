@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/size.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
@@ -76,7 +77,7 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
       child: Scaffold(
         appBar: AppHeader(
           text: Text(
-            'Upgrade business',
+            instance.get<AppLocalization>().translate('upgradeBusiness') ?? 'Upgrade Business',
             style: themeData.textTheme.displayMedium,
           ),
         ),
@@ -94,11 +95,11 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                   ),
                   child: Column(
                     children: <Widget>[
-                      const Align(
+                      Align(
                         alignment: Alignment.centerLeft,
                         child: Text(
-                          'Logo for business',
-                          style: TextStyle(
+                          instance.get<AppLocalization>().translate('logoForBusiness') ?? 'Logo for business',
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.normal,
                             color: Colors.black,
@@ -118,49 +119,57 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                             editingController: nameController,
                             minLines: 1,
                             maxLines: 1,
-                            labelText: 'Name',
-                            hintText: 'Enter your name of business',
+                            labelText:
+                                instance.get<AppLocalization>().translate('nameForBusiness') ?? 'Name for business',
+                            hintText: instance.get<AppLocalization>().translate('enterNameForBusiness') ??
+                                'Enter your name of business',
                           ),
                           24.verticalSpace,
                           InputGroup(
                             editingController: emailController,
                             minLines: 1,
                             maxLines: 1,
-                            labelText: 'Email',
-                            hintText: 'Enter your email of business',
+                            labelText:
+                                instance.get<AppLocalization>().translate('emailForBusiness') ?? 'Email for business',
+                            hintText: instance.get<AppLocalization>().translate('enterEmailForBusiness') ??
+                                'Enter your email of business',
                           ),
                           24.verticalSpace,
                           InputGroup(
                             editingController: phoneController,
                             minLines: 1,
                             maxLines: 1,
-                            labelText: 'Phone',
-                            hintText: 'Enter your phone of business',
+                            labelText:
+                                instance.get<AppLocalization>().translate('phoneForBusiness') ?? 'Phone for business',
+                            hintText: instance.get<AppLocalization>().translate('enterPhoneForBusiness') ??
+                                'Enter your phone of business',
                           ),
                           24.verticalSpace,
                           InputGroup(
                             editingController: overviewController,
                             minLines: 2,
                             maxLines: 4,
-                            labelText: 'Overview',
-                            hintText: 'Enter your overview of business',
+                            labelText: instance.get<AppLocalization>().translate('overviewForBusiness') ??
+                                'Overview for business',
+                            hintText: instance.get<AppLocalization>().translate('enterOverviewForBusiness') ??
+                                'Enter your overview of business',
                           ),
                           24.verticalSpace,
                         ],
                       ),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: <Widget>[
                           Text(
-                            'Fee',
-                            style: TextStyle(
+                            instance.get<AppLocalization>().translate('fee') ?? 'Fee',
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
                               color: Colors.black,
                             ),
                           ),
-                          Text(
-                            '200.000 VND',
+                          const Text(
+                            '100.000 VND',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.normal,
@@ -197,7 +206,7 @@ class _UpgradeBusinessScreenState extends State<UpgradeBusinessScreen> {
                                   ),
                                 );
                           },
-                          label: 'Upgrade',
+                          label: instance.get<AppLocalization>().translate('upgrade') ?? 'Upgrade',
                         );
                       },
                     ),

@@ -43,6 +43,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     response.fold(
       (UserEntity userEntity) {
+        // check user state
+
         final authEntity = instance.get<AppBloc>().state.authEntity;
         instance.get<AppBloc>().add(AppChangeUser(userEntity: userEntity));
         instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: userEntity.role));

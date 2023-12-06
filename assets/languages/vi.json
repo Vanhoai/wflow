@@ -215,5 +215,17 @@
   "pleaseEnterTouchId": "Vui lòng nhập xác thực vân tay",
   "topicYouCare": "Chủ đề bạn quan tâm",
   "skip" : "Bỏ qua",
-  "endIntroduciton" : "Bắt đầu"
+  "endIntroduciton" : "Bắt đầu",
+  "upgradeBusiness": "Nâng cấp tài khoản doanh nghiệp",
+  "logoForBusiness": "Logo doanh nghiệp",
+  "nameForBusiness": "Tên doanh nghiệp",
+  "enterNameForBusiness": "Nhập tên doanh nghiệp",
+  "emailForBusiness": "Email doanh nghiệp",
+  "enterEmailForBusiness": "Nhập email doanh nghiệp",
+  "phoneForBusiness": "Số điện thoại doanh nghiệp",
+  "enterPhoneForBusiness": "Nhập số điện thoại doanh nghiệp",
+  "overviewForBusiness": "Giới thiệu doanh nghiệp",
+  "enterOverviewForBusiness": "Nhập giới thiệu doanh nghiệp",
+  "fee": "Phí",
+  "businessIsNotActive": "Tài khoản doanh nghiệp của bạn chưa được kích hoạt"
 }

@@ -1,6 +1,8 @@
 import 'dart:async';
 
 import 'package:hydrated_bloc/hydrated_bloc.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/modules/main/data/room/model/request_room.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/bloc/event.dart';
@@ -16,6 +18,8 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   }
 
   FutureOr<void> getListRoom(GetListRoomEvent event, Emitter<RoomState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
     if (state is! GetListRoomSuccess) {
       emit(state.copyWith(isLoading: true));
     }
@@ -28,6 +32,8 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
       loadMore: false,
       search: state.search,
     ));
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 
   FutureOr<void> getListRoomMore(GetListRoomMoreEvent event, Emitter<RoomState> emit) async {

@@ -6,6 +6,8 @@ import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/libs/libs.dart';
 import 'package:wflow/common/loading/bloc.dart';
+import 'package:wflow/common/localization.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
@@ -84,6 +86,15 @@ class SignInBloc extends Bloc<SignInEvent, SignInState> {
 
     response.fold(
       (AuthEntity authEntity) {
+         final jwt = JWT.verify(authEntity.accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+        if(!jwt.payload['state'])
+        {
+            emit(SignInFailure(message: instance.get<AppLocalization>().translate('yourAccountIsBlock') ?? 'Your account is Block, Plz contact wflow.site'));
+            instance.get<SecurityBloc>().add(const ClearAllDataEvent());
+            emit(const SignInState());
+            return;
+        }
+
         final role = verifyAccessToken(authEntity.accessToken);
         instance.get<AppBloc>().add(AppChangeAuth(authEntity: authEntity, role: role));
         emit(SignInSuccess());

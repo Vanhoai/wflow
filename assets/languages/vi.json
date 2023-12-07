@@ -228,5 +228,6 @@
   "enterOverviewForBusiness": "Nhập giới thiệu doanh nghiệp",
   "fee": "Phí",
   "businessIsNotActive": "Tài khoản doanh nghiệp của bạn chưa được kích hoạt",
-  "verifyYourAccount" : "Vui lòng xác thực thông tin tài khoản của bạn trước khi sử dụng dịch vụ"
+  "verifyYourAccount" : "Vui lòng xác thực thông tin tài khoản của bạn trước khi sử dụng dịch vụ",
+  "yourAccountIsBlock" : "Tài khoản bạn đang bị tạm khóa vui lòng liên hệ wflow.site"
 }

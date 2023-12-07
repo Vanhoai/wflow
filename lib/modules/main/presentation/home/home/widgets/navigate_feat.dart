@@ -75,12 +75,12 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       final CompanyUseCase useCase = instance.get<CompanyUseCase>();
 
       final int businessId = instance.get<AppBloc>().state.userEntity.business;
-
+      print('${businessId} =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
       if (businessId != 0) {
         final response = await useCase.findCompany(id: businessId.toString());
-
         response.fold((CompanyEntity l) {
           if (l.state == 'ACTIVE') {
+            print(l.state);
             setState(() {
               companyState = true;
             });

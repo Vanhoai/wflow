@@ -89,26 +89,19 @@ class AuthenticationsBloc extends Bloc<AuthenticationsEvent, AuthenticationsStat
   }
 
   FutureOr<void> cleanData(CleanData event, Emitter<AuthenticationsState> emit) {
-    print("huy");
-    emit(state.copyWith(
-        backID: null,
-        face: null,
-        frontID: null,
-        isLoading: false,
-        stepOne: const Step(),
-        stepThree: const Step(),
-        stepTwo: const Step()));
+    emit(const AuthenticationsState());
   }
 
   FutureOr<void> faceMatch(FaceMatchEvent event, Emitter<AuthenticationsState> emit) async {
     emit(state.copyWith(isLoading: true));
     RequestFaceMatch faceMatch = RequestFaceMatch(
-        face: state.face!,
-        front: state.frontID!,
-        back: state.backID!,
-        name: state.dataFrontID!.name,
-        identifyCode: state.dataFrontID!.id,
-        dob: state.dataFrontID!.dob);
+      face: state.face!,
+      front: state.frontID!,
+      back: state.backID!,
+      name: state.dataFrontID!.name,
+      identifyCode: state.dataFrontID!.id,
+      dob: state.dataFrontID!.dob,
+    );
     final respond = await authenticationUseCase.faceMatch(faceMatch);
     respond.fold((HttpResponse left) {
       if (left.statusCode == 200) {

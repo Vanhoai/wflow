@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
@@ -17,7 +16,6 @@ import 'package:wflow/modules/main/data/media/models/upload_file_rqst.dart';
 import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/media/entities/file_entity.dart';
 import 'package:wflow/modules/main/domain/media/media_usecase.dart';
-
 part 'event.dart';
 part 'state.dart';
 
@@ -54,8 +52,8 @@ class UpgradeBusinessBloc extends Bloc<UpgradeBusinessEvent, UpgradeBusinessStat
     );
 
     responseLogo.fold(
-      (FileEntity fileEntity) {
-        upgradeBusiness(
+      (FileEntity fileEntity) async {
+        await upgradeBusiness(
           UpgradeBusinessRequest(
             email: event.email,
             phone: event.phone,

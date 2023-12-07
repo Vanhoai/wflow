@@ -34,7 +34,10 @@ class AuthStepOneScreen extends StatelessWidget {
             'Verify Account',
             style: themeData.textTheme.displayMedium,
           ),
-          onBack: () => instance.get<AuthenticationsBloc>().add(CleanData()),
+          onBack: () {
+            instance.get<AuthenticationsBloc>().add(CleanData());
+            Navigator.of(context).pop();
+          },
         ),
         body: BlocBuilder<AuthenticationsBloc, AuthenticationsState>(
           bloc: instance.get<AuthenticationsBloc>(),

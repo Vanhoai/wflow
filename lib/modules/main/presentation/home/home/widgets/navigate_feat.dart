@@ -134,7 +134,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         } else {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
         }
         break;
@@ -144,7 +144,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         } else {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
         }
         break;
@@ -152,7 +152,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (!isVerify) {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
           return;
         }

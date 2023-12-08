@@ -69,21 +69,22 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
                 child: Column(
                   children: [
-                    Builder(builder: (context) {
-                      String action = "";
-                      if(option == 1)
-                      {
-                        action = instance.get<AppLocalization>().translate('topUp') ?? 'Top Up';
-                      }else {
-                        action = instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out';
-                      }
-                      return Text(
-                      '${instance.get<AppLocalization>().translate('payOut') ?? 'Enter amount to'} $action',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                      ),
-                    );
-                    },),
+                    Builder(
+                      builder: (context) {
+                        String action = "";
+                        if (option == 1) {
+                          action = instance.get<AppLocalization>().translate('topUp') ?? 'Top Up';
+                        } else {
+                          action = instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out';
+                        }
+                        return Text(
+                          '${instance.get<AppLocalization>().translate('payOut') ?? 'Enter amount to'} $action',
+                          style: TextStyle(
+                            fontSize: 16.sp,
+                          ),
+                        );
+                      },
+                    ),
                     20.verticalSpace,
                     TextFieldHelper(
                       enabled: true,
@@ -419,28 +420,49 @@ class _BalanceScreenState extends State<BalanceScreen> {
                           ),
                           child: Row(
                             children: [
-                              Container(
-                                height: 40.w,
-                                width: 40.w,
-                                alignment: Alignment.center,
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(40),
-                                  color: trackingEntity.action == 'TOP_UP'
-                                      ? AppColors.greenColor.withOpacity(0.2)
-                                      : AppColors.redColor.withOpacity(0.2),
-                                ),
-                                child: SvgPicture.asset(
-                                  AppConstants.transaction,
-                                  height: 24.w,
-                                  width: 24.w,
-                                  colorFilter: ColorFilter.mode(
-                                    trackingEntity.action == 'TOP_UP'
-                                        ? AppColors.greenColor.withOpacity(0.8)
-                                        : AppColors.redColor.withOpacity(0.8),
-                                    BlendMode.srcATop,
-                                  ),
-                                ),
-                              ),
+                              Builder(builder: (context) {
+                                if (trackingEntity.action == 'TRANSFER') {
+                                  return Container(
+                                    height: 40.w,
+                                    width: 40.w,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(40), color: Colors.yellow.withOpacity(0.2)),
+                                    child: SvgPicture.asset(
+                                      AppConstants.transaction,
+                                      height: 24.w,
+                                      width: 24.w,
+                                      colorFilter: ColorFilter.mode(
+                                        Colors.yellow.withOpacity(0.8),
+                                        BlendMode.srcATop,
+                                      ),
+                                    ),
+                                  );
+                                } else {
+                                 return Container(
+                                    height: 40.w,
+                                    width: 40.w,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(40),
+                                      color: trackingEntity.action == 'TOP_UP'
+                                          ? AppColors.greenColor.withOpacity(0.2)
+                                          : AppColors.redColor.withOpacity(0.2),
+                                    ),
+                                    child: SvgPicture.asset(
+                                      AppConstants.transaction,
+                                      height: 24.w,
+                                      width: 24.w,
+                                      colorFilter: ColorFilter.mode(
+                                        trackingEntity.action == 'TOP_UP'
+                                            ? AppColors.greenColor.withOpacity(0.8)
+                                            : AppColors.redColor.withOpacity(0.8),
+                                        BlendMode.srcATop,
+                                      ),
+                                    ),
+                                  );
+                                }
+                              }),
                               12.horizontalSpace,
                               Expanded(
                                 child: Column(
@@ -450,25 +472,31 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                   children: [
                                     if (trackingEntity.action == 'TOP_UP') ...[
                                       Text(instance.get<AppLocalization>().translate('topUp') ?? 'Top Up')
+                                    ] else if (trackingEntity.action == 'TRANSFER') ...[
+                                      Text(instance.get<AppLocalization>().translate('TRANSFER') ?? 'Transfer')
                                     ] else ...[
                                       Text(instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out')
                                     ],
                                     Builder(
                                       builder: (context) {
                                         String contentState = '';
-                                        if(trackingEntity.state == 'SUCCESS')
-                                        {
-                                          contentState = instance.get<AppLocalization>().translate('Success') ?? 'Success';
-                                        }else if(trackingEntity.state == 'PENDING')
-                                        {
-                                            contentState =  instance.get<AppLocalization>().translate('Pending') ?? 'Pending';
-                                        }else {
-                                          contentState =  instance.get<AppLocalization>().translate('Failed') ?? 'Failed';
+                                        if (trackingEntity.state == 'SUCCESS') {
+                                          contentState =
+                                              instance.get<AppLocalization>().translate('Success') ?? 'Success';
+                                        } else if (trackingEntity.state == 'PENDING') {
+                                          contentState =
+                                              instance.get<AppLocalization>().translate('Pending') ?? 'Pending';
+                                        } else if (trackingEntity.state == 'TRANSFER') {
+                                          contentState =
+                                              instance.get<AppLocalization>().translate('TRANSFER') ?? 'Transfer';
+                                        } else {
+                                          contentState =
+                                              instance.get<AppLocalization>().translate('Failed') ?? 'Failed';
                                         }
                                         return Text(
                                           contentState,
                                           style: TextStyle(
-                                            color: trackingEntity.action == 'TOP_UP'
+                                            color: trackingEntity.state == 'SUCCESS'
                                                 ? AppColors.greenColor
                                                 : AppColors.redColor,
                                           ),

@@ -237,5 +237,6 @@
   "resetPasswordFailed": "Đặt lại mật khẩu thất bại",
   "Pending" : "Đang xử được xử lý",
   "paymentSucces": "Giao dịch thành công",
-  "EnterAmountto" : "Nhập số tiền bạn muốn"
+  "EnterAmountto" : "Nhập số tiền bạn muốn",
+  "TRANSFER" : "Chuyển tiền"
 }

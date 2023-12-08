@@ -234,5 +234,8 @@
   "errorResetPassword": "Có lỗi xảy ra khi đặt lại mật khẩu",
   "errorConfirmPassword": "Mật khẩu xác nhận không khớp",
   "resetPasswordSuccess": "Đặt lại mật khẩu thành công",
-  "resetPasswordFailed": "Đặt lại mật khẩu thất bại"
+  "resetPasswordFailed": "Đặt lại mật khẩu thất bại",
+  "Pending" : "Đang xử được xử lý",
+  "paymentSucces": "Giao dịch thành công",
+  "EnterAmountto" : "Nhập số tiền bạn muốn"
 }

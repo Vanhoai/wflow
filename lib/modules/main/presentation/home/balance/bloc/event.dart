@@ -13,6 +13,11 @@ class BalanceTopUpEvent extends BalanceEvent {
   BalanceTopUpEvent(this.amount);
 }
 
+class BalancePayOutEvent extends BalanceEvent {
+  final num amount;
+  BalancePayOutEvent(this.amount);
+}
+
 class TrackingEventFetch extends BalanceEvent {
   final String id;
   TrackingEventFetch({required this.id});

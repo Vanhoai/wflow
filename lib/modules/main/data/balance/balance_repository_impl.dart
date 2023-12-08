@@ -52,4 +52,14 @@ class BalanceRepositoryImpl implements BalanceRepository {
       return Right(ServerFailure(message: exception.message));
     }
   }
+  
+  @override
+  Future<Either<BalanceEntity, Failure>> payOutBalance({required UpdateBalanceRequest request}) async {
+     try {
+      final response = await balanceService.payOutBalance(request: request);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
 }

@@ -30,11 +30,8 @@ class BalanceScreen extends StatefulWidget {
 }
 
 class _BalanceScreenState extends State<BalanceScreen> {
-  final MoneyMaskedTextController amountController = MoneyMaskedTextController(
-      decimalSeparator: '',
-      precision: 0,
-      initialValue: 0,
-      thousandSeparator: '.');
+  final MoneyMaskedTextController amountController =
+      MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
 
   @override
   void dispose() {
@@ -72,12 +69,21 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 ),
                 child: Column(
                   children: [
-                    Text(
-                      "Enter Amount to ${option == 1 ? 'Top Up' : 'Pay Out'}",
+                    Builder(builder: (context) {
+                      String action = "";
+                      if(option == 1)
+                      {
+                        action = instance.get<AppLocalization>().translate('topUp') ?? 'Top Up';
+                      }else {
+                        action = instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out';
+                      }
+                      return Text(
+                      '${instance.get<AppLocalization>().translate('payOut') ?? 'Enter amount to'} $action',
                       style: TextStyle(
                         fontSize: 16.sp,
                       ),
-                    ),
+                    );
+                    },),
                     20.verticalSpace,
                     TextFieldHelper(
                       enabled: true,
@@ -89,14 +95,18 @@ class _BalanceScreenState extends State<BalanceScreen> {
                     ),
                     24.verticalSpace,
                     PrimaryButton(
-                      label: 'Confirm',
+                      label: instance.get<AppLocalization>().translate('done') ?? 'Confirm',
                       onPressed: () {
                         if (amountController.text.isNotEmpty) {
                           if (option == 1) {
-                            parentContext.read<BalanceBloc>().add(
-                                BalanceTopUpEvent(
-                                    amountController.numberValue.toInt()));
-                          } else {}
+                            parentContext
+                                .read<BalanceBloc>()
+                                .add(BalanceTopUpEvent(amountController.numberValue.toInt()));
+                          } else {
+                            parentContext
+                                .read<BalanceBloc>()
+                                .add(BalancePayOutEvent(amountController.numberValue.toInt()));
+                          }
                           Navigator.pop(context);
                         }
                       },
@@ -161,8 +171,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                               children: [
                                 Text(
                                   'WFlow',
-                                  style: themeData.textTheme.displayLarge!
-                                      .copyWith(
+                                  style: themeData.textTheme.displayLarge!.copyWith(
                                     color: Colors.white,
                                     fontSize: 26,
                                   ),
@@ -185,18 +194,12 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.end,
                                     children: [
                                       InkWell(
-                                        onTap: () =>
-                                            enterAmountModal(context, 1),
+                                        onTap: () => enterAmountModal(context, 1),
                                         child: Row(
                                           children: [
                                             Text(
-                                              instance
-                                                      .get<AppLocalization>()
-                                                      .translate('topUp') ??
-                                                  'Top Up',
-                                              style: themeData
-                                                  .textTheme.displayLarge!
-                                                  .copyWith(
+                                              instance.get<AppLocalization>().translate('topUp') ?? 'Top Up',
+                                              style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
                                               ),
@@ -212,18 +215,12 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                       ),
                                       10.verticalSpace,
                                       InkWell(
-                                        onTap: () =>
-                                            enterAmountModal(context, 2),
+                                        onTap: () => enterAmountModal(context, 2),
                                         child: Row(
                                           children: [
                                             Text(
-                                              instance
-                                                      .get<AppLocalization>()
-                                                      .translate('payOut') ??
-                                                  'Pay Out',
-                                              style: themeData
-                                                  .textTheme.displayLarge!
-                                                  .copyWith(
+                                              instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out',
+                                              style: themeData.textTheme.displayLarge!.copyWith(
                                                 color: Colors.white,
                                                 fontSize: 16,
                                               ),
@@ -258,8 +255,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                 left: 20.w,
                                 child: Text(
                                   state.userEntity.name,
-                                  style: themeData.textTheme.displayLarge!
-                                      .copyWith(
+                                  style: themeData.textTheme.displayLarge!.copyWith(
                                     color: Colors.white,
                                     fontSize: 16,
                                   ),
@@ -299,10 +295,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                 child: Row(
                   children: [
                     Text(
-                      instance
-                              .get<AppLocalization>()
-                              .translate('transactionHistory') ??
-                          'Transaction History',
+                      instance.get<AppLocalization>().translate('transactionHistory') ?? 'Transaction History',
                       style: themeData.textTheme.displayMedium,
                     ),
                   ],
@@ -311,16 +304,13 @@ class _BalanceScreenState extends State<BalanceScreen> {
               20.verticalSpace,
               BlocBuilder<BalanceBloc, BalanceState>(
                 buildWhen: (previous, current) =>
-                    previous.isLoading != current.isLoading ||
-                    previous.trackingEntities != current.trackingEntities,
+                    previous.isLoading != current.isLoading || previous.trackingEntities != current.trackingEntities,
                 builder: (context, state) => Visibility(
                   visible: !state.isLoading,
                   replacement: Expanded(
                     child: Shimmer.fromColors(
-                      baseColor:
-                          themeData.colorScheme.onBackground.withOpacity(0.1),
-                      highlightColor:
-                          themeData.colorScheme.onBackground.withOpacity(0.05),
+                      baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                      highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
                       child: ListView.separated(
                         itemCount: 10,
                         shrinkWrap: true,
@@ -350,8 +340,7 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                   alignment: Alignment.center,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(40),
-                                    color:
-                                        AppColors.greenColor.withOpacity(0.2),
+                                    color: AppColors.greenColor.withOpacity(0.2),
                                   ),
                                   child: SvgPicture.asset(
                                     AppConstants.transaction,
@@ -409,18 +398,13 @@ class _BalanceScreenState extends State<BalanceScreen> {
                       physics: const BouncingScrollPhysics(),
                       shrinkWrap: true,
                       itemBuilder: (context, index) {
-                        final TrackingEntity trackingEntity =
-                            state.trackingEntities[index];
-                        final date = DateFormat('dd/MM/yyyy').format(
-                            DateTime.parse(
-                                trackingEntity.createdAt.toString()));
-                        final time = DateFormat('HH:mm:ss').format(
-                            DateTime.parse(
-                                trackingEntity.createdAt.toString()));
+                        final TrackingEntity trackingEntity = state.trackingEntities[index];
+                        final date =
+                            DateFormat('dd/MM/yyyy').format(DateTime.parse(trackingEntity.createdAt.toString()));
+                        final time = DateFormat('HH:mm:ss').format(DateTime.parse(trackingEntity.createdAt.toString()));
 
                         return Container(
-                          margin: EdgeInsets.symmetric(
-                              horizontal: 20.w, vertical: 4.h),
+                          margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 4.h),
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
                             color: themeData.colorScheme.background,
@@ -465,34 +449,33 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
                                     if (trackingEntity.action == 'TOP_UP') ...[
-                                      Text(instance
-                                              .get<AppLocalization>()
-                                              .translate('topUp') ??
-                                          'Top Up')
+                                      Text(instance.get<AppLocalization>().translate('topUp') ?? 'Top Up')
                                     ] else ...[
-                                      Text(instance
-                                              .get<AppLocalization>()
-                                              .translate('payOut') ??
-                                          'Pay Out')
+                                      Text(instance.get<AppLocalization>().translate('payOut') ?? 'Pay Out')
                                     ],
-                                    Text(
-                                      trackingEntity.state == 'SUCCESS'
-                                          ? instance
-                                                  .get<AppLocalization>()
-                                                  .translate('Success') ??
-                                              'Success'
-                                          : instance
-                                                  .get<AppLocalization>()
-                                                  .translate('Failed') ??
-                                              'Failed',
-                                      style: TextStyle(
-                                        color: trackingEntity.action == 'TOP_UP'
-                                            ? AppColors.greenColor
-                                            : AppColors.redColor,
-                                      ),
+                                    Builder(
+                                      builder: (context) {
+                                        String contentState = '';
+                                        if(trackingEntity.state == 'SUCCESS')
+                                        {
+                                          contentState = instance.get<AppLocalization>().translate('Success') ?? 'Success';
+                                        }else if(trackingEntity.state == 'PENDING')
+                                        {
+                                            contentState =  instance.get<AppLocalization>().translate('Pending') ?? 'Pending';
+                                        }else {
+                                          contentState =  instance.get<AppLocalization>().translate('Failed') ?? 'Failed';
+                                        }
+                                        return Text(
+                                          contentState,
+                                          style: TextStyle(
+                                            color: trackingEntity.action == 'TOP_UP'
+                                                ? AppColors.greenColor
+                                                : AppColors.redColor,
+                                          ),
+                                        );
+                                      },
                                     ),
-                                    Text(
-                                        '${StringsUtil.parseMoney(trackingEntity.amount.toString())} VND')
+                                    Text('${StringsUtil.parseMoney(trackingEntity.amount.toString())} VND')
                                   ],
                                 ),
                               ),
@@ -501,13 +484,9 @@ class _BalanceScreenState extends State<BalanceScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.end,
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Text(date,
-                                      style:
-                                          themeData.textTheme.displayMedium!),
+                                  Text(date, style: themeData.textTheme.displayMedium!),
                                   4.verticalSpace,
-                                  Text(time,
-                                      style:
-                                          themeData.textTheme.displayMedium!),
+                                  Text(time, style: themeData.textTheme.displayMedium!),
                                 ],
                               )
                             ],

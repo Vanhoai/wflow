@@ -35,6 +35,9 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
     on<BalanceTopUpEvent>((event, emit) async {
       await onTopUp(event, emit);
     });
+    on<BalancePayOutEvent>((event, emit) async {
+      await onPayOut(event, emit);
+    });
     on<TrackingEventFetch>(getTrackingList);
   }
 
@@ -62,7 +65,29 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
 
       await response.fold(
         (CreatePaymentSheetResponse createPaymentSheetResponse) async {
-          await initPaymentSheet(createPaymentSheetResponse, event.amount, emit);
+          await initPaymentSheet(createPaymentSheetResponse, event.amount, emit, 1);
+        },
+        (Failure failure) async {
+          AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
+        },
+      );
+    } on StripeException catch (exception) {
+      print('exception: $exception');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
+    } catch (exception) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
+    }
+  }
+
+  FutureOr<void> onPayOut(BalancePayOutEvent event, Emitter<BalanceState> emit) async {
+    try {
+      final response = await balanceUseCase.createPaymentSheet(
+        request: CreatePaymentSheetRequest(customer: state.balanceEntity.customerID, amount: event.amount),
+      );
+
+      await response.fold(
+        (CreatePaymentSheetResponse createPaymentSheetResponse) async {
+          await initPaymentSheet(createPaymentSheetResponse, event.amount, emit, 2);
         },
         (Failure failure) async {
           AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), failure.message);
@@ -77,7 +102,7 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
   }
 
   Future<void> initPaymentSheet(
-      CreatePaymentSheetResponse createPaymentSheetResponse, num amount, Emitter<BalanceState> emit) async {
+      CreatePaymentSheetResponse createPaymentSheetResponse, num amount, Emitter<BalanceState> emit, int type) async {
     try {
       await Stripe.instance.initPaymentSheet(
         paymentSheetParameters: SetupPaymentSheetParameters(
@@ -94,24 +119,30 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
     } catch (exception) {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), exception.toString());
     } finally {
-      await checkPaymentStatus(
-        emit,
-        amount: amount,
-        balanceID: state.balanceEntity.id,
-        paymentIntentID: createPaymentSheetResponse.paymentIntentID,
-      );
+      // 1: Top up
+      // 2: Pay out
+      await checkPaymentStatus(emit,
+          amount: amount,
+          balanceID: state.balanceEntity.id,
+          paymentIntentID: createPaymentSheetResponse.paymentIntentID,
+          type: type);
     }
   }
 
-  Future<void> checkPaymentStatus(
-    Emitter<BalanceState> emit, {
-    required num amount,
-    required num balanceID,
-    required String paymentIntentID,
-  }) async {
-    final response = await balanceUseCase.topUpBalance(
-      request: UpdateBalanceRequest(amount: amount, balanceID: balanceID, paymentIntentID: paymentIntentID),
-    );
+  Future<void> checkPaymentStatus(Emitter<BalanceState> emit,
+      {required num amount, required num balanceID, required String paymentIntentID, required int type}) async {
+    // 1: Top up
+    // 2: Pay out
+    var response;
+    if (type == 1) {
+      response = await balanceUseCase.topUpBalance(
+        request: UpdateBalanceRequest(amount: amount, balanceID: balanceID, paymentIntentID: paymentIntentID),
+      );
+    }else {
+      response = await balanceUseCase.payOutBalance(
+        request: UpdateBalanceRequest(amount: amount, balanceID: balanceID, paymentIntentID: paymentIntentID),
+      );
+    }
 
     print('Response: $response');
 
@@ -119,10 +150,11 @@ class BalanceBloc extends Bloc<BalanceEvent, BalanceState> {
       (BalanceEntity l) async {
         print('BalanceEntity: $l');
         emit(state.copyWith(balanceEntity: l));
-        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Top up success',
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), instance.get<AppLocalization>().translate('paymentSucces'),
             callback: () {
           // instance.get<NavigationService>().pop();
         });
+        add(TrackingEventFetch(id: '${l.id}'));
       },
       (Failure r) async {
         print('Failure: $r');

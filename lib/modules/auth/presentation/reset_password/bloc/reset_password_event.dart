@@ -14,23 +14,31 @@ final class ResetPasswordInitEvent extends ResetPasswordEvent {
 final class ResetPasswordSubmitEvent extends ResetPasswordEvent {
   const ResetPasswordSubmitEvent({
     required this.password,
+    required this.username,
     required this.confirmPassword,
+    required this.type,
   });
 
+  final String username;
   final String password;
   final String confirmPassword;
+  final String type;
 
   ResetPasswordSubmitEvent copyWith({
     String? password,
+    String? username,
     String? confirmPassword,
+    String? type,
   }) =>
       ResetPasswordSubmitEvent(
         password: password ?? this.password,
         confirmPassword: confirmPassword ?? this.confirmPassword,
+        username: username ?? this.username,
+        type: type ?? this.type,
       );
 
   @override
-  List<Object> get props => [password, confirmPassword];
+  List<Object> get props => [password, confirmPassword, username, type];
 }
 
 final class ResetPasswordSuccessEvent extends ResetPasswordEvent {

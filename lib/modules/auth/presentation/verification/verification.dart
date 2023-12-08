@@ -270,20 +270,16 @@ class _VerificationScreenState extends State<VerificationScreen> {
   _listenerForgotPasswordVerification(BuildContext context, VerificationState state) {
     if (state is VerificationPhoneForgotPasswordSuccessState) {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
-        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen, arguments: widget.arguments!);
       });
     } else if (state is VerificationPhoneForgotPasswordFailureState) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
-        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
-      });
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message);
     } else if (state is VerificationEmailForgotSuccessPasswordState) {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
-        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
+        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen, arguments: widget.arguments!);
       });
     } else if (state is VerificationEmailForgotFailurePasswordState) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message, callback: () {
-        Navigator.pushReplacementNamed(context, RouteKeys.resetPasswordScreen);
-      });
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), state.message);
     }
   }
 
@@ -404,12 +400,6 @@ class _VerificationScreenState extends State<VerificationScreen> {
                                         return;
                                       }
 
-                                      if (verificationId == null) {
-                                        AlertUtils.showMessage(
-                                            instance.get<AppLocalization>().translate('notification'),
-                                            'Something went wrong');
-                                        return;
-                                      }
                                       _logicOtp(context);
                                     },
                                   ),

@@ -11,6 +11,7 @@ abstract class BalanceUseCase {
   Future<Either<BalanceEntity, Failure>> getMyBalance();
   Future<Either<BalanceEntity, Failure>> topUpBalance({required UpdateBalanceRequest request});
   Future<Either<BalanceEntity, Failure>> findBalance({required String id});
+  Future<Either<BalanceEntity, Failure>> payOutBalance({required UpdateBalanceRequest request});
 }
 
 class BalanceUseCaseImpl implements BalanceUseCase {
@@ -36,5 +37,10 @@ class BalanceUseCaseImpl implements BalanceUseCase {
   @override
   Future<Either<BalanceEntity, Failure>> findBalance({required String id}) async {
     return await balanceRepository.findBalance(id: id);
+  }
+  
+  @override
+  Future<Either<BalanceEntity, Failure>> payOutBalance({required UpdateBalanceRequest request}) async {
+     return await balanceRepository.payOutBalance(request: request);
   }
 }

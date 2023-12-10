@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_manager/photo_manager.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/arguments_model/arguments_photo.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/widgets/shared/appbar/appbar_back_title.dart';
@@ -169,7 +171,7 @@ class _PhotoScreenState extends State<PhotoScreen> {
       child: CommonScaffold(
           appBar: AppHeader(
             text: Text(
-              'Chọn ảnh',
+              instance.get<AppLocalization>().translate('selectPhotos') ?? 'Select Photos',
               style: themeData.textTheme.displayMedium,
             ),
             actions: [

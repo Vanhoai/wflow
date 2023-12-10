@@ -10,6 +10,7 @@ class BalancePaths {
   static const String getMyBalance = '/user/my-balance';
   static const String topUpBalance = '/balance/top-up-balance';
   static String getFindBalance({required String id}) => '/balance/find-balance/$id';
+  static const String payOutBalance = '/balance/payout-balance';
 }
 
 abstract class BalanceService {
@@ -17,6 +18,7 @@ abstract class BalanceService {
   Future<BalanceEntity> getMyBalance();
   Future<BalanceEntity> topUpBalance({required UpdateBalanceRequest request});
   Future<BalanceEntity> findBalance({required String id});
+  Future<BalanceEntity> payOutBalance({required UpdateBalanceRequest request});
 }
 
 class BalanceServiceImpl implements BalanceService {
@@ -84,6 +86,25 @@ class BalanceServiceImpl implements BalanceService {
     try {
       final response = await agent.dio.get(
         BalancePaths.getFindBalance(id: id),
+      );
+
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
+      return BalanceEntity.fromJson(httpResponse.data);
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<BalanceEntity> payOutBalance({required UpdateBalanceRequest request}) async {
+    try {
+      final response = await agent.dio.post(
+        BalancePaths.payOutBalance,
+        data: request.toJson(),
       );
 
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);

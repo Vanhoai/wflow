@@ -99,7 +99,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                 backgroundColor: themeData.colorScheme.background,
                 surfaceTintColor: Colors.transparent,
                 insetPadding: EdgeInsets.all(12.r),
-                title: const Text('Giới thiệu bản thân'),
+                title:  Text(instance.get<AppLocalization>().translate('introduction') ?? 'Introduction'),
                 content: SizedBox(
                   width: MediaQuery.of(context).size.width,
                   child: Column(
@@ -112,7 +112,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         controller: dialogInputController,
                         textInputAction: TextInputAction.newline,
                         decoration: InputDecoration(
-                          hintText: 'Mô tả một chút về bản thân cho nhà tuyển dụng',
+                          hintText: instance.get<AppLocalization>().translate('typeYourIntroduction') ?? 'Type your introduction',
                           contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                           hintStyle: Theme.of(context).textTheme.bodyLarge!.copyWith(color: Colors.black26),
                           focusedBorder: OutlineInputBorder(
@@ -126,7 +126,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      PrimaryButton(label: 'Gửi', onPressed: () => Navigator.pop(context, true))
+                      PrimaryButton(label: instance.get<AppLocalization>().translate('send') ?? 'Send', onPressed: () => Navigator.pop(context, true))
                     ],
                   ),
                 ),
@@ -141,7 +141,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text(
-              'Notification',
+              instance.get<AppLocalization>().translate('notification') ?? 'Notification',
               textAlign: TextAlign.center,
               style: Theme.of(context).textTheme.displayLarge,
             ),
@@ -178,7 +178,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
         buildWhen: (previous, current) => previous != current,
         listener: listener,
         builder: (context, state) {
-          var title = 'Information';
+          var title =  instance.get<AppLocalization>().translate('information') ?? 'Information';
           if (state is GetJobInformationSuccessState) {
             title = state.postEntity.position;
             isYourBusiness = instance.get<AppBloc>().state.userEntity.business == state.postEntity.business;
@@ -351,7 +351,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: 'Ứng tuyển',
+                                        label: instance.get<AppLocalization>().translate("apply") ?? 'Apply',
                                         onPressed: () {
                                           if (instance.get<AppBloc>().state.userEntity.isVerify) {
                                             _showSelectCV(context, widget.work);
@@ -386,7 +386,7 @@ class _JobInformationScreenState extends State<JobInformationScreen> {
                         );
                       } else if (state is GetJobInformationFailureState) {
                         return Center(
-                          child: Text('Không có thông tin', style: Theme.of(context).textTheme.bodyLarge),
+                          child: Text(instance.get<AppLocalization>().translate('noInfo') ?? 'No information', style: Theme.of(context).textTheme.bodyLarge),
                         );
                       } else {
                         return const SizedBox();

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/switch/switch.dart';
@@ -18,14 +19,26 @@ class SecurityScreen extends StatefulWidget {
 }
 
 class _SecurityScreenState extends State<SecurityScreen> {
+  final SecurityBloc securityBloc = instance.get<SecurityBloc>();
+
   bool TouchID = false;
-  bool FaceID = false;
 
-  void onClickTouchID(BuildContext context) {}
+  @override
+  void initState() {
+    super.initState();
+    setState(() {
+      TouchID = securityBloc.state.touchIDEnabled;
+    });
+  }
 
-  void onClickFaceID(BuildContext context) {}
+  void onClickTouchID(BuildContext context) => securityBloc.add(ToggleTouchIDEvent(touchIDEnabled: TouchID));
 
-  void onClickVerify(BuildContext context) {}
+  void onClickVerify(BuildContext context) {
+    if(!widget.isVerify)
+    {
+      Navigator.of(context).pushNamed(RouteKeys.auStepOneScreen);
+    }
+  }
 
   void onClickPrivacyPolicy(BuildContext context) {}
 
@@ -79,33 +92,6 @@ class _SecurityScreenState extends State<SecurityScreen> {
                           TouchID = !values;
                         });
                         onClickTouchID(context);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            SliverPadding(
-              padding: const EdgeInsets.only(left: 20, right: 20, top: 10, bottom: 10),
-              sliver: SliverToBoxAdapter(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      instance.get<AppLocalization>().translate('faceId') ?? 'Face ID',
-                      style: themeData.textTheme.displayMedium!.merge(
-                        TextStyle(color: themeData.colorScheme.onBackground),
-                      ),
-                    ),
-                    SwitchAnimation(
-                      value: FaceID,
-                      onChanged: (bool values) {
-                        setState(() {
-                          FaceID = !values;
-                        });
-                        onClickFaceID(context);
                       },
                     ),
                   ],

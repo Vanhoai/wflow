@@ -220,10 +220,7 @@ class TextMoreState extends State<TextMore> {
               textSpan = _buildData(
                 data: _readMore ? widget.data.substring(0, widget.trimLength) : widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [delimiter, link],
               );
@@ -231,10 +228,7 @@ class TextMoreState extends State<TextMore> {
               textSpan = _buildData(
                 data: widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [],
               );
@@ -247,10 +241,7 @@ class TextMoreState extends State<TextMore> {
                     ? widget.data.substring(0, endIndex) + (linkLongerThanLine ? _kLineSeparator : '')
                     : widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [delimiter, link],
               );
@@ -258,10 +249,7 @@ class TextMoreState extends State<TextMore> {
               textSpan = _buildData(
                 data: widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [],
               );
@@ -272,10 +260,7 @@ class TextMoreState extends State<TextMore> {
               textSpan = _buildData(
                 data: widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [delimiter, link],
               );
@@ -283,10 +268,7 @@ class TextMoreState extends State<TextMore> {
               textSpan = _buildData(
                 data: widget.data,
                 textStyle: effectiveTextStyle,
-                linkTextStyle: effectiveTextStyle?.copyWith(
-                  decoration: TextDecoration.underline,
-                  color: Colors.blue,
-                ),
+                linkTextStyle: effectiveTextStyle,
                 onPressed: widget.onLinkPressed,
                 children: [],
               );

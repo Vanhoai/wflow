@@ -48,7 +48,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
             isSafe: true,
             appBar: AppHeader(
               text: Text(
-                instance.get<AppLocalization>().translate('apply') ?? 'Applied',
+                instance.get<AppLocalization>().translate('applied') ?? 'Applied',
                 style: themeData.textTheme.displayLarge,
               ),
             ),
@@ -67,6 +67,7 @@ class _ApplyScreenState extends State<ApplyScreen> {
                             physics: const BouncingScrollPhysics(),
                             itemBuilder: (context, index) => ContractCard(
                               contractEntity: state.applies[index],
+                              isApply: true,
                             ),
                             itemCount: state.applies.length,
                           ),

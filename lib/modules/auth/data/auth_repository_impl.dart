@@ -103,4 +103,17 @@ class AuthRepositoryImpl implements AuthRepository {
       return const Right(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<String, Failure>> resetPassword(
+      {required String username, required String password, required String type}) async {
+    try {
+      final response = await authService.resetPassword(username: username, password: password, type: type);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message.toString()));
+    } catch (exception) {
+      return const Right(ServerFailure());
+    }
+  }
 }

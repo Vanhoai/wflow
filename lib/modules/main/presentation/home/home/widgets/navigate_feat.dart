@@ -6,8 +6,11 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/enum/role_enum.dart';
+import 'package:wflow/core/http/http.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
+import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
@@ -18,6 +21,8 @@ class NavigateFeatWidget extends StatefulWidget {
 
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   late final List<Map<String, dynamic>> staticMenuSelection;
+
+  bool companyState = false;
 
   @override
   void initState() {
@@ -33,7 +38,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       },
       {
         'title': isUser
-            ? instance.get<AppLocalization>().translate('apply') ?? 'Apply'
+            ? instance.get<AppLocalization>().translate('applied') ?? 'Applied'
             : instance.get<AppLocalization>().translate('business') ?? 'Business',
         'icon': isUser ? AppConstants.apply : AppConstants.ic_business,
       },
@@ -60,7 +65,37 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         'icon': AppConstants.history,
       },
     ];
+
+    getCompany();
     super.initState();
+  }
+
+  Future<void> getCompany() async {
+    try {
+      final CompanyUseCase useCase = instance.get<CompanyUseCase>();
+
+      final int businessId = instance.get<AppBloc>().state.userEntity.business;
+      print('${businessId} =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
+      if (businessId != 0) {
+        final response = await useCase.findCompany(id: businessId.toString());
+        response.fold((CompanyEntity l) {
+          if (l.state == 'ACTIVE') {
+            print(l.state);
+            setState(() {
+              companyState = true;
+            });
+          } else {
+            setState(() {
+              companyState = false;
+            });
+          }
+        }, (Failure r) {
+          return null;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
   }
 
   void navigateTo(int index) {
@@ -99,7 +134,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         } else {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
         }
         break;
@@ -109,7 +144,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         } else {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
         }
         break;
@@ -117,7 +152,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (!isVerify) {
           AlertUtils.showMessage(
             instance.get<AppLocalization>().translate('notification'),
-            instance.get<AppLocalization>().translate('notBalancePleaseVerify'),
+            instance.get<AppLocalization>().translate('verifyYourAccount'),
           );
           return;
         }
@@ -125,7 +160,12 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.cvScreen);
         } else {
-          Navigator.of(context).pushNamed(RouteKeys.upPostScreen);
+          if (companyState == true) {
+            Navigator.of(context).pushNamed(RouteKeys.upPostScreen);
+          } else {
+            AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification') ?? 'Notification',
+                instance.get<AppLocalization>().translate('businessIsNotActive') ?? 'Your business is not active!');
+          }
         }
         break;
       case 7:

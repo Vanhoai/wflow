@@ -80,7 +80,7 @@ class AppConstants {
   static const String ic_available = '${commonIconPath}ic.available.svg';
 
   //image
-  static const String backgroudVideoCall = 'assets/image/backgroudvideocall.jpg';
+  static const String backgroudVideoCall = 'assets/image/backgroudVideoCall.jpg';
 
   // path for lottie animation
   static const String lottiePath = 'assets/anim/';
@@ -97,6 +97,4 @@ class AppConstants {
   static const String passwordKey = '$keySecureStorage@PASSWORD';
   static const String accessTokenKey = '$keySecureStorage@ACCESS_TOKEN';
   static const String refreshTokenKey = '$keySecureStorage@REFRESH_TOKEN';
-  static const String keySignInWithBiometric = '$keySecureStorage@SIGN_IN_WITH_BIOMETRIC';
-  static const String keyPasswordSignInWithBiometric = '$keySecureStorage@PASSWORD_SIGN_IN_WITH_BIOMETRIC';
 }

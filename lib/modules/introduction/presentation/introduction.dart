@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -89,9 +90,9 @@ class _IntroductionScreenState extends State<IntroScreen> {
         showSkipButton: true,
         skipOrBackFlex: 0,
         nextFlex: 0,
-        skip: const Text('Skip', style: TextStyle(fontWeight: FontWeight.w500)),
+        skip:  Text(instance.get<AppLocalization>().translate('skip') ?? 'Skip', style: const TextStyle(fontWeight: FontWeight.w500)),
         next: const Icon(Icons.arrow_forward),
-        done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w500)),
+        done:  Text(instance.get<AppLocalization>().translate('endIntroduciton') ?? 'Done', style: const TextStyle(fontWeight: FontWeight.w500)),
         curve: Curves.fastLinearToSlowEaseIn,
         controlsMargin:
             const EdgeInsets.symmetric(vertical: 20, horizontal: 16),

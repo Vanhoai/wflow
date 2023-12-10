@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/room/room_usecase.dart';
 import 'package:wflow/modules/main/presentation/message/rooms/bloc/bloc.dart';
@@ -52,7 +53,7 @@ class _RoomsScreenState extends State<RoomsScreen> {
                                       context.read<RoomBloc>().add(GetListRoomEvent());
                                     },
                                     child: Text(
-                                      'You do not have message \n Tap to reload',
+                                     instance.get<AppLocalization>().translate('youDontHaveMessage') ?? 'You don\'t have message \n Tap to reload',
                                       textAlign: TextAlign.center,
                                       style: Theme.of(context).textTheme.bodyLarge,
                                     ),

@@ -37,13 +37,7 @@ class ContractMenu extends StatelessWidget {
       alignment: Alignment.center,
       child: CupertinoContextMenu.builder(
         actions: <Widget>[
-          CupertinoContextMenuAction(
-            onPressed: () {
-              Navigator.pop(context);
-            },
-            trailingIcon: CupertinoIcons.share,
-            child: const Text('Share'),
-          ),
+          
           CupertinoContextMenuAction(
             onPressed: () {
               Navigator.pop(context);

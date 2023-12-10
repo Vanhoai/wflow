@@ -50,8 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
-    final isUser =
-        instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
+    final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
 
     return BlocProvider(
       create: (_) => HomeBloc(
@@ -76,8 +75,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: CustomScrollView(
                 slivers: <Widget>[
                   SliverPadding(
-                    padding:
-                        const EdgeInsets.only(top: 16, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 16, left: 20, right: 20),
                     sliver: SliverToBoxAdapter(
                       child: BlocBuilder<AppBloc, AppState>(
                         bloc: instance.get<AppBloc>(),
@@ -89,11 +87,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             builder: (context, state) => Visibility(
                               visible: !state,
                               replacement: Shimmer.fromColors(
-                                baseColor: themeData.colorScheme.onBackground
-                                    .withOpacity(0.1),
-                                highlightColor: themeData
-                                    .colorScheme.onBackground
-                                    .withOpacity(0.05),
+                                baseColor: themeData.colorScheme.onBackground.withOpacity(0.1),
+                                highlightColor: themeData.colorScheme.onBackground.withOpacity(0.05),
                                 child: Container(
                                   height: kBottomNavigationBarHeight,
                                   width: double.infinity,
@@ -107,8 +102,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 leadingPhotoUrl: userEntity.avatar,
                                 title: Text(
                                   'Chào ${userEntity.name} 👋🏻',
-                                  style: themeData.textTheme.displayLarge!
-                                      .merge(TextStyle(
+                                  style: themeData.textTheme.displayLarge!.merge(TextStyle(
                                     color: themeData.colorScheme.onBackground,
                                     fontWeight: FontWeight.w400,
                                   )),
@@ -119,10 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
                                   userEntity.email,
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
-                                  style: themeData.textTheme.displayMedium!
-                                      .merge(TextStyle(
-                                    color: themeData.colorScheme.onBackground
-                                        .withOpacity(0.5),
+                                  style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                                    color: themeData.colorScheme.onBackground.withOpacity(0.5),
                                     fontWeight: FontWeight.w400,
                                   )),
                                 ),
@@ -130,20 +122,13 @@ class _HomeScreenState extends State<HomeScreen> {
                                     ? widget.onTabTapped(4)
                                     : Navigator.of(context).pushNamed(
                                         RouteKeys.companyScreen,
-                                        arguments: instance
-                                            .get<AppBloc>()
-                                            .state
-                                            .userEntity
-                                            .business
-                                            .toString(),
+                                        arguments: instance.get<AppBloc>().state.userEntity.business.toString(),
                                       ),
                                 leadingBadge: true,
                                 actions: [
                                   HeaderIcon(
                                     icon: AppConstants.ic_notification,
-                                    onTap: () => Navigator.of(context)
-                                        .pushNamed(
-                                            RouteKeys.notificationScreen),
+                                    onTap: () => Navigator.of(context).pushNamed(RouteKeys.notificationScreen),
                                   ),
                                 ],
                               ),
@@ -155,16 +140,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   const NavigateFeatWidget(),
                   SliverPadding(
-                    padding: const EdgeInsets.only(
-                        top: 10, bottom: 4, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 10, bottom: 4, left: 20, right: 20),
                     sliver: SliverToBoxAdapter(
                       child: Text(
-                        instance.get<AppLocalization>().translate('hotWork') ??
-                            'Hot Work',
-                        style:
-                            themeData.textTheme.displayMedium!.merge(TextStyle(
-                          color: themeData.textTheme.displayMedium!.color!
-                              .withOpacity(0.5),
+                        instance.get<AppLocalization>().translate('hotWork') ?? 'Hot Work',
+                        style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                          color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
                           fontWeight: FontWeight.w400,
                           fontSize: 16.sp,
                         )),
@@ -173,43 +154,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                   HowJobListWidget(scrollController: hotJobScrollController),
                   SliverPadding(
-                    padding: const EdgeInsets.only(
-                        top: 6, bottom: 4, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
                     sliver: SliverToBoxAdapter(
                       child: Container(
                         margin: const EdgeInsets.only(bottom: 8, top: 16),
                         child: Text(
-                          instance
-                                  .get<AppLocalization>()
-                                  .translate('recentWork') ??
-                              'Recent Work',
-                          style: themeData.textTheme.displayMedium!.merge(
-                            TextStyle(
-                              color: themeData.textTheme.displayMedium!.color!
-                                  .withOpacity(0.5),
-                              fontWeight: FontWeight.w400,
-                              fontSize: 16.sp,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SelectionListWidget(
-                      scrollController: selectionScrollController),
-                  const RecentJobListWidget(),
-                  SliverPadding(
-                    padding: const EdgeInsets.only(
-                        top: 6, bottom: 4, left: 20, right: 20),
-                    sliver: SliverToBoxAdapter(
-                      child: Container(
-                        margin: const EdgeInsets.only(bottom: 8, top: 16),
-                        child: Text(
-                          'Thông kê xu hướng tuyển dụng',
-                          style: themeData.textTheme.displayMedium!
-                              .merge(TextStyle(
-                            color: themeData.textTheme.displayMedium!.color!
-                                .withOpacity(0.5),
+                          instance.get<AppLocalization>().translate('trendingTag') ?? 'Trending Tag',
+                          style: themeData.textTheme.displayMedium!.merge(TextStyle(
+                            color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
                             fontWeight: FontWeight.w400,
                             fontSize: 16.sp,
                           )),
@@ -218,8 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   SliverPadding(
-                    padding: const EdgeInsets.only(
-                        top: 6, bottom: 20, left: 20, right: 20),
+                    padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
                     sliver: SliverToBoxAdapter(
                       child: SizedBox(
                         height: 200.h,
@@ -227,10 +178,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                     ),
                   ),
+                  SliverPadding(
+                    padding: const EdgeInsets.only(top: 6, bottom: 4, left: 20, right: 20),
+                    sliver: SliverToBoxAdapter(
+                      child: Container(
+                        margin: const EdgeInsets.only(bottom: 8, top: 16),
+                        child: Text(
+                          instance.get<AppLocalization>().translate('recentWork') ?? 'Recent Work',
+                          style: themeData.textTheme.displayMedium!.merge(
+                            TextStyle(
+                              color: themeData.textTheme.displayMedium!.color!.withOpacity(0.5),
+                              fontWeight: FontWeight.w400,
+                              fontSize: 16.sp,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SelectionListWidget(scrollController: selectionScrollController),
+                  const RecentJobListWidget(),
                 ],
                 dragStartBehavior: DragStartBehavior.start,
-                keyboardDismissBehavior:
-                    ScrollViewKeyboardDismissBehavior.manual,
+                keyboardDismissBehavior: ScrollViewKeyboardDismissBehavior.manual,
                 physics: const BouncingScrollPhysics(),
                 shrinkWrap: true,
                 controller: scrollController,

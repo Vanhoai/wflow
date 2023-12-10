@@ -5,3 +5,6 @@
 -dontwarn com.google.errorprone.annotations.RestrictedApi
 -dontwarn javax.annotation.Nullable
 -dontwarn javax.annotation.concurrent.GuardedBy
+-dontwarn org.webrtc.**
+-keep class org.webrtc.** { *; }
+-keep class com.stringee.** { *; }

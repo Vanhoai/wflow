@@ -24,7 +24,7 @@ dependencies:
   firebase_auth: ^4.7.3
   firebase_messaging: ^14.6.6
   flutter_local_notifications: ^15.1.0+1
-  local_auth: ^2.1.6
+  local_auth: ^2.1.7
   flutter_flipperkit: ^0.0.29
   shared_preferences: ^2.2.0
   hydrated_bloc: ^9.1.2
@@ -67,6 +67,9 @@ dependencies:
   chips_choice: ^3.0.1
   flutter_masked_text2: ^0.9.1
   insta_image_viewer: ^1.0.2
+  flutter_ringtone_player: ^3.2.0
+  local_auth_android: ^1.0.35
+  local_auth_ios: ^1.1.5
 
 dev_dependencies:
   flutter_test:

@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/libs/biometrics.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/common/security/bloc.dart';
 import 'package:wflow/configuration/configuration.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
@@ -24,13 +26,31 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
+  final SecurityBloc securityBloc = instance.get<SecurityBloc>();
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      checkBiometric();
+    });
+  }
+
+  void checkBiometric() => BiometricsUtil.canAuthenticate.then((value) {
+        print('canAuthenticate $value');
+      });
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider<SignInBloc>(
       create: (_) => SignInBloc(
         authUseCase: instance.get<AuthUseCase>(),
         userUseCase: instance.get<UserUseCase>(),
-      )..add(SignInCheckRememberEvent()),
+      )..add(SignInCheckRememberEvent(
+          isRemember: instance.get<SecurityBloc>().state.isRememberMe,
+          touchIDEnabled: instance.get<SecurityBloc>().state.touchIDEnabled,
+        )),
       lazy: true,
       child: Listener(
         onPointerDown: (PointerDownEvent event) {

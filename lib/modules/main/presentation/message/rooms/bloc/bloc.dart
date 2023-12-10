@@ -16,6 +16,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   }
 
   FutureOr<void> getListRoom(GetListRoomEvent event, Emitter<RoomState> emit) async {
+
     if (state is! GetListRoomSuccess) {
       emit(state.copyWith(isLoading: true));
     }

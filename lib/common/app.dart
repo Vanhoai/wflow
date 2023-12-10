@@ -45,15 +45,10 @@ class _AppState extends State<App> {
                         if (kDebugMode) {
                           Widget errorWidget = ErrorPage(
                             onPressed: () async {
-                              if (await instance
-                                  .get<NavigationService>()
-                                  .canPop()) {
+                              if (await instance.get<NavigationService>().canPop()) {
                                 instance.get<NavigationService>().pop();
                               } else {
-                                instance
-                                    .get<NavigationService>()
-                                    .pushNamedAndRemoveUntil(
-                                        RouteKeys.signInScreen);
+                                instance.get<NavigationService>().pushNamedAndRemoveUntil(RouteKeys.signInScreen);
                               }
                             },
                           );
@@ -74,16 +69,15 @@ class _AppState extends State<App> {
                         GlobalWidgetsLocalizations.delegate,
                         GlobalCupertinoLocalizations.delegate,
                       ],
-                      navigatorKey:
-                          instance.get<NavigationService>().navigatorKey,
+                      navigatorKey: instance.get<NavigationService>().navigatorKey,
                       debugShowCheckedModeBanner: false,
                       title: EnvironmentConfiguration.appHeading,
                       theme: themeData,
                       darkTheme: themeDataDark,
-                      themeMode:
-                          parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+                      themeMode: parent.isDarkMode ? ThemeMode.dark : ThemeMode.light,
                       onGenerateRoute: AppRoutes.generateRoute,
-                      initialRoute: instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
+                      initialRoute:
+                          instance.get<AppBloc>().state.isFirstTime ? RouteKeys.introScreen : RouteKeys.signInScreen,
                     ),
                     BlocBuilder<AppLoadingBloc, AppLoadingState>(
                       bloc: instance.get<AppLoadingBloc>(),

@@ -18,5 +18,6 @@
     "usecase",
     "vsync",
     "wflow"
-  ]
+  ],
+  "java.project.explorer.showNonJavaResources": false
 }

@@ -10,4 +10,5 @@ abstract class BalanceRepository {
   Future<Either<BalanceEntity, Failure>> getMyBalance();
   Future<Either<BalanceEntity, Failure>> topUpBalance({required UpdateBalanceRequest request});
   Future<Either<BalanceEntity, Failure>> findBalance({required String id});
+  Future<Either<BalanceEntity, Failure>> payOutBalance({required UpdateBalanceRequest request});
 }

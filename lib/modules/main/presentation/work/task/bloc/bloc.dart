@@ -103,7 +103,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
     response.fold(
       (String messages) {
         AlertUtils.showMessage(
-          'Đóng họp đồng',
+          instance.get<AppLocalization>().translate('closeContract') ?? 'Close Contract',
           messages,
           
         );
@@ -111,7 +111,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       },
     
       (failure) {
-        AlertUtils.showMessage('Đóng họp đồng', failure.message);
+        AlertUtils.showMessage(instance.get<AppLocalization>().translate('closeContract') ?? 'Close Contract', failure.message);
       },
     );
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());

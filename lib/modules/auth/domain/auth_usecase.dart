@@ -13,6 +13,8 @@ abstract class AuthUseCase {
   Future<Either<String, Failure>> sendCodeOtpMail({required String email, required String otpCode});
   Future<Either<String, Failure>> verifyCodeOtpMail({required String email, required String otpCode});
   Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword});
+  Future<Either<String, Failure>> resetPassword(
+      {required String username, required String password, required String type});
 }
 
 class AuthUseCaseImpl implements AuthUseCase {
@@ -53,5 +55,11 @@ class AuthUseCaseImpl implements AuthUseCase {
   @override
   Future<Either<String, Failure>> changeNewPassword({required String oldPassword, required String newPassword}) async {
     return await authRepository.changeNewPassword(oldPassword: oldPassword, newPassword: newPassword);
+  }
+
+  @override
+  Future<Either<String, Failure>> resetPassword(
+      {required String username, required String password, required String type}) async {
+    return await authRepository.resetPassword(username: username, password: password, type: type);
   }
 }

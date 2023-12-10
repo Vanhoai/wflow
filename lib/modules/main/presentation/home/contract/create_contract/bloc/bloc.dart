@@ -50,13 +50,20 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   }
   bool validator() {
     if (titleController.text.isEmpty) {
-      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Please enter title');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
+          instance.get<AppLocalization>().translate('pleaseAddTaskTitle') ?? 'Please enter title');
+      return false;
+    }
+
+    if (state.tasks.isEmpty) {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
+          instance.get<AppLocalization>().translate('pleaseAddTaskWork') ?? 'Please enter task');
       return false;
     }
 
     if (budgetController.text.isEmpty) {
-      AlertUtils.showMessage(
-          instance.get<AppLocalization>().translate('notification'), 'Something went wrong with budget');
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
+          instance.get<AppLocalization>().translate('pleaseAddTaskBudget') ?? 'Please enter budget');
       return false;
     }
     return true;

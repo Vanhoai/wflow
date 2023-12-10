@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:syncfusion_flutter_pdfviewer/pdfviewer.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/button/button.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -53,7 +54,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
       child: CommonScaffold(
         appBar: AppHeader(
           text: Text(
-            'Chi tiết ứng viên',
+            instance.get<AppLocalization>().translate('detailCandidate') ?? 'Detail Candidate',
             style: themeData.textTheme.displayMedium,
           ),
         ),
@@ -103,7 +104,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                               );
                             } else if (state is GetCandidateDetailFailureState) {
                               return Center(
-                                child: Text('Không có thông tin', style: Theme.of(context).textTheme.bodyLarge),
+                                child: Text(instance.get<AppLocalization>().translate('noInfo') ?? 'No information', style: Theme.of(context).textTheme.bodyLarge),
                               );
                             } else {
                               return const SizedBox();
@@ -138,7 +139,7 @@ class _CandidateContractScreenState extends State<CandidateContractScreen> {
                         ),
                       ),
                       child: PrimaryButton(
-                        label: 'Tạo họp đồng',
+                        label: instance.get<AppLocalization>().translate('createContract') ?? 'Create Contract',
                         onPressed: navigateToCreateContract,
                         width: double.infinity,
                       ),

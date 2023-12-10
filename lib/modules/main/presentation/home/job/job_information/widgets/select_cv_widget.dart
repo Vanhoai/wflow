@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/theme/them.dart';
 import 'package:wflow/core/widgets/shared/loading/loading.dart';
@@ -42,7 +43,7 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
                   builder: (context, constraints) {
                     if (state.cvEntities.isEmpty) {
                       return Center(
-                        child: Text('Bạn chưa có CV nào', style: Theme.of(context).textTheme.bodyLarge),
+                        child: Text(instance.get<AppLocalization>().translate('youDontHaveCV') ?? 'You don\'t have CV', style: Theme.of(context).textTheme.bodyLarge),
                       );
                     }
                     return Column(
@@ -76,7 +77,7 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
                                         height: 45,
                                         alignment: Alignment.center,
                                         child: Text(
-                                          'Đóng',
+                                          instance.get<AppLocalization>().translate('close') ?? 'Close',
                                           textAlign: TextAlign.center,
                                           style: TextStyle(
                                               fontSize: 16,
@@ -107,11 +108,11 @@ class _SelectCVWidgetState extends State<SelectCVWidget> {
                                       child: Container(
                                         height: 45,
                                         alignment: Alignment.center,
-                                        child: const Text(
-                                          'Chọn CV',
+                                        child:  Text(
+                                          instance.get<AppLocalization>().translate('selectCV') ?? 'Select CV',
                                           textAlign: TextAlign.center,
                                           style:
-                                              TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
+                                              const TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.w400),
                                         ),
                                       ),
                                     ),

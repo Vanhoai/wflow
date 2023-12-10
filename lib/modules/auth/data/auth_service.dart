@@ -8,6 +8,10 @@ class AuthPaths {
   static const String signIn = '/auth/sign-in';
   static const String register = '/auth/create-account';
   static const String authWithGoogle = '/auth/auth-with-google';
+  static const String sendCodeOtpMail = '/auth/send-code-otp-mail';
+  static const String verifyCodeOtpMail = '/auth/verify-code-otp-mail';
+  static const String changeNewPassword = '/auth/change-password';
+  static const String resetPassword = '/auth/reset-password';
 }
 
 abstract class AuthService {
@@ -18,6 +22,7 @@ abstract class AuthService {
   Future<String> sendCodeOtpMail({required String email, required String otpCode});
   Future<String> verifyCodeOtpMail({required String email, required String otpCode});
   Future<String> changeNewPassword({required String oldPassword, required String newPassword});
+  Future<String> resetPassword({required String username, required String password, required String type});
 }
 
 class AuthServiceImpl implements AuthService {
@@ -101,7 +106,7 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<String> sendCodeOtpMail({required String email, required String otpCode}) async {
     try {
-      final response = await agent.dio.post('/auth/send-code-otp-mail', data: {
+      final response = await agent.dio.post(AuthPaths.sendCodeOtpMail, data: {
         'email': email,
         'code': otpCode,
       });
@@ -121,9 +126,9 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<String> verifyCodeOtpMail({required String email, required String otpCode}) async {
     try {
-      final response = await agent.dio.post('/auth/verify-code-otp-mail', data: {
+      final response = await agent.dio.post(AuthPaths.verifyCodeOtpMail, data: {
         'email': email,
-        'otp': otpCode,
+        'code': otpCode,
       });
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
@@ -141,10 +146,32 @@ class AuthServiceImpl implements AuthService {
   @override
   Future<String> changeNewPassword({required String oldPassword, required String newPassword}) async {
     try {
-      final response = await agent.dio.post('/auth/change-password', data: {
+      final response = await agent.dio.post(AuthPaths.changeNewPassword, data: {
         'oldPassword': oldPassword,
         'newPassword': newPassword,
       });
+      HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        return throw ServerException(httpResponse.message);
+      }
+
+      return httpResponse.message;
+    } on ServerException catch (exception) {
+      return throw ServerException(exception.message);
+    } catch (exception) {
+      return throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<String> resetPassword({required String username, required String password, required String type}) async {
+    try {
+      final response = await agent.dio.post(AuthPaths.resetPassword, data: {
+        'username': username,
+        'password': password,
+        'type': type,
+      });
+
       HttpResponse httpResponse = HttpResponse.fromJson(response.data);
       if (httpResponse.statusCode != 200) {
         return throw ServerException(httpResponse.message);

@@ -12,6 +12,7 @@ import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/domain/user/user_usecase.dart';
 import 'package:wflow/modules/main/presentation/home/graph/graph_circular/graph_circular.dart';
@@ -57,12 +58,12 @@ class _HomeScreenState extends State<HomeScreen> {
         postUseCase: instance.get<PostUseCase>(),
         categoryUseCase: instance.get<CategoryUseCase>(),
         userUseCase: instance.get<UserUseCase>(),
+        companyUsaCase: instance.get<CompanyUseCase>(),
       )..add(HomeInitialEvent()),
       child: CommonScaffold(
         isSafe: true,
         body: Builder(builder: (context) {
           final HomeBloc homeBloc = context.read<HomeBloc>();
-
           return AnimatedContainer(
             duration: const Duration(milliseconds: 500),
             curve: Curves.easeInOut,

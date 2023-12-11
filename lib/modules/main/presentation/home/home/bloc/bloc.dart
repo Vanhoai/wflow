@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:wflow/common/app/bloc.app.dart';
@@ -11,6 +10,8 @@ import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
+import 'package:wflow/modules/main/domain/company/company_usecase.dart';
+import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
 import 'package:wflow/modules/main/domain/post/entities/post_entity.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
@@ -25,11 +26,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final PostUseCase postUseCase;
   final CategoryUseCase categoryUseCase;
   final UserUseCase userUseCase;
-
+  final CompanyUseCase companyUsaCase;
   HomeBloc({
     required this.postUseCase,
     required this.categoryUseCase,
     required this.userUseCase,
+    required this.companyUsaCase,
   }) : super(const HomeState(recentJobs: [], hotJobs: [], categories: [])) {
     on<HomeInitialEvent>(onInit);
     on<OnSelectCategoryEvent>(onSelectCategory);
@@ -66,7 +68,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
     emit(state.copyWith(isLoading: true));
     await getMyProfile();
-
+    bool isCompanyActive = await getCompany();
     final categories = await categoryUseCase.getPostCategory();
 
     final future = await Future.wait([
@@ -79,7 +81,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
 
     final List<bool> bookmarks = [...hotJobs.map((e) => e.isBookmarked)];
     final List<bool> bookmarksRecent = [...recentJobs.map((e) => e.isBookmarked)];
-
     emit(
       state.copyWith(
         recentJobs: recentJobs,
@@ -89,6 +90,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         categorySelected: categories.first.name,
         bookmarks: bookmarks,
         bookmarksRecent: bookmarksRecent,
+        isCompanyActive: isCompanyActive,
       ),
     );
     instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
@@ -122,5 +124,24 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     newBookmarksRecent[event.index] = event.isBookmarkeded;
 
     emit(state.copyWith(bookmarksRecent: newBookmarksRecent));
+  }
+  Future<bool> getCompany() async {
+    bool resultCheckActiveCompany = false;
+    try {
+      final int businessId = instance.get<AppBloc>().state.userEntity.business;
+      if (businessId != 0) {
+        final response = await companyUsaCase.findCompany(id: businessId.toString());
+        response.fold((CompanyEntity l) {
+          if (l.state == 'ACTIVE') {
+            resultCheckActiveCompany = true;
+          }
+        }, (Failure r) {
+          resultCheckActiveCompany = false;
+        });
+      }
+    } catch (e) {
+      print(e);
+    }
+    return resultCheckActiveCompany;
   }
 }

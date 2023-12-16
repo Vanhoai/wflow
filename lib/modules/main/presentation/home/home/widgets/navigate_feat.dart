@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wflow/common/app/bloc.app.dart';
@@ -6,24 +7,18 @@ import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/configuration/constants.dart';
 import 'package:wflow/core/enum/role_enum.dart';
-import 'package:wflow/core/http/http.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
-import 'package:wflow/modules/main/domain/company/company_usecase.dart';
-import 'package:wflow/modules/main/domain/company/entities/company_entity.dart';
+import 'package:wflow/modules/main/presentation/home/home/bloc/bloc.dart';
 
 class NavigateFeatWidget extends StatefulWidget {
   const NavigateFeatWidget({super.key});
-
   @override
   State<NavigateFeatWidget> createState() => _NavigateFeatWidgetState();
 }
 
 class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
   late final List<Map<String, dynamic>> staticMenuSelection;
-
-  bool companyState = false;
-
   @override
   void initState() {
     final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
@@ -66,39 +61,10 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
       },
     ];
 
-    getCompany();
     super.initState();
   }
 
-  Future<void> getCompany() async {
-    try {
-      final CompanyUseCase useCase = instance.get<CompanyUseCase>();
-
-      final int businessId = instance.get<AppBloc>().state.userEntity.business;
-      print('${businessId} =>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>');
-      if (businessId != 0) {
-        final response = await useCase.findCompany(id: businessId.toString());
-        response.fold((CompanyEntity l) {
-          if (l.state == 'ACTIVE') {
-            print(l.state);
-            setState(() {
-              companyState = true;
-            });
-          } else {
-            setState(() {
-              companyState = false;
-            });
-          }
-        }, (Failure r) {
-          return null;
-        });
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  void navigateTo(int index) {
+  void navigateTo(int index, bool isCompanyActive) {
     final isUser = instance.get<AppBloc>().state.role == RoleEnum.user.index + 1;
     final balance = instance.get<AppBloc>().state.userEntity.balance;
     final isVerify = instance.get<AppBloc>().state.userEntity.isVerify;
@@ -160,7 +126,7 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
         if (isUser) {
           Navigator.of(context).pushNamed(RouteKeys.cvScreen);
         } else {
-          if (companyState == true) {
+          if (isCompanyActive == true) {
             Navigator.of(context).pushNamed(RouteKeys.upPostScreen);
           } else {
             AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification') ?? 'Notification',
@@ -179,56 +145,61 @@ class _NavigateFeatWidgetState extends State<NavigateFeatWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return SliverPadding(
-      padding: const EdgeInsets.only(top: 20, bottom: 4),
-      sliver: SliverGrid.builder(
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          mainAxisSpacing: 0,
-          crossAxisSpacing: 0,
-          childAspectRatio: 1,
-        ),
-        itemCount: staticMenuSelection.length,
-        itemBuilder: (context, index) {
-          return Container(
-            alignment: Alignment.center,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                InkWell(
-                  onTap: () => navigateTo(index),
-                  child: Container(
-                    height: 48.w,
-                    width: 48.w,
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(6.r),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
-                          blurRadius: 4,
-                          offset: const Offset(0, 1),
-                        ),
-                      ],
-                    ),
-                    child: SvgPicture.asset(
-                      staticMenuSelection[index]['icon'],
-                      width: 24.w,
-                      height: 24.w,
-                    ),
-                  ),
-                ),
-                4.verticalSpace,
-                Text(
-                  staticMenuSelection[index]['title'],
-                  style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
-                ),
-              ],
+    return BlocBuilder<HomeBloc,HomeState>(
+      buildWhen: (previous, current) => previous.isCompanyActive != current.isCompanyActive,
+      builder: (context, state) {
+        return SliverPadding(
+          padding: const EdgeInsets.only(top: 20, bottom: 4),
+          sliver: SliverGrid.builder(
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 4,
+              mainAxisSpacing: 0,
+              crossAxisSpacing: 0,
+              childAspectRatio: 1,
             ),
-          );
-        },
-      ),
+            itemCount: staticMenuSelection.length,
+            itemBuilder: (context, index) {
+              return Container(
+                alignment: Alignment.center,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () => navigateTo(index,state.isCompanyActive),
+                      child: Container(
+                        height: 48.w,
+                        width: 48.w,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(6.r),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Theme.of(context).colorScheme.primary.withOpacity(0.1),
+                              blurRadius: 4,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: SvgPicture.asset(
+                          staticMenuSelection[index]['icon'],
+                          width: 24.w,
+                          height: 24.w,
+                        ),
+                      ),
+                    ),
+                    4.verticalSpace,
+                    Text(
+                      staticMenuSelection[index]['title'],
+                      style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 14.sp),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

@@ -11,7 +11,9 @@ import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/presentation/home/company/bloc/bloc.dart';
 
 class CompanyJobPostWidget extends StatefulWidget {
-  const CompanyJobPostWidget({super.key});
+  const CompanyJobPostWidget({super.key, required this.companyID});
+
+  final String companyID;
 
   @override
   State<CompanyJobPostWidget> createState() => _CompanyJobPostWidgetState();
@@ -28,6 +30,7 @@ class _CompanyJobPostWidgetState extends State<CompanyJobPostWidget> {
             message: 'Start load post',
             page: page ?? 1,
             pageSize: pageSize ?? 10,
+            id: widget.companyID,
           ),
         );
   }

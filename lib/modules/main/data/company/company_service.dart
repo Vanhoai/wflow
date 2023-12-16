@@ -10,7 +10,7 @@ class CompanyPath {
   static const String getCompanyById = '/business/find/';
   static const String myCompany = '/business/my-business';
   static const String myCompanyMember = '/business/members-in-my-business';
-  static const String myCompanyJob = '/post/post-in-my-business';
+  static myCompanyJob({required String id}) => '/post/post-in-my-business/$id';
   static const String upgradeBusiness = '/user/upgrade-to-business';
   static findCompany({required String id}) => '/business/find/$id';
   static const String updateBusiness = '/business/update-business';
@@ -20,11 +20,10 @@ abstract class CompanyService {
   Future<CompanyModel> getCompanyById(int id);
   Future<CompanyModel> myCompany();
   Future<List<UserModel>> myCompanyMember(int page, int pageSize);
-  Future<List<PostModel>> myCompanyJob(int page, int pageSize);
+  Future<List<PostModel>> myCompanyJob(int page, int pageSize, String id);
   Future<String> upgradeBusiness({required UpgradeBusinessRequest request});
   Future<CompanyModel> findCompany({required String id});
   Future<String> updateBusiness({required RequestUpdateBusiness request});
-
 }
 
 class CompanyServiceImpl implements CompanyService {
@@ -81,12 +80,13 @@ class CompanyServiceImpl implements CompanyService {
   }
 
   @override
-  Future<List<PostModel>> myCompanyJob(int page, int pageSize) async {
+  Future<List<PostModel>> myCompanyJob(int page, int pageSize, String id) async {
     try {
-      final response = await agent.dio.get(CompanyPath.myCompanyJob, queryParameters: {
+      final response = await agent.dio.get(CompanyPath.myCompanyJob(id: id), queryParameters: {
         'page': page.toString(),
         'pageSize': pageSize.toString(),
       });
+
       HttpResponseWithPagination<dynamic> httpResponse = HttpResponseWithPagination.fromJson(response.data);
       if (response.statusCode != 200) {
         throw ServerException(httpResponse.message);
@@ -127,7 +127,7 @@ class CompanyServiceImpl implements CompanyService {
       throw ServerException(exception.toString());
     }
   }
-  
+
   @override
   Future<String> updateBusiness({required RequestUpdateBusiness request}) async {
     try {
@@ -138,7 +138,7 @@ class CompanyServiceImpl implements CompanyService {
         'address': request.companyEntity.address,
         'longitude': request.companyEntity.longitude,
         'latitude': request.companyEntity.latitude,
-        'id' : request.companyEntity.id
+        'id': request.companyEntity.id
       });
       final response = await agent.dio.put(
         CompanyPath.updateBusiness,

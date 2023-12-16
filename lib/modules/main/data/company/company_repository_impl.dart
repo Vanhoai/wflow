@@ -42,9 +42,9 @@ class CompanyRepositoryImpl extends CompanyRepository {
   }
 
   @override
-  Future<Either<List<PostEntity>, Failure>> myCompanyJob(int page, int pageSize) async {
+  Future<Either<List<PostEntity>, Failure>> myCompanyJob(int page, int pageSize, String id) async {
     try {
-      final response = await companyService.myCompanyJob(page, pageSize);
+      final response = await companyService.myCompanyJob(page, pageSize, id);
       return Left(response.map((e) => PostEntity.fromJson(e.toJson())).toList());
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
@@ -70,10 +70,10 @@ class CompanyRepositoryImpl extends CompanyRepository {
       return Right(ServerFailure(message: exception.message));
     }
   }
-  
+
   @override
   Future<Either<String, Failure>> updateBusiness({required RequestUpdateBusiness request}) async {
-     try {
+    try {
       final response = await companyService.updateBusiness(request: request);
       return Left(response);
     } on ServerException catch (exception) {

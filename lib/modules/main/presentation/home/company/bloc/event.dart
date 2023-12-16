@@ -38,13 +38,16 @@ class GetMyPostCompanyEvent extends MyCompanyEvent {
   final String message;
   final int page;
   final int pageSize;
+  final String id;
+
   const GetMyPostCompanyEvent({
     required this.page,
     required this.pageSize,
     required this.isLoading,
     required this.message,
+    required this.id,
   });
 
   @override
-  List<Object> get props => [isLoading, page, pageSize, message];
+  List<Object> get props => [isLoading, page, pageSize, message, id];
 }

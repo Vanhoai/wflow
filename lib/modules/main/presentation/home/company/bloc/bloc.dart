@@ -55,8 +55,11 @@ class MyCompanyBloc extends Bloc<MyCompanyEvent, MyCompanyState> {
 
   Future onGetMyJobCompany(GetMyPostCompanyEvent getMyPostCompanyEvent, Emitter<MyCompanyState> emit) async {
     emit(state.copyWith(isLoadingPost: getMyPostCompanyEvent.isLoading, message: getMyPostCompanyEvent.message));
-    final query = [getMyPostCompanyEvent.page, getMyPostCompanyEvent.pageSize];
-    final Either<List<PostEntity>, Failure> result = await companyUseCase.myCompanyJob(query[0], query[1]);
+    final Either<List<PostEntity>, Failure> result = await companyUseCase.myCompanyJob(
+      getMyPostCompanyEvent.page,
+      getMyPostCompanyEvent.pageSize,
+      getMyPostCompanyEvent.id,
+    );
     result.fold(
       (List<PostEntity> l) => emit(state.copyWith(listPost: l, isLoadingPost: false, message: 'Load job success')),
       (Failure r) {

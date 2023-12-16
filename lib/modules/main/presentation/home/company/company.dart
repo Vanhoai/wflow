@@ -168,12 +168,12 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                                       ),
                                       CupertinoActionSheetAction(
                                         onPressed: () {
-                                         Navigator.of(context)
-                                              ..pop()
-                                              ..pushReplacementNamed(
-                                                RouteKeys.updateBusinessScreen,
-                                                arguments: widget.companyID,
-                                              );
+                                          Navigator.of(context)
+                                            ..pop()
+                                            ..pushReplacementNamed(
+                                              RouteKeys.updateBusinessScreen,
+                                              arguments: widget.companyID,
+                                            );
                                         },
                                         child: Text(
                                           instance.get<AppLocalization>().translate('editCompany') ?? 'Edit Company',
@@ -377,11 +377,11 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
                   child: TabBarView(
                     physics: const NeverScrollableScrollPhysics(),
                     controller: tabController,
-                    children: const [
-                      CompanyAboutWidget(),
-                      CompanyJobPostWidget(),
-                      CompanyMemberWidget(),
-                      CompanyLocationWidget()
+                    children: [
+                      const CompanyAboutWidget(),
+                      CompanyJobPostWidget(companyID: widget.companyID),
+                      const CompanyMemberWidget(),
+                      const CompanyLocationWidget()
                     ],
                   ),
                 ),
@@ -397,22 +397,24 @@ class _CompanyScreenState extends State<CompanyScreen> with TickerProviderStateM
     switch (index) {
       case 0:
         bloc.add(
-          const GetMyPostCompanyEvent(
+          GetMyPostCompanyEvent(
             isLoading: true,
             message: 'Start load post',
             page: 1,
             pageSize: 10,
+            id: widget.companyID,
           ),
         );
         break;
       case 1:
         if (isFirstLoad[1] == false) {
           bloc.add(
-            const GetMyPostCompanyEvent(
+            GetMyPostCompanyEvent(
               isLoading: true,
               message: 'Start load post',
               page: 1,
               pageSize: 10,
+              id: widget.companyID,
             ),
           );
           isFirstLoad[1] = true;

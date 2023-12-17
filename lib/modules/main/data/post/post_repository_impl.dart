@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
@@ -99,6 +101,17 @@ class PostRepositoryImpl implements PostRepository {
       return graph;
     } catch (exception) {
       return [];
+    }
+  }
+
+  @override
+  Future<Either<List<String>, Failure>> uploadFileAddPost({required File file}) async {
+     try {
+      final tasks = await  postService.uploadFileAddToPost(file);
+
+      return Left(tasks);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
     }
   }
 }

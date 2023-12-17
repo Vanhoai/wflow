@@ -52,6 +52,7 @@ class RouteKeys {
   static const String resetPasswordScreen = '/reset_password_screen';
   static const String changePasswordScreen = '/change_password_screen';
   static const String contractHistoryScreen = '/contract_history_screen';
-    static const String detailCVScreen = '/detail_cv_screen';
-    static const String subTopicScreen = '/sub_topic_screen';
+  static const String detailCVScreen = '/detail_cv_screen';
+  static const String subTopicScreen = '/sub_topic_screen';
+  static const String guileUseExcelScreen = '/guile_use_excel';
 }

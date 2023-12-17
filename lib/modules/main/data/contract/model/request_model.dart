@@ -1,3 +1,5 @@
+import 'dart:io';
+
 class ApplyPostRequest {
   final num post;
   final num cv;
@@ -89,4 +91,12 @@ class GetContractSigned {
     required this.search,
     required this.isBusiness,
   });
+}
+
+
+class RequestAddTaskExcel{
+  final File file;
+  final num contract;
+
+  RequestAddTaskExcel({required this.file, required this.contract});
 }

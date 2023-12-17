@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -10,6 +13,7 @@ import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/theme/colors.dart';
+import 'package:wflow/core/utils/alert.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
@@ -49,6 +53,15 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
         return false;
       default:
         return false;
+    }
+  }
+   Future<void> choseExcelFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls','xlsx','xlsm']);
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      if(context.mounted) context.read<CreateContractBloc>().add(AddTaskWithExcel(contract: num.parse(widget.contract), file: file));
+    } else {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
     }
   }
 
@@ -194,8 +207,12 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                         ),
                                         const SizedBox(height: 16),
                                         Visibility(
-                                          visible: isBusiness,
-                                          child: ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                                          visible: isBusiness && state.contractEntity.state == ContractStatus.Apply.name,
+                                          child: ActionHelper(onUpload: () {
+                                            choseExcelFile(context);
+                                          }, onWatchVideo: () {
+                                             Navigator.of(context).pushNamed(RouteKeys.guileUseExcelScreen);
+                                          }),
                                         ),
                                         const SizedBox(height: 30),
                                         Row(

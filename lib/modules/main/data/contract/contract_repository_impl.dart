@@ -6,6 +6,7 @@ import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
+import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
 
 class ContractRepositoryImpl implements ContractRepository {
   final ContractService contactService;
@@ -145,6 +146,16 @@ class ContractRepositoryImpl implements ContractRepository {
      try {
       final posts = await contactService.findContractById(id);
       return Left(posts);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request) async {
+   try {
+      final tasks = await contactService.uploadFileAddToContact(request);
+      return Left(tasks);
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
     }

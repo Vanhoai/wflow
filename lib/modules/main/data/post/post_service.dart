@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:dio/dio.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/http.dart';
 import 'package:wflow/modules/main/data/post/models/request/get_post_with_category.dart';
@@ -16,6 +19,7 @@ class PostPaths {
   static String toggleBookmark(int id) => '/bookmark/toggle/$id';
   static const String upPost = '/post/create';
     static const String statistic = '/post/statistic';
+    static const String uploadFileAddToPost = '/post/upload-file-add-to-post';
 }
 
 abstract class PostService {
@@ -28,6 +32,7 @@ abstract class PostService {
   Future<HttpResponse> toggleBookmark(int id);
   Future<String> upPost({required UpPostRequest request});
   Future<List<GraphEntity>> getStatistic();
+  Future<List<String>> uploadFileAddToPost(File file);
 }
 
 class PostServiceImpl implements PostService {
@@ -244,6 +249,31 @@ class PostServiceImpl implements PostService {
       });
 
       return graph;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+  
+  @override
+  Future<List<String>> uploadFileAddToPost(File file) async {
+    try {
+      var formData = FormData.fromMap({
+        'excel': await MultipartFile.fromFile((file.path)),
+      });
+      final response = await agent.dio.post(
+        PostPaths.uploadFileAddToPost,
+        data: formData,
+      );
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+      List<String> task = [];
+      httpResponse.data.forEach((element) {
+        task.add('$element');
+      });
+      return task;
     } catch (exception) {
       throw ServerException(exception.toString());
     }

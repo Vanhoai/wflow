@@ -238,5 +238,6 @@
   "Pending" : "Đang xử được xử lý",
   "paymentSucces": "Giao dịch thành công",
   "EnterAmountto" : "Nhập số tiền bạn muốn",
-  "TRANSFER" : "Chuyển tiền"
+  "TRANSFER" : "Chuyển tiền",
+  "guileExcel": "Hướng dẫn sử dụng excel"
 }

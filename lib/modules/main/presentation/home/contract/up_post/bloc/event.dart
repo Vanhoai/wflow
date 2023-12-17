@@ -30,7 +30,11 @@ class EditTaskEvent extends UpPostEvent {
 }
 
 class RemoveLastTaskEvent extends UpPostEvent {}
+class AddTaskWithExcel extends UpPostEvent{
+  final File file;
 
+  AddTaskWithExcel({required this.file});
+}
 class UpPostSubmitEvent extends UpPostEvent {
   final String title;
   final String description;

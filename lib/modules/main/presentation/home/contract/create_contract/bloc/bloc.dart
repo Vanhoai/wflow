@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter/widgets.dart';
@@ -47,6 +48,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     on<ContractCreatedWorkerSignEvent>(onWorkerSign);
     on<ContractCreatedBusinessSignEvent>(onBusinessSign);
     on<GetMoney>(getMoney);
+    on<AddTaskWithExcel>(addTaskWithExcel);
   }
   bool validator() {
     if (titleController.text.isEmpty) {
@@ -244,5 +246,21 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   String moneyYouGet(int value) {
     double money = (value * 95) / 100;
     return instance.get<ConvertString>().moneyFormat(value: money.toInt().toString());
+  }
+
+  FutureOr<void> addTaskWithExcel(AddTaskWithExcel event, Emitter<CreateContractState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await contractUseCase.uploadFileAddToContact(RequestAddTaskExcel(file: event.file, contract: event.contract));
+    response.fold(
+      (List<TaskEntity> task) {
+        emit(state.copyWith(tasks: [...task]));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

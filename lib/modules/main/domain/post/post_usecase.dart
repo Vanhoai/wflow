@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
@@ -18,6 +20,7 @@ abstract class PostUseCase {
   Future<Either<HttpResponse, Failure>> toggleBookmark(int id);
   Future<Either<String, Failure>> upPost({required UpPostRequest request});
   Future<List<GraphEntity>> getStatistic();
+  Future<Either<List<String>, Failure>> uploadFileAddPost({required File file});
 }
 
 class PostUseCaseImpl implements PostUseCase {
@@ -69,5 +72,10 @@ class PostUseCaseImpl implements PostUseCase {
   @override
   Future<List<GraphEntity>> getStatistic() async {
     return await postRepository.getStatistic();
+  }
+  
+  @override
+  Future<Either<List<String>, Failure>> uploadFileAddPost({required File file}) async {
+    return await postRepository.uploadFileAddPost(file: file);
   }
 }

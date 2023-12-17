@@ -8,3 +8,4 @@
 -dontwarn org.webrtc.**
 -keep class org.webrtc.** { *; }
 -keep class com.stringee.** { *; }
+-keep class com.facebook.login.** {*;}

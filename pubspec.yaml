@@ -60,7 +60,6 @@ dependencies:
   geolocator: ^10.1.0
   google_maps_flutter: ^2.5.0
   syncfusion_flutter_charts: ^20.4.54
-  flutter_stripe: ^9.5.0+1
   flutter_polyline_points: ^1.0.0
   fluttertoast: ^8.2.4
   flutter_rating_bar: ^4.0.1
@@ -70,6 +69,7 @@ dependencies:
   flutter_ringtone_player: ^3.2.0
   local_auth_android: ^1.0.35
   local_auth_ios: ^1.1.5
+  flutter_stripe: ^9.4.0
 
 dev_dependencies:
   flutter_test:

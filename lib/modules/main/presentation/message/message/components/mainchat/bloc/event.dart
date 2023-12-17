@@ -1,22 +1,15 @@
-
-
-import 'dart:ffi';
 import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 
 import 'state.dart';
 
-
-
-
-sealed class MainChatEvent extends Equatable{
-
+sealed class MainChatEvent extends Equatable {
   @override
   List<Object?> get props => [];
 }
 
-class GetMessageEvent extends MainChatEvent{
+class GetMessageEvent extends MainChatEvent {
   final dynamic chat;
 
   GetMessageEvent({required this.chat});
@@ -24,8 +17,7 @@ class GetMessageEvent extends MainChatEvent{
   List<Object?> get props => [chat];
 }
 
-
-class SendMessageEvent extends MainChatEvent{
+class SendMessageEvent extends MainChatEvent {
   final Message message;
 
   SendMessageEvent({required this.message});
@@ -34,17 +26,17 @@ class SendMessageEvent extends MainChatEvent{
   List<Object?> get props => [message];
 }
 
-class SendFilesEvent extends MainChatEvent{
+class SendFilesEvent extends MainChatEvent {
   final String id;
   final String type;
   final List<File> files;
 
   SendFilesEvent({required this.id, required this.type, required this.files});
 
-
   @override
-  List<Object?> get props => [id,type,files];
+  List<Object?> get props => [id, type, files];
 }
+
 class SendRecordEvent extends MainChatEvent {
   final File file;
 
@@ -52,7 +44,7 @@ class SendRecordEvent extends MainChatEvent {
   @override
   List<Object?> get props => [file];
 }
-class ScrollEvent extends MainChatEvent
-{
+
+class ScrollEvent extends MainChatEvent {
   ScrollEvent();
 }

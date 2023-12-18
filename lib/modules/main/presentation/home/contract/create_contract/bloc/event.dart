@@ -51,7 +51,8 @@ class AddTaskWithExcel extends CreateContractEvent{
 class GetMoney extends CreateContractEvent{
 
 }
-
+class RejectContract extends CreateContractEvent{
+}
 class ContractCreatedWorkerSignEvent extends CreateContractEvent {}
 
 class ContractCreatedBusinessSignEvent extends CreateContractEvent {}

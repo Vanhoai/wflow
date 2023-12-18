@@ -31,6 +31,7 @@ abstract class ContractUseCase {
       getContractCompleted(GetContractSigned req);
   Future<Either<String, Failure>> findContractById(int id);
    Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request);
+   Future<Either<String, Failure>> workerCancelContract(int id);
 }
 
 class ContractUseCaseImpl implements ContractUseCase {
@@ -114,5 +115,10 @@ class ContractUseCaseImpl implements ContractUseCase {
   @override
   Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request) async {
     return await contactRepository.uploadFileAddToContact(request);
+  }
+  
+  @override
+  Future<Either<String, Failure>> workerCancelContract(int id) async {
+     return await contactRepository.workerCancelContract(id);
   }
 }

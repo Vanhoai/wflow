@@ -49,6 +49,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     on<ContractCreatedBusinessSignEvent>(onBusinessSign);
     on<GetMoney>(getMoney);
     on<AddTaskWithExcel>(addTaskWithExcel);
+    on<RejectContract>(rejectContract);
   }
   bool validator() {
     if (titleController.text.isEmpty) {
@@ -257,6 +258,28 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
       },
       (Failure failure) {
         AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+  }
+
+  FutureOr<void> rejectContract(RejectContract event, Emitter<CreateContractState> emit) async {
+     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await contractUseCase.workerCancelContract(state.contractEntity.id);
+    response.fold(
+      (String messages) {
+        AlertUtils.showMessage(
+          'Update Contract',
+          messages,
+          callback: () {
+            instance.get<NavigationService>().popUntil(2);
+          },
+        );
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Reject Contract', failure.message);
       },
     );
 

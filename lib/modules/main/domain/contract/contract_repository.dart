@@ -29,4 +29,5 @@ abstract class ContractRepository {
       getContractCompleted(GetContractSigned req);
   Future<Either<String, Failure>> findContractById(int id);
   Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request);
+  Future<Either<String, Failure>> workerCancelContract(int id);
 }

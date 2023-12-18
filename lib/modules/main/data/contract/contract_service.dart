@@ -24,6 +24,7 @@ abstract class ContractService {
   Future<HttpResponseWithPagination<ContractEntity>> getContractCompleted(GetContractSigned req);
   Future<String> findContractById(int id);
   Future<List<TaskEntity>> uploadFileAddToContact(RequestAddTaskExcel request);
+  Future<String> workerCancelContract(int id);
 }
 
 class ContractPaths {
@@ -45,6 +46,7 @@ class ContractPaths {
   static const String getContractCompletedBusiness = '/contract/find-contract-success-of-business';
   static String findContractById(int id) => '/contract/find/$id';
   static const String uploadFileAddToContract = '/contract/upload-file-add-to-contract';
+  static String workerCancelContract(int id) => '/contract/cancel-contract/$id';
 }
 
 class ContractServiceImpl implements ContractService {
@@ -359,7 +361,7 @@ class ContractServiceImpl implements ContractService {
       throw ServerException(exception.toString());
     }
   }
-  
+
   @override
   Future<List<TaskEntity>> uploadFileAddToContact(RequestAddTaskExcel request) async {
     try {
@@ -381,6 +383,22 @@ class ContractServiceImpl implements ContractService {
         task.add(TaskEntity.fromJson(element));
       });
       return task;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<String> workerCancelContract(int id) async {
+    try {
+      final response = await agent.dio.patch(ContractPaths.workerCancelContract(id));
+
+      final HttpResponse httpResponse = HttpResponse.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
+      return httpResponse.data;
     } catch (exception) {
       throw ServerException(exception.toString());
     }

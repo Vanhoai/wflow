@@ -391,11 +391,51 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                     }
                                   } else {
                                     if (state.contractEntity.state == ContractStatus.WaitingSign.name) {
-                                      return PrimaryButton(
-                                        label: instance.get<AppLocalization>().translate('accept') ?? 'Accept',
-                                        width: double.infinity,
-                                        onPressed: () =>
-                                            context.read<CreateContractBloc>().add(ContractCreatedWorkerSignEvent()),
+                                      return Row(
+                                        children: [
+                                          Expanded(
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                color: Colors.white60,
+                                                borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                                border: Border.all(color: Theme.of(context).primaryColor, width: 1),
+                                              ),
+                                              child: Material(
+                                                color: Colors.transparent,
+                                                child: InkWell(
+                                                  onTap: () {
+                                                    context.read<CreateContractBloc>().add(RejectContract());
+                                                  },
+                                                  borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+                                                  child: Container(
+                                                    height: 48,
+                                                    alignment: Alignment.center,
+                                                    child: Text(
+                                                      instance.get<AppLocalization>().translate('reject') ?? 'Reject',
+                                                      textAlign: TextAlign.center,
+                                                      style: TextStyle(
+                                                          fontSize: 16,
+                                                          color: Theme.of(context).primaryColor,
+                                                          fontWeight: FontWeight.w400),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(
+                                            width: 20,
+                                          ),
+                                          Expanded(
+                                            child: PrimaryButton(
+                                              label: instance.get<AppLocalization>().translate('accept') ?? 'Accept',
+                                              width: double.infinity,
+                                              onPressed: () => context
+                                                  .read<CreateContractBloc>()
+                                                  .add(ContractCreatedWorkerSignEvent()),
+                                            ),
+                                          ),
+                                        ],
                                       );
                                     } else {
                                       return PrimaryButton(

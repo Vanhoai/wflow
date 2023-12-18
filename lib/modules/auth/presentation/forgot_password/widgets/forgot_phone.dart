@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -45,8 +47,8 @@ class _ForgotPhoneWidgetState extends State<ForgotPhoneWidget> {
       children: [
         TextFieldFrom(
           controller: _phoneController,
-          label: 'Phone',
-          placeholder: 'Enter your phone',
+          label: instance.call<AppLocalization>().translate('phone') ?? 'Phone',
+          placeholder: instance.call<AppLocalization>().translate('enterYourPhone') ?? 'Enter your phone',
           prefixIcon: const Icon(Icons.phone),
           keyboardType: TextInputType.number,
         ),
@@ -57,7 +59,7 @@ class _ForgotPhoneWidgetState extends State<ForgotPhoneWidget> {
               flex: 1,
               child: PrimaryButton(
                 onPressed: () => _navigationToVerificationScreen(),
-                label: 'Send OTP',
+                label: instance.call<AppLocalization>().translate('sendOtp') ?? 'Send OTP',
               ),
             ),
           ],

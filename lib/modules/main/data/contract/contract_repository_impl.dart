@@ -160,4 +160,14 @@ class ContractRepositoryImpl implements ContractRepository {
       return Right(ServerFailure(message: exception.message));
     }
   }
+  
+  @override
+  Future<Either<String, Failure>> workerCancelContract(int id) async {
+     try {
+      final response = await contactService.workerCancelContract(id);
+      return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
 }

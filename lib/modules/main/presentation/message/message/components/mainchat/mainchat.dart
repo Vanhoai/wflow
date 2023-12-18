@@ -107,7 +107,7 @@ class _MainChatState extends State<MainChat> {
                       ),
                       Expanded(
                           child: Text(
-                        state.file != null ? state.file!.path.toString() : '',
+                        state.file != null ? 'Đang tải lên dữ liệu' : '',
                         style: themeData.textTheme.bodyLarge,
                         overflow: TextOverflow.ellipsis,
                       ))

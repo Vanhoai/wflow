@@ -1,14 +1,18 @@
 import 'dart:async';
 
+import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:stringee_flutter_plugin/stringee_flutter_plugin.dart';
 import 'package:wflow/common/app/bloc.app.dart';
 import 'package:wflow/common/injection.dart';
+import 'package:wflow/configuration/environment.dart';
 
 import 'event.dart';
 import 'state.dart';
 
 class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
+  final apiKeySid = 'SK.0.7JwXoZBV3bdBVr5VzD4Vp6dCiYeJZtwT';
+  final apiKeySecret = 'QXl6VlR0TlRMV1ZxanBISHdxd0ZiQnFTSlNvUzdtR1A=';
   final StringeeClient client;
   VideoCallBloc({required this.client}) : super(const InitVideoCallSate()) {
     on<VideoCallConnectEvent>(videoCallConnect);
@@ -16,8 +20,22 @@ class VideoCallBloc extends Bloc<VideoCallEvent, VideoCallState> {
   }
 
   FutureOr<void> videoCallConnect(VideoCallConnectEvent event, Emitter<VideoCallState> emit) async {
-    print('token string ${instance.get<AppBloc>().state.authEntity.stringeeToken}');
-    client.connect(instance.get<AppBloc>().state.authEntity.stringeeToken);
+    final now = (DateTime.now().millisecondsSinceEpoch / 1000).round();
+    final exp = now + 24 * 3600;
+    final jwt = JWT.verify(instance.get<AppBloc>().state.authEntity.accessToken, SecretKey(EnvironmentConfiguration.accessTokenSecret));
+    final header = {
+        'cty': "stringee-api;v=1",
+      };
+    final payload = {
+      'jti': '${apiKeySid}-${now}',
+      'iss': apiKeySid,
+      'exp': exp,
+      'userId': jwt.payload['id'].toString()
+    };
+    String token =JWT(payload,header: header).sign(SecretKey(apiKeySecret), algorithm: JWTAlgorithm.HS256);
+    print('token string ${token}');
+    
+    client.connect(token);
     await emit.forEach(client.eventStreamController.stream, onData: (event) {
       Map<dynamic, dynamic> map = event;
       switch (map['eventType']) {

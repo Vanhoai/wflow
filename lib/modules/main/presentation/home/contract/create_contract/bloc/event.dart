@@ -43,7 +43,11 @@ class CreateNewContractEvent extends CreateContractEvent {
     required this.budget,
   });
 }
-
+class AddTaskWithExcel extends CreateContractEvent{
+  final num contract;
+  final File file;
+  AddTaskWithExcel({required this.contract, required this.file});
+}
 class GetMoney extends CreateContractEvent{
 
 }

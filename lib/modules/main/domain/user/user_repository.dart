@@ -6,6 +6,7 @@ import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/update_profile.dart';
+import 'package:wflow/modules/main/domain/user/entities/notification_entity.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 
 abstract class UserRepository {
@@ -20,4 +21,6 @@ abstract class UserRepository {
   Future<Either<String, Failure>> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
   Future<Either<UserEntity, Failure>> findUserByID({required String id});
   Future<Either<String, Failure>> updateProfile({required RequestUpdateProfile request});
+  Future<Either<HttpResponseWithPagination<NotificationEntity>, Failure>> notification(
+      {required num page, required num pageSize, required String search});
 }

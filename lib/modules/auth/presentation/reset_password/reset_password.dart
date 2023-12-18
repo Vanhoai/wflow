@@ -64,7 +64,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: const AppBarCenterWidget(center: Text('Reset Password')),
+      appBar: AppBarCenterWidget(
+          center: Text(instance.call<AppLocalization>().translate('resetPassword') ?? 'Reset Password')),
       hideKeyboardWhenTouchOutside: true,
       body: BlocProvider<ResetPasswordBloc>(
         create: (context) => ResetPasswordBloc(authUseCase: instance.get<AuthUseCase>()),
@@ -77,8 +78,8 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
               children: [
                 TextFieldFrom(
                   controller: passwordController,
-                  label: 'Password',
-                  placeholder: 'Enter your password',
+                  label: instance.call<AppLocalization>().translate('password') ?? 'Password',
+                  placeholder: instance.call<AppLocalization>().translate('enterYourPassword') ?? 'Enter your password',
                   prefixIcon: const Icon(
                     Icons.lock,
                     size: 24,
@@ -87,8 +88,9 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                 ),
                 TextFieldFrom(
                   controller: confirmPasswordController,
-                  label: 'Confirm password',
-                  placeholder: 'Enter your confirm password',
+                  label: instance.call<AppLocalization>().translate('confirmPassword') ?? 'Confirm Password',
+                  placeholder: instance.call<AppLocalization>().translate('enterYourConfirmPassword') ??
+                      'Enter your confirm password',
                   prefixIcon: const Icon(
                     Icons.lock,
                     size: 24,
@@ -113,7 +115,7 @@ class _ResetPasswordScreenState extends State<ResetPasswordScreen> {
                               ));
                         }
                       },
-                      label: 'Reset Password',
+                      label: instance.call<AppLocalization>().translate('resetPassword') ?? 'Reset Password',
                     ),
                   ),
                 ),

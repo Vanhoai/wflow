@@ -17,7 +17,7 @@ class ActionHelper extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         InkWell(
-          onTap: () {},
+          onTap:onUpload,
           borderRadius: BorderRadius.circular(4),
           highlightColor: themeData.colorScheme.background.withOpacity(0.5),
           child: Ink(
@@ -54,7 +54,7 @@ class ActionHelper extends StatelessWidget {
           ),
         ),
         InkWell(
-          onTap: () {},
+          onTap: onWatchVideo,
           borderRadius: BorderRadius.circular(4),
           highlightColor: themeData.colorScheme.background.withOpacity(0.5),
           child: Ink(

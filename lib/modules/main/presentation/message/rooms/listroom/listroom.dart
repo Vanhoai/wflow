@@ -155,14 +155,14 @@ class _ListRoomState extends State<ListRoom> {
                               alignment: Alignment.centerLeft,
                               widthFactor: 0.7,
                               child: Text(
-                                room.messages[0].message,
+                                room.message.message,
                                 overflow: TextOverflow.ellipsis,
                                 style: Theme.of(context).textTheme.bodyMedium,
                               ),
                             ),
                           ),
                           Text(
-                            instance.get<Time>().getHourMinute(room.messages[0].createdAt.toString()),
+                            instance.get<Time>().getHourMinute(room.message.createdAt.toString()),
                             overflow: TextOverflow.ellipsis,
                             style: Theme.of(context).textTheme.bodySmall!.copyWith(color: AppColors.textGrey),
                           ),

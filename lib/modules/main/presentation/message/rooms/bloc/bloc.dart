@@ -54,7 +54,7 @@ class RoomBloc extends Bloc<RoomEvent, RoomState> {
   FutureOr<void> getListRoomSearch(GetListRoomSearchEvent event, Emitter<RoomState> emit) async {
     emit(state.copyWith(isLoading: true));
     final rooms = await roomUseCase
-        .getListRoom(PaginationModel(page: state.meta.currentPage + 1 as int, pageSize: 10, search: event.search));
+        .getListRoom(PaginationModel(page: 1, pageSize: 10, search: event.search));
     emit(
       (state as GetListRoomSuccess).copyWith(
         roomEntities: rooms.data,

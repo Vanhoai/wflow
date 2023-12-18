@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,7 +15,6 @@ import 'package:wflow/modules/main/domain/category/category_usecase.dart';
 import 'package:wflow/modules/main/domain/category/entities/category_entity.dart';
 import 'package:wflow/modules/main/domain/contract/contract_usecase.dart';
 import 'package:wflow/modules/main/domain/post/post_usecase.dart';
-
 part 'event.dart';
 part 'state.dart';
 
@@ -35,6 +35,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     on<ToggleSkillEvent>(onToggleSkill);
     on<ToggleCategoryEvent>(onToggleCategory);
     on<UpPostSubmitEvent>(onUpPostSubmit);
+    on<AddTaskWithExcel>(addTaskWithExcel);
   }
 
   FutureOr<void> onInitialUpPost(UpPostInitialEvent event, Emitter<UpPostState> emit) async {
@@ -177,5 +178,23 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     }
 
     return [isValid, message];
+  }
+
+  FutureOr<void> addTaskWithExcel(AddTaskWithExcel event, Emitter<UpPostState> emit) async {
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+
+    final response = await postUseCase.uploadFileAddPost(file: event.file);
+    response.fold(
+      (List<String> task) {
+          
+         final List<String> tasks = [...state.tasks, ...task];
+          emit(state.copyWith(tasks: tasks));
+      },
+      (Failure failure) {
+        AlertUtils.showMessage('Create Contract', failure.message);
+      },
+    );
+
+    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
   }
 }

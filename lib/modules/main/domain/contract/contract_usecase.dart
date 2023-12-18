@@ -6,6 +6,7 @@ import 'package:wflow/modules/main/data/contract/model/request_model.dart';
 import 'package:wflow/modules/main/domain/contract/contract_repository.dart';
 import 'package:wflow/modules/main/domain/contract/entities/candidate_entity.dart';
 import 'package:wflow/modules/main/domain/contract/entities/contract_entity.dart';
+import 'package:wflow/modules/main/domain/task/entities/task_entity.dart';
 
 abstract class ContractUseCase {
   Future<HttpResponseWithPagination<CandidateEntity>> getCandidateApplied(
@@ -29,6 +30,7 @@ abstract class ContractUseCase {
   Future<Either<HttpResponseWithPagination<ContractEntity>, Failure>>
       getContractCompleted(GetContractSigned req);
   Future<Either<String, Failure>> findContractById(int id);
+   Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request);
 }
 
 class ContractUseCaseImpl implements ContractUseCase {
@@ -107,5 +109,10 @@ class ContractUseCaseImpl implements ContractUseCase {
   @override
   Future<Either<String, Failure>> findContractById(int id)  async{
     return await contactRepository.findContractById(id);
+  }
+  
+  @override
+  Future<Either<List<TaskEntity>, Failure>> uploadFileAddToContact(RequestAddTaskExcel request) async {
+    return await contactRepository.uploadFileAddToContact(request);
   }
 }

@@ -235,8 +235,19 @@
   "errorConfirmPassword": "Mật khẩu xác nhận không khớp",
   "resetPasswordSuccess": "Đặt lại mật khẩu thành công",
   "resetPasswordFailed": "Đặt lại mật khẩu thất bại",
-  "Pending" : "Đang xử được xử lý",
+  "Pending": "Đang xử được xử lý",
   "paymentSucces": "Giao dịch thành công",
   "EnterAmountto" : "Nhập số tiền bạn muốn",
-  "TRANSFER" : "Chuyển tiền"
+  "TRANSFER" : "Chuyển tiền",
+  "guileExcel": "Hướng dẫn sử dụng excel",
+  "dontWorryItHappen": "Đừng lo lắng. Vui lòng nhập số điện thoại hoặc địa chỉ email bạn đã sử dụng để đăng ký tài khoản và chúng tôi sẽ gửi cho bạn mã OTP để đặt lại mật khẩu.",
+  "viaEmail": "qua Email",
+  "viaPhone": "qua Số điện thoại",
+  "sendOtp": "Gửi mã OTP",
+  "continue": "Tiếp tục",
+  "enterYourEmail": "Nhập email của bạn",
+  "resetPassword": "Đặt lại mật khẩu",
+  "enterYourPassword": "Nhập mật khẩu của bạn",
+  "enterYourConfirmPassword": "Nhập lại mật khẩu của bạn",
+  "email": "Email"
 }

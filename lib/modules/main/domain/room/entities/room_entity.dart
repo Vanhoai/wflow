@@ -7,18 +7,16 @@ part 'room_entity.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class RoomEntity extends BaseEntity with EquatableMixin {
-  @JsonKey(name: 'state', defaultValue: '')
   final String state;
   final UserEntity userCreator;
   final UserEntity userClient;
-  @JsonKey(name: 'messages', defaultValue: [])
-  final List<MessagesEntity> messages;
+  final MessagesEntity message;
 
   RoomEntity({
     required this.state,
     required this.userCreator,
     required this.userClient,
-    required this.messages,
+    required this.message,
     required super.id,
     required super.createdAt,
     required super.updatedAt,
@@ -38,13 +36,13 @@ class RoomEntity extends BaseEntity with EquatableMixin {
     String? state,
     UserEntity? userCreator,
     UserEntity? userClient,
-    List<MessagesEntity>? messages,
+    MessagesEntity? message,
   }) {
     return RoomEntity(
       state: state ?? this.state,
       userCreator: userCreator ?? this.userCreator,
       userClient: userClient ?? this.userClient,
-      messages: messages ?? this.messages,
+      message: message ?? this.message,
       id: id ?? super.id,
       createdAt: createdAt ?? super.createdAt,
       updatedAt: updatedAt ?? super.updatedAt,
@@ -53,7 +51,7 @@ class RoomEntity extends BaseEntity with EquatableMixin {
   }
 
   @override
-  List<Object?> get props => [state, userCreator, userClient, messages, createdAt, updatedAt, deletedAt, id];
+  List<Object?> get props => [state, userCreator, userClient, message, createdAt, updatedAt, deletedAt, id];
 }
 
 @JsonSerializable()
@@ -76,14 +74,15 @@ class MessagesEntity extends BaseEntity with EquatableMixin {
   @override
   Map<String, dynamic> toJson() => _$MessagesEntityToJson(this);
 
-  MessagesEntity copyWith(
-      {int? id,
-      String? message,
-      String? type,
-      DateTime? createdAt,
-      DateTime? updatedAt,
-      DateTime? deletedAt,
-      UserEntity? userSender}) {
+  MessagesEntity copyWith({
+    int? id,
+    String? message,
+    String? type,
+    DateTime? createdAt,
+    DateTime? updatedAt,
+    DateTime? deletedAt,
+    UserEntity? userSender,
+  }) {
     return MessagesEntity(
       message: message ?? this.message,
       type: type ?? this.type,

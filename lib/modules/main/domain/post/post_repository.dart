@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:wflow/core/http/failure.http.dart';
 import 'package:wflow/core/http/response.http.dart';
@@ -17,4 +19,5 @@ abstract class PostRepository {
   Future<Either<HttpResponse, Failure>> toggleBookmark(int id);
   Future<Either<String, Failure>> upPost({required UpPostRequest request});
   Future<List<GraphEntity>> getStatistic();
+  Future<Either<List<String>, Failure>> uploadFileAddPost({required File file});
 }

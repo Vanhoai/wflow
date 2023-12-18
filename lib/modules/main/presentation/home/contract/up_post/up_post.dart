@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,6 +9,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
 import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
+import 'package:wflow/core/routes/keys.dart';
+import 'package:wflow/core/utils/alert.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/main/domain/category/category_usecase.dart';
@@ -50,7 +55,15 @@ class _UpPostScreenState extends State<UpPostScreen> {
     duration.dispose();
     super.dispose();
   }
-
+  Future<void> choseExcelFile(BuildContext context) async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls','xlsx','xlsm']);
+    if (result != null) {
+      File file = File(result.files.single.path!);
+      if (context.mounted) context.read<UpPostBloc>().add(AddTaskWithExcel(file: file));
+    } else {
+      AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -191,7 +204,11 @@ class _UpPostScreenState extends State<UpPostScreen> {
                                   children: [
                                     const TaskCreatePost(),
                                     20.verticalSpace,
-                                    ActionHelper(onUpload: () {}, onWatchVideo: () {}),
+                                    ActionHelper(onUpload: () {
+                                      choseExcelFile(context);
+                                    }, onWatchVideo: () {
+                                      Navigator.of(context).pushNamed(RouteKeys.guileUseExcelScreen);
+                                    }),
                                     80.verticalSpace,
                                   ],
                                 ),

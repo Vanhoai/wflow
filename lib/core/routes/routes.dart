@@ -24,6 +24,7 @@ import 'package:wflow/modules/main/presentation/home/contract/contract.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract/contract_screen.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_history/contract_history_screen.dart';
 import 'package:wflow/modules/main/presentation/home/contract/contract_waiting_sign/contract_waiting_sign.dart';
+import 'package:wflow/modules/main/presentation/home/contract/guide-use-excel/guide_use_excel.dart';
 import 'package:wflow/modules/main/presentation/home/contract/up_post/up_post.dart';
 import 'package:wflow/modules/main/presentation/home/contract_signed/contract_signed.dart';
 import 'package:wflow/modules/main/presentation/home/cv/cv.dart';
@@ -186,6 +187,8 @@ class AppRoutes {
         return MaterialPageRoute(builder: (_) => const ChangePasswordScreen());
       case RouteKeys.subTopicScreen:
         return MaterialPageRoute(builder: (_) => const SubTopic());
+      case RouteKeys.guileUseExcelScreen:
+        return MaterialPageRoute(builder: (_) => const GuileUseExcel());
       case RouteKeys.contractHistoryScreen:
         return MaterialPageRoute(builder: (_) => const ContractHistoryScreen());
       case RouteKeys.detailCVScreen:

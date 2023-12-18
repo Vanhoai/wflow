@@ -471,70 +471,74 @@ class _TaskScreenState extends State<TaskScreen> {
               onRefresh: () async => taskBloc..add(GetTaskEvent(idContract: widget.idContract)),
               child: Stack(
                 children: [
-                  Builder(
-                    builder: (context) {
-                      if (state is GetTaskListSuccessState) {
-                        if (state.taskEntities.isEmpty) {
-                          return Center(
-                            child: Text(
-                              instance.get<AppLocalization>().translate('noTask') ?? 'No task',
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                          );
-                        }
-                        return Column(
-                          children: [
-                            Expanded(
-                              child: Container(
-                                margin: const EdgeInsets.only(top: 15, bottom: 15),
-                                padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
-                                child: ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: state.taskEntities.length,
-                                  itemBuilder: (context, index) {
-                                    return _task(state.taskEntities[index], context);
-                                  },
+                  SizedBox(
+                    height: MediaQuery.of(context).size.height,
+                    child: Builder(
+                      builder: (context) {
+                        if (state is GetTaskListSuccessState) {
+                          if (state.taskEntities.isEmpty) {
+                            return Center(
+                              child: Text(
+                                instance.get<AppLocalization>().translate('noTask') ?? 'No task',
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                            );
+                          }
+                          return Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Expanded(
+                                child: Container(
+                                  margin: const EdgeInsets.only(top: 15, bottom: 15),
+                                  padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                                  child: ListView.builder(
+                                    shrinkWrap: true,
+                                    itemCount: state.taskEntities.length,
+                                    itemBuilder: (context, index) {
+                                      return _task(state.taskEntities[index], context);
+                                    },
+                                  ),
                                 ),
                               ),
-                            ),
-                            Builder(
-                              builder: (context) {
-                                if (state.stateContract == ContractStatus.Success.name &&
-                                    instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
-                                  return Container(
-                                    color: Colors.white,
-                                    padding: const EdgeInsets.all(20),
-                                    child: PrimaryButton(
-                                      label: instance.get<AppLocalization>().translate('rating') ?? 'Rating',
-                                      onPressed: () {
-                                        _displayRating(context, instance.get<TaskBloc>());
-                                      },
-                                    ),
-                                  );
-                                } else {
-                                  if (state.isAllDone &&
+                              Builder(
+                                builder: (context) {
+                                  if (state.stateContract == ContractStatus.Success.name &&
                                       instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
                                     return Container(
                                       color: Colors.white,
                                       padding: const EdgeInsets.all(20),
                                       child: PrimaryButton(
-                                        label: instance.get<AppLocalization>().translate('closeContract') ?? 'Close Contract',
+                                        label: instance.get<AppLocalization>().translate('rating') ?? 'Rating',
                                         onPressed: () {
-                                          taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
+                                          _displayRating(context, instance.get<TaskBloc>());
                                         },
                                       ),
                                     );
+                                  } else {
+                                    if (state.isAllDone &&
+                                        instance.get<AppBloc>().state.role != RoleEnum.user.index + 1) {
+                                      return Container(
+                                        color: Colors.white,
+                                        padding: const EdgeInsets.all(20),
+                                        child: PrimaryButton(
+                                          label: instance.get<AppLocalization>().translate('closeContract') ?? 'Close Contract',
+                                          onPressed: () {
+                                            taskBloc.add(CheckContractAndTransfer(id: widget.idContract));
+                                          },
+                                        ),
+                                      );
+                                    }
                                   }
-                                }
-                                return const SizedBox();
-                              },
-                            ),
-                          ],
-                        );
-                      } else {
-                        return const SizedBox();
-                      }
-                    },
+                                  return const SizedBox();
+                                },
+                              ),
+                            ],
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
                   ),
                   Positioned(
                     child: Visibility(

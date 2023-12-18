@@ -77,7 +77,6 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     final response = await contractUseCase.candidateAppliedDetail(event.contract);
     response.fold(
       (ContractEntity contractEntity) {
-        print('Tasks: ${contractEntity.tasks.length}');
         titleController.text = contractEntity.title;
         descriptionController.text = contractEntity.content;
         budgetController.text = contractEntity.salary;

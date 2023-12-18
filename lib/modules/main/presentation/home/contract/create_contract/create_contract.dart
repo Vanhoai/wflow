@@ -12,7 +12,6 @@ import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/enum/enum.dart';
 import 'package:wflow/core/routes/keys.dart';
-import 'package:wflow/core/theme/colors.dart';
 import 'package:wflow/core/utils/alert.util.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
@@ -61,8 +60,9 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
         await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls', 'xlsx', 'xlsm']);
     if (result != null) {
       File file = File(result.files.single.path!);
-      if (context.mounted)
+      if (context.mounted) {
         context.read<CreateContractBloc>().add(AddTaskWithExcel(contract: num.parse(widget.contract), file: file));
+      }
     } else {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
     }
@@ -86,8 +86,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
           ),
         ),
         hideKeyboardWhenTouchOutside: true,
-        body: BlocBuilder<AppLoadingBloc, AppLoadingState>(
-          bloc: instance.get<AppLoadingBloc>(),
+        body: BlocBuilder<CreateContractBloc, CreateContractState>(
           buildWhen: (previous, current) => previous != current,
           builder: (context, state) {
             return SizedBox(
@@ -101,7 +100,7 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                         context.read<CreateContractBloc>().add(CreateContractInitEvent(contract: widget.contract));
                       },
                       child: Visibility(
-                        visible: state is AppShowLoadingState ? false : true,
+                        visible: !state.isLoading,
                         replacement: const ShimmerCreateContract(),
                         child: CustomScrollView(
                           clipBehavior: Clip.none,
@@ -199,9 +198,9 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                           ),
                                           child: Text(
                                             state.money,
-                                            style: themeData.textTheme.displayMedium!.merge(const TextStyle(
-                                              color: AppColors.greenColor,
-                                            )),
+                                            style: themeData.textTheme.displayMedium!.merge(
+                                              const TextStyle(),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 20),

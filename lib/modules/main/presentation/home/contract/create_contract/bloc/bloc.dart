@@ -28,8 +28,12 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   final TaskUseCase taskUseCase;
   final TextEditingController titleController = TextEditingController(text: '');
   final TextEditingController descriptionController = TextEditingController(text: '');
-  final MoneyMaskedTextController budgetController =
-      MoneyMaskedTextController(decimalSeparator: '', precision: 0, initialValue: 0, thousandSeparator: '.');
+  final MoneyMaskedTextController budgetController = MoneyMaskedTextController(
+    decimalSeparator: '',
+    precision: 0,
+    initialValue: 0,
+    thousandSeparator: '.',
+  );
 
   CreateContractBloc({
     required this.contractUseCase,
@@ -51,6 +55,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
     on<AddTaskWithExcel>(addTaskWithExcel);
     on<RejectContract>(rejectContract);
   }
+
   bool validator() {
     if (titleController.text.isEmpty) {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'),
@@ -73,7 +78,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   }
 
   FutureOr<void> onInit(CreateContractInitEvent event, Emitter<CreateContractState> emit) async {
-    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    emit(state.copyWith(isLoading: true));
 
     final response = await contractUseCase.candidateAppliedDetail(event.contract);
     response.fold(
@@ -94,7 +99,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
       },
     );
 
-    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+    emit(state.copyWith(isLoading: false));
   }
 
   void onAddTask(AddTaskCreateContractEvent event, Emitter<CreateContractState> emit) async {
@@ -251,7 +256,8 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   FutureOr<void> addTaskWithExcel(AddTaskWithExcel event, Emitter<CreateContractState> emit) async {
     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
-    final response = await contractUseCase.uploadFileAddToContact(RequestAddTaskExcel(file: event.file, contract: event.contract));
+    final response =
+        await contractUseCase.uploadFileAddToContact(RequestAddTaskExcel(file: event.file, contract: event.contract));
     response.fold(
       (List<TaskEntity> task) {
         emit(state.copyWith(tasks: [...task]));
@@ -265,7 +271,7 @@ class CreateContractBloc extends Bloc<CreateContractEvent, CreateContractState> 
   }
 
   FutureOr<void> rejectContract(RejectContract event, Emitter<CreateContractState> emit) async {
-     instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
 
     final response = await contractUseCase.workerCancelContract(state.contractEntity.id);
     response.fold(

@@ -6,6 +6,7 @@ class UpPostState extends Equatable {
   final List<CategoryEntity> categories;
   final List<CategoryEntity> skillSelected;
   final List<CategoryEntity> categorySelected;
+  final bool isLoading;
 
   const UpPostState({
     required this.tasks,
@@ -13,6 +14,7 @@ class UpPostState extends Equatable {
     required this.categories,
     this.categorySelected = const [],
     this.skillSelected = const [],
+    this.isLoading = false,
   });
 
   UpPostState copyWith({
@@ -21,6 +23,7 @@ class UpPostState extends Equatable {
     List<CategoryEntity>? categories,
     List<CategoryEntity>? skillSelected,
     List<CategoryEntity>? categorySelected,
+    bool? isLoading,
   }) {
     return UpPostState(
       tasks: tasks ?? this.tasks,
@@ -28,9 +31,10 @@ class UpPostState extends Equatable {
       categories: categories ?? this.categories,
       skillSelected: skillSelected ?? this.skillSelected,
       categorySelected: categorySelected ?? this.categorySelected,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object> get props => [tasks, skills, categories, skillSelected, categorySelected];
+  List<Object> get props => [tasks, skills, categories, skillSelected, categorySelected, isLoading];
 }

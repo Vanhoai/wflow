@@ -5,11 +5,14 @@ class CreateContractState extends Equatable {
   final ContractEntity contractEntity;
   final bool initSuccess;
   final String money;
+  final bool isLoading;
+
   const CreateContractState({
     required this.tasks,
     required this.contractEntity,
     this.initSuccess = false,
-    this.money = ''
+    this.money = '',
+    this.isLoading = false,
   });
 
   CreateContractState copyWith({
@@ -17,15 +20,17 @@ class CreateContractState extends Equatable {
     ContractEntity? contractEntity,
     bool? initSuccess,
     String? money,
+    bool? isLoading,
   }) {
     return CreateContractState(
       tasks: tasks ?? this.tasks,
       contractEntity: contractEntity ?? this.contractEntity,
       initSuccess: initSuccess ?? this.initSuccess,
-      money: money ?? this.money
+      money: money ?? this.money,
+      isLoading: isLoading ?? this.isLoading,
     );
   }
 
   @override
-  List<Object?> get props => [tasks, contractEntity,money];
+  List<Object?> get props => [tasks, contractEntity, money, initSuccess, isLoading];
 }

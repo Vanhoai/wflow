@@ -61,7 +61,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           isSafe: true,
           appBar: AppHeader(
             text: Text(
-              'Edit Profile',
+              'Chi tiết cá nhân',
               style: themeData.textTheme.displayMedium,
             ),
           ),
@@ -171,21 +171,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                     },
                                   )),
                                 ),
-                                 Positioned(
-                              bottom: -5,
-                              right: -5,
-                              child: InkWell(
-                                onTap: () => _pickImage(context: context, isAvatar: true),
-                                child: Container(
-                                  padding: const EdgeInsets.all(5),
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(30),
+                                Positioned(
+                                  bottom: -5,
+                                  right: -5,
+                                  child: InkWell(
+                                    onTap: () => _pickImage(context: context, isAvatar: true),
+                                    child: Container(
+                                      padding: const EdgeInsets.all(5),
+                                      decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius: BorderRadius.circular(30),
+                                      ),
+                                      child: const Icon(Icons.camera_alt_rounded, size: 16),
+                                    ),
                                   ),
-                                  child: const Icon(Icons.camera_alt_rounded, size: 16),
-                                ),
-                              ),
-                            )
+                                )
                               ],
                             ),
                             8.horizontalSpace,
@@ -206,8 +206,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                             children: [
                               TextFieldFrom(
                                 controller: context.read<EditProfileBloc>().addressController,
-                                label: 'Address',
-                                placeholder: 'Type your address',
+                                label: 'Địa chỉ',
+                                placeholder: 'Nhập địa chỉ',
                                 textInputAction: TextInputAction.next,
                                 prefixIcon: const Icon(
                                   Icons.location_on_sharp,
@@ -216,9 +216,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                               ),
                               TextFieldFrom(
                                 controller: context.read<EditProfileBloc>().bioController,
-                                label: 'Bio',
+                                label: 'Giới thiệu',
                                 maxLines: 5,
-                                placeholder: 'Type your bio',
+                                placeholder: 'Nhập giới thiệu',
                                 textInputAction: TextInputAction.next,
                                 contentPadding: EdgeInsets.symmetric(vertical: 20.h, horizontal: 20.w),
                               ),
@@ -227,7 +227,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                                 onPressed: () {
                                   context.read<EditProfileBloc>().add(EditProfile());
                                 },
-                                label: 'Edit',
+                                label: 'Cập nhật',
                               ),
                             ],
                           ),

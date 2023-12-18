@@ -39,7 +39,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
   }
 
   FutureOr<void> onInitialUpPost(UpPostInitialEvent event, Emitter<UpPostState> emit) async {
-    instance.get<AppLoadingBloc>().add(AppShowLoadingEvent());
+    emit(state.copyWith(isLoading: true));
     final future = await Future.wait([
       categoryUseCase.getPostCategory(),
       categoryUseCase.getSkillCategory(),
@@ -48,8 +48,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     final categories = future[0];
     final skills = future[1];
 
-    emit(state.copyWith(categories: categories, skills: skills));
-    instance.get<AppLoadingBloc>().add(AppHideLoadingEvent());
+    emit(state.copyWith(categories: categories, skills: skills, isLoading: false));
   }
 
   FutureOr<void> onToggleSkill(ToggleSkillEvent event, Emitter<UpPostState> emit) {

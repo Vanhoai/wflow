@@ -7,7 +7,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_masked_text2/flutter_masked_text2.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:wflow/common/injection.dart';
-import 'package:wflow/common/loading/bloc.dart';
 import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/alert.util.dart';
@@ -117,12 +116,11 @@ class _UpPostScreenState extends State<UpPostScreen> {
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
-          child: BlocBuilder<AppLoadingBloc, AppLoadingState>(
-            bloc: instance.get<AppLoadingBloc>(),
-            buildWhen: (previous, current) => true,
+          child: BlocBuilder<UpPostBloc, UpPostState>(
+            buildWhen: (previous, current) => previous != current,
             builder: (context, state) {
               return Visibility(
-                visible: state is AppShowLoadingState ? false : true,
+                visible: !state.isLoading,
                 replacement: const ShimmerUpPost(),
                 child: Stack(
                   children: [

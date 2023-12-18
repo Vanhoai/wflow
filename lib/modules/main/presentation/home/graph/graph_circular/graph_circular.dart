@@ -38,15 +38,16 @@ class _GraphCircularWidgetState extends State<GraphCircularWidget> {
               ),
               series: <CircularSeries>[
                 PieSeries<ChartData, String>(
-                    dataSource: state.chartData,
-                    enableTooltip: true,
-                    xValueMapper: (ChartData data, _) => data.x,
-                    yValueMapper: (ChartData data, _) => data.y,
-                    // Segments will explode on tap
-                    explode: true,
-                    // First segment will be exploded on initial rendering
-                    explodeIndex: 1,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true)),
+                  dataSource: state.chartData,
+                  enableTooltip: true,
+                  xValueMapper: (ChartData data, _) => data.x,
+                  yValueMapper: (ChartData data, _) => data.y,
+                  // Segments will explode on tap
+                  explode: true,
+                  // First segment will be exploded on initial rendering
+                  explodeIndex: 1,
+                  dataLabelSettings: const DataLabelSettings(isVisible: true),
+                ),
               ],
               tooltipBehavior: TooltipBehavior(enable: true),
             ),

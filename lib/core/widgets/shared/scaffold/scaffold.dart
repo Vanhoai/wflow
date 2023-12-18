@@ -7,6 +7,7 @@ class CommonScaffold extends StatelessWidget {
     this.hideKeyboardWhenTouchOutside = false,
     this.appBar,
     this.floatingActionButton,
+    this.bottomNavigationBar,
     super.key,
   });
 
@@ -15,6 +16,8 @@ class CommonScaffold extends StatelessWidget {
   final bool isSafe;
   final bool hideKeyboardWhenTouchOutside;
   final Widget? floatingActionButton;
+  final Widget? bottomNavigationBar;
+
   @override
   Widget build(BuildContext context) {
     return Listener(
@@ -28,12 +31,14 @@ class CommonScaffold extends StatelessWidget {
               child: Scaffold(
                 body: body,
                 appBar: appBar,
+                bottomNavigationBar: bottomNavigationBar,
               ),
             )
           : Scaffold(
               body: body,
               appBar: appBar,
               floatingActionButton: floatingActionButton,
+              bottomNavigationBar: bottomNavigationBar,
             ),
     );
   }

@@ -237,8 +237,8 @@
   "resetPasswordFailed": "Đặt lại mật khẩu thất bại",
   "Pending": "Đang xử được xử lý",
   "paymentSucces": "Giao dịch thành công",
-  "EnterAmountto" : "Nhập số tiền bạn muốn",
-  "TRANSFER" : "Chuyển tiền",
+  "EnterAmountto": "Nhập số tiền bạn muốn",
+  "TRANSFER": "Chuyển tiền",
   "guileExcel": "Hướng dẫn sử dụng excel",
   "dontWorryItHappen": "Đừng lo lắng. Vui lòng nhập số điện thoại hoặc địa chỉ email bạn đã sử dụng để đăng ký tài khoản và chúng tôi sẽ gửi cho bạn mã OTP để đặt lại mật khẩu.",
   "viaEmail": "qua Email",
@@ -249,5 +249,6 @@
   "resetPassword": "Đặt lại mật khẩu",
   "enterYourPassword": "Nhập mật khẩu của bạn",
   "enterYourConfirmPassword": "Nhập lại mật khẩu của bạn",
-  "email": "Email"
+  "email": "Email",
+  "pleaseEnterTitle": "Vui lòng nhập tiêu đề"
 }

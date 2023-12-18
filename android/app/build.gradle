@@ -89,7 +89,7 @@ android {
         }
 
         debug {
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
         }
 
     }

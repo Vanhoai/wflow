@@ -55,8 +55,10 @@ class _UpPostScreenState extends State<UpPostScreen> {
     duration.dispose();
     super.dispose();
   }
+
   Future<void> choseExcelFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls','xlsx','xlsm']);
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls', 'xlsx', 'xlsm']);
     if (result != null) {
       File file = File(result.files.single.path!);
       if (context.mounted) context.read<UpPostBloc>().add(AddTaskWithExcel(file: file));
@@ -64,6 +66,7 @@ class _UpPostScreenState extends State<UpPostScreen> {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final ThemeData themeData = Theme.of(context);
@@ -82,6 +85,35 @@ class _UpPostScreenState extends State<UpPostScreen> {
           ),
         ),
         hideKeyboardWhenTouchOutside: false,
+        bottomNavigationBar: Container(
+          padding: const EdgeInsets.fromLTRB(15, 20, 15, 20),
+          color: Colors.white,
+          child: Row(
+            children: [
+              Expanded(
+                child: BlocBuilder<UpPostBloc, UpPostState>(
+                  builder: (context, state) {
+                    return PrimaryButton(
+                      label: instance.get<AppLocalization>().translate('up') ?? 'Up',
+                      onPressed: () {
+                        context.read<UpPostBloc>().add(
+                              UpPostSubmitEvent(
+                                budget: budgetController.numberValue.toInt().toString(),
+                                description: descriptionController.text,
+                                title: titleController.text,
+                                duration: duration.text,
+                                position: position.text,
+                              ),
+                            );
+                      },
+                      width: double.infinity,
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
+        ),
         body: SizedBox(
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
@@ -218,40 +250,6 @@ class _UpPostScreenState extends State<UpPostScreen> {
                         ),
                       ],
                     ),
-                    BlocBuilder<UpPostBloc, UpPostState>(
-                      builder: (context, state) {
-                        return Visibility(
-                          visible: MediaQuery.of(context).viewInsets.bottom == 0.0,
-                          child: Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              clipBehavior: Clip.hardEdge,
-                              padding: const EdgeInsets.all(20),
-                              decoration: BoxDecoration(
-                                color: themeData.colorScheme.background,
-                              ),
-                              child: PrimaryButton(
-                                label: instance.get<AppLocalization>().translate('up') ?? 'Up',
-                                onPressed: () {
-                                  context.read<UpPostBloc>().add(
-                                        UpPostSubmitEvent(
-                                          budget: budgetController.numberValue.toInt().toString(),
-                                          description: descriptionController.text,
-                                          title: titleController.text,
-                                          duration: duration.text,
-                                          position: position.text,
-                                        ),
-                                      );
-                                },
-                                width: double.infinity,
-                              ),
-                            ),
-                          ),
-                        );
-                      },
-                    )
                   ],
                 ),
               );

@@ -25,13 +25,17 @@ class _GraphCircularWidgetState extends State<GraphCircularWidget> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => GraphBloc(postUseCase: instance.get<PostUseCase>())..add(GetGraph()),
-      child: BlocBuilder<GraphBloc,GraphState>(
+      child: BlocBuilder<GraphBloc, GraphState>(
         builder: (context, state) {
           return SizedBox(
             height: 200.h,
             width: MediaQuery.of(context).size.width,
             child: SfCircularChart(
-              legend: Legend(isVisible: true, position: LegendPosition.right),
+              legend: Legend(
+                isVisible: true,
+                position: LegendPosition.right,
+                shouldAlwaysShowScrollbar: false,
+              ),
               series: <CircularSeries>[
                 PieSeries<ChartData, String>(
                     dataSource: state.chartData,
@@ -42,7 +46,7 @@ class _GraphCircularWidgetState extends State<GraphCircularWidget> {
                     explode: true,
                     // First segment will be exploded on initial rendering
                     explodeIndex: 1,
-                    dataLabelSettings: const DataLabelSettings(isVisible: true))
+                    dataLabelSettings: const DataLabelSettings(isVisible: true)),
               ],
               tooltipBehavior: TooltipBehavior(enable: true),
             ),

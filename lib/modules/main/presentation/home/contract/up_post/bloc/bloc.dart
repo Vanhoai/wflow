@@ -174,7 +174,7 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
 
     if (event.title.isEmpty) {
       isValid = false;
-      message = instance.get<AppLocalization>().translate('taskTitle') ?? 'Please enter title';
+      message = instance.get<AppLocalization>().translate('pleaseEnterTitle') ?? 'Please enter title';
     }
 
     return [isValid, message];
@@ -186,9 +186,8 @@ class UpPostBloc extends Bloc<UpPostEvent, UpPostState> {
     final response = await postUseCase.uploadFileAddPost(file: event.file);
     response.fold(
       (List<String> task) {
-          
-         final List<String> tasks = [...state.tasks, ...task];
-          emit(state.copyWith(tasks: tasks));
+        final List<String> tasks = [...state.tasks, ...task];
+        emit(state.copyWith(tasks: tasks));
       },
       (Failure failure) {
         AlertUtils.showMessage('Create Contract', failure.message);

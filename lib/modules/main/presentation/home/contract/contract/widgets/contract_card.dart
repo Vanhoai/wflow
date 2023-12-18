@@ -36,7 +36,7 @@ class _ContractCardState extends State<ContractCard> {
           top: AppSize.marginSmall * 2,
           bottom: AppSize.paddingSmall * 2,
         ),
-        constraints: const BoxConstraints(maxHeight: 192),
+        constraints: const BoxConstraints(maxHeight: 200),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(8),
           color: themeData.colorScheme.background,
@@ -54,7 +54,6 @@ class _ContractCardState extends State<ContractCard> {
             borderRadius: BorderRadius.circular(8),
             onTap: () {
               if (widget.isApply) {
-                
               } else {
                 Navigator.of(context).pushNamed(RouteKeys.taskScreen, arguments: {
                   'contractId': widget.contractEntity.id,
@@ -69,9 +68,7 @@ class _ContractCardState extends State<ContractCard> {
                   Row(
                     children: [
                       _buildAvatar(widget.contractEntity.business.id.toString()),
-                      const SizedBox(
-                        width: 10,
-                      ),
+                      const SizedBox(width: 10),
                       Expanded(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
@@ -117,9 +114,7 @@ class _ContractCardState extends State<ContractCard> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 30,
-                  ),
+                  const SizedBox(height: 30),
                   Builder(
                     builder: (context) {
                       if (instance.get<AppBloc>().state.role != RoleEnum.business.index + 1) {
@@ -171,9 +166,7 @@ class _ContractCardState extends State<ContractCard> {
                       );
                     },
                   ),
-                  const SizedBox(
-                    height: 9,
-                  ),
+                  const SizedBox(height: 9),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -190,9 +183,7 @@ class _ContractCardState extends State<ContractCard> {
                       ),
                     ],
                   ),
-                  const SizedBox(
-                    height: 9,
-                  ),
+                  const SizedBox(height: 8),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
@@ -225,8 +216,8 @@ class _ContractCardState extends State<ContractCard> {
 
   Widget _buildAvatar(String idBusiness) {
     return SizedBox(
-      width: ((MediaQuery.sizeOf(context).width) / 100) * 12.75,
-      height: ((MediaQuery.sizeOf(context).height) / 100) * 6.1,
+      width: 50,
+      height: 50,
       child: InkWell(
         onTap: () => Navigator.of(context).pushNamed(RouteKeys.companyScreen, arguments: idBusiness),
         child: CircleAvatar(

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/widgets/shared/shared.dart';
 import 'package:wflow/modules/auth/presentation/forgot_password/widgets/forgot_email.dart';
 import 'package:wflow/modules/auth/presentation/forgot_password/widgets/forgot_phone.dart';
@@ -17,8 +19,8 @@ class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   @override
   Widget build(BuildContext context) {
     return CommonScaffold(
-      appBar: const AppBarCenterWidget(
-        center: Text('Forgot password'),
+      appBar: AppBarCenterWidget(
+        center: Text(instance.call<AppLocalization>().translate('forgotPassword') ?? 'Forgot Password'),
       ),
       hideKeyboardWhenTouchOutside: true,
       body: Padding(

@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:wflow/core/agent/agent.dart';
 import 'package:wflow/core/http/http.dart';
+import 'package:wflow/modules/main/data/user/models/notification_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/add_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_all_collaborator_model.dart';
 import 'package:wflow/modules/main/data/user/models/request/get_user_not_business_model.dart';
@@ -16,6 +17,7 @@ abstract class UserPath {
   static const String removeCollaborator = '/business/remove-collaborator';
   static String findUserByID(String id) => '/user/find/$id';
   static const String updateProfile = '/user/update-profile';
+  static const String notification = '/notification';
 }
 
 abstract class UserService {
@@ -28,6 +30,8 @@ abstract class UserService {
   Future<String> removeCollaborator(RemoveCollaboratorModel removeCollaboratorModel);
   Future<UserModel> findUserByID({required String id});
   Future<String> updateProfile({required RequestUpdateProfile request});
+  Future<HttpResponseWithPagination<NotificationModel>> notification(
+      {required num page, required num pageSize, required String search});
 }
 
 class UserServiceImpl implements UserService {
@@ -187,6 +191,41 @@ class UserServiceImpl implements UserService {
       }
 
       return httpResponse.data;
+    } catch (exception) {
+      throw ServerException(exception.toString());
+    }
+  }
+
+  @override
+  Future<HttpResponseWithPagination<NotificationModel>> notification(
+      {required num page, required num pageSize, required String search}) async {
+    try {
+      final response = await agent.dio.get(
+        UserPath.notification,
+        queryParameters: {
+          'page': page,
+          'pageSize': pageSize,
+          'search': search,
+        },
+      );
+
+      HttpResponseWithPagination httpResponse = HttpResponseWithPagination.fromJson(response.data);
+      if (httpResponse.statusCode != 200) {
+        throw ServerException(httpResponse.message);
+      }
+
+      List<NotificationModel> notifications = [];
+
+      for (var notification in httpResponse.data) {
+        notifications.add(NotificationModel.fromJson(notification));
+      }
+
+      return HttpResponseWithPagination(
+        statusCode: httpResponse.statusCode,
+        message: httpResponse.message,
+        meta: httpResponse.meta,
+        data: notifications,
+      );
     } catch (exception) {
       throw ServerException(exception.toString());
     }

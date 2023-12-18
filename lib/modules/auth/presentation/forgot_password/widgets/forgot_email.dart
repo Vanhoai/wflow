@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:wflow/common/injection.dart';
+import 'package:wflow/common/localization.dart';
 import 'package:wflow/core/routes/keys.dart';
 import 'package:wflow/core/utils/utils.dart';
 import 'package:wflow/core/widgets/custom/custom.dart';
@@ -45,8 +47,8 @@ class _ForgotEmailWidgetState extends State<ForgotEmailWidget> {
       children: [
         TextFieldFrom(
           controller: _emailController,
-          label: 'Email',
-          placeholder: 'Enter your email',
+          label: instance.call<AppLocalization>().translate('email') ?? 'Email',
+          placeholder: instance.call<AppLocalization>().translate('enterYourEmail') ?? 'Enter your email',
           prefixIcon: const Icon(Icons.email),
         ),
         20.verticalSpace,
@@ -56,7 +58,7 @@ class _ForgotEmailWidgetState extends State<ForgotEmailWidget> {
               flex: 1,
               child: PrimaryButton(
                 onPressed: () => _navigationToVerificationScreen(),
-                label: 'Send OTP',
+                label: instance.call<AppLocalization>().translate('sendOtp') ?? 'Send OTP',
               ),
             ),
           ],

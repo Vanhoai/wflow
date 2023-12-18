@@ -7,6 +7,7 @@ import 'package:wflow/modules/main/data/user/models/request/remove_collaborator_
 import 'package:wflow/modules/main/data/user/models/request/update_profile.dart';
 import 'package:wflow/modules/main/data/user/models/user_model.dart';
 import 'package:wflow/modules/main/data/user/user_service.dart';
+import 'package:wflow/modules/main/domain/user/entities/notification_entity.dart';
 import 'package:wflow/modules/main/domain/user/entities/user_entity.dart';
 import 'package:wflow/modules/main/domain/user/user_repository.dart';
 
@@ -99,6 +100,27 @@ class UserRepositoryImpl extends UserRepository {
     try {
       final response = await userService.updateProfile(request: request);
       return Left(response);
+    } on ServerException catch (exception) {
+      return Right(ServerFailure(message: exception.message));
+    }
+  }
+
+  @override
+  Future<Either<HttpResponseWithPagination<NotificationEntity>, Failure>> notification(
+      {required num page, required num pageSize, required String search}) async {
+    try {
+      final response = await userService.notification(page: page, pageSize: pageSize, search: search);
+      final List<NotificationEntity> notifications = [
+        ...response.data.map((e) => NotificationEntity.fromJson(e.toJson()))
+      ];
+      return Left(
+        HttpResponseWithPagination<NotificationEntity>(
+          data: notifications,
+          meta: response.meta,
+          message: response.message,
+          statusCode: response.statusCode,
+        ),
+      );
     } on ServerException catch (exception) {
       return Right(ServerFailure(message: exception.message));
     }

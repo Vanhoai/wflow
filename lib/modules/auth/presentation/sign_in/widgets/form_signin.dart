@@ -46,7 +46,7 @@ class _FormState extends State<FormSignIn> {
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -97,7 +97,7 @@ class _FormState extends State<FormSignIn> {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is required');
       return 'Email is required';
     }
-   
+
     return null;
   }
 
@@ -147,7 +147,7 @@ class _FormState extends State<FormSignIn> {
               children: [
                 20.verticalSpace,
                 Text(
-                  'Forgot password?',
+                  instance.get<AppLocalization>().translate('forgotPassword') ?? 'Forgot password?',
                   style: TextStyle(
                     fontSize: 26.sp,
                     fontWeight: FontWeight.w600,
@@ -156,7 +156,8 @@ class _FormState extends State<FormSignIn> {
                 ),
                 4.verticalSpace,
                 Text(
-                  'Don’t worry ! It happens. Please enter the phone number or email address you used to register your account and we will send you an OTP to reset your password.',
+                  instance.get<AppLocalization>().translate('dontWorryItHappen') ??
+                      'Don’t worry. Please enter the phone number or email address you used to register your account and we will send you an OTP to reset your password.',
                   style: themeData.textTheme.displayMedium,
                   maxLines: 10,
                 ),
@@ -202,7 +203,8 @@ class _FormState extends State<FormSignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('via Email', style: themeData.textTheme.displayMedium),
+                            Text(instance.call<AppLocalization>().translate('viaEmail') ?? 'via Email',
+                                style: themeData.textTheme.displayMedium),
                             4.verticalSpace,
                             Text('example@gmail.com', style: themeData.textTheme.displayMedium)
                           ],
@@ -254,7 +256,8 @@ class _FormState extends State<FormSignIn> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('via Phone', style: themeData.textTheme.displayMedium),
+                            Text(instance.call<AppLocalization>().translate('viaPhone') ?? 'via Phone}',
+                                style: themeData.textTheme.displayMedium),
                             4.verticalSpace,
                             Text('+84 123 456 789', style: themeData.textTheme.displayMedium)
                           ],
@@ -275,7 +278,7 @@ class _FormState extends State<FormSignIn> {
                             ..pop()
                             ..pushNamed(RouteKeys.forgotPasswordScreen, arguments: forgotType);
                         },
-                        label: 'Send OTP',
+                        label: instance.get<AppLocalization>().translate('continue') ?? 'Continue',
                       ),
                     ),
                   ],

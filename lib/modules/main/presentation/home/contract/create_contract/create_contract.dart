@@ -55,11 +55,14 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
         return false;
     }
   }
-   Future<void> choseExcelFile(BuildContext context) async {
-    FilePickerResult? result = await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls','xlsx','xlsm']);
+
+  Future<void> choseExcelFile(BuildContext context) async {
+    FilePickerResult? result =
+        await FilePicker.platform.pickFiles(type: FileType.custom, allowedExtensions: ['xls', 'xlsx', 'xlsm']);
     if (result != null) {
       File file = File(result.files.single.path!);
-      if(context.mounted) context.read<CreateContractBloc>().add(AddTaskWithExcel(contract: num.parse(widget.contract), file: file));
+      if (context.mounted)
+        context.read<CreateContractBloc>().add(AddTaskWithExcel(contract: num.parse(widget.contract), file: file));
     } else {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'No file selected');
     }
@@ -207,11 +210,12 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                         ),
                                         const SizedBox(height: 16),
                                         Visibility(
-                                          visible: isBusiness && state.contractEntity.state == ContractStatus.Apply.name,
+                                          visible:
+                                              isBusiness && state.contractEntity.state == ContractStatus.Apply.name,
                                           child: ActionHelper(onUpload: () {
                                             choseExcelFile(context);
                                           }, onWatchVideo: () {
-                                             Navigator.of(context).pushNamed(RouteKeys.guileUseExcelScreen);
+                                            Navigator.of(context).pushNamed(RouteKeys.guileUseExcelScreen);
                                           }),
                                         ),
                                         const SizedBox(height: 30),
@@ -386,12 +390,20 @@ class _CreateContractScreenState extends State<CreateContractScreen> {
                                       );
                                     }
                                   } else {
-                                    return PrimaryButton(
-                                      label: instance.get<AppLocalization>().translate('accepted') ?? 'Accepted',
-                                      width: double.infinity,
-                                      onPressed: () =>
-                                          context.read<CreateContractBloc>().add(ContractCreatedWorkerSignEvent()),
-                                    );
+                                    if (state.contractEntity.state == ContractStatus.WaitingSign.name) {
+                                      return PrimaryButton(
+                                        label: instance.get<AppLocalization>().translate('accept') ?? 'Accept',
+                                        width: double.infinity,
+                                        onPressed: () =>
+                                            context.read<CreateContractBloc>().add(ContractCreatedWorkerSignEvent()),
+                                      );
+                                    } else {
+                                      return PrimaryButton(
+                                        label: instance.get<AppLocalization>().translate('accepted') ?? 'Accepted',
+                                        width: double.infinity,
+                                        onPressed: () {},
+                                      );
+                                    }
                                   }
                                 },
                               );

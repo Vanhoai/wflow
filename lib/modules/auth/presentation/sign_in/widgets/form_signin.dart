@@ -38,15 +38,15 @@ class _FormState extends State<FormSignIn> {
 
   @override
   void initState() {
-    emailController = TextEditingController();
-    passwordController = TextEditingController();
+    emailController = TextEditingController(text: '');
+    passwordController = TextEditingController(text: '');
     super.initState();
     oldRemember = isRemember;
     _initRemember();
   }
 
   @override
-  void dispose() { 
+  void dispose() {
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
@@ -97,7 +97,7 @@ class _FormState extends State<FormSignIn> {
       AlertUtils.showMessage(instance.get<AppLocalization>().translate('notification'), 'Email is required');
       return 'Email is required';
     }
-   
+
     return null;
   }
 
